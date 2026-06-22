@@ -32,6 +32,13 @@ import {
   removeEmptyCodeFences,
   collapseBlankLines,
   removeOrphanedClosingBraces,
+  fixNestedCodeBlocks,
+  convertHtmlBlocks,
+  removeOrphanedImageCloseTags,
+  extractJsxFromCodeFences,
+  fixNestedQuotesInAttributes,
+  removeUnclosedCodeFences,
+  redactSecrets,
 } from "./cleanup";
 
 export interface ConvertedPage {
@@ -60,6 +67,7 @@ const CONVERTER_PIPELINE: Converter[] = [
   convertAnchors,
   convertJsxTables,
   convertGlossary,
+  convertHtmlBlocks,
   // Cleanup
   removeImports,
   removeExports,
@@ -77,6 +85,12 @@ const CONVERTER_PIPELINE: Converter[] = [
   removeEmptyCodeFences,
   collapseBlankLines,
   removeOrphanedClosingBraces,
+  removeOrphanedImageCloseTags,
+  fixNestedQuotesInAttributes,
+  fixNestedCodeBlocks,
+  extractJsxFromCodeFences,
+  removeUnclosedCodeFences,
+  redactSecrets,
 ];
 
 export function convertPage(slug: string, rawMd: string): ConvertedPage {

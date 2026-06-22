@@ -353,6 +353,15 @@ export function convertEmbeds(content: string): ConvertResult {
     }
   );
 
+  // <div style="..."><iframe src="...">...</iframe></div> → <Iframe>
+  result = result.replace(
+    /<div\s+style="[^"]*">[\s\S]*?iframe\s+src="([^"]*)"[^>]*>[\s\S]*?<\/iframe>[\s\S]*?<\/div>/g,
+    (_match, src: string) => {
+      count++;
+      return `<Iframe src="${escAttr(src)}" />`;
+    }
+  );
+
   if (count > 0) {
     changes.push({
       type: "embed",
@@ -379,20 +388,94 @@ export function fixImages(content: string): ConvertResult {
     }
   );
 
-  // Clean existing <Image> tags: remove align, border, className, caption
-  result = result.replace(
-    /<Image(\s[^>]*?)(\s*\/?>)/gi,
-    (_match, attrs: string, close: string) => {
-      const cleaned = attrs
-        .replace(
-          /\s+(align|border|caption|className)\s*=\s*(["'][^"']*["']|\{[^}]*\}|\S+)/gi,
-          ""
-        )
-        .trim();
-      if (cleaned !== attrs.trim()) count++;
-      return `<Image ${cleaned}${close}`;
+  // Fix <Image> tags: extract src/width/height/alt, strip everything else.
+  // Uses a character scanner to handle broken quotes and > inside alt text.
+  const imageTagRe = /<Image\s/gi;
+  let imageMatch;
+  const replacements: [number, number, string][] = [];
+
+  while ((imageMatch = imageTagRe.exec(result)) !== null) {
+    const startIdx = imageMatch.index;
+    let i = startIdx + imageMatch[0].length;
+    let depth = 0;
+    let endIdx = -1;
+
+    // Find the real end of the tag: /> or > accounting for attribute values
+    while (i < result.length) {
+      if (result[i] === "=" && i + 1 < result.length && result[i + 1] === '"') {
+        // Skip past the attribute value
+        i += 2;
+        while (i < result.length && result[i] !== '"') i++;
+        i++; // skip closing "
+        continue;
+      }
+      if (result[i] === "=" && i + 1 < result.length && result[i + 1] === "{") {
+        depth = 1;
+        i += 2;
+        while (i < result.length && depth > 0) {
+          if (result[i] === "{") depth++;
+          else if (result[i] === "}") depth--;
+          i++;
+        }
+        continue;
+      }
+      if (result[i] === "/" && i + 1 < result.length && result[i + 1] === ">") {
+        endIdx = i + 2;
+        break;
+      }
+      if (result[i] === ">") {
+        endIdx = i + 1;
+        break;
+      }
+      i++;
     }
-  );
+
+    if (endIdx === -1) continue;
+
+    const fullTag = result.substring(startIdx, endIdx);
+    count++;
+
+    // Extract src via the last src=" found (most reliable)
+    const srcM = fullTag.match(/\bsrc\s*=\s*"([^"]*)"/);
+    const widthM = fullTag.match(/\bwidth\s*=\s*"([^"]*)"/);
+    const heightM = fullTag.match(/\bheight\s*=\s*"([^"]*)"/);
+
+    // For alt: find alt=" then grab up to the quote before the next known attr key
+    let alt = "";
+    const altStart = fullTag.match(/\balt\s*=\s*"/);
+    if (altStart) {
+      const attrKeys = /\b(?:src|width|height|border|caption|className|align|priority)\s*=/g;
+      const altValStart = altStart.index! + altStart[0].length;
+      let altValEnd = fullTag.lastIndexOf('"', fullTag.indexOf("src=", altValStart) - 2);
+      if (altValEnd <= altValStart) altValEnd = fullTag.indexOf('"', altValStart);
+      // Try finding next attr key after alt value start
+      attrKeys.lastIndex = altValStart;
+      const nextAttr = attrKeys.exec(fullTag);
+      if (nextAttr) {
+        // Walk backward from nextAttr to find the closing quote
+        let q = nextAttr.index - 1;
+        while (q > altValStart && result[startIdx + q] !== '"') q--;
+        if (q > altValStart) altValEnd = q;
+      }
+      alt = fullTag.substring(altValStart, altValEnd).replace(/"/g, "&quot;").trim();
+    }
+
+    const src = srcM ? srcM[1] : "";
+    if (!src) continue;
+
+    const width = widthM ? widthM[1].trim() : "1920";
+    const height = heightM ? heightM[1].trim() : "1080";
+    const altAttr = alt ? ` alt="${alt}"` : ` alt=""`;
+    const replacement = `<Image src="${src}" width="${width}" height="${height}"${altAttr} />`;
+
+    replacements.push([startIdx, endIdx, replacement]);
+  }
+
+  // Apply replacements in reverse order to preserve indices
+  for (let r = replacements.length - 1; r >= 0; r--) {
+    const [start, end, replacement] = replacements[r];
+    result = result.substring(0, start) + replacement + result.substring(end);
+  }
 
   if (count > 0) {
     changes.push({
@@ -660,7 +743,7 @@ export function convertJsxTables(content: string): ConvertResult {
   let count = 0;
 
   const result = content.replace(
-    /<Table\s[^>]*>([\s\S]*?)<\/Table>/gi,
+    /<Table[^>]*>([\s\S]*?)<\/Table>/gi,
     (_match, inner: string) => {
       const rows: string[][] = [];
       const trRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/gi;
