@@ -25,7 +25,7 @@ export async function buildProjectSections(
 
   const fetches: { name: string; url: string }[] = [];
   for (const p of projects) {
-    for (const type of ["docs", "reference"]) {
+    for (const type of ["docs", "reference", "guides", "api-reference"]) {
       fetches.push({
         name: `${p}/${PREFIX_TO_SECTION[type] || type}`,
         url: `${baseUrl}/${p}/${type}`,

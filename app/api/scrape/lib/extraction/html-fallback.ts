@@ -87,7 +87,7 @@ export function parseHtmlFallback(
 
   if (pages.length === 0) {
     $(
-      'a[href*="/docs/"], a[href*="/reference/"], a[href*="/refs/"], a[href*="/changelog/"]'
+      'a[href*="/docs/"], a[href*="/guides/"], a[href*="/tutorials/"], a[href*="/reference/"], a[href*="/refs/"], a[href*="/api-reference/"], a[href*="/api/"], a[href*="/recipes/"], a[href*="/examples/"], a[href*="/sdks/"], a[href*="/changelog/"]'
     ).each((_, a) => addLink($, a, baseUrl, pages, "", 0));
   }
 

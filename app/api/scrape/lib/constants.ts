@@ -40,31 +40,67 @@ export const NAV_SELECTORS = [
   ".rm-Header-bottom a",
 ].join(", ");
 
+export const NAV_FALLBACK_SELECTORS = [
+  '[role="navigation"] a',
+  '[aria-label*="nav" i] a',
+  '[aria-label*="menu" i] a',
+  ".nav a",
+  ".navigation a",
+  ".menu a",
+].join(", ");
+
 // ── Tab detection patterns ────────────────────────────────
 
 export const TAB_PATTERNS: [RegExp, string][] = [
   [/^\/?docs\/?$/, "Guides"],
+  [/^\/?guides?\/?$/, "Guides"],
+  [/^\/?tutorials?\/?$/, "Tutorials"],
   [/^\/?reference\/?$/, "API Reference"],
-  [/^\/?refs\/?$/, "API Reference"],
+  [/^\/?refs?\/?$/, "API Reference"],
+  [/^\/?api-?reference\/?$/, "API Reference"],
+  [/^\/?api\/?$/, "API"],
   [/^\/?changelog\/?$/, "Changelog"],
   [/^\/?recipes\/?$/, "Recipes"],
-  [/^\/?discuss\/?$/, "Discussions"],
+  [/^\/?examples?\/?$/, "Examples"],
+  [/^\/?sdks?\/?$/, "SDKs"],
+  [/^\/?discuss(ions?)?\/?$/, "Discussions"],
 ];
+
+export const MAX_TAB_NAME_LENGTH = 50;
 
 // ── Section name mappings ─────────────────────────────────
 
 export const PREFIX_TO_SECTION: Record<string, string> = {
   docs: "Guides",
+  guide: "Guides",
+  guides: "Guides",
+  tutorial: "Tutorials",
+  tutorials: "Tutorials",
   reference: "API Reference",
   refs: "API Reference",
+  "api-reference": "API Reference",
+  api: "API",
   changelog: "Changelog",
   recipes: "Recipes",
+  example: "Examples",
+  examples: "Examples",
+  sdk: "SDKs",
+  sdks: "SDKs",
   discuss: "Discussions",
+  discussions: "Discussions",
   page: "Pages",
 };
 
 export const PREFIX_ALIASES: Record<string, string> = {
   refs: "reference",
+  ref: "reference",
+  "api-reference": "reference",
+  guide: "docs",
+  guides: "docs",
+  tutorial: "tutorials",
+  example: "examples",
+  sdk: "sdks",
+  discussions: "discuss",
 };
 
 // ── Version prefix handling ───────────────────────────────
@@ -107,13 +143,13 @@ export const MAX_DOM_WALK_DEPTH = 50;
 // ── URL patterns ──────────────────────────────────────────
 
 export const DOC_PATH_PATTERN =
-  /\/(docs|reference|refs|recipes|page|changelog)\//;
+  /\/(docs|guides?|tutorials?|reference|refs|api-?reference|api|recipes|examples?|sdks?|page|changelog)\//;
 
 export const DOC_HREF_PATTERN =
-  /^\/(v\d+(\.\d+)*\/)?(docs|reference|refs|recipes|page|changelog)\/.+/;
+  /^\/(v\d+(\.\d+)*\/)?(docs|guides?|tutorials?|reference|refs|api-?reference|api|recipes|examples?|sdks?|page|changelog)\/.+/;
 
 export const SLUG_STRIP_PATTERN =
-  /^\/?(v\d+(\.\d+)*\/)?(docs|reference|refs|recipes|changelog)\//;
+  /^\/?(v\d+(\.\d+)*\/)?(docs|guides?|tutorials?|reference|refs|api-?reference|api|recipes|examples?|sdks?|changelog)\//;
 
 // ── Utility ───────────────────────────────────────────────
 

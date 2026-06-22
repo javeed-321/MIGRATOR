@@ -2,35 +2,54 @@ import { type CheerioAPI } from "cheerio";
 import type { Tab } from "../types";
 import {
   NAV_SELECTORS,
+  NAV_FALLBACK_SELECTORS,
   TAB_PATTERNS,
+  MAX_TAB_NAME_LENGTH,
   stripVersionPrefix,
 } from "../constants";
 
 export function detectTabs($: CheerioAPI, baseUrl: string): Tab[] {
   const tabs: Tab[] = [];
-  const seen = new Set<string>();
+  const seenPaths = new Set<string>();
 
-  $(NAV_SELECTORS).each((_, el) => {
-    let href = ($(el).attr("href") || "").replace(/\/$/, "");
+  function scan(selector: string): void {
+    $(selector).each((_, el) => {
+      let href = ($(el).attr("href") || "").replace(/\/$/, "");
 
-    try {
-      if (href.startsWith("http")) {
-        const u = new URL(href);
-        if (u.origin === baseUrl) href = u.pathname.replace(/\/$/, "");
+      try {
+        if (href.startsWith("http")) {
+          const u = new URL(href);
+          if (u.origin !== baseUrl) return;
+          href = u.pathname.replace(/\/$/, "");
+        }
+      } catch {
+        return;
       }
-    } catch {
-      // keep href as-is if URL parsing fails
-    }
 
-    const stripped = stripVersionPrefix(href);
+      const stripped = stripVersionPrefix(href);
+      const normalizedPath = "/" + stripped.replace(/^\//, "");
 
-    for (const [pattern, name] of TAB_PATTERNS) {
-      if (pattern.test(stripped) && !seen.has(name)) {
-        seen.add(name);
-        tabs.push({ name, path: "/" + stripped.replace(/^\//, "") });
+      if (seenPaths.has(normalizedPath)) return;
+
+      for (const [pattern, canonicalName] of TAB_PATTERNS) {
+        if (pattern.test(stripped)) {
+          seenPaths.add(normalizedPath);
+          const visibleText = $(el).text().trim().replace(/\s+/g, " ");
+          const name =
+            visibleText.length > 0 &&
+            visibleText.length <= MAX_TAB_NAME_LENGTH
+              ? visibleText
+              : canonicalName;
+          tabs.push({ name, path: normalizedPath });
+          break;
+        }
       }
-    }
-  });
+    });
+  }
+
+  scan(NAV_SELECTORS);
+  if (tabs.length === 0) scan(NAV_FALLBACK_SELECTORS);
+  if (tabs.length === 0) scan("a");
 
   return tabs;
 }

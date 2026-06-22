@@ -128,6 +128,13 @@ export async function POST(req: Request) {
       if (pages.length > 0) out.sections.push({ name: "all", pages });
     }
 
+    // @ts-expect-error debug
+    out._debug = {
+      tabPaths: tabs.map((t: { path: string }) => t.path),
+      projects: [...projects],
+      sitemapGroupKeys: [...sitemapGroups.keys()],
+      sidebarKeys: [...(parseSidebarLookups(html)).keys()],
+    };
     return NextResponse.json(out);
   } catch (e) {
     console.error("[scraper] Unhandled error:", e);
