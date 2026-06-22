@@ -151,6 +151,7 @@ export async function buildSitemapSections(
           fullUrl: `${baseUrl}${pathPrefix}/${slug}`,
           level: meta.level,
           group: meta.group,
+          parentPath: "", 
         });
       }
     }
@@ -172,6 +173,7 @@ export async function buildSitemapSections(
           fullUrl,
           level: 0,
           group: "",
+          parentPath: "",
         });
       } catch (err) {
         console.warn(
@@ -222,6 +224,7 @@ export async function buildNoSitemapSections(
         fullUrl: `${baseUrl}${pathPrefix}/${slug}`,
         level: meta.level,
         group: meta.group,
+        parentPath: "",
       }));
       if (pages.length > 0) {
         sections.push({

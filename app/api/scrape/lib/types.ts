@@ -9,6 +9,7 @@ export interface ScrapePageItem {
   fullUrl: string;
   level: number;
   group: string;
+  parentPath: string;
 }
 
 export interface ScrapeSection {
@@ -39,4 +40,54 @@ export interface ScrapeResult {
   navType: NavType;
   tabs: string[];
   sections: ScrapeSection[];
+}
+
+// ── Phase 3: Content fetching ────────────────────────────
+
+export interface FetchedPage {
+  section: string;
+  title: string;
+  slug: string;
+  path: string;
+  fullUrl: string;
+  level: number;
+  group: string;
+  parentPath: string;
+  mdUrl: string;
+  markdown: string | null;
+  htmlContent: string | null;
+  status: "ok" | "error" | "skipped" | "html";
+  error?: string;
+  fetchMs: number;
+}
+
+export interface FetchStats {
+  total: number;
+  ok: number;
+  html: number;
+  errors: number;
+  skipped: number;
+  totalFetchMs: number;
+}
+
+export interface FetchResult {
+  pages: FetchedPage[];
+  stats: FetchStats;
+}
+
+export interface SectionSummary {
+  name: string;
+  folder: string;
+  written: number;
+  total: number;
+}
+
+export interface SaveResult {
+  outputDir: string;
+  htmlDir: string;
+  manifestPath: string;
+  fileCount: number;
+  htmlFileCount: number;
+  errors: string[];
+  sections: SectionSummary[];
 }

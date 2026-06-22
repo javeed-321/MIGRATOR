@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { writeFile, mkdir } from "fs/promises";
+import path from "path";
 import { load } from "cheerio";
 import {
   isUrlAllowed,
@@ -16,6 +18,7 @@ import {
   buildNoSitemapSections,
 } from "./lib/extraction";
 import type { ScrapeResult } from "./lib/types";
+import { convertToDocAI, assignParentPaths } from "./lib/converter";
 
 export async function POST(req: Request) {
   let body: { url?: string };
@@ -121,6 +124,7 @@ export async function POST(req: Request) {
             fullUrl: siteBase + href,
             level: 0,
             group: "",
+            parentPath: "",
           });
         }
       });
@@ -128,13 +132,33 @@ export async function POST(req: Request) {
       if (pages.length > 0) out.sections.push({ name: "all", pages });
     }
 
-    // @ts-expect-error debug
-    out._debug = {
-      tabPaths: tabs.map((t: { path: string }) => t.path),
-      projects: [...projects],
-      sitemapGroupKeys: [...sitemapGroups.keys()],
-      sidebarKeys: [...(parseSidebarLookups(html)).keys()],
-    };
+    for (const section of out.sections) {
+      assignParentPaths(section.pages);
+    }
+
+    // Auto-save raw scrape + converted documentation.json
+    const docJsonDir = path.join(process.cwd(), "docJson");
+    const convertedDir = path.join(docJsonDir, "converted");
+    const safeName = out.site.replace(/[^a-zA-Z0-9.-]/g, "_");
+    try {
+      await mkdir(convertedDir, { recursive: true });
+      const docAIConfig = convertToDocAI(out);
+      await Promise.all([
+        writeFile(
+          path.join(docJsonDir, `${safeName}.json`),
+          JSON.stringify(out, null, 2),
+          "utf-8"
+        ),
+        writeFile(
+          path.join(convertedDir, `${safeName}.documentation.json`),
+          JSON.stringify(docAIConfig, null, 2),
+          "utf-8"
+        ),
+      ]);
+    } catch (writeErr) {
+      console.error("[scraper] Failed to save:", writeErr);
+    }
+
     return NextResponse.json(out);
   } catch (e) {
     console.error("[scraper] Unhandled error:", e);

@@ -26,6 +26,7 @@ function addLink(
     fullUrl: href.startsWith("http") ? href : baseUrl + href,
     level,
     group,
+    parentPath: "",
   });
 }
 
