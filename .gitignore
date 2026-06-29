@@ -45,8 +45,8 @@ next-env.d.ts
 /mdx
 /deploy 
 
-/guides 
-/sidebarInfo
+/guides
+/SidebarInfo
 /source-html
 
 /deployment-output/guides
