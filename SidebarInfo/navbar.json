@@ -1,0 +1,3283 @@
+{
+  "title": "API Reference",
+  "groups": [
+    {
+      "group": "Getting Started",
+      "path": "reference/apioverview",
+      "pages": [
+        {
+          "title": "Overview",
+          "path": "reference/apioverview"
+        },
+        {
+          "title": "Authentication",
+          "path": "reference/authentication",
+          "children": [
+            {
+              "title": "OAuth",
+              "path": "reference/oauth"
+            },
+            {
+              "title": "Basic authentication",
+              "path": "reference/basic-authentication"
+            },
+            {
+              "title": "Auth for consumer or end-customer apps",
+              "path": "reference/auth-for-consumer-or-end-customer-apps"
+            }
+          ]
+        },
+        {
+          "title": "Authorisation",
+          "path": "reference/authorisation"
+        },
+        {
+          "title": "Rate limits",
+          "path": "reference/rate-limits"
+        },
+        {
+          "title": "API status codes",
+          "path": "reference/errors-and-warnings"
+        },
+        {
+          "title": "Timezone Management in APIs",
+          "path": "reference/timezone-management",
+          "children": [
+            {
+              "title": "Overview",
+              "path": "reference/timezone-management-api-overview"
+            },
+            {
+              "title": "How Date and Time Values are Handled",
+              "path": "reference/handling-datetime-in-apis"
+            },
+            {
+              "title": "Exceptions and Known Limitations",
+              "path": "reference/exceptions-and-known-limitations"
+            },
+            {
+              "title": "List of APIs with Additional Timezone Fields",
+              "path": "reference/apis-updated-with-additional-timezone-fields"
+            },
+            {
+              "title": "FAQ",
+              "path": "reference/timezone-faq"
+            }
+          ]
+        },
+        {
+          "title": "Make Your First API Request",
+          "path": "reference/make-your-first-api-call"
+        },
+        {
+          "title": "Idempotency",
+          "path": "reference/idempotency"
+        },
+        {
+          "title": "API Reference Guide",
+          "path": "reference/api-reference-guide"
+        }
+      ]
+    },
+    {
+      "group": "Customer (V1)",
+      "path": "reference/customer",
+      "pages": [
+        {
+          "title": "Add Customer",
+          "path": "reference/add-customer",
+          "method": "POST"
+        },
+        {
+          "title": "Update customer details",
+          "path": "reference/update-customer-details_v1api",
+          "method": "PUT"
+        },
+        {
+          "title": "update-customer-identifiers",
+          "path": "reference/update-customer-identifiers"
+        },
+        {
+          "title": "Search Customers",
+          "path": "reference/search-customers",
+          "method": "GET",
+          "deprecated": true
+        },
+        {
+          "title": "Get customer details",
+          "path": "reference/get-customer-details-v1api",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Transactions",
+          "path": "reference/get-customer-transactions",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Redemptions",
+          "path": "reference/get-customer-redemptions",
+          "method": "GET"
+        },
+        {
+          "title": "Add/Update Customer Notes",
+          "path": "reference/addupdate-customer-notes",
+          "method": "POST"
+        },
+        {
+          "title": "Get Customer Notes",
+          "path": "reference/get-customer-notes",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Interactions",
+          "path": "reference/get-customer-interactions",
+          "method": "GET"
+        },
+        {
+          "title": "Get Referral Details",
+          "path": "reference/get-referral-details",
+          "method": "GET"
+        },
+        {
+          "title": "Add/Update Customer Preferences",
+          "path": "reference/addupdate-customer-preferences",
+          "method": "POST"
+        },
+        {
+          "title": "Get Customer Preferences",
+          "path": "reference/get-customer-preferences",
+          "method": "GET"
+        },
+        {
+          "title": "Update Subscription Details",
+          "path": "reference/update_subscription_details",
+          "method": "POST"
+        },
+        {
+          "title": "Get Subscription Details",
+          "path": "reference/get-subscription-details-1",
+          "method": "GET"
+        },
+        {
+          "title": "Change identifier on Auth engine",
+          "path": "reference/change_identifier-on-auth-engine",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "group": "Customer (V2)",
+      "path": "reference/customer-1",
+      "pages": [
+        {
+          "title": "Add Customer",
+          "path": "reference/v2-add-customer",
+          "method": "POST"
+        },
+        {
+          "title": "Update Customer Details",
+          "path": "reference/update-customer-detail",
+          "method": "PUT"
+        },
+        {
+          "title": "Add or Remove Customer Identifiers",
+          "path": "reference/update-identifiersissue-card",
+          "method": "POST"
+        },
+        {
+          "title": "Associate Customer",
+          "path": "reference/associate-customer",
+          "method": "POST"
+        },
+        {
+          "title": "Get Customer Details",
+          "path": "reference/get-customer-details-v2",
+          "method": "GET"
+        },
+        {
+          "title": "Get customer hierarchy in a user group",
+          "path": "reference/customer-hierarchy",
+          "method": "GET"
+        },
+        {
+          "title": "Update association details",
+          "path": "reference/update-association-details",
+          "method": "PUT"
+        },
+        {
+          "title": "Search Customers",
+          "path": "reference/search-customers-1",
+          "method": "GET"
+        },
+        {
+          "title": "Update Subscription Details",
+          "path": "reference/update-subscription-details",
+          "method": "POST"
+        },
+        {
+          "title": "Get Subscription Details",
+          "path": "reference/get-subscription-details-1-1",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Tracker Details",
+          "path": "reference/get_v2-customers-customerid-trackers",
+          "method": "GET"
+        },
+        {
+          "title": "Get Loyalty Events",
+          "path": "reference/get-loyalty-events",
+          "method": "GET"
+        },
+        {
+          "title": "Get Loyalty Details",
+          "path": "reference/get-loyalty-details-1",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Tier",
+          "path": "reference/get-customer-tier",
+          "method": "GET"
+        },
+        {
+          "title": "Get Detailed Customer Coupon Data",
+          "path": "reference/get-customer-coupons-detailed",
+          "method": "GET"
+        },
+        {
+          "title": "Get Retro Requests",
+          "path": "reference/get-retro-requests",
+          "method": "GET"
+        },
+        {
+          "title": "Get Identifier Change Requests",
+          "path": "reference/get-identifier-change-requests",
+          "method": "GET"
+        },
+        {
+          "title": "Get Goodwill Requests",
+          "path": "reference/get-goodwill-requests",
+          "method": "GET"
+        },
+        {
+          "title": "Add Customer Image",
+          "path": "reference/add-customer-image",
+          "method": "POST"
+        },
+        {
+          "title": "Delete Customer Image",
+          "path": "reference/delete-customer-image",
+          "method": "DEL"
+        },
+        {
+          "title": "Get Customer Status Log",
+          "path": "reference/get-status-log-1",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Subscription Log",
+          "path": "reference/get-customer-subscription-log",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Image",
+          "path": "reference/get-customer-image",
+          "method": "GET"
+        },
+        {
+          "title": "Get user group customer tracker details",
+          "path": "reference/get-user-group-customer-tracker-details",
+          "method": "GET"
+        },
+        {
+          "title": "Get customer transactions",
+          "path": "reference/v2api-get-customer-transactions",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Interactions",
+          "path": "reference/v2get-customer-interactions",
+          "method": "GET"
+        },
+        {
+          "title": "Status codes",
+          "path": "reference/status-codes-customer"
+        },
+        {
+          "title": "Manual Tier Adjustment",
+          "path": "reference/manual-tier-adjustment",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "group": "Customer (V2 Lookup)",
+      "path": "reference/customer-lookup",
+      "pages": [
+        {
+          "title": "Update Customer Details",
+          "path": "reference/update-customers-lookup",
+          "method": "PUT"
+        },
+        {
+          "title": "Get Customer Details",
+          "path": "reference/get-customer-details",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer ID",
+          "path": "reference/get-customer-id",
+          "method": "GET"
+        },
+        {
+          "title": "Update Customer Status",
+          "path": "reference/update-customer-status",
+          "method": "PUT"
+        },
+        {
+          "title": "Get Subscription Details",
+          "path": "reference/get-subscription-details",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Loyalty Details",
+          "path": "reference/get-customer-loyalty-details",
+          "method": "GET"
+        },
+        {
+          "title": "Get Retro Requests",
+          "path": "reference/lookup-get-retro-requests",
+          "method": "GET"
+        },
+        {
+          "title": "Add Customer Image",
+          "path": "reference/set-customer-image-1",
+          "method": "POST"
+        },
+        {
+          "title": "Get Referrals (Lookup)",
+          "path": "reference/get-referrals-lookup",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Recommendations",
+          "path": "reference/get-customer-recommendations",
+          "method": "GET"
+        },
+        {
+          "title": "Get Points Balance",
+          "path": "reference/get_points_balance",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Tier",
+          "path": "reference/lookup-get-customer-tier",
+          "method": "GET"
+        },
+        {
+          "title": "Get Points Conversion Schedule",
+          "path": "reference/lookup-get-points-conversion-schedule",
+          "method": "GET"
+        },
+        {
+          "title": "Lookup Customer Transactions",
+          "path": "reference/get-customers-lookup-transactions",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "Customer Labels",
+      "path": "reference/customer-labels",
+      "pages": [
+        {
+          "title": "Add Labels",
+          "path": "reference/add-labels",
+          "method": "POST"
+        },
+        {
+          "title": "Get All Customer Labels for the Org",
+          "path": "reference/get-org-labels",
+          "method": "GET"
+        },
+        {
+          "title": "Tag Customers (to Labels)",
+          "path": "reference/tag-customers-to-labels",
+          "method": "POST"
+        },
+        {
+          "title": "Get Customer Labels",
+          "path": "reference/get-customer-labels",
+          "method": "GET"
+        },
+        {
+          "title": "Search Customers by Label",
+          "path": "reference/search-customers-by-labels",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "Transaction",
+      "path": "reference/transaction",
+      "pages": [
+        {
+          "title": "Transaction (V1)",
+          "path": "reference/transaction",
+          "children": [
+            {
+              "title": "Add Transaction",
+              "path": "reference/add-transaction",
+              "method": "POST"
+            },
+            {
+              "title": "Add Transaction with Local Currency",
+              "path": "reference/add-transaction-with-local-currency",
+              "method": "POST"
+            },
+            {
+              "title": "Update Transaction Details",
+              "path": "reference/update-transaction-details",
+              "method": "POST"
+            },
+            {
+              "title": "Cancel Transaction Lineitem",
+              "path": "reference/cancel-transaction-lineitem",
+              "method": "POST"
+            },
+            {
+              "title": "Get Transaction Details",
+              "path": "reference/get_transaction_detailsv1",
+              "method": "GET"
+            },
+            {
+              "title": "Return Transaction",
+              "path": "reference/return-transaction",
+              "method": "POST"
+            },
+            {
+              "title": "Retro Transaction",
+              "path": "reference/retro-transaction",
+              "method": "POST"
+            }
+          ]
+        },
+        {
+          "title": "Transaction (V2)",
+          "path": "reference/transaction_apis",
+          "children": [
+            {
+              "title": "Add/Return transaction (single)",
+              "path": "reference/add-transaction-single",
+              "method": "POST"
+            },
+            {
+              "title": "Add/Return Transaction in Bulk",
+              "path": "reference/addreturn-transaction-bulk"
+            },
+            {
+              "title": "Update Transaction",
+              "path": "reference/update-transaction",
+              "method": "PUT"
+            },
+            {
+              "title": "Update Transactions in Bulk",
+              "path": "reference/update-transaction-bulk",
+              "method": "PUT"
+            },
+            {
+              "title": "Get Transaction Details With ID",
+              "path": "reference/get-transaction-details",
+              "method": "GET"
+            },
+            {
+              "title": "Get transaction details using bill number",
+              "path": "reference/retrieve-transaction-details-with-bill-number",
+              "method": "GET"
+            },
+            {
+              "title": "Simulation transaction add",
+              "path": "reference/simulate_transactionadd",
+              "method": "POST"
+            },
+            {
+              "title": "Expose Evaluation log for an event",
+              "path": "reference/expose-evaluation-log-for-an-event",
+              "method": "POST"
+            },
+            {
+              "title": "Status codes",
+              "path": "reference/transaction-status-codes"
+            }
+          ]
+        },
+        {
+          "title": "Transaction rejection",
+          "path": "reference/getrejectedtransactions",
+          "children": [
+            {
+              "title": "getRejectedTransactions",
+              "path": "reference/getrejectedtransactions",
+              "method": "GET"
+            },
+            {
+              "title": "getReTriggerStatus",
+              "path": "reference/getretriggerstatus",
+              "method": "GET"
+            },
+            {
+              "title": "markFailed",
+              "path": "reference/markfailed",
+              "method": "PUT"
+            },
+            {
+              "title": "retriggerTransactionAdd",
+              "path": "reference/retriggertransactionadd",
+              "method": "POST"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Coupon",
+      "path": "reference/coupon-1",
+      "pages": [
+        {
+          "title": "Coupon (V1.1 APIs)",
+          "path": "reference/coupon-1",
+          "children": [
+            {
+              "title": "Resend Coupon",
+              "path": "reference/resend-coupon",
+              "method": "GET"
+            },
+            {
+              "title": "Redeem Coupon",
+              "path": "reference/redeem-coupon",
+              "method": "POST"
+            },
+            {
+              "title": "Get Coupon details",
+              "path": "reference/get-coupon-detail",
+              "method": "GET"
+            },
+            {
+              "title": "Get Customer Coupons",
+              "path": "reference/get-customer-coupons",
+              "method": "GET"
+            },
+            {
+              "title": "Is Coupon Redeemable",
+              "path": "reference/is-coupon-redeemable",
+              "method": "GET"
+            },
+            {
+              "title": "Get Coupon series details",
+              "path": "reference/get-coupon-series-details-v1-api",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Coupon (V2 APIs)",
+          "path": "reference/coupon",
+          "children": [
+            {
+              "title": "Create coupon series",
+              "path": "reference/create-coupon-series",
+              "method": "POST"
+            },
+            {
+              "title": "Update coupon series",
+              "path": "reference/update-coupon-series",
+              "method": "PUT"
+            },
+            {
+              "title": "Get coupon series details",
+              "path": "reference/get-coupon-series-details",
+              "method": "GET"
+            },
+            {
+              "title": "Issue single coupon",
+              "path": "reference/issue-single-coupon",
+              "method": "POST"
+            },
+            {
+              "title": "Issue bulk coupons",
+              "path": "reference/issue-bulk-coupons",
+              "method": "POST"
+            },
+            {
+              "title": "Issue multiple coupons to a customer from a series",
+              "path": "reference/issue-bulk-coupon-with-count-from-series",
+              "method": "POST"
+            },
+            {
+              "title": "Redeem single coupon",
+              "path": "reference/redeem-single-coupon",
+              "method": "POST"
+            },
+            {
+              "title": "Redeem bulk coupons",
+              "path": "reference/redeem-bulk-coupons",
+              "method": "POST"
+            },
+            {
+              "title": "Check if coupon is Redeemable",
+              "path": "reference/check-if-coupon-is-redeemable",
+              "method": "GET"
+            },
+            {
+              "title": "Reactivate redeemed coupon",
+              "path": "reference/reactivate-redeemed-coupon",
+              "method": "POST"
+            },
+            {
+              "title": "Get coupon details",
+              "path": "reference/get-coupon-details",
+              "method": "GET"
+            },
+            {
+              "title": "Get All Customer Coupons",
+              "path": "reference/get-customer-coupons-basic",
+              "method": "GET"
+            },
+            {
+              "title": "Update coupon redeem field",
+              "path": "reference/update-coupon-redeem-field",
+              "method": "PUT"
+            },
+            {
+              "title": "Update coupon code expiry date",
+              "path": "reference/update-coupon-code-expiry-date",
+              "method": "PUT"
+            },
+            {
+              "title": "Revoke coupon",
+              "path": "reference/revoke-coupon",
+              "method": "POST"
+            }
+          ]
+        },
+        {
+          "title": "Coupon Upload (V1 APIs)",
+          "path": "reference/coupon-upload",
+          "children": [
+            {
+              "title": "Upload Redeemed Coupons",
+              "path": "reference/upload-redeemed-coupons",
+              "method": "POST"
+            },
+            {
+              "title": "Get Uploaded Coupons' Status",
+              "path": "reference/get-uploaded-coupons-status",
+              "method": "GET"
+            },
+            {
+              "title": "Get Status of Redeemed Coupons",
+              "path": "reference/get-status-of-redeemed-coupons",
+              "method": "GET"
+            },
+            {
+              "title": "Upload Coupons (Batch)",
+              "path": "reference/upload-coupons-batch",
+              "method": "POST"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Cards",
+      "path": "reference/cards",
+      "pages": [
+        {
+          "title": "Add Card Series",
+          "path": "reference/v2addcardseries",
+          "method": "POST"
+        },
+        {
+          "title": "Generate Cards",
+          "path": "reference/generate-cards",
+          "method": "POST"
+        },
+        {
+          "title": "Get Card Generation Log",
+          "path": "reference/get-card-generation-log",
+          "method": "GET"
+        },
+        {
+          "title": "Add Card Number to a Card Series",
+          "path": "reference/add-card-number-to-series",
+          "method": "POST"
+        },
+        {
+          "title": "Update Card Details (Single)",
+          "path": "reference/update-card-details-single",
+          "method": "PUT"
+        },
+        {
+          "title": "Update Card Details (Bulk)",
+          "path": "reference/update-card-details-bulk",
+          "method": "PUT"
+        },
+        {
+          "title": "Get Card Details",
+          "path": "reference/get-card-details",
+          "method": "GET"
+        },
+        {
+          "title": "Get Status Log",
+          "path": "reference/get-status-log",
+          "method": "GET"
+        },
+        {
+          "title": "Generate Card External ID",
+          "path": "reference/generate-card-external-id",
+          "method": "PUT"
+        }
+      ]
+    },
+    {
+      "group": "Points",
+      "path": "reference/points-v2-api",
+      "pages": [
+        {
+          "title": "Points (v2)",
+          "path": "reference/points-v2-api",
+          "children": [
+            {
+              "title": "Request Goodwill points (Group)",
+              "path": "reference/get-goodwill-request-group",
+              "method": "POST"
+            },
+            {
+              "title": "Get Points Conversion Schedule",
+              "path": "reference/get-points-conversion-schedule",
+              "method": "GET"
+            },
+            {
+              "title": "Get Points Balance",
+              "path": "reference/get-points-balance",
+              "method": "GET"
+            },
+            {
+              "title": "Get Points Transfer Summary",
+              "path": "reference/get-points-transfer-summary",
+              "method": "GET"
+            },
+            {
+              "title": "Get Points Expiry Schedule (Light API)",
+              "path": "reference/get-points-expiry-schedule-light-api",
+              "method": "GET"
+            },
+            {
+              "title": "Get Points Expiry Schedule",
+              "path": "reference/get-points-expiry-schedule",
+              "method": "GET"
+            },
+            {
+              "title": "Check if Points Transferable",
+              "path": "reference/-customer-points-transferrable",
+              "method": "POST"
+            },
+            {
+              "title": "Transfer Customer Points",
+              "path": "reference/transfer-points-customer",
+              "method": "POST"
+            },
+            {
+              "title": "Get Points Transfer Details",
+              "path": "reference/get-points-transfer-details",
+              "method": "GET"
+            },
+            {
+              "title": "Redeem customer points",
+              "path": "reference/redeem-customer-points",
+              "method": "POST"
+            },
+            {
+              "title": "Reverse Redeemed Points",
+              "path": "reference/reverse-redeemed-points",
+              "method": "POST"
+            },
+            {
+              "title": "Group Points Transferable",
+              "path": "reference/group-points-transferrable",
+              "method": "POST"
+            },
+            {
+              "title": "Transfer Group Points",
+              "path": "reference/transfer-group-points",
+              "method": "POST"
+            },
+            {
+              "title": "Convert Promised Points",
+              "path": "reference/points-unlock-api",
+              "method": "POST"
+            },
+            {
+              "title": "Update redeem points",
+              "path": "reference/update-redeem-points",
+              "method": "PUT"
+            },
+            {
+              "title": "Deduct points and alternate currencies from user",
+              "path": "reference/deduct-points-and-alternatecurrencies-from-user",
+              "method": "POST"
+            },
+            {
+              "title": "Deduct points and alternate currencies from user using userId",
+              "path": "reference/deduct-points-and-alternatecurrencies-from-user-using-userid",
+              "method": "POST"
+            },
+            {
+              "title": "Update Currency Expiry",
+              "path": "reference/update-points-expiry",
+              "method": "POST"
+            },
+            {
+              "title": "Issue points or alternate currencies to customers",
+              "path": "reference/issue-reward-currency",
+              "method": "POST"
+            },
+            {
+              "title": "Get Single Points Expiry Updates",
+              "path": "reference/getsinglepointsexpiryupdates",
+              "method": "GET"
+            },
+            {
+              "title": "Get historical points",
+              "path": "reference/get_historical_points",
+              "method": "POST"
+            },
+            {
+              "title": "Create Historical Points Custom Fields",
+              "path": "reference/historicalpoints-savecustomfields",
+              "method": "POST"
+            },
+            {
+              "title": "Get Custom Fields",
+              "path": "reference/historicalpoints-getcustomfields",
+              "method": "GET"
+            },
+            {
+              "title": "Delete Custom Fields for Historical Points",
+              "path": "reference/historicalpoints-deletecustomfields",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Points (v1.1)",
+          "path": "reference/points-v11-api",
+          "children": [
+            {
+              "title": "Check If Points Redeemable",
+              "path": "reference/check-if-points-redeemable",
+              "method": "GET"
+            },
+            {
+              "title": "Issue Validation Code (to redeem points)",
+              "path": "reference/issue-validation-code",
+              "method": "GET"
+            },
+            {
+              "title": "Redeem Points",
+              "path": "reference/redeem-points",
+              "method": "POST"
+            }
+          ]
+        },
+        {
+          "title": "Points Ledger",
+          "path": "reference/points-ledger",
+          "children": [
+            {
+              "title": "Get Customer Ledger Balance",
+              "path": "reference/get-customer-ledger-balance",
+              "method": "GET"
+            },
+            {
+              "title": "Get Points Ledger",
+              "path": "reference/get-ledger-information",
+              "method": "GET"
+            },
+            {
+              "title": "Get Points Ledger Explode Info",
+              "path": "reference/get-points-ledger-explode-info",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Connected Org APIs",
+          "path": "reference/connectedorgs-get-customer-ledger-info",
+          "children": [
+            {
+              "title": "Get Points Ledger Information in Connected Orgs",
+              "path": "reference/connectedorgs-get-customer-ledger-info",
+              "method": "GET"
+            },
+            {
+              "title": "Get Points Ledger Explode Info in Connected Orgs",
+              "path": "reference/connectedorgs-get-customer-ledger-explode-info",
+              "method": "GET"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Search APIs",
+      "path": "reference/create-meta-search",
+      "pages": [
+        {
+          "title": "Create search filter",
+          "path": "reference/create-meta-search",
+          "method": "POST"
+        },
+        {
+          "title": "Retrieve search criteria details",
+          "path": "reference/get-meta",
+          "method": "GET"
+        },
+        {
+          "title": "Enable search index of older data",
+          "path": "reference/enable-bulk-trigger",
+          "method": "POST"
+        },
+        {
+          "title": "Perform search",
+          "path": "reference/perform-search",
+          "method": "POST"
+        },
+        {
+          "title": "Deactivate search criteria",
+          "path": "reference/deactivate-search-criteria",
+          "method": "DEL"
+        },
+        {
+          "title": "Create Data Field",
+          "path": "reference/create-data-field",
+          "method": "POST"
+        },
+        {
+          "title": "Update Data Field",
+          "path": "reference/put-data-field-api",
+          "method": "PUT"
+        },
+        {
+          "title": "Get Data Field Detail",
+          "path": "reference/get-data-field-detail-api",
+          "method": "GET"
+        },
+        {
+          "title": "Perform Search (Cortex API)",
+          "path": "reference/search-api-cortex-api",
+          "method": "POST"
+        },
+        {
+          "title": "Event Transformation for Cortex Search",
+          "path": "reference/event-transformation-using-neo",
+          "children": [
+            {
+              "title": "Use Case",
+              "path": "reference/use-case-1"
+            },
+            {
+              "title": "Quick Start",
+              "path": "reference/quick-start-event-transform-cortex-search"
+            },
+            {
+              "title": "Enable or Update Custom Event Tranformation",
+              "path": "reference/enable-custom-event-for-cortex-search",
+              "method": "POST"
+            },
+            {
+              "title": "Retrieve Custom Event Config Details for an Entity",
+              "path": "reference/retrieve-custom-event-config-details-for-entity",
+              "method": "GET"
+            },
+            {
+              "title": "Retrieve Custom Event Config Details of Org",
+              "path": "reference/retrieve-custom-event-config-details-of-org",
+              "method": "GET"
+            },
+            {
+              "title": "FAQs",
+              "path": "reference/event-tranform-cortex-search-faq"
+            },
+            {
+              "title": "Best Practices",
+              "path": "reference/best-practices-7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Badges",
+      "path": "reference/badges",
+      "pages": [
+        {
+          "title": "Create badges",
+          "path": "reference/create-badges-org",
+          "method": "POST",
+          "children": [
+            {
+              "title": "Fixed Window Restriction in Badges",
+              "path": "reference/fixed-window-use-case"
+            }
+          ]
+        },
+        {
+          "title": "Update badges",
+          "path": "reference/update-badges",
+          "method": "PUT"
+        },
+        {
+          "title": "Get badge by ID",
+          "path": "reference/get-badge-by-id",
+          "method": "GET"
+        },
+        {
+          "title": "Get all badges",
+          "path": "reference/get-all-badges",
+          "method": "GET"
+        },
+        {
+          "title": "Get fixed window details",
+          "path": "reference/get-fixed-window-details",
+          "method": "GET"
+        },
+        {
+          "title": "Claim badge",
+          "path": "reference/claim-badge",
+          "method": "POST"
+        },
+        {
+          "title": "Unclaim badge",
+          "path": "reference/unclaim-badge",
+          "method": "POST"
+        },
+        {
+          "title": "Update activation status of badge",
+          "path": "reference/update-the-activation-status-of-badge",
+          "method": "PUT"
+        },
+        {
+          "title": "Enrol customers for badges",
+          "path": "reference/enrol-customers-for-badges",
+          "method": "POST"
+        },
+        {
+          "title": "Issue badge (earn)",
+          "path": "reference/issue-badge-to-the-customer",
+          "method": "POST",
+          "children": [
+            {
+              "title": "Multiple Badge Issuances",
+              "path": "reference/multiple-badge-issuances"
+            }
+          ]
+        },
+        {
+          "title": "Issue badge to multiple customers",
+          "path": "reference/issue-badge-to-multiple-customers",
+          "method": "POST"
+        },
+        {
+          "title": "Import earned (issued) badges of customer",
+          "path": "reference/import-earned-badges-of-customer",
+          "method": "POST"
+        },
+        {
+          "title": "Revoke enrolled badges",
+          "path": "reference/revoke-enrolment-of-a-badge",
+          "method": "POST"
+        },
+        {
+          "title": "Revoke issued badge",
+          "path": "reference/revoke-issual-of-a-badge",
+          "method": "POST"
+        },
+        {
+          "title": "Get badges for customer",
+          "path": "reference/get-badges-for-customer",
+          "method": "GET"
+        },
+        {
+          "title": "Get all customer badges",
+          "path": "reference/get-all-customer-badges",
+          "method": "GET"
+        },
+        {
+          "title": "Get individual badge details of a customer",
+          "path": "reference/get-individual-badge-details-of-a-customer",
+          "method": "GET"
+        },
+        {
+          "title": "Create badges group",
+          "path": "reference/create-badges-group",
+          "method": "POST"
+        },
+        {
+          "title": "Update badges group",
+          "path": "reference/update-badges-group",
+          "method": "PUT"
+        },
+        {
+          "title": "Get badge group by ID",
+          "path": "reference/get-group-by-id",
+          "method": "GET"
+        },
+        {
+          "title": "Get all groups",
+          "path": "reference/get-all-groups",
+          "method": "GET"
+        },
+        {
+          "title": "Create custom field for badges",
+          "path": "reference/create-custom-field",
+          "method": "POST"
+        },
+        {
+          "title": "Update badge custom field",
+          "path": "reference/update-custom-field-badge",
+          "method": "PUT"
+        },
+        {
+          "title": "Get badge custom field by ID",
+          "path": "reference/get-custom-field-by-id",
+          "method": "GET"
+        },
+        {
+          "title": "Get all badge custom fields",
+          "path": "reference/get-all-custom-fields",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "Rewards Catalog",
+      "path": "reference/rewards-catalog-api",
+      "pages": [
+        {
+          "title": "Reward Catalog Management",
+          "path": "reference/post-create-reward",
+          "children": [
+            {
+              "title": "Create Reward",
+              "path": "reference/post-create-reward",
+              "method": "POST"
+            },
+            {
+              "title": "Update Reward",
+              "path": "reference/put-update-reward",
+              "method": "PUT"
+            },
+            {
+              "title": "Get reward details by ID",
+              "path": "reference/get-reward-details-by-id",
+              "method": "GET"
+            },
+            {
+              "title": "Adding revenue metadata against a reward",
+              "path": "reference/adding-revenue-metadata-against-a-reward"
+            }
+          ]
+        },
+        {
+          "title": "Reward Catalog Categories",
+          "path": "reference/create-reward-category",
+          "children": [
+            {
+              "title": "Create Reward Category",
+              "path": "reference/create-reward-category",
+              "method": "POST"
+            },
+            {
+              "title": "Enable or Disable Reward Categories",
+              "path": "reference/enable-or-disable-reward-categories",
+              "method": "PUT"
+            },
+            {
+              "title": "Get Reward Category",
+              "path": "reference/get-reward-category",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Rich Text Content for Rewards",
+          "path": "reference/create-rich-content-meta",
+          "children": [
+            {
+              "title": "Create Rich Text Content Metadata for Rewards",
+              "path": "reference/create-rich-content-meta",
+              "method": "POST"
+            },
+            {
+              "title": "Update Rich Text Content Metadata for Rewards",
+              "path": "reference/update-rich-content",
+              "method": "PUT"
+            },
+            {
+              "title": "Get all Rich Text Content Metadata for specific brand",
+              "path": "reference/get-all-rich-text-content-metadata-for-brand",
+              "method": "GET"
+            },
+            {
+              "title": "Adding Rich Text Content field for Reward",
+              "path": "reference/adding-rich-text-content-metadata",
+              "method": "POST"
+            }
+          ]
+        },
+        {
+          "title": "Reward Catalog Issuance",
+          "path": "reference/post-issue-user-reward",
+          "children": [
+            {
+              "title": "Issue single reward",
+              "path": "reference/post-issue-user-reward",
+              "method": "POST"
+            },
+            {
+              "title": "Reward Issuance with Quantity and Redemption Value Details",
+              "path": "reference/reward-issuance-with-quantity-and-calculation-scenarios"
+            },
+            {
+              "title": "Issue bulk reward",
+              "path": "reference/issue-bulk-reward",
+              "method": "POST"
+            },
+            {
+              "title": "Idempotency Check for Issuing Reward",
+              "path": "reference/idempotency-check-for-issuing-reward"
+            }
+          ]
+        },
+        {
+          "title": "Reward State Management",
+          "path": "reference/reward-state-management",
+          "children": [
+            {
+              "title": "Revoke User Reward",
+              "path": "reference/revoke-user-reward",
+              "method": "POST"
+            }
+          ]
+        },
+        {
+          "title": "User-Centric Reward Queries",
+          "path": "reference/get-rewards-for-user",
+          "children": [
+            {
+              "title": "Get rewards for user",
+              "path": "reference/get-rewards-for-user",
+              "method": "GET"
+            },
+            {
+              "title": "Get customer reward transactions",
+              "path": "reference/get-all-reward-transactions-for-a-user",
+              "method": "GET"
+            },
+            {
+              "title": "Get Reward Transaction Details using Reward Transaction ID",
+              "path": "reference/get-transaction-details-by-reward-transaction-id",
+              "method": "GET"
+            },
+            {
+              "title": "Get Purchased Rewards for User (New API)",
+              "path": "reference/get-rewards-for-user-new-api",
+              "method": "GET"
+            },
+            {
+              "title": "Get available reward details for user by id",
+              "path": "reference/get-user-brand-specific-rewards",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Brand-Level Reward Queries",
+          "path": "reference/get-reward-list",
+          "children": [
+            {
+              "title": "Get all brand rewards using Brand ID",
+              "path": "reference/get-reward-list",
+              "method": "GET"
+            },
+            {
+              "title": "Get Brand Rewards",
+              "path": "reference/get-brands-rewards",
+              "method": "GET"
+            },
+            {
+              "title": "Get available brand rewards",
+              "path": "reference/get-available-brand-rewards",
+              "method": "GET"
+            },
+            {
+              "title": "Get Transaction Details by Customer ID and Reward Transaction ID",
+              "path": "reference/get-reward-issue-transaction-details",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Reward Catalog Promotions",
+          "path": "reference/post-create-catalog-promotion",
+          "children": [
+            {
+              "title": "Create catalog promotion",
+              "path": "reference/post-create-catalog-promotion",
+              "method": "POST"
+            },
+            {
+              "title": "Update catalog promotion",
+              "path": "reference/put-update-catalog-promotion",
+              "method": "PUT"
+            },
+            {
+              "title": "Get catalog promotion details",
+              "path": "reference/get-catalog-promotion-details",
+              "method": "GET"
+            },
+            {
+              "title": "Get list of Catalog promotions",
+              "path": "reference/get-list-of-catalog-promotions",
+              "method": "GET"
+            },
+            {
+              "title": "Disable Catalog promotion",
+              "path": "reference/put-disable-catalog-promotion",
+              "method": "PUT"
+            }
+          ]
+        },
+        {
+          "title": "Reward Catalog Custom Fields",
+          "path": "reference/post-create-custom-field",
+          "children": [
+            {
+              "title": "Create custom field for reward",
+              "path": "reference/post-create-custom-field",
+              "method": "POST"
+            },
+            {
+              "title": "Update reward custom field",
+              "path": "reference/update-custom-field",
+              "method": "PUT"
+            },
+            {
+              "title": "Get all custom fields",
+              "path": "reference/get-custom-field",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Reward Catalog Groups",
+          "path": "reference/create-group-reward",
+          "children": [
+            {
+              "title": "Groups - Create reward group",
+              "path": "reference/create-group-reward",
+              "method": "POST"
+            },
+            {
+              "title": "Groups - Update rewards group",
+              "path": "reference/update-group-reward",
+              "method": "PUT"
+            },
+            {
+              "title": "Groups - Get all rewards group",
+              "path": "reference/get-group-rewards",
+              "method": "GET"
+            },
+            {
+              "title": "Groups - Get rewards group by ID",
+              "path": "reference/get-rewards-group-by-id",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Points Restrictions",
+          "path": "reference/create-points-restriction",
+          "children": [
+            {
+              "title": "Points Restrictions - Create points restriction",
+              "path": "reference/create-points-restriction",
+              "method": "POST"
+            },
+            {
+              "title": "Points - Update points restriction",
+              "path": "reference/update-points-restriction",
+              "method": "PUT"
+            },
+            {
+              "title": "Points - Get points constraints",
+              "path": "reference/get-points-constraints",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Organization-Level Configuration",
+          "path": "reference/organisation-level-configuration-for-rewards-catalog",
+          "children": [
+            {
+              "title": "Organisation Level Configuration for Rewards Catalog",
+              "path": "reference/organisation-level-configuration-for-rewards-catalog",
+              "method": "POST"
+            },
+            {
+              "title": "Get Organisation Level Configuration",
+              "path": "reference/retrieve-organisation-level-configuration-for-rewards-catalog",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Vendor Management & Redemption",
+          "path": "reference/createvendor",
+          "children": [
+            {
+              "title": "Create a Vendor",
+              "path": "reference/createvendor",
+              "method": "POST"
+            },
+            {
+              "title": "Update Vendor Metadata",
+              "path": "reference/update-vendor-metadata",
+              "method": "PUT"
+            },
+            {
+              "title": "Enable or Disable a Vendor",
+              "path": "reference/enable-disable-vendor",
+              "method": "PUT"
+            },
+            {
+              "title": "Get Vendor Details",
+              "path": "reference/get-vendor-explode-info",
+              "method": "GET"
+            },
+            {
+              "title": "Vendor List for Specific Brand",
+              "path": "reference/get-vendor-list-for-specific-brand",
+              "method": "GET"
+            },
+            {
+              "title": "Create Vendor Redemption",
+              "path": "reference/create-vendor-redemption-1",
+              "method": "POST"
+            },
+            {
+              "title": "Update Vendor Redemption",
+              "path": "reference/update-vendor-redemption",
+              "method": "PUT"
+            },
+            {
+              "title": "Get all vendor redemptions",
+              "path": "reference/get-vendor-redemptions-details",
+              "method": "GET"
+            },
+            {
+              "title": "Vendor Redemption Details by Redemption & Vendor ID",
+              "path": "reference/get-list-of-vendor-redemption-details-by-vendor-id",
+              "method": "GET"
+            },
+            {
+              "title": "Vendor Redemption Details by Brand ID and Vendor ID",
+              "path": "reference/get-vendor-redemption-details-by-brand-id-and-vendor-id",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "File Service",
+          "path": "reference/post-images-to-file-service",
+          "children": [
+            {
+              "title": "Upload images to file service",
+              "path": "reference/post-images-to-file-service",
+              "method": "POST"
+            }
+          ]
+        },
+        {
+          "title": "Fulfillment Status",
+          "path": "reference/create-fulfillment-status",
+          "children": [
+            {
+              "title": "Create fulfillment status",
+              "path": "reference/create-fulfillment-status",
+              "method": "POST"
+            },
+            {
+              "title": "Update fulfillment status",
+              "path": "reference/update-fulfillment-status",
+              "method": "PUT"
+            },
+            {
+              "title": "Get fulfillment status",
+              "path": "reference/get-fulfillment-status",
+              "method": "GET"
+            },
+            {
+              "title": "Update fulfillment status and transaction custom fields for issued rewards",
+              "path": "reference/update-fulfilment-status-and-txn-custom-fields",
+              "method": "PUT"
+            }
+          ]
+        },
+        {
+          "title": "Reward Expiry Reminders",
+          "path": "reference/create-reward-expiry-reminder",
+          "children": [
+            {
+              "title": "Create Reward Expiry Reminder",
+              "path": "reference/create-reward-expiry-reminder",
+              "method": "POST"
+            },
+            {
+              "title": "Update Reward Expiry Reminder",
+              "path": "reference/update-reward-expiry-reminder",
+              "method": "PUT"
+            },
+            {
+              "title": "Get Reward Expiry Reminder",
+              "path": "reference/get-reward-expiry-reminder",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Connected-Org APIs",
+          "path": "reference/issue-bulk-reward-connected-org",
+          "children": [
+            {
+              "title": "Issue Reward in connected orgs",
+              "path": "reference/issue-bulk-reward-connected-org",
+              "method": "POST"
+            },
+            {
+              "title": "Get all available rewards for user in connected orgs",
+              "path": "reference/get-all-available-rewards-for-user-in-a-connected-org",
+              "method": "GET"
+            },
+            {
+              "title": "Get all reward transactions for a user in connected orgs",
+              "path": "reference/get-all-reward-transactions-for-a-user-in-connected-orgs",
+              "method": "GET"
+            },
+            {
+              "title": "Get Transaction Details by Reward Transaction ID in Connected orgs",
+              "path": "reference/get-transaction-details-by-reward-transaction-id-in-connected-orgs",
+              "method": "GET"
+            },
+            {
+              "title": "Get Purchased Rewards for User in Connected Orgs",
+              "path": "reference/get-purchased-rewards-for-user-connected-org",
+              "method": "GET"
+            },
+            {
+              "title": "Get reward details by ID in connected orgs",
+              "path": "reference/get-reward-details-by-id-in-a-connected-org",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Language",
+          "path": "reference/language",
+          "children": [
+            {
+              "title": "Create Language Metadata for Rewards",
+              "path": "reference/create_language_metadata",
+              "method": "POST"
+            },
+            {
+              "title": "Get All Language Metadata",
+              "path": "reference/get_all_languages",
+              "method": "GET"
+            },
+            {
+              "title": "Enable Language for Rewards",
+              "path": "reference/enable_disable_languagemetadata",
+              "method": "PUT"
+            },
+            {
+              "title": "Disable Language for Rewards",
+              "path": "reference/putapi_gatewayrewardscorev1metadatalanguage12statusdisable",
+              "method": "PUT"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Target/Milestone",
+      "path": "reference/target-milestones",
+      "pages": [
+        {
+          "title": "Milestone & Streaks APIs",
+          "path": "reference/target-group-1",
+          "deprecated": true
+        },
+        {
+          "title": "User-Created Challenges",
+          "path": "reference/user-created-challenges"
+        },
+        {
+          "title": "Connected Org APIs",
+          "path": "reference/connected-org-apis",
+          "children": [
+            {
+              "title": "Enroll/Re-Enroll a Customer to a Milestone or Streak",
+              "path": "reference/connectedorgs-enroll-customer-milestone-or-streak",
+              "method": "POST"
+            },
+            {
+              "title": "Unenroll a Customer to from Milestone or Streak",
+              "path": "reference/connectedorgs-unenroll-customer-milestone-or-streak",
+              "method": "POST"
+            },
+            {
+              "title": "Get Associated Target Groups of a User",
+              "path": "reference/connectedorgs-get-associated-target-groups-of-a-user",
+              "method": "GET"
+            },
+            {
+              "title": "Data Scopes",
+              "path": "reference/connected-orgs-data-scopes"
+            }
+          ]
+        },
+        {
+          "title": "Leaderboards",
+          "path": "reference/leaderboards",
+          "children": [
+            {
+              "title": "Get top ranked users",
+              "path": "reference/get-top-ranked-users",
+              "method": "GET"
+            },
+            {
+              "title": "Get user rank across target groups",
+              "path": "reference/get-user-ranks-across-target-groups",
+              "method": "GET"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Loyalty Promotions",
+      "path": "reference/loyalty-promotions",
+      "pages": [
+        {
+          "title": "Create a Loyalty Promotion",
+          "path": "reference/create-a-loyalty-promotion",
+          "method": "POST"
+        },
+        {
+          "title": "Update Promotion Status",
+          "path": "reference/submit-promotion-for-approval",
+          "method": "PUT"
+        },
+        {
+          "title": "Review a Loyalty Promotion",
+          "path": "reference/review-loyalty-promotion",
+          "method": "POST"
+        },
+        {
+          "title": "Enrol Members to a Loyalty Promotion",
+          "path": "reference/enrol-loyalty-promotion",
+          "method": "POST"
+        },
+        {
+          "title": "Update a Loyalty Promotion",
+          "path": "reference/update-loyalty-promotion",
+          "method": "PUT"
+        },
+        {
+          "title": "Get Details of Loyalty Promotion using ID",
+          "path": "reference/get-loyalty-promotion-id",
+          "method": "GET"
+        },
+        {
+          "title": "Get Details of all Loyalty Promotions",
+          "path": "reference/get-loyalty-promotion-all",
+          "method": "GET"
+        },
+        {
+          "title": "List Member Promotions",
+          "path": "reference/list-member-promotions",
+          "method": "GET"
+        },
+        {
+          "title": "Get Member Promotion Explode Details",
+          "path": "reference/list-member-promotions-explode",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Promotion Details",
+          "path": "reference/get-customer-promotion-details",
+          "method": "GET"
+        },
+        {
+          "title": "Revoke a Loyalty Promotion",
+          "path": "reference/revoke-a-loyalty-promotion",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "group": "Cart Promotions",
+      "path": "reference/loyalty-cart-promotions",
+      "pages": [
+        {
+          "title": "Create Cart Promotions",
+          "path": "reference/create-cart-promotion-api",
+          "method": "POST"
+        },
+        {
+          "title": "Update Cart Promotion",
+          "path": "reference/update-cart-promotion-details_",
+          "method": "PUT"
+        },
+        {
+          "title": "Issue Cart Promotion",
+          "path": "reference/issue-cart-promotion",
+          "method": "POST"
+        },
+        {
+          "title": "Get Cart Promotion Redemptions",
+          "path": "reference/get-cart-promotion-redemptions",
+          "method": "GET"
+        },
+        {
+          "title": "Activate Promotion for Customer",
+          "path": "reference/post_api-gateway-v1-promotions-promotionid-activate",
+          "method": "POST"
+        },
+        {
+          "title": "Activate Cart Promotion",
+          "path": "reference/activate-global-promotions",
+          "method": "PUT"
+        },
+        {
+          "title": "Get Cart Promotion Details using Code & Promotion mode",
+          "path": "reference/get-promotions-code-api",
+          "method": "GET"
+        },
+        {
+          "title": "Deactivate Cart Promotion for Customer",
+          "path": "reference/post_api-gateway-v1-promotions-promotionid-deactivate",
+          "method": "POST"
+        },
+        {
+          "title": "Deactivate Cart Promotion",
+          "path": "reference/deactivate-global-promotion",
+          "method": "PUT"
+        },
+        {
+          "title": "Get Cart Promotions for a particular till",
+          "path": "reference/get-promotions-for-a-particular-till",
+          "method": "GET"
+        },
+        {
+          "title": "Get Pending Carts Details (Cart Promotion)",
+          "path": "reference/get-lock-unlock-pending-carts",
+          "method": "GET"
+        },
+        {
+          "title": "Get Cart Promotions Configurations Using Promotion ID",
+          "path": "reference/get-promotions-config-api",
+          "method": "GET"
+        },
+        {
+          "title": "Get Cart Promotions available for a Customer",
+          "path": "reference/get-promotions-for-a-customer",
+          "method": "GET"
+        },
+        {
+          "title": "Earn Cart Promotion",
+          "path": "reference/earn-promotion",
+          "method": "POST"
+        },
+        {
+          "title": "Revoke Earned Cart Promotion",
+          "path": "reference/revoke-earned-promotion",
+          "method": "POST"
+        },
+        {
+          "title": "Earn Cart Promotions in Bulk",
+          "path": "reference/post-earn-promotions-in-bulk",
+          "method": "POST"
+        },
+        {
+          "title": "Evaluate Promotions",
+          "path": "reference/post_api-gateway-v1-promotions-evaluate",
+          "method": "POST"
+        },
+        {
+          "title": "Cancel Cart Evaluation - Cart Promotion",
+          "path": "reference/post-cancel-cart-evaluation",
+          "method": "PUT"
+        },
+        {
+          "title": "Link Cart Promotion Code to the Customer ID",
+          "path": "reference/post-promotions-code-link-api",
+          "method": "POST"
+        },
+        {
+          "title": "Redeem Cart Promotion",
+          "path": "reference/redeem-cart-promotion",
+          "method": "POST"
+        },
+        {
+          "title": "Get Cart Promotions (GET)",
+          "path": "reference/get_all_cart_promotion_details_",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "User Group",
+      "path": "reference/add-group",
+      "pages": [
+        {
+          "title": "Add User Group",
+          "path": "reference/add-group",
+          "method": "POST"
+        },
+        {
+          "title": "Update User Group",
+          "path": "reference/update-user-group",
+          "method": "PUT"
+        },
+        {
+          "title": "Deduct points and alternate currencies from user group",
+          "path": "reference/deduct-points-and-alternatecurrencies-from-user-group",
+          "method": "POST"
+        },
+        {
+          "title": "Search user groups by name, ID, and mobile number",
+          "path": "reference/get-user-group-details",
+          "method": "GET"
+        },
+        {
+          "title": "Delete User Group",
+          "path": "reference/delete-user-group",
+          "method": "DEL"
+        },
+        {
+          "title": "Join Member to Group",
+          "path": "reference/join-member-to-group",
+          "method": "POST"
+        },
+        {
+          "title": "Remove group member",
+          "path": "reference/remove-group-member",
+          "method": "DEL"
+        },
+        {
+          "title": "Transfer Group Member",
+          "path": "reference/transfer-group-member",
+          "method": "POST"
+        },
+        {
+          "title": "Get group transactions",
+          "path": "reference/get-group-transactions",
+          "method": "GET"
+        },
+        {
+          "title": "Retrieve user group members list",
+          "path": "reference/retrieve-user-group-member-details",
+          "method": "GET"
+        },
+        {
+          "title": "Retrieve user group member details",
+          "path": "reference/retrieve-primary-secondary-member-details",
+          "method": "GET"
+        },
+        {
+          "title": "Retrieve group slab/tier log history",
+          "path": "reference/retrieve-group-tier-log-history",
+          "method": "GET"
+        },
+        {
+          "title": "Retrieve points expiry schedule of a group",
+          "path": "reference/get-points-expiry-schedule-of-a-group",
+          "method": "GET"
+        },
+        {
+          "title": "Retrieve points conversion schedule",
+          "path": "reference/retrieve-points-conversion-schedule",
+          "method": "GET"
+        },
+        {
+          "title": "Status codes",
+          "path": "reference/user-group-status-codes"
+        },
+        {
+          "title": "Update permissions",
+          "path": "reference/update-user-group-permission",
+          "method": "PUT"
+        },
+        {
+          "title": "Search for groups using the extended fields",
+          "path": "reference/search-for-groups-using-the-extended-fields",
+          "method": "POST"
+        },
+        {
+          "title": "Get group points ledger",
+          "path": "reference/get-group-points-ledger",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "Organization",
+      "path": "reference/organization",
+      "pages": [
+        {
+          "title": "Organization (V1)",
+          "path": "reference/organization",
+          "children": [
+            {
+              "title": "Get Org Details",
+              "path": "reference/get-org-details",
+              "method": "GET"
+            },
+            {
+              "title": "Get Org Entities",
+              "path": "reference/get-org-entities",
+              "method": "GET"
+            },
+            {
+              "title": "Get Org Configurations",
+              "path": "reference/get-org-configurations",
+              "method": "GET"
+            },
+            {
+              "title": "Get Org Statistics",
+              "path": "reference/get-org-statistics",
+              "method": "GET",
+              "deprecated": true
+            },
+            {
+              "title": "Get Org Custom Fields",
+              "path": "reference/get-org-custom-fields-1",
+              "method": "GET"
+            },
+            {
+              "title": "Retrieve Brand ID",
+              "path": "reference/retrieve-brand-id",
+              "method": "POST"
+            },
+            {
+              "title": "Get Org Payment Modes",
+              "path": "reference/get-org-payment-modes",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "title": "Organization (V2)",
+          "path": "reference/organization-api",
+          "children": [
+            {
+              "title": "Add Till",
+              "path": "reference/add-till-with-new-custom-fields",
+              "method": "POST"
+            },
+            {
+              "title": "Set Organisation Configuration",
+              "path": "reference/limit-active-cards-per-customer",
+              "method": "POST"
+            },
+            {
+              "title": "Update Till with Custom Fields",
+              "path": "reference/update-till-with-custom-field-info",
+              "method": "PUT"
+            },
+            {
+              "title": "Get Custom Fields",
+              "path": "reference/get-org-custom-fields",
+              "method": "GET"
+            },
+            {
+              "title": "Get Config Key Values",
+              "path": "reference/get-organization-configs",
+              "method": "GET"
+            },
+            {
+              "title": "Get org till details",
+              "path": "reference/get-tills",
+              "method": "GET"
+            },
+            {
+              "title": "Get Active Tills",
+              "path": "reference/get-active-tills",
+              "method": "GET"
+            },
+            {
+              "title": "Get Loyalty Programs",
+              "path": "reference/get-loyalty-programs",
+              "method": "GET"
+            },
+            {
+              "title": "Retrieve org hierarchy details",
+              "path": "reference/retrieve-org-hierarchy-details",
+              "method": "GET"
+            },
+            {
+              "title": "Get Till ID Details",
+              "path": "reference/get-till-id-details",
+              "method": "GET"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Product",
+      "path": "reference/product-v2-apis",
+      "pages": [
+        {
+          "title": "Product APIs (v2)",
+          "path": "reference/product-v2-apis",
+          "children": [
+            {
+              "title": "Add Brands",
+              "path": "reference/post_v2-product-brands",
+              "method": "POST"
+            },
+            {
+              "title": "Update Brands",
+              "path": "reference/put_v2-product-brands",
+              "method": "PUT"
+            },
+            {
+              "title": "Get/Search Brands",
+              "path": "reference/get_v2-product-brands",
+              "method": "GET"
+            },
+            {
+              "title": "Add Categories",
+              "path": "reference/post_v2-product-categories",
+              "method": "POST"
+            },
+            {
+              "title": "Update Categories",
+              "path": "reference/put_v2-product-categories",
+              "method": "PUT"
+            },
+            {
+              "title": "Get/Search Categories",
+              "path": "reference/get_v2-product-categories",
+              "method": "GET"
+            },
+            {
+              "title": "Add Attributes",
+              "path": "reference/add_product_attributes_v2",
+              "method": "POST"
+            },
+            {
+              "title": "Update Attributes",
+              "path": "reference/put_v2-product-attributes",
+              "method": "PUT"
+            },
+            {
+              "title": "Get/Search Attributes",
+              "path": "reference/get_v2-product-attributes",
+              "method": "GET"
+            },
+            {
+              "title": "Add Attribute Values",
+              "path": "reference/add_product_attribute_values_v2",
+              "method": "POST"
+            },
+            {
+              "title": "Update Attribute Values",
+              "path": "reference/put_v2-product-attributevalues",
+              "method": "PUT"
+            },
+            {
+              "title": "Get/Search Attribute Values",
+              "path": "reference/get_v2-product-attributes-attributeid-values",
+              "method": "GET"
+            },
+            {
+              "title": "Add SKUs",
+              "path": "reference/post_v2-product-skus",
+              "method": "POST"
+            },
+            {
+              "title": "Update SKUs",
+              "path": "reference/put_v2-product-skus",
+              "method": "PUT"
+            },
+            {
+              "title": "Get/Search Product SKUs",
+              "path": "reference/get_v2-product-skus",
+              "method": "GET"
+            },
+            {
+              "title": "Create Labels",
+              "path": "reference/create-labels",
+              "method": "POST"
+            },
+            {
+              "title": "Update labels",
+              "path": "reference/update-labels",
+              "method": "PUT"
+            },
+            {
+              "title": "Get/Search labels",
+              "path": "reference/get-labels",
+              "method": "GET"
+            },
+            {
+              "title": "Create label assignments",
+              "path": "reference/create-label-assignments",
+              "method": "POST"
+            },
+            {
+              "title": "Update label assignments",
+              "path": "reference/update-label-assignments",
+              "method": "PUT"
+            },
+            {
+              "title": "Get label assignments",
+              "path": "reference/get-label-assignments",
+              "method": "GET"
+            },
+            {
+              "title": "Search Label Assignments",
+              "path": "reference/search-label-assignments",
+              "method": "GET"
+            },
+            {
+              "title": "Remove label assignments",
+              "path": "reference/remove-label-assignments",
+              "method": "DEL"
+            }
+          ]
+        },
+        {
+          "title": "Product APIs (v1)",
+          "path": "reference/v1-apis",
+          "children": [
+            {
+              "title": "Add Product",
+              "path": "reference/add-product",
+              "method": "POST",
+              "deprecated": true
+            },
+            {
+              "title": "Get Product Attributes",
+              "path": "reference/get-product-attributes",
+              "method": "GET",
+              "deprecated": true
+            },
+            {
+              "title": "Get Product Brands",
+              "path": "reference/get-product-brands",
+              "method": "GET",
+              "deprecated": true
+            },
+            {
+              "title": "Get Product Categories",
+              "path": "reference/get-product-categories",
+              "method": "GET",
+              "deprecated": true
+            },
+            {
+              "title": "Get Product Colors",
+              "path": "reference/get-product-colors",
+              "method": "GET",
+              "deprecated": true
+            },
+            {
+              "title": "Get Product Details",
+              "path": "reference/get-product-details",
+              "method": "GET",
+              "deprecated": true
+            },
+            {
+              "title": "Get Product Meta Sizes",
+              "path": "reference/get-product-meta-sizes",
+              "method": "GET",
+              "deprecated": true
+            },
+            {
+              "title": "Get Product Sizes",
+              "path": "reference/get-product-sizes",
+              "method": "GET",
+              "deprecated": true
+            },
+            {
+              "title": "Search Products",
+              "path": "reference/search-products",
+              "method": "GET",
+              "deprecated": true
+            },
+            {
+              "title": "Response codes",
+              "path": "reference/response-codes-1",
+              "deprecated": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Store",
+      "path": "reference/store-apis-v1",
+      "pages": [
+        {
+          "title": "Store APIs (v1)",
+          "path": "reference/store-apis-v1",
+          "children": [
+            {
+              "title": "Add Store",
+              "path": "reference/add-store",
+              "method": "POST"
+            },
+            {
+              "title": "Add Store in bulk",
+              "path": "reference/add-store-in-bulk",
+              "method": "POST"
+            },
+            {
+              "title": "Update Bulk Stores",
+              "path": "reference/put_v2-orgentity-store-bulk",
+              "method": "PUT"
+            },
+            {
+              "title": "Get Store Configurations",
+              "path": "reference/get-store-configurations",
+              "method": "GET"
+            },
+            {
+              "title": "Get Store Details",
+              "path": "reference/get-store-details",
+              "method": "GET"
+            },
+            {
+              "title": "Get Store Reports",
+              "path": "reference/get-store-reports",
+              "method": "GET"
+            },
+            {
+              "title": "Get Store Staff Details",
+              "path": "reference/get-store-staff-details",
+              "method": "GET"
+            },
+            {
+              "title": "Get Store Tasks",
+              "path": "reference/get-store-tasks",
+              "method": "GET"
+            },
+            {
+              "title": "Upload Store Reports",
+              "path": "reference/upload-store-reports",
+              "method": "POST"
+            },
+            {
+              "title": "Verify Login Credentials",
+              "path": "reference/verify-login-credentials",
+              "method": "GET"
+            },
+            {
+              "title": "Upload Store Logs",
+              "path": "reference/upload-store-logs",
+              "method": "POST",
+              "deprecated": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Store Locator API",
+      "path": "reference/store-locator-api",
+      "pages": [
+        {
+          "title": "Overview",
+          "path": "reference/overview"
+        },
+        {
+          "title": "Authentication Token",
+          "path": "reference/generateauthtoken",
+          "method": "POST"
+        },
+        {
+          "title": "Locate nearby stores",
+          "path": "reference/getstorelocatorv1brandnearbystores",
+          "method": "GET"
+        },
+        {
+          "title": "Retrieve Organization Sync Data",
+          "path": "reference/getintegrationv1syncorg7borgid7d",
+          "method": "GET"
+        },
+        {
+          "title": "Store Locator Custom Fields",
+          "path": "reference/postintegrationv1brand7bbrandid7dstorelocatorcustomfieldsmap",
+          "method": "POST"
+        },
+        {
+          "title": "Retrieve Mapped Custom Field",
+          "path": "reference/getintegrationv1brand119storelocatorcustomfieldsmap",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "Communications (v2)",
+      "path": "reference/v2-send-communication-message",
+      "pages": [
+        {
+          "title": "Send communication message",
+          "path": "reference/v2-send-communication-message",
+          "method": "POST"
+        },
+        {
+          "title": "Resend a communication message",
+          "path": "reference/post_v2-communications-resend",
+          "method": "POST"
+        },
+        {
+          "title": "Error code",
+          "path": "reference/error-code-copy"
+        }
+      ]
+    },
+    {
+      "group": "Communications (v1)",
+      "path": "reference/communications",
+      "pages": [
+        {
+          "title": "Send communication message",
+          "path": "reference/send-communication-message",
+          "method": "POST"
+        },
+        {
+          "title": "Error code",
+          "path": "reference/error-code"
+        }
+      ]
+    },
+    {
+      "group": "Custom Fields",
+      "path": "reference/create-a-custom-field",
+      "pages": [
+        {
+          "title": "Create a Custom Field",
+          "path": "reference/create-a-custom-field",
+          "method": "POST"
+        },
+        {
+          "title": "Get Custom Fields",
+          "path": "reference/get-custom-fields",
+          "method": "GET"
+        },
+        {
+          "title": "Tag Custom Field to an Entity",
+          "path": "reference/tag-custom-field-to-an-entity",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "group": "Audit logs",
+      "path": "reference/audit-logs",
+      "pages": [
+        {
+          "title": "Get audit logs of entities",
+          "path": "reference/get-entity-audit-logs",
+          "method": "GET"
+        },
+        {
+          "title": "Get Audit Logs by Event Name",
+          "path": "reference/get-audit-logs",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "PII deletion",
+      "path": "reference/pii-deletion",
+      "pages": [
+        {
+          "title": "Add a PII deletion request",
+          "path": "reference/add-a-pii-deletion-request",
+          "method": "POST"
+        },
+        {
+          "title": "Update PII deletion status",
+          "path": "reference/update-pii-deletion-status",
+          "method": "PUT"
+        },
+        {
+          "title": "Retrieve request status of PII deletion",
+          "path": "reference/retrieve-pii-deletion-request-status",
+          "method": "GET"
+        },
+        {
+          "title": "Retrieve Request Details using Type and Subtype",
+          "path": "reference/retrieve-pii-deletion-request-details",
+          "method": "GET"
+        },
+        {
+          "title": "Error codes",
+          "path": "reference/pii-deletion-error-codes"
+        }
+      ]
+    },
+    {
+      "group": "Leads",
+      "path": "reference/leads",
+      "pages": [
+        {
+          "title": "Add Lead",
+          "path": "reference/add-lead-1",
+          "method": "PATCH"
+        },
+        {
+          "title": "Add Lead Substatus",
+          "path": "reference/create-lead-substatus",
+          "method": "POST"
+        },
+        {
+          "title": "Update Lead Status",
+          "path": "reference/update-lead-status",
+          "method": "PUT"
+        },
+        {
+          "title": "Update Lead Followups",
+          "path": "reference/update-lead-followups",
+          "method": "POST"
+        },
+        {
+          "title": "Update Lead",
+          "path": "reference/update-lead",
+          "method": "PUT"
+        },
+        {
+          "title": "Configure lead reasons",
+          "path": "reference/set-lead-reasons",
+          "method": "POST"
+        },
+        {
+          "title": "Get Lead Status Log",
+          "path": "reference/get-lead-status-log",
+          "method": "GET"
+        },
+        {
+          "title": "Get Lead follow-ups",
+          "path": "reference/get-lead-follow-ups",
+          "method": "GET"
+        },
+        {
+          "title": "Get Lead Reasons",
+          "path": "reference/get-lead-reasons",
+          "method": "GET"
+        },
+        {
+          "title": "Get Lead Details",
+          "path": "reference/get-lead-details",
+          "method": "GET"
+        },
+        {
+          "title": "Get Lead Substatus",
+          "path": "reference/get-lead-substatus",
+          "method": "GET"
+        },
+        {
+          "title": "Search lead",
+          "path": "reference/search-lead",
+          "method": "GET"
+        },
+        {
+          "title": "Assign Lead",
+          "path": "reference/assign-lead",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "Staff",
+      "path": "reference/staff",
+      "pages": [
+        {
+          "title": "Add Staff Account",
+          "path": "reference/add-staff-account",
+          "method": "POST",
+          "deprecated": true
+        },
+        {
+          "title": "Get Access Token",
+          "path": "reference/get-access-token",
+          "method": "POST",
+          "deprecated": true
+        },
+        {
+          "title": "Edit Staff Details",
+          "path": "reference/edit-staff-details",
+          "method": "POST",
+          "deprecated": true
+        },
+        {
+          "title": "Get Staff Details",
+          "path": "reference/get-staff-details",
+          "method": "GET",
+          "deprecated": true
+        },
+        {
+          "title": "Change Account Password",
+          "path": "reference/change-account-password",
+          "method": "POST",
+          "deprecated": true
+        },
+        {
+          "title": "Send OTP",
+          "path": "reference/send-otp",
+          "method": "POST",
+          "deprecated": true
+        },
+        {
+          "title": "Validate OTP",
+          "path": "reference/validate-otp-1",
+          "method": "POST",
+          "deprecated": true
+        },
+        {
+          "title": "Change Identifier (Send OTP)",
+          "path": "reference/change-identifier-send-otp",
+          "method": "POST",
+          "deprecated": true
+        },
+        {
+          "title": "Change Identifier (Validate OTP)",
+          "path": "reference/change-identifier-validate-otp",
+          "method": "POST",
+          "deprecated": true
+        },
+        {
+          "title": "Transfer Staff User",
+          "path": "reference/transfer-staff-user",
+          "method": "POST",
+          "deprecated": true
+        },
+        {
+          "title": "Get Staff of Store/Zone",
+          "path": "reference/get-staff-of-storezone",
+          "method": "GET",
+          "deprecated": true
+        },
+        {
+          "title": "Logout Staff Account",
+          "path": "reference/logout-staff-account",
+          "method": "GET",
+          "deprecated": true
+        },
+        {
+          "title": "Remove Staff Account",
+          "path": "reference/remove-staff-account",
+          "method": "POST",
+          "deprecated": true
+        }
+      ]
+    },
+    {
+      "group": "Behavioral Events",
+      "path": "reference/behavioral-events-and-status-code",
+      "pages": [
+        {
+          "title": "Create Event (Custom)",
+          "path": "reference/create-event-custom-be",
+          "method": "POST"
+        },
+        {
+          "title": "Update Event (Custom)",
+          "path": "reference/update-event-custom",
+          "method": "PUT"
+        },
+        {
+          "title": "Get Org Events",
+          "path": "reference/get-org-all-events",
+          "method": "GET"
+        },
+        {
+          "title": "Get Running Events Status",
+          "path": "reference/get-running-event-status",
+          "method": "GET"
+        },
+        {
+          "title": "Get Customer Events",
+          "path": "reference/get-customer-events-data",
+          "method": "GET"
+        },
+        {
+          "title": "Disable Event",
+          "path": "reference/disable-event",
+          "method": "PUT"
+        },
+        {
+          "title": "Add Webhook",
+          "path": "reference/add-webhook",
+          "method": "POST"
+        },
+        {
+          "title": "Get Org Webhooks",
+          "path": "reference/get-webhook-details"
+        },
+        {
+          "title": "Get Events Logs",
+          "path": "reference/get-events-logs",
+          "method": "GET"
+        },
+        {
+          "title": "Get Events Meta",
+          "path": "reference/get-events-meta",
+          "method": "GET"
+        },
+        {
+          "title": "Get event data using request ID",
+          "path": "reference/get-specific-event-data",
+          "method": "GET"
+        },
+        {
+          "title": "Search events",
+          "path": "reference/search-events",
+          "method": "GET"
+        },
+        {
+          "title": "Post Event",
+          "path": "reference/post-event",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "group": "Event notification logs",
+      "path": "reference/event-logs",
+      "pages": [
+        {
+          "title": "Add Webhook",
+          "path": "reference/add-v3-webhooks",
+          "method": "POST"
+        },
+        {
+          "title": "Get Webhook",
+          "path": "reference/get-v3-webhooks",
+          "method": "GET"
+        },
+        {
+          "title": "Update Webhook",
+          "path": "reference/update-v3-webhook",
+          "method": "PUT"
+        },
+        {
+          "title": "Delete Webhook",
+          "path": "reference/delete-v3-webhook",
+          "method": "DEL"
+        },
+        {
+          "title": "Get Event Log (by Request ID)",
+          "path": "reference/get-event-log-by-request-id-",
+          "method": "GET"
+        },
+        {
+          "title": "Get Event Log (by Reference ID)",
+          "path": "reference/get-event-log-by-reference-id-",
+          "method": "GET"
+        },
+        {
+          "title": "Get Event Log (by Event ID)",
+          "path": "reference/get-event-log-by-event-id",
+          "method": "GET",
+          "deprecated": true
+        },
+        {
+          "title": "Get Event Logs by Webhook ID",
+          "path": "reference/geteventsbyconsumergroupid",
+          "method": "GET"
+        },
+        {
+          "title": "Get Event Matrix by Webhook ID",
+          "path": "reference/geteventmatrix",
+          "method": "GET"
+        },
+        {
+          "title": "Response code",
+          "path": "reference/response-codes"
+        }
+      ]
+    },
+    {
+      "group": "Company",
+      "path": "reference/company-1",
+      "pages": [
+        {
+          "title": "Add Company",
+          "path": "reference/add-company",
+          "method": "POST"
+        },
+        {
+          "title": "Update Company",
+          "path": "reference/update-company",
+          "method": "PUT"
+        },
+        {
+          "title": "Get Company Details",
+          "path": "reference/get-company-details",
+          "method": "GET"
+        },
+        {
+          "title": "Remove Company",
+          "path": "reference/remove-company",
+          "method": "DEL"
+        },
+        {
+          "title": "Get Org Companies",
+          "path": "reference/get-org-companies",
+          "method": "GET"
+        },
+        {
+          "title": "Get Companies by Extended Field Values",
+          "path": "reference/get-companies-by-extended-field-values",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "Request (V1)",
+      "path": "reference/request",
+      "pages": [
+        {
+          "title": "Add Request",
+          "path": "reference/add-request",
+          "method": "POST"
+        },
+        {
+          "title": "Approve Requests",
+          "path": "reference/approve-requests",
+          "method": "POST"
+        },
+        {
+          "title": "Reject Requests",
+          "path": "reference/reject-requests",
+          "method": "POST"
+        },
+        {
+          "title": "Get Request Details",
+          "path": "reference/get-request-details",
+          "method": "GET"
+        },
+        {
+          "title": "Get Request Logs",
+          "path": "reference/get-request-log",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "Requests (V2)",
+      "path": "reference/requests",
+      "pages": [
+        {
+          "title": "Add Request",
+          "path": "reference/add-request-transaction-customer-merge",
+          "method": "POST"
+        },
+        {
+          "title": "Update Request",
+          "path": "reference/update-transaction-customer-merge-request",
+          "method": "PUT"
+        },
+        {
+          "title": "Retrieve Request Status using ID",
+          "path": "reference/retrieve-transaction-customer-merge-request-status",
+          "method": "GET"
+        },
+        {
+          "title": "Retrieve Request Details using Type and Subtype",
+          "path": "reference/retrieve-transaction-customer-merge-request-details",
+          "method": "GET"
+        },
+        {
+          "title": "Status event notification",
+          "path": "reference/request-event-notification"
+        },
+        {
+          "title": "Error codes",
+          "path": "reference/error-codes"
+        }
+      ]
+    },
+    {
+      "group": "Request workflow",
+      "path": "reference/request-workflow",
+      "pages": [
+        {
+          "title": "Create a request",
+          "path": "reference/create-a-request",
+          "children": [
+            {
+              "title": "Change customer status request",
+              "path": "reference/change-customer-status",
+              "method": "POST"
+            },
+            {
+              "title": "Points redemption request",
+              "path": "reference/points-redemption",
+              "method": "POST"
+            },
+            {
+              "title": "Issue goodwill points request",
+              "path": "reference/issue-goodwill-points",
+              "method": "POST"
+            },
+            {
+              "title": "Issue/Earn badge request",
+              "path": "reference/earn-badge-issue-badge-to-single-customercustomer-earns-the-badge",
+              "method": "POST"
+            },
+            {
+              "title": "Enrol customers for badges",
+              "path": "reference/issue-badge-enrol-customers-for-badges",
+              "method": "POST"
+            },
+            {
+              "title": "Retro transaction - Claim transaction",
+              "path": "reference/retro-transaction-claim-transaction",
+              "method": "POST"
+            }
+          ]
+        },
+        {
+          "title": "Approve or reject a request",
+          "path": "reference/approve-or-reject-a-request",
+          "method": "PUT"
+        },
+        {
+          "title": "Get details of all requests",
+          "path": "reference/get-all-requests",
+          "method": "GET"
+        },
+        {
+          "title": "Get details of a particular request",
+          "path": "reference/get-request-info",
+          "method": "GET"
+        },
+        {
+          "title": "Error codes",
+          "path": "reference/error-codes-request-workflow"
+        }
+      ]
+    },
+    {
+      "group": "Partner Program",
+      "path": "reference/partner-program",
+      "pages": [
+        {
+          "title": "Link Customer to Partner Program",
+          "path": "reference/link-customer-to-partner-program__",
+          "method": "POST"
+        },
+        {
+          "title": "Update Customer Tier",
+          "path": "reference/update-customer",
+          "method": "POST"
+        },
+        {
+          "title": "Delink Customer",
+          "path": "reference/delink-customer",
+          "method": "POST"
+        },
+        {
+          "title": "Get customer activity history",
+          "path": "reference/customeractivityhistories",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "User Authentication",
+      "path": "reference/user-authentication",
+      "pages": [
+        {
+          "title": "Register User",
+          "path": "reference/register-users",
+          "method": "POST"
+        },
+        {
+          "title": "Authorize User",
+          "path": "reference/authorize-user",
+          "method": "POST"
+        },
+        {
+          "title": "Update Password",
+          "path": "reference/update-password",
+          "method": "PUT"
+        }
+      ]
+    },
+    {
+      "group": "OTP",
+      "path": "reference/otp",
+      "pages": [
+        {
+          "title": "Generate OTP",
+          "path": "reference/generate-otp",
+          "method": "POST",
+          "children": [
+            {
+              "title": "OTP template guidelines",
+              "path": "reference/otp-template-guidelines"
+            }
+          ]
+        },
+        {
+          "title": "Validate OTP",
+          "path": "reference/validate-otp",
+          "method": "POST"
+        },
+        {
+          "title": "Get OTP",
+          "path": "reference/get-otp",
+          "method": "GET"
+        },
+        {
+          "title": "Success and error codes",
+          "path": "reference/success-and-error-codes"
+        }
+      ]
+    },
+    {
+      "group": "Task",
+      "path": "reference/task",
+      "pages": [
+        {
+          "title": "Add Tasks",
+          "path": "reference/add-tasks",
+          "method": "POST"
+        },
+        {
+          "title": "Update Tasks",
+          "path": "reference/update-tasks",
+          "method": "POST"
+        },
+        {
+          "title": "Get Tasks Metadata",
+          "path": "reference/get-tasks-metadata",
+          "method": "GET"
+        },
+        {
+          "title": "Get Task Logs",
+          "path": "reference/get-task-logs",
+          "method": "GET"
+        },
+        {
+          "title": "Update Status Mappings",
+          "path": "reference/update-status-mappings",
+          "method": "POST"
+        },
+        {
+          "title": "Get Status Mappings",
+          "path": "reference/get-status-mappings",
+          "method": "GET"
+        },
+        {
+          "title": "Get Task Reminders",
+          "path": "reference/get-task-reminders",
+          "method": "GET"
+        },
+        {
+          "title": "Create/Update Task Reminders",
+          "path": "reference/createupdate-task-reminders",
+          "method": "POST"
+        },
+        {
+          "title": "Retrieve Individual Task Details",
+          "path": "reference/retrieve-individual-task-details",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "Customer Authentication (Web/Mobile)",
+      "path": "reference/first-factor-authentication",
+      "pages": [
+        {
+          "title": "First factor authentication",
+          "path": "reference/generate-authentication-tokenapi",
+          "children": [
+            {
+              "title": "Generate Authentication Token",
+              "path": "reference/generate-authentication-tokenapi",
+              "method": "POST"
+            },
+            {
+              "title": "Generate OTP",
+              "path": "reference/generate-otp-api",
+              "method": "POST"
+            },
+            {
+              "title": "Validate OTP",
+              "path": "reference/validate-otp-api",
+              "method": "POST"
+            },
+            {
+              "title": "Validate Password",
+              "path": "reference/validate-password",
+              "method": "POST"
+            },
+            {
+              "title": "Regenerate Authentication Token",
+              "path": "reference/regenerate-authentication-token",
+              "method": "POST"
+            },
+            {
+              "title": "Change Password",
+              "path": "reference/change-password",
+              "method": "POST"
+            },
+            {
+              "title": "Forget Password",
+              "path": "reference/forget-password",
+              "method": "POST"
+            },
+            {
+              "title": "Status codes",
+              "path": "reference/status-codes"
+            }
+          ]
+        },
+        {
+          "title": "Multi-factor authentication",
+          "path": "reference/multi-factor-authentication",
+          "children": [
+            {
+              "title": "Generate MFA token",
+              "path": "reference/generate-mfa-token",
+              "method": "POST"
+            },
+            {
+              "title": "Generate MFA OTP",
+              "path": "reference/generate-otp-mfa",
+              "method": "POST"
+            },
+            {
+              "title": "Validate MFA OTP",
+              "path": "reference/validate-mfa-otp",
+              "method": "POST"
+            },
+            {
+              "title": "MFA password flow",
+              "path": "reference/mfa-password-flow",
+              "children": [
+                {
+                  "title": "Validate password",
+                  "path": "reference/validate-mfa-password",
+                  "method": "POST"
+                },
+                {
+                  "title": "Change password",
+                  "path": "reference/change-mfa-password",
+                  "method": "POST"
+                },
+                {
+                  "title": "Forgot password",
+                  "path": "reference/mfa-forgot-password",
+                  "method": "POST"
+                }
+              ]
+            },
+            {
+              "title": "Regenerate token",
+              "path": "reference/regenerate-token",
+              "method": "POST"
+            },
+            {
+              "title": "Check if MFA is Registered",
+              "path": "reference/check-if-mfa-is-registered",
+              "method": "POST"
+            },
+            {
+              "title": "Delete token",
+              "path": "reference/delete-token",
+              "method": "DEL"
+            }
+          ]
+        },
+        {
+          "title": "Authentication configurations",
+          "path": "reference/authentication-configurations"
+        }
+      ]
+    },
+    {
+      "group": "Referral",
+      "path": "reference/refer-customer",
+      "pages": [
+        {
+          "title": "Refer Customer",
+          "path": "reference/refer-customer",
+          "method": "POST"
+        },
+        {
+          "title": "Add Referrals",
+          "path": "reference/get-referrals",
+          "method": "GET"
+        },
+        {
+          "title": "Validate Referral Code",
+          "path": "reference/validate-referral-code",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "Connect+ DIY Template APIs",
+      "path": "reference/diy-template-apis",
+      "pages": [
+        {
+          "title": "Create DIY Template",
+          "path": "reference/post-create-api-diy-template-connectplus",
+          "method": "POST"
+        },
+        {
+          "title": "Retrieve Workspaces",
+          "path": "reference/get-workspaces-diy-connectplus-template",
+          "method": "GET"
+        },
+        {
+          "title": "Retrieve Blocks Supported by the Template",
+          "path": "reference/get-processor-diy-connectplus-template",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "Other APIs",
+      "path": "reference/trigger-walk-in-notifications-on-instore",
+      "pages": [
+        {
+          "title": "Trigger Walk-in Notifications on InStore",
+          "path": "reference/trigger-walk-in-notifications-on-instore",
+          "method": "GET",
+          "deprecated": true
+        },
+        {
+          "title": "Get Transaction Earning",
+          "path": "reference/get-transaction-earning",
+          "method": "GET"
+        },
+        {
+          "title": "Update Currency Ratio",
+          "path": "reference/update-currency-ratio",
+          "method": "POST"
+        },
+        {
+          "title": "Configure Org Extended Field",
+          "path": "reference/configure-org-extended-field",
+          "method": "POST"
+        },
+        {
+          "title": "Get Org Extended Fields",
+          "path": "reference/get-org-extended-fields",
+          "method": "GET"
+        },
+        {
+          "title": "Create Store Associates",
+          "path": "reference/create-store-associates",
+          "method": "POST"
+        },
+        {
+          "title": "Feed (Scan Event)",
+          "path": "reference/feed-scan-event",
+          "method": "POST"
+        },
+        {
+          "title": "Get Configured Card Limit per Customer",
+          "path": "reference/get-configured-card-limit-per-customer",
+          "method": "GET"
+        },
+        {
+          "title": "Get Org Sources",
+          "path": "reference/get-org-sources",
+          "method": "GET"
+        },
+        {
+          "title": "Get org configs",
+          "path": "reference/get-org-config-key-values",
+          "method": "GET"
+        },
+        {
+          "title": "Retrieve extended field config details",
+          "path": "reference/retrieve-extended-field-config-details",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "group": "SCIM",
+      "path": "reference/scim",
+      "pages": [
+        {
+          "title": "Create SCIM Token",
+          "path": "reference/create-scim-token",
+          "method": "POST"
+        },
+        {
+          "title": "Revoke SCIM Token",
+          "path": "reference/revoke-scim-token",
+          "method": "PUT"
+        },
+        {
+          "title": "Create User",
+          "path": "reference/create-user",
+          "method": "POST"
+        },
+        {
+          "title": "Get List of User",
+          "path": "reference/get-list-of-user",
+          "method": "GET"
+        },
+        {
+          "title": "Get User by Filter name",
+          "path": "reference/get-users-by-filter-name",
+          "method": "GET"
+        },
+        {
+          "title": "Get User by SCIM Id",
+          "path": "reference/get-users-by-scim-id",
+          "method": "GET"
+        },
+        {
+          "title": "Create Group",
+          "path": "reference/create-group",
+          "method": "POST"
+        },
+        {
+          "title": "Add or Remove group members",
+          "path": "reference/add-group-members",
+          "method": "PATCH"
+        }
+      ]
+    }
+  ]
+}
