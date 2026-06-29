@@ -1,0 +1,203 @@
+---
+title: Update Customer Details
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Update Customer Details
+
+Lets you update customer details using the registered identifiers of the customer.
+
+### Request Body Parameters
+
+| Parameter      | Datatype | Description                                                                                                                                                                                                                                      |
+| -------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| loyaltyType    | enum     | Loyalty status of the customer. Value: `loyalty`, `non_loyalty`.                                                                                                                                                                                 |
+| commChannels   | obj      | Communication channels of the customer.                                                                                                                                                                                                          |
+| type           | enum     | Type of the communication channel. Value: `mobile`, `email`, `wechat`, `ios`, `android`, `line, mobilePush`.                                                                                                                                     |
+| value          | string   | Based on the channel `type` enter the channel value. Example, mobile number is the value for `type:mobile`, firebase token for `type:mobilePush`. mobilePush is supported for sources mobile_app, Instore, Martjack, Ecommerce, and Website     |
+| primary        | boolean  | Whether the current identifier is the primary identifier of the customer (primary identifier as per the org's configuration).                                                                                                                    |
+| lastViewedDate | date     | Date when the customer recently opened the app. Applicable for the channel 'mobilePush'.                                                                                                                                                         |
+| verified       | boolean  | Whether the current identifier is verified or not. For example, through OTP.                                                                                                                                                                     |
+| profiles       | obj      | Profile information of the customer.                                                                                                                                                                                                             |
+| meta           | obj      | Additional information of the identifier.                                                                                                                                                                                                        |
+| Firstname      | string   | First name of the customer.                                                                                                                                                                                                                      |
+| Lastname       | string   | Last name of the customer.                                                                                                                                                                                                                       |
+| identifiers    | obj      | Identifiers of the customer that you want to add in type and value. Supported types: `mobile`, `email`, cardnumber`externalId`, `wechat`,`martjackId`, `fbId` `mobile`, `tmall_uname`, `cuid`, `ali_uname`, `jd_uname`, `vip_uname`, and `line`. |
+| profiles       | fields   | Custom field details (only that configured for the organization)                                                                                                                                                                                 |
+| extendedFields | obj      | Extended field details of the customer in key:value pairs. You can only pass extended fields that are enabled for your org with the respective datatypes for values.                                                                             |
+| fields         | obj      | Custom field details of the customer in key:value pairs.                                                                                                                                                                                         |
+
+<aside class="notice">Parameters marked with * are mandatory. </aside>
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Update Customer Information",
+    "description": "Lets you update customer details using the registered identifiers of the customer.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://apac.api.capillarytech.com",
+      "description": "Default Asia API Server"
+    },
+    {
+      "url": "https://eu.api.capillarytech.com",
+      "description": "Default European API Server"
+    },
+    {
+      "url": "https://us.api.capillarytech.com",
+      "description": "Default US API Server"
+    }
+  ],
+  "paths": {
+    "/customers/lookup": {
+      "put": {
+        "summary": "Update Customer Details",
+        "description": "Lets you update customer details using the registered identifiers of the customer.",
+        "operationId": "update-customer-identifiers-1-1",
+        "parameters": [
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Source in which you want to update customer identifier(s). For sources that support multiple accounts, you also need to provide the associated account id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "FACEBOOK",
+                "WEB_ENGAGE",
+                "WECHAT",
+                "INSTORE",
+                "MARTJACK",
+                "TMALL",
+                "TAOBAO",
+                "JD",
+                "ECOMMERCE",
+                "WEBSITE"
+              ]
+            }
+          },
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "Account for which you want to update the customer identifier (Required only for sources with multiple accounts)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "use_async",
+            "in": "query",
+            "description": "Pass true to run loyalty activities in the background, side effects will not be returned in the API response. If false, API will wait for Loyalty activities to complete and then respond to the client with side effects in the API response.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "X-CAP-API-OAUTH-TOKEN",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "identifierName",
+            "in": "query",
+            "description": "Identifier used to identify the customer.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "mobile",
+                "email",
+                "externalId",
+                "cardnumber",
+                "cardExternalId",
+                "wechat",
+                "martjackId",
+                "fbId"
+              ]
+            }
+          },
+          {
+            "name": "identifierValue",
+            "in": "query",
+            "description": "Value of the specified identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"createdId\": 342963216,\n    \"warnings\": [],\n    \"sideEffects\": [\n    {\n    \"awardedPoints\": 25,\n    \"type\": \"points\"\n    }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "createdId": {
+                      "type": "integer",
+                      "example": 342963216,
+                      "default": 0
+                    },
+                    "warnings": {
+                      "type": "array"
+                    },
+                    "sideEffects": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "awardedPoints": {
+                            "type": "integer",
+                            "example": 25,
+                            "default": 0
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "points"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "{  \n   \"profiles\":[  \n      {  \n         \"firstName\":\"Tom\",\n         \"lastName\":\"Sawyer\",\n         \"fields\":{  \n            \"gender\":\"Male\",\n            \"city\":\"Bangalore\"\n         },\n         \"identifiers\":[  \n            {  \n               \"type\":\"email\",\n               \"value\":\"tom.sawyer@example.com\"\n            },\n            {  \n               \"type\":\"wechat\",\n               \"value\":\"wc_2\"\n            }\n         ],\n         \"commChannels\":[  \n            {  \n               \"type\":\"email\",\n               \"value\":\"tom.sawyer@example.com\",\n               \"primary\":\"true\",\n               \"verified\":\"false\",\n               \"meta\":{  \n                  \"residence\":true\n               }\n            },\n            {  \n               \"type\":\"wechat\",\n               \"value\":\"wc_2\",\n               \"primary\":\"true\",\n               \"verified\":\"true\",\n               \"meta\":{  \n                  \"residence\":true\n               }\n            }\n         ],\n         \"source\":\"WECHAT\",\n         \"accountId\":\"WeChat1234\"\n      }\n   ],\n   \"loyaltyInfo\":{  \n      \"loyaltyType\":\"loyalty\"\n   },\n   \"extendedFields\":  \n      {  \n         \"gender\":\"MALE\",\n         \"city\":\"Bangalore\"\n      }\n\n}"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  }
+}
+```

@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import type { FetchResult, SaveResult, SectionSummary } from "../types";
 
-const DOCS_DIR = path.join(process.cwd(), "docs");
+const DOCS_DIR = path.join(process.cwd(), "source-html");
 
 function sanitize(name: string): string {
   return name

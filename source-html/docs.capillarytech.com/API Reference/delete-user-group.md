@@ -1,0 +1,158 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Delete User Group
+
+This API allows you to delete an user group.
+
+> ❗️ Make sure you have the appropriate access control configured. For more information, see [access group documentation](https://docs.capillarytech.com/docs/access-group).
+
+# Example request
+
+```curl Sample request
+curl --location --request DELETE 'https://eu.api.capillarytech.com/v2/userGroup2?id=3962909' \
+--header 'Authorization: Basic bWFkaHI3MjU2YQ==' \
+--header 'Cookie: _cfuvid=vzCvOnzGrFLOd.qyWq3C1wR4U_d0NN8lePwtil_RTVU-1774957797145-0.0.1.1-604800000'
+```
+
+# Query parameter
+
+| Query Parameter | Data type | Description                    |
+| --------------- | :-------- | ------------------------------ |
+| id              | Integer   | Unique ID of the user group.   |
+| externalId      | String    | External ID of the user group. |
+
+**Note**: Either of the query parameters is mandatory.
+
+# Example response
+
+```json Sample response
+{
+    "warnings": []
+}
+```
+
+<br />
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/userGroup2": {
+      "delete": {
+        "summary": "Delete User Group",
+        "description": "This API allows you to delete an user group.",
+        "operationId": "delete-user-group",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Unique ID of the user group.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "External ID of the user group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample Response": {
+                    "value": {
+                      "warnings": []
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location --request DELETE 'https://eu.api.capillarytech.com/v2/userGroup2?id=3962909' \\\n--header 'Authorization: Basic bWFkaHI3MjU2YQ==' \\\n--header 'Cookie: _cfuvid=vzCvOnzGrFLOd.qyWq3C1wR4U_d0NN8lePwtil_RTVU-1774957797145-0.0.1.1-604800000'",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

@@ -1,0 +1,66 @@
+---
+title: Multi-factor authentication
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Multi-factor authentication
+
+This page provides you with information on multi-factor authentication.
+
+Multi-factor authentication (MFA) is a security process in which users provide two or more authentication factors to verify their identity.
+
+## Enabling MFA
+
+To use MFA, your brand must enable it. The configuration IS_MFA_ENABLED determines if MFA is active. To enable MFA, please raise a ticket with the sustenance team.
+
+## MFA Flow
+
+Below is a flow chart indicating the steps involved in OTP validation. The steps are the same for new and existing users of a brand.
+
+<Image src="https://files.readme.io/32be804-MFA_OTP_FLOW.jpg" width="1920" height="1080" alt="" />
+
+## MFA flow with 2nd factor identifier
+
+To enable the 2nd factor identifier, use the config CONF_AUTO_FILL_2ND_FACTOR_IDENTIFIER. See [General configurations](https://docs.capillarytech.com/reference/authentication-configurations#general-configurations)
+
+If you enable it, the auth engine automatically populates the identifier type and value for each API in the MFA flow. This occurs for the particular session for which the token is generated from the primary flow.
+
+The flow diagram below illustrates the steps involved and how the identifier type and value are populated.
+
+<Image src="https://files.readme.io/c801a83-Screenshot_2nd_factor.png" width="1920" height="1080" alt="" />
+
+The table below shows the four authentication combinations supported in the 2nd factor identifier.
+
+| Authentication method in the primary flow | Authentication method in MFA flow |
+| :---------------------------------------- | :-------------------------------- |
+| OTP                                       | OTP                               |
+| OTP                                       | Password                          |
+| Password                                  | OTP                               |
+| Password                                  | Password                          |
+
+### OTP - OTP workflow
+
+Below is a flow diagram indicating the steps involved and how the identifier type and value are populated when the authentication combination is OTP - OTP.
+
+<Image src="https://files.readme.io/d44ad9a-otp_otp_2nd_factor.jpg" width="1920" height="1080" alt="" />
+
+### OTP - Password workflow
+
+Below is a flow diagram indicating the steps involved and how the identifier type and value are populated when the authentication combination is OTP - Password.
+
+<Image src="https://files.readme.io/1d84341-otp_password_2nd_factor.jpg" width="1920" height="1080" alt="" />
+
+### Password - OTP workflow
+
+Below is a flow diagram indicating the steps involved and how the identifier type and value are populated when the authentication combination is Password - OTP.
+
+<Image src="https://files.readme.io/b62f8ab-password_otp_2nd_factor.jpg" width="1920" height="1080" alt="" />
+
+### Password - Password workflow
+
+Below is a flow diagram indicating the steps involved and how the identifier type and value are populated when the authentication combination is Password - Password.
+
+<Image src="https://files.readme.io/7c14cd3-password_password_2nd_factor.jpg" width="1920" height="1080" alt="" />

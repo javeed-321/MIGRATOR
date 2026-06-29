@@ -1,0 +1,161 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Deactivate Cart Promotion for Customer
+
+This API is used to deactivate an individual customer's participation in an active campaign. You can also use it to revoke specific rewards that have been earned by passing the `earnId`.
+
+# Example request
+
+```json
+curl --location --request POST 'https://{Host}/api_gateway/v1/promotions/`{promotionId}`/deactivate?customerId=566881933&earnId=null' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'accept: application/json' \
+--header 'Authorization: Basic Z2VvcmdlLmJ1GFmNDI3MGQ3YzI4ZjU4ZjY3MmNhZjY1ZmY=' \
+--header 'Cookie: _cfuvid=DWAI.W93CwD8Hhdi33884bJoUrRqwVps-1761979737913-0.0.1.1-604800000' \
+--data ''
+```
+
+# Prerequisites
+
+* Authentication: Basic or OAuth authentication.
+
+* Default access group
+
+# Resource information
+
+|               |    |
+| :------------ | :- |
+| Pagination    | No |
+| Batch support | No |
+
+# Path parameters
+
+| Field       | Type   | Required | Description                                            |
+| :---------- | :----- | :------- | :----------------------------------------------------- |
+| promotionId | String | Yes      | Unique identifier for the promotion to be deactivated. |
+
+# Query parameters
+
+| Field      | Type   | Required | Description                                                                                                     |
+| :--------- | :----- | :------- | :-------------------------------------------------------------------------------------------------------------- |
+| customerId | Number | Yes      | The unique identifier of the customer.                                                                          |
+| earnId     | String | Optional | The specific earn ID to deactivate. Required for PAYMENT\_VOUCHER modes. Not supported for DISCOUNT promotions. |
+
+# Example response
+
+```json
+{
+    "data": true,
+    "errors": []
+}
+
+```
+
+# Response parameters
+
+| Field  | Type    | Description                                      |
+| :----- | :------ | :----------------------------------------------- |
+| data   | Boolean | Returns true if the deactivation was successful. |
+| errors | Array   | A list of error objects (empty on success).      |
+
+# Error codes
+
+| Code | Description                                                                                                                                                                                                                    |
+| :--- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 400  | GLOBAL.INVALID\_INPUT: Required parameters are missing or invalid.                                                                                                                                                             |
+| 404  | GLOBAL.PROMOTION\_NOT\_FOUND: The promotion does not exist or is not active.                                                                                                                                                   |
+| 707  | PROMO.UNSUPPORTED\_PROMOTION\_TYPE: Cannot deactivate preferences for POS or CODE promotions.                                                                                                                                  |
+| 731  | PROMO.EARN\_ID\_INVALID: The provided earnId is invalid.                                                                                                                                                                       |
+| 736  | PROMO.UNSUPPORTED\_PREFERENCE\_CHANGE: Incorrect combination of earnId and promotion mode. This error occurs if you pass earnId for a DISCOUNT promotion, or if the combination of earnId and promotion mode is not supported. |
+| 737  | PROMO.UNSUPPORTED\_PREFERENCE\_CHANGE\_PENDING\_CART: Cannot change status while the customer has an open cart.                                                                                                                |
+| 500  | GLOBAL.UNEXPECTED\_ERROR: Internal server error.                                                                                                                                                                               |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Capillary Promotions API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "{Host}",
+      "variables": {
+        "Host": {
+          "default": "https://eu.intouch.capillarytech.com",
+          "enum": [
+            "https://eu.intouch.capillarytech.com",
+            "https://intouch.capillary.co.in",
+            "https://apac2.intouch.capillarytech.com",
+            "https://sgcrm.cc.capillarytech.com",
+            "http://intouch.capillarytech.cn.com",
+            "https://north-america.intouch.capillarytech.com"
+          ]
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/api_gateway/v1/promotions/{promotionId}/deactivate": {
+      "post": {
+        "summary": "Deactivate Promotion",
+        "parameters": [
+          {
+            "name": "promotionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "698ab5f73b42186a70163ddf"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "566881933"
+            }
+          },
+          {
+            "name": "earnId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true,
+              "example": "null"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "default": "Basic Z2VvcmdlLmRvY2RlbW86NjVhMDgzYjk1MWY5MGY1NTY5NDk1YmNkNzUxYm"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    }
+  }
+}
+```

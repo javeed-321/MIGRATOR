@@ -1,0 +1,700 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Get Customer Interactions
+
+Lets you to fetch store interactions with a specific customer. This includes SMSs, emails, sent to the customer; missed calls received from the customer’s registered mobile number; and surveys submitted by the customer.
+
+> 📘 Notes
+>
+> 1. Any one of the customer identifiers is required.
+> 2. You can enable the OTP masking configuration and mask the OTPs. Refer to [documentation on OTP masking](https://docs.capillarytech.com/docs/setup-otp-verification-rules#masking-otps).
+
+## Example request
+
+```json Sample request Get customer interactions
+curl --location 'https://eu.api.capillarytech.com/v1.1/customer/interaction?email=gcr9986%40gmail.com&format=json' \
+--header 'Authorization: Basic ' \
+--header 'Cookie: _cfuvid=NutM5aze4yrcjIjIzbpgbACLy6KicfQ2BllSUwfl6aY-1738925088455-0.0.1.1-604800000; _cfuvid=a0NmZQvi.30LKK7NvCQJgMpK8Ig15sul9um2ZFRucDk-1757422794990-0.0.1.1-604800000'
+```
+
+## Prerequisites
+
+Make sure you have the right authentication and appropriate access control configured.
+
+* **Access group resource:** Write access to customer group resource. For more information on access control, see the [access group documentation](https://docs.capillarytech.com/docs/access-group).
+* **Authentication:** Basic authentication details. For more information on authentication, see the [Authentication documentation](https://docs.capillarytech.com/docs/api-client).
+
+## Query parameters
+
+<Table align={["left","left","left","left"]}>
+  <thead>
+    <tr>
+      <th>
+        Field
+      </th>
+
+      <th>
+        Type
+      </th>
+
+      <th>
+        Required
+      </th>
+
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        identifierName
+      </td>
+
+      <td>
+        enum
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Type of customer identifier. Accepted values are: `email`, `mobile`, `external_id`, `card_number`, and `card_external_id`. At least one customer identifier is required.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        identifierValue
+      </td>
+
+      <td>
+        string
+      </td>
+
+      <td>
+        Yes
+      </td>
+
+      <td>
+        Value for the identifier value.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        network
+      </td>
+
+      <td>
+        enum
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+        Filter results by communication network. Accepted values are `facebook`, `twitter`, `foursquare`, and `capillary`. Default network is Capillary.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        type
+      </td>
+
+      <td>
+        enum
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+        Filter results by interaction type. The types of interaction are:
+
+        * `email` : for transaction email
+        * `emailbulk` : for bulk email
+        * `checkin ` : applicable only for foursquare/facebook
+        * `like`, `comment` - for facebook
+        * `mention` , `retweet`, `tweet` - only for Twitter network
+        * `feedback` : only for Capillary)
+        * `whatsapp`
+        * `zalo`
+        * `line`
+        * `viber`
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        limit
+      </td>
+
+      <td>
+        integer
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+        Maximum number of records to return per page. Default limit - 50.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        offset
+      </td>
+
+      <td>
+        integer
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+        Number of records to skip before starting to return results (zero-based). Default value - 0
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        card_details
+      </td>
+
+      <td>
+
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+        Default false
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        user_id
+      </td>
+
+      <td>
+
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+        Default false
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        included_all_user_group2
+      </td>
+
+      <td>
+
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+        Default false
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        included_user_group2_loyalty_details
+      </td>
+
+      <td>
+
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+        Default false
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        fetch_type
+      </td>
+
+      <td>
+
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+        Default ORG
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        delayed_accrual
+      </td>
+
+      <td>
+
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+        Default false
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        ou_code
+      </td>
+
+      <td>
+
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        use_default_user_group2
+      </td>
+
+      <td>
+
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        user_group2_external_id, user_group2_id, user_group2_primary_user_id, user_group2_primary_user_identifier_type, user_group2_primary_user_identifier_value, user_group2_primary_user_source, user_group2_primary_user_accountId
+      </td>
+
+      <td>
+
+      </td>
+
+      <td>
+        Optional
+      </td>
+
+      <td>
+
+      </td>
+    </tr>
+  </tbody>
+</Table>
+
+## Example response
+
+```json Sample response Get customer interactions
+{
+    "response": {
+        "status": {
+            "success": "true",
+            "code": 200,
+            "message": "Success"
+        },
+        "customer": {
+            "id": "565118794",
+            "mobile": "919353491050",
+            "email": "gcr9986@gmail.com",
+            "external_id": "",
+            "interactions": {
+                "network": [
+                    {
+                        "name": "capillary",
+                        "interaction": [
+                            {
+                                "last_interaction_time": "null",
+                                "used_status": false,
+                                "count": 0,
+                                "type": "survey"
+                            },
+                            {
+                                "last_interaction_time": "null",
+                                "used_status": false,
+                                "count": 0,
+                                "type": "whatsapp"
+                            },
+                            {
+                                "last_interaction_time": "null",
+                                "used_status": false,
+                                "count": 0,
+                                "type": "line"
+                            },
+                            {
+                                "last_interaction_time": "null",
+                                "used_status": false,
+                                "count": 0,
+                                "type": "zalo"
+                            },
+                            {
+                                "last_interaction_time": "null",
+                                "used_status": false,
+                                "count": 0,
+                                "type": "phone"
+                            },
+                            {
+                                "last_interaction_time": "null",
+                                "used_status": false,
+                                "count": 0,
+                                "type": "missed_call"
+                            },
+                            {
+                                "last_interaction_time": "null",
+                                "used_status": false,
+                                "count": 0,
+                                "type": "email"
+                            },
+                            {
+                                "last_interaction_time": "null",
+                                "used_status": false,
+                                "count": 0,
+                                "type": "sms"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "item_status": {
+                "success": "true",
+                "code": 1000,
+                "message": "Customer successfully retrieved"
+            }
+        }
+    }
+}
+```
+
+## Response parameters
+
+| Field                         | Type    | Description                                                                                   |
+| :---------------------------- | :------ | :-------------------------------------------------------------------------------------------- |
+| .response                     | Object  | Indicates the response of the operation.                                                      |
+| ..status                      | Object  | Indicates the status of the operation.                                                        |
+| ...success                    | string  | Indicates the success of the operation.                                                       |
+| ...code                       | integer | Code representing the status of the operation.                                                |
+| ...message                    | string  | Message describing the status of the operation.                                               |
+| ..customer                    | Array   | An array of customer objects.                                                                 |
+| ...id                         | integer | Customer identifier.                                                                          |
+| ...mobile                     | string  | Customer’s mobile number.                                                                     |
+| ...email                      | string  | Customer’s valid email address.                                                               |
+| ...external\_id               | string  | Customer’s external identifier.                                                               |
+| ...interactions               | Object  | Object containing the details of the interactions.                                            |
+| ....network                   | Array   | Array of the network details.                                                                 |
+| .....name                     | string  | Name of the customer.                                                                         |
+| .....interaction              | Array   | An array containing interaction details.                                                      |
+| ......last\_interaction\_time | string  | The date and time when the last interaction message was sent (format: "DD-MM-YYYY HH:mm:ss"). |
+| ......used\_status            | enum    | The status of the message (e.g., "TRUE, or FALSE").                                           |
+| ......count                   | number  | The count of interactions.                                                                    |
+| ......type                    | string  | The name of the interaction (e.g., "email").                                                  |
+
+## Error codes
+
+| Code | Description                                                                   |
+| :--- | :---------------------------------------------------------------------------- |
+| 500  | All requests have failed due to errors. Invalid or unsupported inputs passed. |
+
+<br />
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "customer-v11",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v1.1",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/customer/interaction": {
+      "get": {
+        "summary": "Get Customer Interactions",
+        "description": "Lets you to fetch store interactions with a specific customer. This includes SMSs, emails, sent to the customer; missed calls received from the customer’s registered mobile number; and surveys submitted by the customer.",
+        "operationId": "get-customer-interactions",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "json",
+                "xml"
+              ]
+            }
+          },
+          {
+            "name": "mobile",
+            "in": "query",
+            "description": "Mobile number of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Email ID of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "external_id",
+            "in": "query",
+            "description": "External ID of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Unique ID of the customer.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "network",
+            "in": "query",
+            "description": "Filter results by communication network.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "facebook",
+                "twitter",
+                "foursquare",
+                "capillary"
+              ]
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Filter results by interaction type. email (for transaction email), emailbulk (for bulk email), checkin (applicable only for foursquare/facebook), like, comment (for facebook); mention, retweet, tweet (only for Twitter network); feedback (only for Capillary).",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "email",
+                "emailbulk",
+                "checkin",
+                "like",
+                "comment",
+                "mention",
+                "retweet",
+                "tweet",
+                "feedback",
+                "whatsapp",
+                "zalo"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"response\": {\n    \"status\": {\n      \"success\": \"true\",\n      \"response_code\": \"200\",\n      \"message\": \"Success\"\n    },\n    \"customer\": {\n      \"id\": \"24243\",\n      \"mobile\": \"44700900000\",\n      \"email\": \"tom.sawyer@example.com\",\n      \"external_id\": \"ts1234\",\n      \"interactions\": {\n        \"network\": [\n          {\n            \"name\": \"facebook\",\n            \"interaction\": {\n              \"type\": \"checkin\",\n              \"count\": \"1\",\n              \"locs\": {\n                \"loc\": {\n                  \"lat\": \"22.23\",\n                  \"long\": \"23.33\",\n                  \"time\": \"2012-3-12 11:33:23\"\n                }\n              }\n            }\n          },\n          {\n            \"name\": \"twitter\",\n            \"interaction\": [\n              {\n                \"type\": \"tweet\",\n                \"count\": \"10\"\n              },\n              {\n                \"type\": \"retweet\",\n                \"count\": \"5\"\n              }\n            ]\n          },\n          {\n            \"name\": \"capillary\",\n            \"interaction\": [\n              {\n                \"type\": \"email\",\n                \"count\": \"1\",\n                \"messages\": {\n                  \"message\": {\n                    \"id\": \"554\",\n                    \"sender\": \"abc@xyz.com\",\n                    \"receiver\": \"\ndef@xyz.com\n\",\n                    \"subject\": \"Sample subject\",\n                    \"sent_time\": \"45837-06-15 02:56:40\",\n                    \"status\": \"SENT\"\n                  }\n                }\n              },\n              {\n                \"type\": \"sms\",\n                \"count\": \"1\",\n                \"messages\": {\n                  \"message\": {\n                    \"id\": \"555\",\n                    \"sender\": \"918867702348\",\n                    \"receiver\": \"\n918867702349\n\",\n                    \"subject\": \"Example subject\",\n                    \"sent_time\": \"45837-06-15 02:56:40\"\n                  }\n                }\n              },\n              {\n                \"type\": \"survey\",\n                \"latest_nps_score\": \"9\",\n                \"latest_survey_name\": \"Customer Satisfaction Survey 5\",\n                \"latest_survey_interaction_time\": \"2013-12-16 12:14:37\",\n                \"surveys\": {\n                  \"survey\": [\n                    {\n                      \"name\": \"Customer Satisfaction Survey\",\n                      \"nps_score\": \"9\",\n                      \"sent_by\": \"Nayan Kumar\",\n                      \"sent_time\": \"2013-11-20 12:56:55\",\n                      \"completion_time\": \"2013-11-14 13:23:05\"\n                    },\n                    {\n                      \"name\": \"Customer Satisfaction Survey\",\n                      \"nps_score\": \"10\",\n                      \"sent_by\": \"Shilpa \",\n                      \"sent_time\": \"2013-12-11 11:43:55\",\n                      \"completion_time\": \"2013-12-11 11:43:55\"\n                    },\n                    {\n                      \"name\": \"Customer Feedback\",\n                      \"nps_score\": \"9\",\n                      \"sent_by\": \"Shilpa \",\n                      \"response_url\": \"https://survey-devint.capillary.in?sc=O5JHLN95&sfc=14&t=R0C9I313&u=true\",\n                      \"sent_time\": \"2013-12-11 12:17:13\",\n                      \"completion_time\": \"2013-12-11 12:17:13\"\n                    },\n                    {\n                      \"name\": \"Customer Review\",\n                      \"nps_score\": \"8\",\n                      \"sent_by\": \"Shilpa \",\n                      \"response_url\": \"https://survey-devint.capillary.in?sc=O5JHLN95&sfc=1&t=7Q81C41Z&u=true\",\n                      \"sent_time\": \"2013-12-13 15:22:48\",\n                      \"completion_time\": \"2013-12-13 15:22:48\"\n                    },\n                    {\n                      \"name\": \"Customer Satisfaction Survey 5\",\n                      \"nps_score\": \"9\",\n                      \"sent_by\": \"Shilpa \",\n                      \"response_url\": \"https://survey-devint.capillary.in?sc=O5JHLN95&sfc=93&t=3LWIXC9Y&u=true\",\n                      \"sent_time\": \"2013-12-16 12:14:37\",\n                      \"completion_time\": \"2013-12-16 12:14:37\"\n                    }\n                  ]\n                },\n                \"count\": \"5\"\n              }\n            ]\n          }\n        ]\n      }\n    }\n  }\n}"
+                  },
+                  "Sample response Get customer interactions": {
+                    "summary": "Sample response Get customer interactions",
+                    "value": {
+                      "response": {
+                        "status": {
+                          "success": "true",
+                          "code": 200,
+                          "message": "Success"
+                        },
+                        "customer": {
+                          "id": "565118794",
+                          "mobile": "919353491050",
+                          "email": "gcr9986@gmail.com",
+                          "external_id": "",
+                          "interactions": {
+                            "network": [
+                              {
+                                "name": "capillary",
+                                "interaction": [
+                                  {
+                                    "last_interaction_time": "null",
+                                    "used_status": false,
+                                    "count": 0,
+                                    "type": "survey"
+                                  },
+                                  {
+                                    "last_interaction_time": "null",
+                                    "used_status": false,
+                                    "count": 0,
+                                    "type": "whatsapp"
+                                  },
+                                  {
+                                    "last_interaction_time": "null",
+                                    "used_status": false,
+                                    "count": 0,
+                                    "type": "line"
+                                  },
+                                  {
+                                    "last_interaction_time": "null",
+                                    "used_status": false,
+                                    "count": 0,
+                                    "type": "zalo"
+                                  },
+                                  {
+                                    "last_interaction_time": "null",
+                                    "used_status": false,
+                                    "count": 0,
+                                    "type": "phone"
+                                  },
+                                  {
+                                    "last_interaction_time": "null",
+                                    "used_status": false,
+                                    "count": 0,
+                                    "type": "missed_call"
+                                  },
+                                  {
+                                    "last_interaction_time": "null",
+                                    "used_status": false,
+                                    "count": 0,
+                                    "type": "email"
+                                  },
+                                  {
+                                    "last_interaction_time": "null",
+                                    "used_status": false,
+                                    "count": 0,
+                                    "type": "sms"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "item_status": {
+                            "success": "true",
+                            "code": 1000,
+                            "message": "Customer successfully retrieved"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "https://us.api.capillarytech.com/v1.1/customer/interaction?format=json&mobile=44700900000",
+              "name": "Sample request"
+            },
+            {
+              "code": "curl --location 'https://eu.api.capillarytech.com/v1.1/customer/interaction?email=gcr9986%40gmail.com&format=json' \\\n--header 'Authorization: ' \\\n--header 'Cookie: _cfuvid=NutM5aze4yrcjIjIzbpgbACLy6KicfQ2BllSUwfl6aY-1738925088455-0.0.1.1-604800000'",
+              "language": "json",
+              "name": "Sample request Get customer interactions"
+            }
+          ],
+          "samples-languages": [
+            "curl",
+            "json"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

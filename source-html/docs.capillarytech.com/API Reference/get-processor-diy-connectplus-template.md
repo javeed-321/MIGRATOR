@@ -1,0 +1,195 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Retrieve Blocks Supported by the Template
+
+Fetches the blocks supported by the DIY template
+
+The API retrieves the blocks supported by the Connect+ DIY template. You use these blocks to create a DIY template that meets your requirements. When using a block in the Create DIY template API, you cannot change its name.
+
+# API endpoint example
+
+<https://incrm.connectplus.capillarytech.com/api/diyprocessors>
+
+# Prerequisites
+
+* [ ] Authentication: Access to Connect+
+* [ ] Keep the Connect+ UI open
+
+# Response parameters
+
+| Field Name  | Data Type | Description                                                                                                                                                                                                                    |
+| ----------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| name        | String    | Block name is specified here. You use this name in the `blockType `parameter when you send a POST request to the [Create DIY template](https://docs.capillarytech.com/reference/post-create-api-diy-template-connectplus) API. |
+| description | String    | Description of the block's function.                                                                                                                                                                                           |
+| source      | Boolean   | Indicates whether the block functions as a data source. The source block is the first block in the template and specifies the location of the source file. **Values**: `true `- It is a source, `false` - It is not a source.  |
+
+```json Sample response
+[
+    {
+        "name": "intouch_transaction_v2",
+        "description": "OAuth based Intouch Transaction Add V2",
+        "source": false
+    },
+    {
+        "name": "sftp_pull",
+        "description": "Poll SFTP server, downloads file with satisfying regex, check constrain and move file",
+        "source": true
+    },
+    {
+        "name": "s3_pull",
+        "description": "Poll S3 bucket, downloads file in the path and moves file",
+        "source": true
+    },
+    {
+        "name": "optional_decrypt_content",
+        "description": "Decryption block",
+        "source": false
+    },
+    {
+        "name": "optional_encrypt_content",
+        "description": "Encryption block",
+        "source": false
+    },
+    {
+        "name": "ok_file",
+        "description": "Ok File",
+        "source": false
+    },
+    {
+        "name": "retro_destination",
+        "description": "OAuth based Intouch Transaction Add V2 Retro",
+        "source": false
+    },
+    {
+        "name": "neo_transformer",
+        "description": "Neo Transformer",
+        "source": false
+    },
+    {
+        "name": "kafka_connect_to_source",
+        "description": "Kafka pull connect to source",
+        "source": true
+    },
+    {
+        "name": "csv_json_neo_transformer",
+        "description": "CSV to JSON transformer for DIY",
+        "source": false
+    }
+]
+```
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "diy-template",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}.connectplus.capillarytech.com",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/api/diyprocessors": {
+      "get": {
+        "summary": "Retrieve Blocks Supported by the Template",
+        "description": "Fetches the blocks supported by the DIY template",
+        "operationId": "get-processor-diy-connectplus-template",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample response": {
+                    "value": "[\n    {\n        \"name\": \"intouch_transaction_v2\",\n        \"description\": \"OAuth based Intouch Transaction Add V2\",\n        \"source\": false\n    },\n    {\n        \"name\": \"sftp_pull\",\n        \"description\": \"Poll SFTP server, downloads file with satisfying regex, check constrain and move file\",\n        \"source\": true\n    },\n    {\n        \"name\": \"s3_pull\",\n        \"description\": \"Poll S3 bucket, downloads file in the path and moves file\",\n        \"source\": true\n    },\n    {\n        \"name\": \"optional_decrypt_content\",\n        \"description\": \"Decryption block\",\n        \"source\": false\n    },\n    {\n        \"name\": \"optional_encrypt_content\",\n        \"description\": \"Encryption block\",\n        \"source\": false\n    },\n    {\n        \"name\": \"ok_file\",\n        \"description\": \"Ok File\",\n        \"source\": false\n    },\n    {\n        \"name\": \"retro_destination\",\n        \"description\": \"OAuth based Intouch Transaction Add V2 Retro\",\n        \"source\": false\n    },\n    {\n        \"name\": \"neo_transformer\",\n        \"description\": \"Neo Transformer\",\n        \"source\": false\n    },\n    {\n        \"name\": \"kafka_connect_to_source\",\n        \"description\": \"Kafka pull connect to source\",\n        \"source\": true\n    },\n    {\n        \"name\": \"csv_json_neo_transformer\",\n        \"description\": \"CSV to JSON transformer for DIY\",\n        \"source\": false\n    }\n]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "intouch_transaction_v2"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "OAuth based Intouch Transaction Add V2"
+                      },
+                      "source": {
+                        "type": "boolean",
+                        "example": false,
+                        "default": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "https://incrm.connectplus.capillarytech.com/api/diyprocessors",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

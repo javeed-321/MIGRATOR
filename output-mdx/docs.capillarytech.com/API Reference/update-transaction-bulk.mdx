@@ -1,0 +1,446 @@
+---
+title: Update Transactions in Bulk
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Update Transactions in Bulk
+
+API to update transactions in bulk.
+
+This API allows you to update transactions in bulk. You can update the following:
+
+* Loyalty transactions
+* Line item level extended fields
+* Transactional level extended and custom fields
+
+**Important:** When you update line item monetary fields (such as amount, rate, value, and discount), the system rounds these values based on the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration. If this configuration is set to 0 or higher, all monetary fields are rounded down to the specified number of decimal places using floor rounding. For example, a value of 38.98 becomes 38.97 if rounded to two decimal places. To ensure correct storage and retrieval of decimal values, set AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES to one more than the value of CONF_DECIMAL_PLACES_FOR_BASE_CURRENCY (for example, if CONF_DECIMAL_PLACES_FOR_BASE_CURRENCY is n, set AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES to n+1).
+
+**Notes:** Other parameters/attributes cannot be updated because transactions are considered immutable (unchangeable). If you need to update an attribute, such as the transaction's bill number, you must first mark the transaction as deleted by setting its [outlier status to 'DELETED](https://docs.capillarytech.com/docs/transactions-profiles#update-outlier-status-loyalty-transactions)'. Afterwards, re-import or add the transaction with the new bill number or other changes in the attributes.
+
+<br />
+
+<Callout kind="tip" title="Notes">
+
+* For an overview on our APIs and for hands-on testing, refer to [API overview ](https://docs.capillarytech.com/reference/apioverview)and [Make your first API call](https://docs.capillarytech.com/reference/make-your-first-api-call) documentation.
+* Negative values for transaction values such as amount, discount are not considered.
+
+</Callout>
+
+## Prerequisites
+
+* [ ] Basic or OAuth credentials
+* [ ] Access to [Transaction resource](https://docs.capillarytech.com/reference/api-index)
+
+## Resource information
+
+|               |                      |
+| :------------ | :------------------- |
+| URI           | v2/transactions/bulk |
+| HTTP method   | PUT                  |
+| Pagination    | NA                   |
+| Rate limit    | NA                   |
+| Batch support | NA                   |
+
+**Note:** All line item monetary fields (amount, rate, value, discount) in the request are rounded down to the number of decimal places specified by the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration.
+
+## Header information
+
+| Header name     | Description                                                                                                                                                                                                                                                                                                                              |
+| :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SKIP-DOWNSTREAM | If set to true, the API request updates the customer transaction record directly without notifying downstream systems such as the Loyalty Engine (EMF) or event notification services, and no side effects will be generated. This allows the API to behave like a data import, where no loyalty actions or event triggers are executed. |
+
+## API endpoint example
+
+`<https://eu.api.capillarytech.com/v2/transactions/bulk'>`
+
+## Request body parameters
+
+| **Parameter** (Parameters marked * are mandatory) | **Data Type** | **Description** |
+| --- | --- | --- |
+| identifierType* | String | Customer identifier type. Supported values: `mobile, email, externalId, id, cardnumber, cardExternalId` |
+| identifierValue* | String | Value for the identifier |
+| source* | String | Customer registration source. |
+| id* | Integer | Unique identifier for the transaction. This is internally generated during the addition of a transaction. |
+| extendedFields | Object | Extended fields with the values that need to be updated. |
+| customFields | Object | Custom fields with the values that need to be updated. |
+| lineItems | Array of Objects | List of items in the transaction. |
+| * itemCode | String | Item code for the item in the transaction. You can also use line item `id`. The ID is internally generated during the addition of a transaction. |
+| * extendedFields (item level) | Object | Line item level extended fields and the values that need to be updated. |
+
+<br />
+
+```json Sample Request
+
+[
+    {
+        "identifierType": "mobile",
+        "identifierValue": "9199860005816",
+        "source": "INSTORE",
+        "id": 873552027,
+        "extendedFields": {
+            "ship_first_name": "SamUpdated",
+            "ship_last_name": "SundarUpdated"
+        },
+        "customFields": {
+            "feedback": "niceUpdated",
+            "store_experience": "abcUpdated"
+        },
+        "lineItems": [
+            {
+                "itemCode": "sku_486741_2",
+                "extendedFields": {
+                    "MetalRate": "100000",
+                    "GrossWeight": "100000.50"
+                }
+            }
+        ]
+    },
+    {
+        "identifierType": "mobile",
+        "identifierValue": "9199860002585",
+        "source": "INSTORE",
+        "id": 873552028,
+        "extendedFields": {
+            "ship_first_name": "22000.02",
+            "ship_last_name": "10000.50"
+        },
+        "customFields": {
+            "feedback": "abcUpdated"
+        },
+        "lineItems": [
+            {
+                "itemCode": "sku_486741_2",
+                "extendedFields": {
+                    "MetalRate": "100000",
+                    "GrossWeight": "10000.50"
+                }
+            }
+        ]
+    }
+]
+````
+
+## Response parameters
+
+| **Parameter**               | **Data Type**    | **Description**                                                                |
+| --------------------------- | ---------------- | ------------------------------------------------------------------------------ |
+| id                          | Integer          | Unique identifier for the transaction.                                         |
+| customFields                | Object           | Contains key-value pairs for custom fields.                                    |
+| extendedFields              | Object           | Contains key-value pairs for extended fields.                                  |
+| identifierType              | String           | The type of identifier used.                                                   |
+| identifierValue             | String           | The value of the identifier.                                                   |
+| source                      | String           | The source of the transaction, e.g., "INSTORE".                                |
+| lineItems                   | Array of Objects | List of items in the transaction.                                              |
+| itemCode                    | String           | The code for the item in the transaction.                                      |
+| extendedFields (item level) | Object           | Contains key-value pairs for extended fields specific to the line item.        |
+| errors                      | Array            | List of errors encountered during the processing of the transaction, if any.   |
+| warnings                    | Array            | List of warnings encountered during the processing of the transaction, if any. |
+| totalCount                  | Integer          | The total number of transactions updated.                                      |
+| failureCount                | Integer          | The number of transactions that failed to update.                              |
+
+**Note:** All monetary fields (amount, rate, value, discount) in the response are rounded down to the number of decimal places specified by the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration.
+
+<br />
+
+```json Sample Response
+{
+    "response": [
+        {
+            "result": {
+                "id": 873552027,
+                "customFields": {
+                    "feedback": "niceUpdated",
+                    "store_experience": "abcUpdated"
+                },
+                "extendedFields": {
+                    "ship_first_name": "SamUpdated",
+                    "ship_last_name": "SundarUpdated"
+                },
+                "identifierType": "mobile",
+                "identifierValue": "919986000586",
+                "source": "INSTORE",
+                "lineItems": [
+                    {
+                        "itemCode": "sku_486741_2",
+                        "extendedFields": {
+                            "GrossWeight": 100000.5,
+                            "MetalRate": 100000
+                        }
+                    }
+                ]
+            },
+            "errors": [],
+            "warnings": []
+        },
+        {
+            "result": {
+                "id": 873552028,
+                "customFields": {
+                    "feedback": "abcUpdated"
+                },
+                "extendedFields": {
+                    "ship_first_name": "22000.02",
+                    "ship_last_name": "10000.50"
+                },
+                "identifierType": "mobile",
+                "identifierValue": "919986000585",
+                "source": "INSTORE",
+                "lineItems": [
+                    {
+                        "itemCode": "sku_486741_2",
+                        "extendedFields": {
+                            "GrossWeight": 10000.5,
+                            "MetalRate": 100000
+                        }
+                    }
+                ]
+            },
+            "errors": [],
+            "warnings": []
+        }
+    ],
+    "totalCount": 2,
+    "failureCount": 0
+}
+````
+
+## Error codes
+
+| Error code | Description                                                                                                             |
+| :--------- | :---------------------------------------------------------------------------------------------------------------------- |
+| 8084       | Customer details are not present. Make sure that valid customer identifiers are added.                                  |
+| 708        | The bill number exists for both an original transaction and a return. Use the transaction ID to update the transaction. |
+
+## FAQs
+
+1. **Can I update return transactions?**\
+   No, only regular transactions can be updated.
+2. **Can I update payment modes and attributes in a transaction?**\
+   No, payment modes and attributes cannot be updated.
+3. **Is it possible to update the outlier status at the line item and transaction level?**\
+   No, the outlier status at both the line item and transaction level cannot be updated.
+4. **Can I update the bill date and number in a transaction?**\
+   No, the bill date and number cannot be updated once the transaction has been recorded. If you need to update an attribute, such as the transaction's bill number or date, you must first mark the transaction as deleted by setting its [outlier status to 'DELETED](https://docs.capillarytech.com/docs/transactions-profiles#update-outlier-status-loyalty-transactions)'. Afterwards, re-import or add the transaction with the new bill number and date.
+5. **What fields can be updated in a transaction?**\
+   You can update line-level extended fields and transaction-level custom fields and extended fields.
+6. **What happens if there are two or more transactions with the same bill number?**\
+   If there are multiple transactions with the same bill number, the transaction first added is updated. It is recommended to use the unique transaction ID for updates.
+7. **Can we update non-loyalty transactions?**\
+   No, updates to non-loyalty transactions are not supported.
+8. **Can I use this API in Connect+?**\
+   Yes. You can change the API endpoint in the [Add transaction template](https://docs.capillarytech.com/docs/add_transaction) and use it.
+9. **What happens if the tender amount is greater than the bill amount in a transaction?**\
+   If the tender amount is greater than the bill amount, the system prorates line item source values for points calculation. The proration uses the ratio of tender amount to bill amount, so each line item receives points based on this adjusted value.
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/transactions/bulk": {
+      "put": {
+        "summary": "Update Transactions in Bulk",
+        "description": "API to update transactions in bulk.",
+        "operationId": "update-transaction-bulk",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"response\": [\n        {\n            \"result\": {\n                \"id\": 873552027,\n                \"customFields\": {\n                    \"feedback\": \"niceUpdated\",\n                    \"store_experience\": \"abcUpdated\"\n                },\n                \"extendedFields\": {\n                    \"ship_first_name\": \"SamUpdated\",\n                    \"ship_last_name\": \"SundarUpdated\"\n                },\n                \"identifierType\": \"mobile\",\n                \"identifierValue\": \"919986000586\",\n                \"source\": \"INSTORE\",\n                \"lineItems\": [\n                    {\n                        \"itemCode\": \"sku_486741_2\",\n                        \"extendedFields\": {\n                            \"GrossWeight\": 100000.5,\n                            \"MetalRate\": 100000\n                        }\n                    }\n                ]\n            },\n            \"errors\": [],\n            \"warnings\": []\n        },\n        {\n            \"result\": {\n                \"id\": 873552028,\n                \"customFields\": {\n                    \"feedback\": \"abcUpdated\"\n                },\n                \"extendedFields\": {\n                    \"ship_first_name\": \"22000.02\",\n                    \"ship_last_name\": \"10000.50\"\n                },\n                \"identifierType\": \"mobile\",\n                \"identifierValue\": \"919986000585\",\n                \"source\": \"INSTORE\",\n                \"lineItems\": [\n                    {\n                        \"itemCode\": \"sku_486741_2\",\n                        \"extendedFields\": {\n                            \"GrossWeight\": 10000.5,\n                            \"MetalRate\": 100000\n                        }\n                    }\n                ]\n            },\n            \"errors\": [],\n            \"warnings\": []\n        }\n    ],\n    \"totalCount\": 2,\n    \"failureCount\": 0\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "result": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 873552027,
+                                "default": 0
+                              },
+                              "customFields": {
+                                "type": "object",
+                                "properties": {
+                                  "feedback": {
+                                    "type": "string",
+                                    "example": "niceUpdated"
+                                  },
+                                  "store_experience": {
+                                    "type": "string",
+                                    "example": "abcUpdated"
+                                  }
+                                }
+                              },
+                              "extendedFields": {
+                                "type": "object",
+                                "properties": {
+                                  "ship_first_name": {
+                                    "type": "string",
+                                    "example": "SamUpdated"
+                                  },
+                                  "ship_last_name": {
+                                    "type": "string",
+                                    "example": "SundarUpdated"
+                                  }
+                                }
+                              },
+                              "identifierType": {
+                                "type": "string",
+                                "example": "mobile"
+                              },
+                              "identifierValue": {
+                                "type": "string",
+                                "example": "919986000586"
+                              },
+                              "source": {
+                                "type": "string",
+                                "example": "INSTORE"
+                              },
+                              "lineItems": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "itemCode": {
+                                      "type": "string",
+                                      "example": "sku_486741_2"
+                                    },
+                                    "extendedFields": {
+                                      "type": "object",
+                                      "properties": {
+                                        "GrossWeight": {
+                                          "type": "number",
+                                          "example": 100000.5,
+                                          "default": 0
+                                        },
+                                        "MetalRate": {
+                                          "type": "integer",
+                                          "example": 100000,
+                                          "default": 0
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "errors": {
+                            "type": "array"
+                          },
+                          "warnings": {
+                            "type": "array"
+                          }
+                        }
+                      }
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "example": 2,
+                      "default": 0
+                    },
+                    "failureCount": {
+                      "type": "integer",
+                      "example": 0,
+                      "default": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location --request PUT 'https://eu.api.capillarytech.com/v2/transactions/bulk' \\\n--data '[\n    {\n        \"identifierType\": \"mobile\",\n        \"identifierValue\": \"91998600056\",\n        \"source\": \"INSTORE\",\n        \"id\": 873552027,\n        \"extendedFields\": {\n            \"ship_first_name\": \"SamUpdated\",\n            \"ship_last_name\": \"SundarUpdated\"\n        },\n        \"customFields\": {\n            \"feedback\": \"niceUpdated\",\n            \"store_experience\": \"abcUpdated\"\n        },\n        \"lineItems\": [\n            {\n                \"itemCode\": \"sku_486741_2\",\n                \"extendedFields\": {\n                    \"MetalRate\": \"100000\",\n                    \"GrossWeight\": \"100000.50\"\n                }\n            }\n        ]\n    },\n    {\n        \"identifierType\": \"mobile\",\n        \"identifierValue\": \"919986000585\",\n        \"source\": \"INSTORE\",\n        \"id\": 873552028,\n        \"extendedFields\": {\n            \"ship_first_name\": \"22000.02\",\n            \"ship_last_name\": \"10000.50\"\n        },\n        \"customFields\": {\n            \"feedback\": \"abcUpdated\"\n        },\n        \"lineItems\": [\n            {\n                \"itemCode\": \"sku_486741_2\",\n                \"extendedFields\": {\n                    \"MetalRate\": \"100000\",\n                    \"GrossWeight\": \"10000.50\"\n                }\n            }\n        ]\n    }\n]'"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

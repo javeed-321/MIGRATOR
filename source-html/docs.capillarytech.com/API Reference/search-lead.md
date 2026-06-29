@@ -1,0 +1,365 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Search lead
+
+# Query parameter
+
+| Parameter   | Description                                                                                        |
+| ----------- | -------------------------------------------------------------------------------------------------- |
+| type        | Fetch by lead type. Values: SKU, CATEGORY, BRAND, CUSTOM (for any custom types)                    |
+| limit       | Limit the number of results to be fetched                                                          |
+| orgSourceId | Specify the source account id from which you want to fetch the leads. For example, -1 for INSTORE. |
+| userId      | Fetch the leads of a specific user                                                                 |
+| status      | Fetch leads by status. Values: OPEN, WON, LOST, ON\_HOLD, DELETED                                  |
+| substatus   | Fetch leads with a specific sub-status                                                             |
+| offset      | Fetches leads > the offset number. Offset is the position of the lead in the db record.            |
+| sortBy      | Lets you sort the list by createdon or lastUpdatedOn                                               |
+| sortOrder   | Sort the results in ascending (ASC) or descending (DESC) order                                     |
+
+# Response parameter
+
+| Parameter        | Description                                           |
+| ---------------- | ----------------------------------------------------- |
+| id               | Unique identifier for the data item                   |
+| userId           | Identifier for the user associated with the data      |
+| type             | Type of the lead, e.g., "SKU"                         |
+| leadFor          | The specific item or entity the lead is for           |
+| status           | Current status of the lead                            |
+| nextFollowUp     | Date and time of the next follow-up                   |
+| createdOn        | Date and time when the data item was created          |
+| createdBy        | Identifier of the user who created the data item      |
+| lastUpdatedOn    | Date and time when the data item was last updated     |
+| lastUpdatedBy    | Identifier of the user who last updated the data item |
+| followUpDetails  | Details of follow-ups.                                |
+| statusLogDetails | Details of status changes.                            |
+| orgSourceId      | Identifier for the source organization                |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/leads?{input params}={param values}": {
+      "get": {
+        "summary": "Search lead",
+        "description": "",
+        "operationId": "search-lead",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Fetch by lead type.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit the number of results to be fetched",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orgSourceId",
+            "in": "query",
+            "description": "Specify the source account id from which you want to fetch the leads.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "Fetch the leads of a specific user",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Fetch leads by status.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "substatus",
+            "in": "query",
+            "description": "Fetch leads with a specific sub-status",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The starting index for data retrieval.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Lets you sort the list by createdon or lastUpdatedOn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "description": "Sort the results in ascending (ASC) or descending (DESC) order",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"userId\": 368754334,\n            \"type\": \"SKU\",\n            \"leadFor\": \"item001\",\n            \"status\": \"WON\",\n            \"nextFollowUp\": \"2018-10-05T08:00:00+05:30\",\n            \"createdOn\": \"2018-10-04T13:30:00+05:30\",\n            \"createdBy\": 28812689,\n            \"lastUpdatedOn\": \"2018-11-14T15:44:26+05:30\",\n            \"lastUpdatedBy\": 15002926,\n            \"followUpDetails\": [\n                {\n                    \"id\": 1,\n                    \"userId\": 368754334,\n                    \"leadId\": 1,\n                    \"notes\": \"notes 1\",\n                    \"createdBy\": 15002926,\n                    \"createdOn\": \"2018-11-14T15:38:04+05:30\",\n                    \"followedUpBy\": 28812689,\n                    \"followedUpOn\": \"2018-10-04T12:45:00+05:30\",\n                    \"scheduledFollowUp\": \"2018-10-04T12:30:00+05:30\"\n                },\n                {\n                    \"id\": 2,\n                    \"userId\": 368754334,\n                    \"leadId\": 1,\n                    \"notes\": \"notes 2\",\n                    \"createdBy\": 15002926,\n                    \"createdOn\": \"2018-11-14T15:38:04+05:30\",\n                    \"followedUpBy\": 28812689,\n                    \"followedUpOn\": \"2018-10-04T12:45:00+05:30\",\n                    \"scheduledFollowUp\": \"2018-10-04T12:30:00+05:30\"\n                }\n            ],\n\n            \"statusLogDetails\": [\n                {\n                    \"id\": 1,\n                    \"userId\": 368754334,\n                    \"leadId\": 1,\n                    \"status\": \"OPEN\",\n                    \"createdBy\": 15002926,\n                    \"createdOn\": \"2018-11-14T15:38:04+05:30\",\n                    \"reasonId\": 5,\n                    \"reason\": \"Best price available at another store\"\n                },\n                {\n                    \"id\": 2,\n                    \"userId\": 368754334,\n                    \"leadId\": 1,\n                    \"status\": \"ON_HOLD\",\n                    \"createdBy\": 15002926,\n                    \"createdOn\": \"2018-11-14T15:38:04+05:30\",\n                    \"reasonId\": 4,\n                    \"reason\": \"Item not available in store\"\n                },\n                {\n                    \"id\": 3,\n                    \"userId\": 368754334,\n                    \"leadId\": 1,\n                    \"status\": \"WON\",\n                    \"createdBy\": 15002926,\n                    \"createdOn\": \"2018-11-14T15:44:27+05:30\",\n                    \"reasonId\": 5,\n                    \"reason\": \"Best price available at another store\"\n                }\n            ],\n            \"orgSourceId\": -1\n        }\n    ],\n    \"warnings\": [],\n    \"errors\": []\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          },
+                          "userId": {
+                            "type": "integer",
+                            "example": 368754334,
+                            "default": 0
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "SKU"
+                          },
+                          "leadFor": {
+                            "type": "string",
+                            "example": "item001"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "WON"
+                          },
+                          "nextFollowUp": {
+                            "type": "string",
+                            "example": "2018-10-05T08:00:00+05:30"
+                          },
+                          "createdOn": {
+                            "type": "string",
+                            "example": "2018-10-04T13:30:00+05:30"
+                          },
+                          "createdBy": {
+                            "type": "integer",
+                            "example": 28812689,
+                            "default": 0
+                          },
+                          "lastUpdatedOn": {
+                            "type": "string",
+                            "example": "2018-11-14T15:44:26+05:30"
+                          },
+                          "lastUpdatedBy": {
+                            "type": "integer",
+                            "example": 15002926,
+                            "default": 0
+                          },
+                          "followUpDetails": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 1,
+                                  "default": 0
+                                },
+                                "userId": {
+                                  "type": "integer",
+                                  "example": 368754334,
+                                  "default": 0
+                                },
+                                "leadId": {
+                                  "type": "integer",
+                                  "example": 1,
+                                  "default": 0
+                                },
+                                "notes": {
+                                  "type": "string",
+                                  "example": "notes 1"
+                                },
+                                "createdBy": {
+                                  "type": "integer",
+                                  "example": 15002926,
+                                  "default": 0
+                                },
+                                "createdOn": {
+                                  "type": "string",
+                                  "example": "2018-11-14T15:38:04+05:30"
+                                },
+                                "followedUpBy": {
+                                  "type": "integer",
+                                  "example": 28812689,
+                                  "default": 0
+                                },
+                                "followedUpOn": {
+                                  "type": "string",
+                                  "example": "2018-10-04T12:45:00+05:30"
+                                },
+                                "scheduledFollowUp": {
+                                  "type": "string",
+                                  "example": "2018-10-04T12:30:00+05:30"
+                                }
+                              }
+                            }
+                          },
+                          "statusLogDetails": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 1,
+                                  "default": 0
+                                },
+                                "userId": {
+                                  "type": "integer",
+                                  "example": 368754334,
+                                  "default": 0
+                                },
+                                "leadId": {
+                                  "type": "integer",
+                                  "example": 1,
+                                  "default": 0
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "example": "OPEN"
+                                },
+                                "createdBy": {
+                                  "type": "integer",
+                                  "example": 15002926,
+                                  "default": 0
+                                },
+                                "createdOn": {
+                                  "type": "string",
+                                  "example": "2018-11-14T15:38:04+05:30"
+                                },
+                                "reasonId": {
+                                  "type": "integer",
+                                  "example": 5,
+                                  "default": 0
+                                },
+                                "reason": {
+                                  "type": "string",
+                                  "example": "Best price available at another store"
+                                }
+                              }
+                            }
+                          },
+                          "orgSourceId": {
+                            "type": "integer",
+                            "example": -1,
+                            "default": 0
+                          }
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    },
+                    "errors": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "http://us.api.capillarytech.com/v2/leads?sortOrder=DESC&type=ALL&limit=10&orgSourceId=-1"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

@@ -1,0 +1,166 @@
+---
+title: Create Event (Custom)
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Create Event (Custom)
+
+Lets you create a new behavioral event.
+
+### Authentication
+
+* Valid OAuth 2.0 authentication token must be included in the request header.
+* Use the X-CAP-API-OAUTH-TOKEN header to pass the token.
+
+### Request Body Parameters
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| eventName* | string | Name of the event. |
+| actions* | enum | Destination of the event. Values: `EMFConsumer` for EMF related events: Loyalty, DVS, and Communication, EIConsumer for Essential Insights. |
+| description | string | Short description for the event. |
+| fields | obj | Configure fields for the current event with attributes: `name`, `type`, and `value`. The various attributes available are: -`addCustomerIfNotExists` - Adds the customer if the customer does not exist. -`isRequired` - Marks the attribute as mandatory -`isUniqueKeyField `- Includes the attribute, to the unique key. Once defined as a unique key field, this attribute becomes mandatory and needs to be marked as `isRequired`. By default, customer identifier and event name are already part of the unique key. -`isPsiData` - Mark the field as Protected Sensitive Information. For more information refer to, [Classify Potentially Sensitive Information (PSI)](https://docs.capillarytech.com/docs/classify-potentially-sensitive-information-psi) . **Note** - You cannot enable `isPsiData` for the mandatory customer identifier field. |
+| name | string | Specify the name of the field. |
+| type | enum | Specify the type of the attribute. Values: `tillCode`, `couponCode`, `customer`, `productSku`, `productBrand`, `productCategory`, `string`, `double`. |
+| addCustomerIfNotExists | obj | Set this value to `true` to allow registering new customers into the loyalty program automatically |
+| valueType | enum | Data-type of the attribute. For example, `Boolean`, `Enum`, `String`. |
+| value | string | Value of the attribute based on its `valueType`.For example, if `valueType` is Boolean, value could be either `true` or `false`. |
+| identifierType | Object | Specify the identifier type and its value |
+| value | String | Supported values: userId, mobile, email, externalId, wechat, martjackId, cuid, fbid, unionId, fcmToken, line, cardnumber, cardExternalId |
+| valueType | String | Value for the identifier type |
+
+<aside class="notice">All parameters marked by * are mandatory. </aside>
+
+For information on event uniqueness check, see [Event uniqueness check](https://docs.capillarytech.com/docs/setup-test-behavioral-events#enabling-uniqueness-check).
+
+### API specific Error codes
+
+| Error Code | Description                                                 | Reason                                  |
+| :--------- | :---------------------------------------------------------- | :-------------------------------------- |
+| 1806       | Event_`name` event already exists                          | Already existing event name             |
+| 1810       | Event_`name` event actions invalid                         | Invalid or unsupported event actions    |
+| 1811       | event name invalid                                          | Invalid or unsupported event name       |
+| 1823       | tillCod invalid event field type                            | Invalid or unsupported event field type |
+| 1802       | field attribute value  fails for validation type isRequired | Invalid/null field attribute value      |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/events": {
+      "post": {
+        "summary": "Create Event (Custom)",
+        "description": "Lets you create a new behavioral event.",
+        "operationId": "create-event-custom",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample Response": {
+                    "value": ""
+                  },
+                  "New Example": {
+                    "summary": "New Example",
+                    "value": ""
+                  },
+                  "Sample response": {
+                    "summary": "Sample response",
+                    "value": {
+                      "warnings": [],
+                      "errors": []
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "warnings": {
+                      "type": "array"
+                    },
+                    "errors": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "json",
+              "code": "{\n    \"eventName\": \"Event_Aditi Khandelwal\",\n    \"actions\": [\n        \"EMFConsumer\"\n    ],\n    \"fields\": [\n        {\n            \"attributes\": {\n                \"addCustomerIfNotExists\": {\n                    \"valueType\": \"Boolean\",\n                    \"value\": \"true\"\n                }\n            },\n            \"type\": \"customer\",\n            \"name\": \"customer\"\n        },\n        {\n            \"attributes\": {\n                \"isRequired\": {\n                    \"valueType\": \"Boolean\",\n                    \"value\": \"true\"\n                }\n            },\n            \"type\": \"tillCode\",\n            \"name\": \"String\"\n        }\n    ]\n}",
+              "name": "Sample POST Body"
+            },
+            {
+              "language": "shell",
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/events' \\\n--header 'Content-Type: application/json' \\\n--header 'X-CAP-API-OAUTH-TOKEN: YOUR_JWT_TOKEN' \\\n--header 'Cookie: _cfuvid=UD8tBi92awr9KDo5Gz50zEdo5HcsFyQ.anJEXD3XAxE-1745598320661-0.0.1.1-604800000; _cfuvid=gx7_h0H.AUKOkLWlagIoO9Dqfep14kZCAnmfhG8fdH8-1745599453668-0.0.1.1-604800000; _cfuvid=bYWA3PE.Xd7Ex4rtIIL6Z4MgJmlJH1QolLMgTivE6j4-1746004083435-0.0.1.1-604800000; _cfuvid=a1pp7k4tDqgFzDjbIpPglwrAcqAn9nNuT.Kn_DcvY_g-1747723425616-0.0.1.1-604800000' \\\n--data '{\n    \"eventName\": \"Event_Aditi Khandelwal\",\n    \"actions\": [\n        \"EMFConsumer\"\n    ],\n    \"fields\": [\n        {\n            \"attributes\": {\n                \"addCustomerIfNotExists\": {\n                    \"valueType\": \"Boolean\",\n                    \"value\": \"true\"\n                }\n            },\n            \"type\": \"customer\",\n            \"name\": \"customer\"\n        },\n        {\n            \"attributes\": {\n                \"isRequired\": {\n                    \"valueType\": \"Boolean\",\n                    \"value\": \"true\"\n                }\n            },\n            \"type\": \"tillCode\",\n            \"name\": \"String\"\n        }\n    ]\n}'"
+            }
+          ],
+          "samples-languages": [
+            "json",
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

@@ -1,0 +1,76 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Get Configured Card Limit per Customer
+
+Retrieves the configured maximum number of cards active cards per customer.
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "organization-1",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}.api.capillarytech.com/v2/organization",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "oauth2",
+        "flows": {}
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/configs/CONF_MAX_CARDS_PER_ORG": {
+      "get": {
+        "summary": "Get Configured Card Limit per Customer",
+        "description": "Retrieves the configured maximum number of cards active cards per customer.",
+        "operationId": "get-configured-card-limit-per-customer",
+        "responses": {
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": false
+  },
+  "x-readme-fauxas": true
+}
+```

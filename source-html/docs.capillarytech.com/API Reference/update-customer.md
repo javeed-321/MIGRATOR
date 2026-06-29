@@ -1,0 +1,447 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Update Customer Tier
+
+Lets you update tier details of a customer in one or more partner programs.
+
+This API lets you update tier details for customers already linked to partner programs. You can upgrade, downgrade, or renew a customer's tier and set a new tier expiry date. You can also cancel a pending future-dated relinking for supplementary programs.
+
+> 📘 Note
+>
+> The customer must be linked to the partner program before using this API. Use the [Link Customer to Partner Program](https://docs.capillarytech.com/reference/link-customer-to-partner-program__) API to link customers first.
+
+# Example request
+
+```curl Tier update
+curl --location 'https://eu.api.capillarytech.com/v2/partnerProgram/customerPartnerProgramUpdate' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic <YOUR_AUTH_TOKEN>' \
+--data '{
+    "customersPartnerUpdates": [
+        {
+            "customer": {
+                "mobile": "919740000000",
+                "email": "",
+                "externalId": ""
+            },
+            "partnerProgramUpdates": [
+                {
+                    "partnerProgramName": "Apparel-Partner",
+                    "updateType": "UPGRADE",
+                    "updateDetails": {
+                        "updatedTierName": "Silver",
+                        "updatedTierExpiryDate": "2027-12-29T23:59:59+05:30"
+                    }
+                }
+            ]
+        }
+    ]
+}'
+```
+```curl Cancel pending relink
+curl --location 'https://eu.api.capillarytech.com/v2/partnerProgram/customerPartnerProgramUpdate' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic <YOUR_AUTH_TOKEN>' \
+--data '{
+    "customersPartnerUpdates": [
+        {
+            "customer": {
+                "mobile": "917800048833"
+            },
+            "partnerProgramUpdates": [
+                {
+                    "partnerProgramName": "SPP_1",
+                    "updateType": "MEMBERSHIP_RELINKING_CANCELLED"
+                }
+            ]
+        }
+    ]
+}'
+```
+
+# Prerequisites
+
+* Authentication: Basic or OAuth authentication
+* Default access group
+
+# Resource information
+
+|                        |                                                 |
+| :--------------------- | :---------------------------------------------- |
+| URI                    | /v2/partnerProgram/customerPartnerProgramUpdate |
+| HTTP Method            | POST                                            |
+| Pagination             | No                                              |
+| Batch support          | Yes (up to 50 customers per request)            |
+| Rate limit information | None                                            |
+
+# Body parameters
+
+| Field                    | Type    | Required    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| :----------------------- | :------ | :---------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| customersPartnerUpdates  | Array   | Yes         | List of customer update requests. You can update tier details for multiple customers in a single request.                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| .customer                | Object  | Yes         | Customer identification details. At least one identifier must be provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ..id                     | Integer | Conditional | Customer's internal Capillary ID. Any one identifier is required.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ..mobile                 | String  | Conditional | Customer's mobile number. Any one identifier is required.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ..email                  | String  | Conditional | Customer's email address. Any one identifier is required.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ..externalId             | String  | Conditional | Customer's external identifier. Any one identifier is required.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| .partnerProgramUpdates   | Array   | Yes         | List of partner program tier updates for the customer. You can update multiple partner programs in a single request.                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ..partnerProgramName     | String  | Yes         | Name of the partner program. The customer must already be linked to this program.                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ..updateType             | String  | Yes         | Type of update to perform. Supported values: `UPGRADE`, `DOWNGRADE`, `RENEW`, `MEMBERSHIP_RELINKING_CANCELLED`, `MEMBERSHIP_RENEWAL_INITIATION`. Use `MEMBERSHIP_RELINKING_CANCELLED` to cancel a pending future-dated relink for a supplementary program before it is activated. `MEMBERSHIP_RENEWAL_INITIATION` is available only when `ALLOW_MEMBERSHIP_RELINKING` is **disabled** for the org; when it is enabled, use the [Link Customer to Partner Program](https://docs.capillarytech.com/reference/link-customer-to-partner-program__) API with a future `membershipStartDate` instead. |
+| ..updateDetails          | Object  | Conditional | Details of the tier update. Required for `UPGRADE`, `DOWNGRADE`, `RENEW`, and `MEMBERSHIP_RENEWAL_INITIATION`. Not required when `updateType` is `MEMBERSHIP_RELINKING_CANCELLED`.                                                                                                                                                                                                                                                                                                                                                                         |
+| ...updatedTierName       | String  | Yes         | Name of the new tier to assign to the customer. The tier must exist in the partner program configuration.                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ...updatedTierExpiryDate | String  | Optional    | Expiry date and time for the updated tier in ISO 8601 format. Must be a current or future date. Example: `2027-12-29T23:59:59+05:30`. If not provided, the existing tier expiry date remains unchanged.                                                                                                                                                                                                                                                                                                                                                    |
+
+# API quick reference
+
+```
+POST /v2/partnerProgram/customerPartnerProgramUpdate
+   └─ customersPartnerUpdates (array, required)
+      └─ [customer update request]
+         ├─ customer (object, required)
+         │  ├─ id (integer)
+         │  ├─ mobile (string)
+         │  ├─ email (string)
+         │  └─ externalId (string)
+         └─ partnerProgramUpdates (array, required)
+            └─ [partner program update]
+               ├─ partnerProgramName (string, required)
+               ├─ updateType (string, required: UPGRADE | DOWNGRADE | RENEW | MEMBERSHIP_RELINKING_CANCELLED | MEMBERSHIP_RENEWAL_INITIATION)
+               └─ updateDetails (object, required for UPGRADE | DOWNGRADE | RENEW | MEMBERSHIP_RENEWAL_INITIATION)
+                  ├─ updatedTierName (string, required)
+                  └─ updatedTierExpiryDate (string, ISO 8601)
+```
+
+# Example response
+
+```json
+{
+    "customersPartnerUpdates": [
+        {
+            "customer": {
+                "id": 382741349,
+                "mobile": "916215000000",
+                "email": "tom.sawyer@capillarytech.com",
+                "externalId": "X916215000000",
+                "status": {
+                    "status": true,
+                    "message": "Customer successfully retrieved",
+                    "code": 1000
+                }
+            },
+            "partnerProgramUpdates": [
+                {
+                    "partnerProgramName": "1stProgram",
+                    "updateType": "UPGRADE",
+                    "updateStatus": {
+                        "status": true,
+                        "message": "Success",
+                        "code": 200
+                    }
+                }
+            ]
+        }
+    ],
+    "warnings": []
+}
+```
+
+# Response parameters
+
+| Field                   | Type    | Description                                                                                                                           |
+| :---------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------ |
+| customersPartnerUpdates | Array   | List of customer update results.                                                                                                      |
+| .customer               | Object  | Customer identification details and retrieval status.                                                                                 |
+| ..id                    | Integer | Customer's internal ID in Capillary. Example: `382741349`                                                                             |
+| ..mobile                | String  | Customer's mobile number.                                                                                                             |
+| ..email                 | String  | Customer's email address.                                                                                                             |
+| ..externalId            | String  | Customer's external identifier.                                                                                                       |
+| ..status                | Object  | Status of customer retrieval.                                                                                                         |
+| ...status               | Boolean | Indicates success (`true`) or failure (`false`) of customer retrieval.                                                                |
+| ...message              | String  | Message describing the retrieval result. Example: `"Customer successfully retrieved"`                                                 |
+| ...code                 | Integer | Status code for the retrieval. `1000` indicates success.                                                                              |
+| .partnerProgramUpdates  | Array   | List of partner program update results.                                                                                               |
+| ..partnerProgramName    | String  | Name of the partner program. Example: `"1stProgram"`                                                                                  |
+| ..updateType            | String  | Type of update performed. Values: `UPGRADE`, `DOWNGRADE`, `RENEW`, `MEMBERSHIP_RELINKING_CANCELLED`, `MEMBERSHIP_RENEWAL_INITIATION`. |
+| ..updateStatus          | Object  | Status of the partner program update.                                                                                                 |
+| ...status               | Boolean | Indicates success (`true`) or failure (`false`) of the update.                                                                        |
+| ...message              | String  | Message describing the update result. Example: `"Success"`                                                                            |
+| ...code                 | Integer | Status code for the update. `200` indicates success.                                                                                  |
+| warnings                | Array   | List of warning messages, if any.                                                                                                     |
+
+# Error codes
+
+| Code | Type  | Description                                                                                                                                                                                                                                                                                                                      |
+| :--- | :---- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2002 | Error | Invalid Request: Cannot proceed if `updateDetails`, `updatedTierName`, or `partnerProgramName` is empty or null. Ensure all required fields are provided in the request.                                                                                                                                                         |
+| 2003 | Error | Invalid Request: Partner tier expiry date should not be a past date. Set `updatedTierExpiryDate` to today's date or a future date.                                                                                                                                                                                               |
+| 2004 | Error | Invalid Request: Link the customer with the partner program. The customer must be linked to the partner program before updating their tier. Use the [Link Customer to Partner Program](https://docs.capillarytech.com/reference/link-customer-to-partner-program__) API first.                                                                                        |
+| 2006 | Error | Invalid Request: Cannot find the partner program. Verify that `partnerProgramName` matches an existing partner program configured in your organization.                                                                                                                                                                          |
+| 2007 | Error | Invalid Request: Cannot find the partner program tier. Verify that `updatedTierName` matches a tier configured in the partner program.                                                                                                                                                                                           |
+| 2008 | Error | Invalid Request: Cannot process if partner program limit is more than 50. The batch limit is 50 customers per request. Split your request into smaller batches.                                                                                                                                                                  |
+| 2009 | Error | Invalid Request: `updateType` supports only `UPGRADE`, `DOWNGRADE`, `RENEW`, `MEMBERSHIP_RELINKING_CANCELLED`, `MEMBERSHIP_RENEWAL_INITIATION`. Provide one of these values for the `updateType` field.                                                                                                                          |
+| 2026 | Error | Membership relinking is not enabled for this organisation. The `MEMBERSHIP_RELINKING_CANCELLED` update type requires `ALLOW_MEMBERSHIP_RELINKING` to be enabled. To enable this, raise a JIRA ticket to the Capillary product support team.                                                                                      |
+| 2027 | Error | No pending relinking found to cancel. There is no queued future-dated relink for this customer in the specified partner program.                                                                                                                                                                                                 |
+| 2028 | Error | Membership renewal via this API is not allowed for this organisation. Use the [Link Customer to Partner Program](https://docs.capillarytech.com/reference/link-customer-to-partner-program__) API with a future `membershipStartDate` instead. Returned when `updateType` is `MEMBERSHIP_RENEWAL_INITIATION` and `ALLOW_MEMBERSHIP_RELINKING` is enabled for the org. |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/partnerProgram/customerPartnerProgramUpdate": {
+      "post": {
+        "summary": "Update Customer",
+        "description": "Lets you update tier details of a customer in one or more partner programs.",
+        "operationId": "update-customer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "linkCustomers": {
+                    "properties": {
+                      "customer": {
+                        "properties": {
+                          "mobile": {
+                            "type": "string",
+                            "description": "Mobile number of the customer."
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Email ID of the customer."
+                          },
+                          "externalId": {
+                            "type": "string",
+                            "description": "External ID of the customer."
+                          }
+                        },
+                        "required": [],
+                        "type": "object"
+                      },
+                      "linkToPartnerPrograms": {
+                        "properties": {
+                          "partnerProgramName": {
+                            "type": "string",
+                            "description": "Name of the partner program to link with."
+                          },
+                          "": {
+                            "properties": {
+                              "customerPartnerReference": {
+                                "properties": {
+                                  "partnerMembershipId": {
+                                    "type": "string",
+                                    "description": "Unique membership ID of the customer as per the partner program."
+                                  },
+                                  "partnerTierName": {
+                                    "type": "string",
+                                    "description": "Name of the tier associated with the customer. Required for tier based partner program."
+                                  },
+                                  "partnerTierExpiryDate": {
+                                    "type": "string",
+                                    "description": "Expiry date and time of the tier in `ISO` format.",
+                                    "format": "date"
+                                  }
+                                },
+                                "required": [
+                                  "partnerMembershipId",
+                                  "partnerTierName"
+                                ],
+                                "type": "object"
+                              }
+                            },
+                            "required": [],
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "partnerProgramName"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "required": [],
+                    "type": "object",
+                    "description": "Details of the customer and partner program to link."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n\"customersPartnerUpdates\": [\n    {\n        \"customer\": {\n            \"id\": 382741349,\n            \"mobile\": \"916215000000\",\n            \"email\": \"tom.swayer@capillarytech.com\",\n            \"externalId\": \"X916215000000\",\n            \"status\": {\n                \"status\": true,\n                \"message\": \"Customer successfully retrieved\",\n                \"code\": 1000\n            }\n        },\n        \"partnerProgramUpdates\": [\n            {\n                \"partnerProgramName\": \"1stProgram\",\n                \"updateType\": \"UPGRADE\",\n                \"updateStatus\": {\n                    \"status\": true,\n                    \"message\": \"Success\",\n                    \"code\": 200\n                }\n            }\n        ]\n    }\n ],\n\"warnings\": []\n }"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "customersPartnerUpdates": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "customer": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 382741349,
+                                "default": 0
+                              },
+                              "mobile": {
+                                "type": "string",
+                                "example": "916215000000"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "tom.swayer@capillarytech.com"
+                              },
+                              "externalId": {
+                                "type": "string",
+                                "example": "X916215000000"
+                              },
+                              "status": {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "type": "boolean",
+                                    "example": true,
+                                    "default": true
+                                  },
+                                  "message": {
+                                    "type": "string",
+                                    "example": "Customer successfully retrieved"
+                                  },
+                                  "code": {
+                                    "type": "integer",
+                                    "example": 1000,
+                                    "default": 0
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "partnerProgramUpdates": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "partnerProgramName": {
+                                  "type": "string",
+                                  "example": "1stProgram"
+                                },
+                                "updateType": {
+                                  "type": "string",
+                                  "example": "UPGRADE"
+                                },
+                                "updateStatus": {
+                                  "type": "object",
+                                  "properties": {
+                                    "status": {
+                                      "type": "boolean",
+                                      "example": true,
+                                      "default": true
+                                    },
+                                    "message": {
+                                      "type": "string",
+                                      "example": "Success"
+                                    },
+                                    "code": {
+                                      "type": "integer",
+                                      "example": 200,
+                                      "default": 0
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "{\n  \"customersPartnerUpdates\": [\n    {\n      \"customer\": {\n        \"mobile\": \"919740000000\",\n        \"email\": \"\",\n        \"externalId\": \"\"\n      },\n      \"partnerProgramUpdates\": [\n        {\n          \"partnerProgramName\": \"Apparel-Partner\",\n          \"updateType\": \"UPGRADE\",\n          \"updateDetails\": {\n            \"updatedTierName\": \"Silver\",\n            \"updatedTierExpiryDate\": \"2023-12-29T23:59:59+05:30\"\n          }\n        }\n      ]\n    }\n  ]\n}",
+              "name": "Sample POST Body"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

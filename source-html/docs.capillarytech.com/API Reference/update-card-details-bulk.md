@@ -1,0 +1,711 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Update Card Details (Bulk)
+
+Lets you update details of existing cards in bulk. You can update details such as card status label, and custom/extended field values.
+
+## Example request
+
+```curl Sample request
+curl --location --request PUT 'https://eu.api.capillarytech.com/v2/card/bulk?format=json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic ==' \
+--header 'Cookie: _cfuvid=LvoffYWnKNroiGI4mcPHub.st6yK1dPDHOW3wI1lEls-1751478744816-0.0.1.1-604800000' \
+--data '[
+    {
+        "cardNumber": "24234234324345345345",
+        "statusLabel": "ACTIVE",
+        "extendedFields": {
+            "custom_card_name": "TOM",
+            "vehicle_number": "KA01B2020"
+        },
+        "mappedEntity": {
+            "type": "TILL",
+            "value": "rutuja_capillary"
+        },
+        "customFields": {
+            "vehicle_type": "Bike"
+        }
+    },
+    {
+        "cardNumber": "Test09000000000012end",
+        "statusLabel": "ACTIVE",
+        "extendedFields": {
+            "custom_card_name": "SOM",
+            "vehicle_number": "KA01B2021",
+            "card_requested_by": "rutuja_capillary"
+        },
+        "mappedEntity": {
+            "type": "TILL",
+            "value": "rutuja_capillary"
+        },
+        "customFields": {
+            "vehicle_type": "Car"
+        }
+    },
+    {
+        "cardNumber": "Test09000000000004end",
+        "statusLabel": "SUSPENDED",
+        "extendedFields": {
+            "custom_card_name": "DOM",
+            "vehicle_number": "KA01B2019"
+        },
+        "mappedEntity": {
+            "type": "TILL",
+            "value": "rutuja_capillary"
+        },
+        "customFields": {
+            "vehicle_type": "Cycle"
+        }
+    }
+]'
+```
+
+<br />
+
+## Body parameters
+
+| Field                     | Type   | Required | Description                                                                                                                    |
+| ------------------------- | ------ | :------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| cardNumber                | String | Yes      | Unique card number to be updated.                                                                                              |
+| **statusLabel**           | String | Optional | New status label to set for the card. **Allowed values:** `NOT_ISSUED`, `ACTIVE`, `ISSUED`, `SUSPENDED`, `DELETED`, `EXPIRED`. |
+| **extendedFields**        | Object | Optional | Extended fields for additional metadata.                                                                                       |
+| **- custom\_card\_name**  | String | Optional | Custom name to associate with the card.                                                                                        |
+| **- vehicle\_number**     | String | Optional | Vehicle number linked to the card.                                                                                             |
+| **- card\_requested\_by** | String | Optional | Value indicating who requested the card.                                                                                       |
+| **mappedEntity**          | Object | Optional | Information about the entity mapped to the card.                                                                               |
+| **- type**                | String | Optional | Type of entity (e.g., `TILL`).                                                                                                 |
+| **- value**               | String | Optional | Name or value of the entity.                                                                                                   |
+| **customFields**          | Object | Optional | Custom fields associated with the card.                                                                                        |
+| **- vehicle\_type**       | String | Optional | Type of vehicle linked to the card (e.g., `Car`, `Bike`, `Cycle`).                                                             |
+
+## Example response
+
+```json Sample response
+{
+    "response": [
+        {
+            "entityId": {
+                "extendedFields": {
+                    "custom_card_name": "TOM",
+                    "vehicle_number": "KA01B2020"
+                },
+                "customFields": {
+                    "vehicle_type": "Bike"
+                },
+                "mappedEntity": {
+                    "type": "TILL",
+                    "value": "rutuja_capillary"
+                },
+                "cardNumber": "24234234324345345345",
+                "orgId": 100737,
+                "entityId": 75184337,
+                "statusLabel": "ACTIVE",
+                "transactionNotAllowed": false,
+                "activeAndDigital": false
+            },
+            "errors": [
+                {
+                    "status": false,
+                    "code": 3010,
+                    "message": "Card number does not exists"
+                }
+            ],
+            "warnings": []
+        },
+        {
+            "entityId": {
+                "cardId": 906641,
+                "customerId": 564845113,
+                "extendedFields": {
+                    "card_requested_by": "rutuja_capillary",
+                    "custom_card_name": "SOM",
+                    "vehicle_number": "KA01B2021"
+                },
+                "customFields": {
+                    "vehicle_type": "Car"
+                },
+                "mappedEntity": {
+                    "type": "TILL",
+                    "value": "rutuja_capillary",
+                    "id": 75155373
+                },
+                "cardNumber": "Test09000000000012end",
+                "orgId": 100737,
+                "entityId": 75184337,
+                "statusLabelInfo": {
+                    "createdOn": "2024-12-17",
+                    "description": "default",
+                    "entityStatusId": 2,
+                    "id": 494,
+                    "isActive": true,
+                    "label": "ACTIVE",
+                    "orgId": 100737,
+                    "updatedOn": "2025-06-19",
+                    "status": "ACTIVE",
+                    "type": "CARD",
+                    "actions": {},
+                    "default": true
+                },
+                "transactionNotAllowed": false,
+                "activeAndDigital": false
+            },
+            "errors": [],
+            "warnings": [
+                {
+                    "status": false,
+                    "code": 3039,
+                    "message": "No update in status label"
+                }
+            ]
+        },
+        {
+            "entityId": {
+                "cardId": 897683,
+                "customerId": 0,
+                "extendedFields": {
+                    "custom_card_name": "DOM",
+                    "vehicle_number": "KA01B2019"
+                },
+                "customFields": {
+                    "vehicle_type": "Cycle"
+                },
+                "mappedEntity": {
+                    "type": "TILL",
+                    "value": "rutuja_capillary"
+                },
+                "cardNumber": "Test09000000000004end",
+                "orgId": 100737,
+                "entityId": 75184337,
+                "statusLabel": "SUSPENDED",
+                "statusLabelInfo": {
+                    "createdOn": "2024-12-17",
+                    "description": "default",
+                    "entityStatusId": 4,
+                    "id": 496,
+                    "isActive": true,
+                    "label": "SUSPENDED",
+                    "orgId": 100737,
+                    "updatedOn": "2025-06-19",
+                    "status": "SUSPENDED",
+                    "type": "CARD",
+                    "actions": {},
+                    "default": true
+                },
+                "transactionNotAllowed": false,
+                "activeAndDigital": false
+            },
+            "errors": [
+                {
+                    "status": false,
+                    "code": 3038,
+                    "message": "Card status can not be changed from NOT_ISSUED to SUSPENDED"
+                }
+            ],
+            "warnings": []
+        }
+    ],
+    "totalCount": 3,
+    "failureCount": 2
+}
+```
+
+<br />
+
+# Response Body Parameters
+
+| Parameter (parameters marked by \* are mandatory) | DataType | Description                                              |
+| :------------------------------------------------ | :------- | :------------------------------------------------------- |
+| response\*                                        | array    | List of card update responses.                           |
+| — entityId                                        | object   | Card details object.                                     |
+| — — cardId                                        | int      | Unique identifier for the card.                          |
+| — — customerId                                    | int      | Unique identifier for the customer linked to the card.   |
+| — — extendedFields                                | object   | Additional key-value fields.                             |
+| — — — custom\_card\_name                          | string   | Custom card name.                                        |
+| — — — vehicle\_number                             | string   | Vehicle number linked to the card.                       |
+| — — customFields                                  | object   | Custom fields as key-value pairs.                        |
+| — — — vehicle\_type                               | string   | Type of vehicle (e.g., Car, Bike, Cycle).                |
+| — — mappedEntity                                  | object   | Information about the mapped entity.                     |
+| — — — type                                        | string   | Type of entity (e.g., `TILL`).                           |
+| — — — value                                       | string   | Value of the mapped entity.                              |
+| — — — id                                          | int      | Unique identifier for the mapped entity.                 |
+| — — cardNumber                                    | string   | Card number.                                             |
+| — — orgId                                         | int      | Unique identifier for the organization.                  |
+| — — entityId                                      | int      | Unique identifier linked to the card.                    |
+| — — statusLabel                                   | string   | Status label of the card (e.g., `ACTIVE`, `SUSPENDED`).  |
+| — — statusLabelInfo                               | object   | Detailed information about the status label.             |
+| — — — createdOn                                   | string   | Date when the status label was created.                  |
+| — — — description                                 | string   | Description of the status label.                         |
+| — — — entityStatusId                              | int      | Unique identifier for entity status.                     |
+| — — — id                                          | int      | Unique identifier for the status label.                  |
+| — — — isActive                                    | boolean  | Indicates whether the status label is active.            |
+| — — — label                                       | string   | Label description.                                       |
+| — — — orgId                                       | int      | Unique identifier for the organization.                  |
+| — — — updatedOn                                   | string   | Date when the status label was last updated.             |
+| — — — status                                      | string   | Status value.                                            |
+| — — — type                                        | string   | Type of entity status label (e.g., `CARD`).              |
+| — — — actions                                     | object   | Actions related to the status label.                     |
+| — — — default                                     | boolean  | Indicates whether this is the default label.             |
+| — — activeAndDigital                              | boolean  | Indicates whether the card is active and digital.        |
+| — — transactionNotAllowed                         | boolean  | Indicates whether transactions are allowed on this card. |
+| errors                                            | array    | List of error objects related to the update.             |
+| — status                                          | boolean  | Status of the error.                                     |
+| — message                                         | string   | Description of the error.                                |
+| — code                                            | int      | Unique identifier for the error code.                    |
+| warnings                                          | array    | List of warnings related to the update.                  |
+| — status                                          | boolean  | Status of the warning.                                   |
+| — message                                         | string   | Description of the warning.                              |
+| — code                                            | int      | Unique identifier for the warning code.                  |
+| totalCount\*                                      | int      | Total number of processed card records.                  |
+| failureCount                                      | int      | Number of failed card updates.                           |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/card/bulk": {
+      "put": {
+        "summary": "Update Card Details (Bulk)",
+        "description": "Lets you update details of existing cards in bulk. You can update details such as card status label, and custom/extended field values.",
+        "operationId": "update-card-details-bulk",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "cardNumber"
+                ],
+                "properties": {
+                  "seriesId": {
+                    "type": "integer",
+                    "description": "Unique ID of the card series associated with the card.",
+                    "format": "int32"
+                  },
+                  "cardNumber": {
+                    "type": "string",
+                    "description": "Unique number of the card to add details. Either cardNumber or cardExternalId is mandatory."
+                  },
+                  "cardExternalId": {
+                    "type": "string",
+                    "description": "External reference ID of the card. Either cardNumber or cardExternalId is mandatory."
+                  },
+                  "statusLabel": {
+                    "type": "string",
+                    "description": "Current user defined status of the card. Check your user defined values for the system values (not issued, active, inactive, deleted, expired)."
+                  },
+                  "customFields": {
+                    "type": "object",
+                    "description": "Card level custom field details in key:value pair.",
+                    "properties": {}
+                  },
+                  "extendedFields": {
+                    "type": "object",
+                    "description": "Card level extended field details in key:value pair.",
+                    "properties": {}
+                  },
+                  "mappedEntity": {
+                    "type": "object",
+                    "description": "Details of the TILL associated with the card issual.",
+                    "properties": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": {
+                      "response": [
+                        {
+                          "entityId": {
+                            "extendedFields": {
+                              "custom_card_name": "TOM",
+                              "vehicle_number": "KA01B2020"
+                            },
+                            "customFields": {
+                              "vehicle_type": "Bike"
+                            },
+                            "mappedEntity": {
+                              "type": "TILL",
+                              "value": "rutuja_capillary"
+                            },
+                            "cardNumber": "24234234324345345345",
+                            "orgId": 100737,
+                            "entityId": 75184337,
+                            "statusLabel": "ACTIVE",
+                            "transactionNotAllowed": false,
+                            "activeAndDigital": false
+                          },
+                          "errors": [
+                            {
+                              "status": false,
+                              "code": 3010,
+                              "message": "Card number does not exists"
+                            }
+                          ],
+                          "warnings": []
+                        },
+                        {
+                          "entityId": {
+                            "cardId": 906641,
+                            "customerId": 564845113,
+                            "extendedFields": {
+                              "card_requested_by": "rutuja_capillary",
+                              "custom_card_name": "SOM",
+                              "vehicle_number": "KA01B2021"
+                            },
+                            "customFields": {
+                              "vehicle_type": "Car"
+                            },
+                            "mappedEntity": {
+                              "type": "TILL",
+                              "value": "rutuja_capillary",
+                              "id": 75155373
+                            },
+                            "cardNumber": "Test09000000000012end",
+                            "orgId": 100737,
+                            "entityId": 75184337,
+                            "statusLabelInfo": {
+                              "createdOn": "2024-12-17",
+                              "description": "default",
+                              "entityStatusId": 2,
+                              "id": 494,
+                              "isActive": true,
+                              "label": "ACTIVE",
+                              "orgId": 100737,
+                              "updatedOn": "2025-06-19",
+                              "status": "ACTIVE",
+                              "type": "CARD",
+                              "actions": {},
+                              "default": true
+                            },
+                            "transactionNotAllowed": false,
+                            "activeAndDigital": false
+                          },
+                          "errors": [],
+                          "warnings": [
+                            {
+                              "status": false,
+                              "code": 3039,
+                              "message": "No update in status label"
+                            }
+                          ]
+                        },
+                        {
+                          "entityId": {
+                            "cardId": 897683,
+                            "customerId": 0,
+                            "extendedFields": {
+                              "custom_card_name": "DOM",
+                              "vehicle_number": "KA01B2019"
+                            },
+                            "customFields": {
+                              "vehicle_type": "Cycle"
+                            },
+                            "mappedEntity": {
+                              "type": "TILL",
+                              "value": "rutuja_capillary"
+                            },
+                            "cardNumber": "Test09000000000004end",
+                            "orgId": 100737,
+                            "entityId": 75184337,
+                            "statusLabel": "SUSPENDED",
+                            "statusLabelInfo": {
+                              "createdOn": "2024-12-17",
+                              "description": "default",
+                              "entityStatusId": 4,
+                              "id": 496,
+                              "isActive": true,
+                              "label": "SUSPENDED",
+                              "orgId": 100737,
+                              "updatedOn": "2025-06-19",
+                              "status": "SUSPENDED",
+                              "type": "CARD",
+                              "actions": {},
+                              "default": true
+                            },
+                            "transactionNotAllowed": false,
+                            "activeAndDigital": false
+                          },
+                          "errors": [
+                            {
+                              "status": false,
+                              "code": 3038,
+                              "message": "Card status can not be changed from NOT_ISSUED to SUSPENDED"
+                            }
+                          ],
+                          "warnings": []
+                        }
+                      ],
+                      "totalCount": 3,
+                      "failureCount": 2
+                    }
+                  },
+                  "New Example": {
+                    "summary": "New Example",
+                    "value": "{}{\n    \"response\": [\n        {\n            \"entityId\": {\n                \"extendedFields\": {\n                    \"custom_card_name\": \"TOM\",\n                    \"vehicle_number\": \"KA01B2020\"\n                },\n                \"customFields\": {\n                    \"vehicle_type\": \"Bike\"\n                },\n                \"mappedEntity\": {\n                    \"type\": \"TILL\",\n                    \"value\": \"rutuja_capillary\"\n                },\n                \"cardNumber\": \"24234234324345345345\",\n                \"orgId\": 100737,\n                \"entityId\": 75155295,\n                \"statusLabel\": \"ACTIVE\",\n                \"activeAndDigital\": false,\n                \"transactionNotAllowed\": false\n            },\n            \"errors\": [\n                {\n                    \"status\": false,\n                    \"message\": \"Card number does not exists\",\n                    \"code\": 3010\n                }\n            ],\n            \"warnings\": []\n        },\n        {\n            \"entityId\": {\n                \"cardId\": 906641,\n                \"customerId\": 564845113,\n                \"extendedFields\": {\n                    \"card_requested_by\": \"rutuja_capillary\",\n                    \"custom_card_name\": \"SOM\",\n                    \"vehicle_number\": \"KA01B2021\"\n                },\n                \"customFields\": {\n                    \"vehicle_type\": \"Car\"\n                },\n                \"mappedEntity\": {\n                    \"type\": \"TILL\",\n                    \"value\": \"rutuja_capillary\",\n                    \"id\": 75155373\n                },\n                \"cardNumber\": \"Test09000000000012end\",\n                \"orgId\": 100737,\n                \"entityId\": 75155295,\n                \"statusLabelInfo\": {\n                    \"createdOn\": \"2024-12-17\",\n                    \"description\": \"default\",\n                    \"entityStatusId\": 2,\n                    \"id\": 494,\n                    \"isActive\": true,\n                    \"label\": \"ACTIVE\",\n                    \"orgId\": 100737,\n                    \"updatedOn\": \"2025-06-19\",\n                    \"status\": \"ACTIVE\",\n                    \"type\": \"CARD\",\n                    \"actions\": {},\n                    \"default\": true\n                },\n                \"activeAndDigital\": false,\n                \"transactionNotAllowed\": false\n            },\n            \"errors\": [],\n            \"warnings\": [\n                {\n                    \"status\": false,\n                    \"message\": \"No update in status label\",\n                    \"code\": 3039\n                }\n            ]\n        },\n        {\n            \"entityId\": {\n                \"cardId\": 897683,\n                \"customerId\": 0,\n                \"extendedFields\": {\n                    \"custom_card_name\": \"DOM\",\n                    \"vehicle_number\": \"KA01B2019\"\n                },\n                \"customFields\": {\n                    \"vehicle_type\": \"Cycle\"\n                },\n                \"mappedEntity\": {\n                    \"type\": \"TILL\",\n                    \"value\": \"rutuja_capillary\"\n                },\n                \"cardNumber\": \"Test09000000000004end\",\n                \"orgId\": 100737,\n                \"entityId\": 75155295,\n                \"statusLabel\": \"SUSPENDED\",\n                \"statusLabelInfo\": {\n                    \"createdOn\": \"2024-12-17\",\n                    \"description\": \"default\",\n                    \"entityStatusId\": 4,\n                    \"id\": 496,\n                    \"isActive\": true,\n                    \"label\": \"SUSPENDED\",\n                    \"orgId\": 100737,\n                    \"updatedOn\": \"2025-06-19\",\n                    \"status\": \"SUSPENDED\",\n                    \"type\": \"CARD\",\n                    \"actions\": {},\n                    \"default\": true\n                },\n                \"activeAndDigital\": false,\n                \"transactionNotAllowed\": false\n            },\n            \"errors\": [\n                {\n                    \"status\": false,\n                    \"message\": \"Card status can not be changed from NOT_ISSUED to SUSPENDED\",\n                    \"code\": 3038\n                }\n            ],\n            \"warnings\": []\n        }\n    ],\n    \"totalCount\": 3,\n    \"failureCount\": 2\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "entityId": {
+                            "type": "object",
+                            "properties": {
+                              "cardId": {
+                                "type": "integer",
+                                "example": 417,
+                                "default": 0
+                              },
+                              "customerId": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              },
+                              "extendedFields": {
+                                "type": "object",
+                                "properties": {
+                                  "limit_set_by": {
+                                    "type": "string",
+                                    "example": "tom"
+                                  },
+                                  "year_of_registration": {
+                                    "type": "integer",
+                                    "example": 36,
+                                    "default": 0
+                                  }
+                                }
+                              },
+                              "customFields": {
+                                "type": "object",
+                                "properties": {
+                                  "carda1": {
+                                    "type": "string",
+                                    "example": ""
+                                  },
+                                  "cardstatus": {
+                                    "type": "string",
+                                    "example": "na"
+                                  }
+                                }
+                              },
+                              "mappedEntity": {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "example": "TILL"
+                                  },
+                                  "value": {
+                                    "type": "string",
+                                    "example": "paw1"
+                                  },
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 50016843,
+                                    "default": 0
+                                  }
+                                }
+                              },
+                              "cardNumber": {
+                                "type": "string",
+                                "example": "visasushi005"
+                              },
+                              "orgId": {
+                                "type": "integer",
+                                "example": 50247,
+                                "default": 0
+                              },
+                              "entityId": {
+                                "type": "integer",
+                                "example": 50016843,
+                                "default": 0
+                              },
+                              "statusLabelInfo": {
+                                "type": "object",
+                                "properties": {
+                                  "createdOn": {
+                                    "type": "string",
+                                    "example": "2021-11-23"
+                                  },
+                                  "entityStatusId": {
+                                    "type": "integer",
+                                    "example": 1,
+                                    "default": 0
+                                  },
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 24,
+                                    "default": 0
+                                  },
+                                  "isActive": {
+                                    "type": "boolean",
+                                    "example": true,
+                                    "default": true
+                                  },
+                                  "label": {
+                                    "type": "string",
+                                    "example": "not_issued"
+                                  },
+                                  "orgId": {
+                                    "type": "integer",
+                                    "example": 50247,
+                                    "default": 0
+                                  },
+                                  "updatedOn": {
+                                    "type": "string",
+                                    "example": "2021-11-23"
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "example": "NOT_ISSUED"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "example": "CARD"
+                                  },
+                                  "actions": {
+                                    "type": "object",
+                                    "properties": {}
+                                  },
+                                  "default": {
+                                    "type": "boolean",
+                                    "example": true,
+                                    "default": true
+                                  }
+                                }
+                              },
+                              "transactionNotAllowed": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              }
+                            }
+                          },
+                          "errors": {
+                            "type": "array"
+                          },
+                          "warnings": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "status": {
+                                  "type": "boolean",
+                                  "example": false,
+                                  "default": true
+                                },
+                                "message": {
+                                  "type": "string",
+                                  "example": "No update in status label"
+                                },
+                                "code": {
+                                  "type": "integer",
+                                  "example": 3039,
+                                  "default": 0
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "example": 2,
+                      "default": 0
+                    },
+                    "failureCount": {
+                      "type": "integer",
+                      "example": 0,
+                      "default": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location --request PUT 'https://eu.api.capillarytech.com/v2/card/bulk?format=json' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic ==' \\\n--header 'Cookie: _cfuvid=LvoffYWnKNroiGI4mcPHub.st6yK1dPDHOW3wI1lEls-1751478744816-0.0.1.1-604800000' \\\n--data '[\n    {\n        \"cardNumber\": \"24234234324345345345\",\n        \"statusLabel\": \"ACTIVE\",\n        \"extendedFields\": {\n            \"custom_card_name\": \"TOM\",\n            \"vehicle_number\": \"KA01B2020\"\n        },\n        \"mappedEntity\": {\n            \"type\": \"TILL\",\n            \"value\": \"rutuja_capillary\"\n        },\n        \"customFields\": {\n            \"vehicle_type\": \"Bike\"\n        }\n    },\n    {\n        \"cardNumber\": \"Test09000000000012end\",\n        \"statusLabel\": \"ACTIVE\",\n        \"extendedFields\": {\n            \"custom_card_name\": \"SOM\",\n            \"vehicle_number\": \"KA01B2021\",\n            \"card_requested_by\": \"rutuja_capillary\"\n        },\n        \"mappedEntity\": {\n            \"type\": \"TILL\",\n            \"value\": \"rutuja_capillary\"\n        },\n        \"customFields\": {\n            \"vehicle_type\": \"Car\"\n        }\n    },\n    {\n        \"cardNumber\": \"Test09000000000004end\",\n        \"statusLabel\": \"SUSPENDED\",\n        \"extendedFields\": {\n            \"custom_card_name\": \"DOM\",\n            \"vehicle_number\": \"KA01B2019\"\n        },\n        \"mappedEntity\": {\n            \"type\": \"TILL\",\n            \"value\": \"rutuja_capillary\"\n        },\n        \"customFields\": {\n            \"vehicle_type\": \"Cycle\"\n        }\n    }\n]'",
+              "name": "Sample PUT Body"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

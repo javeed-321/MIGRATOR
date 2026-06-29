@@ -1,0 +1,304 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Get Subscription Details
+
+Retrieves SMS and email subscription details of a customer. You can filter the results by priority and communication channel. To retrieve subscription details of multiple customers, pass each customer identifier separating by comma.
+
+> 📘 Any one of the customer identifiers is required.
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "customer-v11",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v1.1",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/customer/subscriptions": {
+      "get": {
+        "summary": "Get Subscription Details",
+        "description": "Retrieves SMS and email subscription details of a customer. You can filter the results by priority and communication channel. To retrieve subscription details of multiple customers, pass each customer identifier separating by comma.",
+        "operationId": "get-subscription-details-1",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "json",
+                "xml"
+              ]
+            }
+          },
+          {
+            "name": "mobile",
+            "in": "query",
+            "description": "Mobile number of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Email ID of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "external_id",
+            "in": "query",
+            "description": "External ID of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Unique ID of the customer.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "channel",
+            "in": "query",
+            "description": "Filter results by communication channel.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SMS",
+                "EMAIL",
+                "WECHAT",
+                "SOCIAL",
+                "REMINDER_TEXT",
+                "RE_ISSUAL_TEXT",
+                "CLIENT."
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit the number of results to retrieve. For example, limit=4 fetches only four recommendations.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "description": "Filter the results by message type.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "TRANS",
+                "BULK"
+              ]
+            }
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "description": "Pass `ALL` to retrieve the details of all subscription modules. For example, points, coupons, general etc.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"response\": {\n        \"status\": {\n            \"success\": \"true\",\n            \"code\": 200,\n            \"message\": \"Success\"\n        },\n        \"subscriptions\": {\n            \"subscription\": [\n                {\n                    \"user_id\": \"29372667\",\n                    \"mobile\": \"447700900000\",\n                    \"email\": \"tom.sawyer@example.com\",\n                    \"external_id\": \"XYPZ001\",\n                    \"channel\": [\n                        {\n                            \"name\": \"SMS\",\n                            \"priority\": [\n                                {\n                                    \"name\": \"TRANS\",\n                                    \"subscribed\": \"ALL\",\n                                    \"unsubscribed\": \"\",\n                                    \"user_preference\": \"SUBSCRIBED\"\n                                },\n                                {\n                                    \"name\": \"BULK\",\n                                    \"subscribed\": \"\",\n                                    \"unsubscribed\": \"ALL\",\n                                    \"user_preference\": \"UNSUBSCRIBED\"\n                                }\n                            ]\n                        },\n                        {\n                            \"name\": \"POSTMAIL\",\n                            \"priority\": [\n                                {\n                                    \"name\": \"TRANS\",\n                                    \"subscribed\": \"ALL\",\n                                    \"unsubscribed\": \"\",\n                                    \"user_preference\": \"NOT_SET\"\n                                },\n                                {\n                                    \"name\": \"BULK\",\n                                    \"subscribed\": \"ALL\",\n                                    \"unsubscribed\": \"\",\n                                    \"user_preference\": \"NOT_SET\"\n                                }\n                            ]\n                        },\n                        {\n                            \"name\": \"EMAIL\",\n                            \"priority\": [\n                                {\n                                    \"name\": \"TRANS\",\n                                    \"subscribed\": \"ALL\",\n                                    \"unsubscribed\": \"\",\n                                    \"user_preference\": \"SUBSCRIBED\"\n                                },\n                                {\n                                    \"name\": \"BULK\",\n                                    \"subscribed\": \"\",\n                                    \"unsubscribed\": \"ALL\",\n                                    \"user_preference\": \"UNSUBSCRIBED\"\n                                }\n                            ]\n                        }\n                    ],\n                    \"orgUnitSubscriptions\": [],\n                    \"item_status\": {\n                        \"code\": \"1000\",\n                        \"message\": \"Subscription successfully retrieved\",\n                        \"success\": \"true\"\n                    }\n                },\n                {\n                    \"user_id\": \"343040815\",\n                    \"mobile\": \"919999000012\",\n                    \"channel\": [\n                        {\n                            \"name\": \"SMS\",\n                            \"priority\": [\n                                {\n                                    \"name\": \"TRANS\",\n                                    \"subscribed\": \"ALL\",\n                                    \"unsubscribed\": \"\",\n                                    \"user_preference\": \"NOT_SET\"\n                                },\n                                {\n                                    \"name\": \"BULK\",\n                                    \"subscribed\": \"ALL\",\n                                    \"unsubscribed\": \"\",\n                                    \"user_preference\": \"NOT_SET\"\n                                }\n                            ]\n                        },\n                        {\n                            \"name\": \"POSTMAIL\",\n                            \"priority\": [\n                                {\n                                    \"name\": \"TRANS\",\n                                    \"subscribed\": \"ALL\",\n                                    \"unsubscribed\": \"\",\n                                    \"user_preference\": \"NOT_SET\"\n                                },\n                                {\n                                    \"name\": \"BULK\",\n                                    \"subscribed\": \"ALL\",\n                                    \"unsubscribed\": \"\",\n                                    \"user_preference\": \"NOT_SET\"\n                                }\n                            ]\n                        },\n                        {\n                            \"name\": \"EMAIL\",\n                            \"priority\": [\n                                {\n                                    \"name\": \"TRANS\",\n                                    \"subscribed\": \"ALL\",\n                                    \"unsubscribed\": \"\",\n                                    \"user_preference\": \"NOT_SET\"\n                                },\n                                {\n                                    \"name\": \"BULK\",\n                                    \"subscribed\": \"ALL\",\n                                    \"unsubscribed\": \"\",\n                                    \"user_preference\": \"NOT_SET\"\n                                }\n                            ]\n                        }\n                    ],\n                    \"orgUnitSubscriptions\": [],\n                    \"item_status\": {\n                        \"code\": \"1000\",\n                        \"message\": \"Subscription successfully retrieved\",\n                        \"success\": \"true\"\n                    }\n                }\n            ]\n        }\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "object",
+                          "properties": {
+                            "success": {
+                              "type": "string",
+                              "example": "true"
+                            },
+                            "code": {
+                              "type": "integer",
+                              "example": 200,
+                              "default": 0
+                            },
+                            "message": {
+                              "type": "string",
+                              "example": "Success"
+                            }
+                          }
+                        },
+                        "subscriptions": {
+                          "type": "object",
+                          "properties": {
+                            "subscription": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "user_id": {
+                                    "type": "string",
+                                    "example": "29372667"
+                                  },
+                                  "mobile": {
+                                    "type": "string",
+                                    "example": "447700900000"
+                                  },
+                                  "email": {
+                                    "type": "string",
+                                    "example": "tom.sawyer@example.com"
+                                  },
+                                  "external_id": {
+                                    "type": "string",
+                                    "example": "XYPZ001"
+                                  },
+                                  "channel": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "name": {
+                                          "type": "string",
+                                          "example": "SMS"
+                                        },
+                                        "priority": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "name": {
+                                                "type": "string",
+                                                "example": "TRANS"
+                                              },
+                                              "subscribed": {
+                                                "type": "string",
+                                                "example": "ALL"
+                                              },
+                                              "unsubscribed": {
+                                                "type": "string",
+                                                "example": ""
+                                              },
+                                              "user_preference": {
+                                                "type": "string",
+                                                "example": "SUBSCRIBED"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "orgUnitSubscriptions": {
+                                    "type": "array"
+                                  },
+                                  "item_status": {
+                                    "type": "object",
+                                    "properties": {
+                                      "code": {
+                                        "type": "string",
+                                        "example": "1000"
+                                      },
+                                      "message": {
+                                        "type": "string",
+                                        "example": "Subscription successfully retrieved"
+                                      },
+                                      "success": {
+                                        "type": "string",
+                                        "example": "true"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "https://nightly.capillary.in/v1.1/customer/subscriptions?mobile=447700900000",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

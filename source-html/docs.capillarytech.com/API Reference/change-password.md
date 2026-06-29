@@ -1,0 +1,325 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Change Password
+
+Lets you modify the current password of a customer. This is applicable only for brands for which password is enabled.
+
+# Prerequisite
+
+* The brand must be password-enabled.
+* The user must have a validated password.
+* A valid identifier and the corresponding value.
+* A valid token generated during password validation.
+* The device ID for mobile applications.
+
+# Resource Information
+
+|                    |                              |
+| ------------------ | ---------------------------- |
+| URI for Mobile App | /auth/v1/password/change     |
+| URI for Web App    | /auth/v1/web/password/change |
+| Rate Limited?      | Yes                          |
+| Authentication     | Token-based                  |
+| HTTP Method        | POST                         |
+| Batch Support      | No                           |
+
+# Request URL
+
+For mobile application:
+
+`http://`{`ae-host`}`/auth/v1/password/change`
+
+For web application:
+
+`http://`{`ae-host`}`/auth/v1/web/password/change`
+
+# Example request
+
+```curl Sample request for mobile application
+curl --location 'https://eu.api.capillarytech.com/auth/v1/password/change' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'accept: application/json' \
+--data '{
+    "identifierType": "MOBILE",
+    "identifierValue": "919999922332",
+    "brand": "DocDemo",
+    "deviceId": "123456785",
+    "password": "abc123",
+    "newPassword": "Qwerty12345",
+    "confirmPassword": "Qwerty12345",
+    "token": "eyJpZHYiOlsiTU9CSUxFfDkxOTk5OTkyMjMzMiJdLCJkZXYiOiIxMjM0NTY3ODUiLCJvcmciOiJET0NERU1PIiwiYWxnIjoiSFMyNTYifQ.eyJ1aWQiOiI0NDEyNDU4IiwiaXNzIjoiQ0FQSUxMQVJZIFRFQ0hOT0xPR0lFUyIsImlzYyI6ImZhbHNlIiwib2djIjpbIjEwMDczN3xuZWVyYWouZG9jIl0sImV4cCI6MTc2MDQzNzAyNywiaWF0IjoxNzYwNDMzNDI3LCJyb2wiOiJVU0VSIn0.A1VXGKmSBqlNDhd68YsmLZsgO6B4bJD8HupGpY5z79I"
+}'
+```
+```curl Sample request for web application
+curl --location 'https://eu.api.capillarytech.com/auth/v1/web/password/change' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'accept: application/json' \
+--data '{
+    "identifierType": "MOBILE",
+    "identifierValue": "919999922332",
+    "brand": "DocDemo",
+    "password": "Qwerty12345",
+    "newPassword": "abc123",
+    "confirmPassword": "abc123",
+    "token": "eyJpZHYiOlsiTU9CSUxFfDkxOTk5OTkyMjMzMiJdLCJkZXYiOm51bGwsIm9yZyI6IkRPQ0RFTU8iLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiI0NDEyNDU4IiwiaXNzIjoiQ0FQSUxMQVJZIFRFQ0hOT0xPR0lFUyIsImlzYyI6ImZhbHNlIiwib2djIjpbIjEwMDczN3xuZWVyYWouZG9jIl0sImV4cCI6MTc2MDQ0NDM5MCwiaWF0IjoxNzYwNDMzNTkwLCJyb2wiOiJVU0VSIn0.5fnnPGMO2PP_losP5cY0u44j0XGtZP8XanWY8iQF5q0"
+}'
+```
+
+# Request body parameters
+
+| Parameter         | Datatype | Description                                                                                                                                                   |
+| ----------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| identifierType\*  | enum     | Identifier used for changing the password. Values: MOBILE, EMAIL, USERNAME.                                                                                   |
+| identifierValue\* | string   | Value of the specified identifierType. For example, if identifierType is MOBILE, the identifierValue is the mobile number.                                    |
+| deviceId\*\*      | string   | Unique ID of the device used for changing the password. Applicable only for the mobile app.                                                                   |
+| brand\*           | string   | Name of the brand or organization associated with the current account.                                                                                        |
+| token\*           | string   | Unique token generated for the identifierType and identifierValue during [password validation](https://docs.capillarytech.com/reference/validate-password#/). |
+| password\*        | string   | Existing password of the account.                                                                                                                             |
+| newPassword\*     | string   | New password the customer would like to have. Currently, there is no minimum or maximum character limit, and using special characters is not mandatory.       |
+| confirmPassword\* | string   | Reenter the new password for confirmation.                                                                                                                    |
+
+Parameters marked with \* are mandatory.
+
+Parameter marked with \*\* is mandatory for the mobile application and optional for web application.
+
+# Example response
+
+```json Sample response for mobile application
+{
+    "status": {
+        "success": true,
+        "code": 200,
+        "message": "SUCCESS"
+    }
+}
+```
+```json Sample response for web application
+{
+    "status": {
+        "success": true,
+        "code": 200,
+        "message": "SUCCESS"
+    }
+}
+```
+
+<br />
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v1",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/auth/v1/web/password/change": {
+      "post": {
+        "summary": "Change Password",
+        "description": "Lets you modify the current password of a customer. This is applicable only for brands for which password is enabled.",
+        "operationId": "change-password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "identifierType",
+                  "identifierValue",
+                  "brand",
+                  "deviceId",
+                  "password",
+                  "newPassword",
+                  "confirmPassword",
+                  "token"
+                ],
+                "properties": {
+                  "identifierType": {
+                    "type": "string",
+                    "description": "Identifier used for token generation. Values: MOBILE, EMAIL, USERNAME."
+                  },
+                  "identifierValue": {
+                    "type": "string",
+                    "description": "Value of the specified identifierType."
+                  },
+                  "brand": {
+                    "type": "string",
+                    "description": "Name of the brand/org for which authentication needs to be verified."
+                  },
+                  "deviceId": {
+                    "type": "string",
+                    "description": "Unique ID of the device used for changing password. Applicable only for mobile app."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Current password of the account."
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "description": "New password of the account."
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "description": "Reenter the new password."
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Unique token generated for the identifierType, identifierValue and for web application, and including deviceId for the mobile application."
+                  }
+                }
+              },
+              "examples": {
+                "Sample POST Body": {
+                  "value": {
+                    "identifierType": "USERNAME",
+                    "identifierValue": "9940000000",
+                    "deviceId": "deviceid1",
+                    "brand": "KANMODEMO",
+                    "password": "password",
+                    "newPassword": "password1",
+                    "confirmPassword": "password1",
+                    "token": "eyJpZHYiOlsiTU9CSUxFfDk5NDU1NjAyMjQiLCJVU0VSTkFNRXw5OTQ1NTYwMjI0Il0sImRldiI6ImRldmljZWlkMSIsIm9yZyI6IlNUQU5EQVJEQVBQIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJDQVBJTExBUlkgVEVDSE5PTE9HSUVTIiwib2djIjpbIjE1MTA2MHxzYS5kZW1vLnNvbHV0aW9uIl0sImV4cCI6MTU5Nzg0MzczMywiaWF0IjoxNTk3ODQwMTMzLCJyb2wiOiJWSUVXIn0.pKYy3FpZm82igqp5CRUku4WF8pT5JEp6mX3P48M2qvY"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample response for mobile application": {
+                    "value": {
+                      "status": {
+                        "success": true,
+                        "code": 200,
+                        "message": "SUCCESS"
+                      }
+                    },
+                    "summary": "Sample response for mobile application"
+                  },
+                  "Sample response for web application": {
+                    "summary": "Sample response for web application",
+                    "value": {
+                      "status": {
+                        "success": true,
+                        "code": 200,
+                        "message": "SUCCESS"
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": true,
+                          "default": true
+                        },
+                        "code": {
+                          "type": "integer",
+                          "example": 200,
+                          "default": 0
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "SUCCESS"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'https://eu.api.capillarytech.com/auth/v1/password/change' \\\n--header 'Accept: application/json' \\\n--header 'Content-Type: application/json' \\\n--header 'accept: application/json' \\\n--data '{\n    \"identifierType\": \"MOBILE\",\n    \"identifierValue\": \"919999922332\",\n    \"brand\": \"DocDemo\",\n    \"deviceId\": \"123456785\",\n    \"password\": \"abc123\",\n    \"newPassword\": \"Qwerty12345\",\n    \"confirmPassword\": \"Qwerty12345\",\n    \"token\": \"eyJpZHYiOlsiTU9CSUxFfDkxOTk5OTkyMjMzMiJdLCJkZXYiOiIxMjM0NTY3ODUiLCJvcmciOiJET0NERU1PIiwiYWxnIjoiSFMyNTYifQ.eyJ1aWQiOiI0NDEyNDU4IiwiaXNzIjoiQ0FQSUxMQVJZIFRFQ0hOT0xPR0lFUyIsImlzYyI6ImZhbHNlIiwib2djIjpbIjEwMDczN3xuZWVyYWouZG9jIl0sImV4cCI6MTc2MDQzNzAyNywiaWF0IjoxNzYwNDMzNDI3LCJyb2wiOiJVU0VSIn0.A1VXGKmSBqlNDhd68YsmLZsgO6B4bJD8HupGpY5z79I\"\n}'",
+              "language": "shell",
+              "name": "Sample request for mobile application"
+            },
+            {
+              "code": "curl --location 'https://eu.api.capillarytech.com/auth/v1/web/password/change' \\\n--header 'Accept: application/json' \\\n--header 'Content-Type: application/json' \\\n--header 'accept: application/json' \\\n--data '{\n    \"identifierType\": \"MOBILE\",\n    \"identifierValue\": \"919999922332\",\n    \"brand\": \"DocDemo\",\n    \"password\": \"Qwerty12345\",\n    \"newPassword\": \"abc123\",\n    \"confirmPassword\": \"abc123\",\n    \"token\": \"eyJpZHYiOlsiTU9CSUxFfDkxOTk5OTkyMjMzMiJdLCJkZXYiOm51bGwsIm9yZyI6IkRPQ0RFTU8iLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiI0NDEyNDU4IiwiaXNzIjoiQ0FQSUxMQVJZIFRFQ0hOT0xPR0lFUyIsImlzYyI6ImZhbHNlIiwib2djIjpbIjEwMDczN3xuZWVyYWouZG9jIl0sImV4cCI6MTc2MDQ0NDM5MCwiaWF0IjoxNzYwNDMzNTkwLCJyb2wiOiJVU0VSIn0.5fnnPGMO2PP_losP5cY0u44j0XGtZP8XanWY8iQF5q0\"\n}'",
+              "language": "shell",
+              "name": "Sample request for web application"
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

@@ -1,0 +1,140 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Get Config Key Values
+
+Retrieves the organization configuration values based on config name.
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "organization-1",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}.api.capillarytech.com/v2/organization",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "oauth2",
+        "flows": {}
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/organization/configkeyvalue": {
+      "get": {
+        "summary": "Get Config Key Values",
+        "description": "Retrieves the organization configuration values based on config name.",
+        "operationId": "get-organization-configs",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name of the configuration key to fetch details.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CONF_MAX_CARDS_PER_ORG",
+                "IS_DIRECT_REPLAY_ENABLED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample Response": {
+                    "value": "{\n    \"id\": 0,\n    \"entityId\": 0,\n    \"keyName\": \"IS_DIRECT_REPLAY_ENABLED\",\n    \"value\": \"0\",\n    \"warnings\": []\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 0,
+                      "default": 0
+                    },
+                    "entityId": {
+                      "type": "integer",
+                      "example": 0,
+                      "default": 0
+                    },
+                    "keyName": {
+                      "type": "string",
+                      "example": "IS_DIRECT_REPLAY_ENABLED"
+                    },
+                    "value": {
+                      "type": "string",
+                      "example": "0"
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "https://eu.api.capillarytech.com/v2/organization/configkeyvalue?name=IS_DIRECT_REPLAY_ENABLED\n"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": false
+  },
+  "x-readme-fauxas": true
+}
+```

@@ -1,0 +1,313 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Reject Requests
+
+Allows rejecting requests that are in pending status. You can use this API only when the auto-approval configurations are not enabled for your organization. Also, you cannot reject force approval requests made using `client_auto_approve=true`.
+
+# Example request
+
+```curl Sample request
+curl --location 'https://eu.api.capillarytech.com/v1.1/request/reject?format=json' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'accept: application/json' \
+--header 'Authorization: Basic ZGl2eWFfTYyZTZm' \
+--header 'Cookie: _cfuvid=zP64VTj6GdUFYZ2gjEkFMJ0lr.yGY2xiKhDjAViECSE-1772457459807-0.0.1.1-604800000' \
+--data '
+{
+  "root": {
+    "request": [
+      {
+        "type": "GOODWILL",
+        "base_type": "COUPON",
+        "id": "32970840",
+        "updated_comments": "Rejecting from API"
+      }
+    ]
+  }
+}
+'
+```
+
+# Request body parameters
+
+| Parameter    | Datatype | Description                                                                                                                                    |
+| ------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| id\*         | long     | Reference id of the request that you want to reject.                                                                                           |
+| type\*       | enum     | Type of request. Value: `CHANGE_IDENTIFIER`, `GOODWILL`, `TRANSACTION_UPDATE`.                                                                 |
+| base\_type\* | enum     | Sub-type of the request. Value: If `type=CHANGE_IDENTIFIER`, base\_type could be `MOBILE`, `EMAIL`, `EXTERNAL_ID`, `MERGE`, or `REALLOCATION`. |
+
+If `type=GOODWILL`, base\_type will be `POINTS`, or `COUPON`.
+
+# Example response
+
+```json Sample response
+{
+    "response": {
+        "status": {
+            "success": "true",
+            "code": 200,
+            "message": "SUCCESS"
+        },
+        "requests": {
+            "request": [
+                {
+                    "id": "32970840",
+                    "type": "GOODWILL",
+                    "base_type": "COUPON",
+                    "status": "REJECTED",
+                    "assoc_id": "-1",
+                    "approved_value": "",
+                    "updated_comments": "Rejecting from API",
+                    "item_status": {
+                        "success": "true",
+                        "code": 9000,
+                        "message": "Request updated successfully"
+                    }
+                }
+            ]
+        }
+    }
+}
+```
+
+<br />
+
+<br />
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "customer-v11",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v1.1",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/request/reject": {
+      "post": {
+        "summary": "Reject Requests",
+        "description": "Allows rejecting requests that are in pending status. You can use this API only when the auto-approval configurations are not enabled for your organization. Also, you cannot reject force approval requests made using `client_auto_approve=true`.",
+        "operationId": "reject-requests",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "string",
+                    "format": "json"
+                  }
+                }
+              },
+              "examples": {
+                "Sample POST Body": {
+                  "value": {
+                    "root": {
+                      "request": [
+                        {
+                          "type": "CHANGE_IDENTIFIER",
+                          "base_type": "MOBILE",
+                          "id": "346436",
+                          "updated_comments": "outlier"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample response": {
+                    "value": {
+                      "response": {
+                        "status": {
+                          "success": "true",
+                          "code": 200,
+                          "message": "SUCCESS"
+                        },
+                        "requests": {
+                          "request": [
+                            {
+                              "id": "32970840",
+                              "type": "GOODWILL",
+                              "base_type": "COUPON",
+                              "status": "REJECTED",
+                              "assoc_id": "-1",
+                              "approved_value": "",
+                              "updated_comments": "Rejecting from API",
+                              "item_status": {
+                                "success": "true",
+                                "code": 9000,
+                                "message": "Request updated successfully"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "Sample response"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "object",
+                          "properties": {
+                            "success": {
+                              "type": "string",
+                              "example": "true"
+                            },
+                            "code": {
+                              "type": "string",
+                              "example": "200"
+                            },
+                            "message": {
+                              "type": "string",
+                              "example": "SUCCESS"
+                            }
+                          }
+                        },
+                        "requests": {
+                          "type": "object",
+                          "properties": {
+                            "request": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "example": "12955"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "example": "CHANGE_IDENTIFIER"
+                                },
+                                "base_type": {
+                                  "type": "string",
+                                  "example": "MOBILE"
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "example": "REJECTED"
+                                },
+                                "old_value": {
+                                  "type": "string",
+                                  "example": "44700900099"
+                                },
+                                "new_value": {
+                                  "type": "string",
+                                  "example": "44700900000"
+                                },
+                                "item_status": {
+                                  "type": "object",
+                                  "properties": {
+                                    "success": {
+                                      "type": "string",
+                                      "example": "true"
+                                    },
+                                    "code": {
+                                      "type": "string",
+                                      "example": "9000"
+                                    },
+                                    "message": {
+                                      "type": "string",
+                                      "example": "Request updated successfully"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'https://eu.api.capillarytech.com/v1.1/request/reject?format=json' \\\n--header 'Accept: application/json' \\\n--header 'Content-Type: application/json' \\\n--header 'accept: application/json' \\\n--header 'Authorization: Basic ZGl2eWFYyZTZm' \\\n--header 'Cookie: _cfuvid=zP64VTj6GdUFYZ2gjEkFMJ0lr.yGY2xiKhDjAViECSE-1772457459807-0.0.1.1-604800000' \\\n--data '\n{\n  \"root\": {\n    \"request\": [\n      {\n        \"type\": \"GOODWILL\",\n        \"base_type\": \"COUPON\",\n        \"id\": \"32970840\",\n        \"updated_comments\": \"Rejecting from API\"\n      }\n    ]\n  }\n}\n'",
+              "language": "shell",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

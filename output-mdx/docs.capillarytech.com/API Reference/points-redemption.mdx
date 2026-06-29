@@ -1,0 +1,480 @@
+---
+title: Points redemption request
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Points redemption request
+
+<Callout kind="tip" title="Note">
+
+* For detailed information about our APIs and for hands-on testing, refer documentation in [API overview](https://docs.capillarytech.com/reference/apioverview) and  step-by-step guide on making your first API call in [Make your first API call](https://docs.capillarytech.com/reference/make-your-first-api-call) .
+
+</Callout>
+
+This API allows you to initiate a points redemption request.
+
+## API endpoint example
+
+`[https://eucrm.cc.capillarytech.com/api_gateway/v2/request-workflow/POINTS-REDEMPTION`
+
+## Prerequisites
+
+* [ ] Authentication: Basic credentials/OAuth
+* [ ] Default access group
+* [ ] OU level Maker request access (CanMakeRequest).  Contact the access team for access.
+
+## Resource information
+
+|                        |                                                       |
+| :--------------------- | :---------------------------------------------------- |
+| URI                    | /api_gateway/v2/request-workflow/POINTS-REDEMPTION` |
+| HTTP Method            | POST                                                  |
+| Pagination             | No                                                    |
+| Batch support          | No                                                    |
+| Rate limit information | None                                                  |
+
+## Header information
+
+|                       |                                                                                                                            |
+| :-------------------- | :------------------------------------------------------------------------------------------------------------------------- |
+| X-CAP-API-AUTH-ORG-ID | Organization ID                                                                                                            |
+| X-CAP-UI-AUTH-TOKEN   | A JSON Web Token (JWT) is used for intouch user authentication.  CanMakeRequest access is required to generate this token. |
+
+## Request body parameters
+
+<br />
+
+| Parameter (Parameters marked * are mandatory) | Type | Description |
+| --- | --- | --- |
+| entityInfo* | Object | Information about the entity (till, store, zone, concept) |
+| * tillId | String | The unique identifier for the till associated with the transaction. |
+| * storeId | String | The unique identifier for the store where the transaction occurs. |
+| * zoneId | String | The unique identifier for the zone or area the store is associated with. |
+| * conceptId | String | The unique identifier for the concept or branding associated with the store. |
+| payload | Object | The payload provides a comprehensive understanding of the information included in the Intouch API payload for points redemption. It contains all the necessary data to facilitate a successful points redemption transaction. |
+| * IntouchAPITask-Payload | Object | Information about the Intouch API task |
+| * hostname* | String | Hostname for the API endpoint. Example - `` |
+| * path* | String | `/v1.1/points/redeem`. This is the endpoint for the points redemption API. |
+| * method* | String | POST. The HTTP method used for the request |
+| \pathParams | Object | This field is reserved for any dynamic parameters that may be included in the API endpoint URL **Note:** In this workflow, pathParams may not be utilized, as the necessary information is typically provided in the request body. |
+| \queryParams* | Object | Additional parameters that can be appended to the API request URL for further customization. For the points redemption, this may include options like skipping validation and setting the response format from intouch API. `"queryParams": { "skip_validation": "true", "format": "json"}` |
+| \body* | Object | The body section contains the essential data for the points redemption. Refer to [Redeem points ](https://docs.capillarytech.com/reference/redeem-points) API documentation for information on the body parameters. |
+| points_redeemed* | String | Indicates the number of points being redeemed by the customer. This should be less than the total available points. |
+| customer* | Object | Contains information about the customer initiating the redemption. For example, the mobile number of the customer. |
+| redemption_time | String | Specifies the date and time of the redemption. |
+| transaction_number | String | Provides a unique identifier for the transaction associated with the redemption. |
+| notes | String | Allows for a brief note or reason to be provided for the redemption |
+| external_reference_number | String | Represents an external reference number associated with the redemption. This can be a reference from an external system or process. |
+| \headers* | Object | Headers provide additional context and information about the request. |
+| * Authorization | String | Contains the authentication credentials needed to access the Intouch API. |
+| * content-type | String | The content type of the request (application/JSON in this case). This field specifies that the payload is in JSON format, ensuring that the data is properly interpreted by the API. |
+| X-CAP-CLIENT-SIGNATURE | String | Name of the user who is creating the request. |
+
+```json Request body
+{
+    "entityInfo": {
+        "tillId" : "50682289",
+        "storeId": "50682288",
+        "zoneId": "50682286",
+        "conceptId": "50678331"
+    },
+    "payload": {
+        "IntouchAPITask-Payload" : {
+            "hostname" : "<https://crm-nightly-new.cc.capillarytech.com>",
+            "path": "/v1.1/points/redeem",
+            "method": "POST",
+            "pathParams" : {},
+            "queryParams" : {
+                "skip_validation" :"true",
+                "format" : "json"
+            },
+            "body": {
+                "root": {
+                    "redeem": {
+                        "points_redeemed": "100",
+                        "customer": { "mobile": "9988776655" },
+                        "redemption_time": "2020-04-15 23:01:46",
+                        "transaction_number": "numbr892723330323421971280",
+                        "notes": "Redemption by SMS",
+                        "external_reference_number": "ACR-583523332039150121"
+                    }
+                }
+            },
+            "headers": {
+                "Authorization": "Basic aW5kLjE6MjAyY2I5NjJhYzU5MDc1Yjk2NGIwNzE1MmQyMzRiNzA=",
+                "content-type": "application/json",
+                "X-CAP-CLIENT-SIGNATURE": "jatin"
+            }
+        }
+    }
+}
+
+````
+
+## Response parameters
+
+| Parameter Name              | Data Type     | Description                                                                          |
+| --------------------------- | ------------- | ------------------------------------------------------------------------------------ |
+| requestId                   | String        | Unique identifier for the request.                                                   |
+| userId                      | Integer       | Identifier for the user making the request.                                          |
+| userName                    | String        | Email or username of the user making the request.                                    |
+| requestType                 | String        | Type of request being made (e.g., "customer-status-change").                         |
+| state                       | String        | Current state of the request (e.g., "AdminTask").                                    |
+| startTime                   | DateTime      | Timestamp marking the start of the request.                                          |
+| endTime                     | DateTime/Null | Timestamp marking the end of the request, if applicable.                             |
+| IntouchAPITask-Payload      | Object        | Object containing specifics of the API call to change customer status.               |
+|   hostname                  | String        | The base URL of the API endpoint.                                                    |
+|   path                      | String        | Specific path to the API endpoint for changing customer status.                      |
+|   method                    | String        | HTTP method used for the request.                                                    |
+|   pathParams                | Object        | Path parameters for the API call, if any (empty in this case).                       |
+|   queryParams               | Object        | Query parameters for the API call, detailing aspects like source and identifier.     |
+|   body                      | Object        | Body of the API call, containing the reason for the status change and the new label. |
+|   headers                   | Object        | Headers for the API call, including Authorization and Content-Type.                  |
+| ValidateMakerAccess_Output | Boolean       | Indicates whether maker access validation was successful.                            |
+| ValidatePayload_Output     | Boolean       | Indicates whether payload validation was successful.                                 |
+
+```json 200 OK
+{
+    "data": {
+        "requestId": "d9df3b65-62a7-11ee-aa6d-0aaee4e533d2",
+        "userId": 232134,
+        "userName": "tomswayer@tipent.com",
+        "requestType": "points-redemption",
+        "state": "AdminTask",
+        "startTime": "2023-10-04T16:49:14",
+        "endTime": null,
+        "details": {
+            "IntouchAPITask-Payload": {
+                "hostname": "<https://eu.api.capillarytech.com>",
+                "path": "/v1.1/points/redeem",
+                "method": "POST",
+                "pathParams": {},
+                "queryParams": {
+                    "skip_validation": "true",
+                    "format": "json"
+                },
+                "body": {
+                    "root": {
+                        "redeem": {
+                            "points_redeemed": "100",
+                            "customer": {
+                                "mobile": "9877792149"
+                            },
+                            "redemption_time": "2020-04-15 23:01:46",
+                            "transaction_number": "numbr892723330323421971280",
+                            "notes": "Redemption by SMS",
+                            "external_reference_number": "ACR-583523332039150121"
+                        }
+                    }
+                },
+                "headers": {
+                    "Authorization": "Basic aW5kLjE6MjAyY2I5NjJhYzU5MDc1Yjk2NGIwNzE1MmQyMzRiNzA=",
+                    "content-type": "application/json",
+                    "X-CAP-CLIENT-SIGNATURE": "jatin"
+                }
+            },
+            "ValidateMakerAccess_Output": true,
+            "ValidatePayload_Output": true
+        }
+    }
+}
+
+````
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/api_gateway/v2/request-workflow/POINTS-REDEMPTION": {
+      "post": {
+        "summary": "Points redemption request",
+        "description": "",
+        "operationId": "points-redemption",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": {
+                      "data": {
+                        "requestId": "d9df3b65-62a7-11ee-aa6d-0aaee4e533d2",
+                        "userId": 232134,
+                        "userName": "tomswayer@tipent.com",
+                        "requestType": "points-redemption",
+                        "state": "AdminTask",
+                        "startTime": "2023-10-04T16:49:14",
+                        "endTime": null,
+                        "details": {
+                          "IntouchAPITask-Payload": {
+                            "hostname": "<https://crm-nightly-new.cc.capillarytech.com>",
+                            "path": "/v1.1/points/redeem",
+                            "method": "POST",
+                            "pathParams": {},
+                            "queryParams": {
+                              "skip_validation": "true",
+                              "format": "json"
+                            },
+                            "body": {
+                              "root": {
+                                "redeem": {
+                                  "points_redeemed": "100",
+                                  "customer": {
+                                    "mobile": "9877792149"
+                                  },
+                                  "redemption_time": "2020-04-15 23:01:46",
+                                  "transaction_number": "numbr892723330323421971280",
+                                  "notes": "Redemption by SMS",
+                                  "external_reference_number": "ACR-583523332039150121"
+                                }
+                              }
+                            },
+                            "headers": {
+                              "Authorization": "Basic aW5kLjE6MjAyY2I5NjJhYzU5MDc1Yjk2NGIwNzE1MmQyMzRiNzA=",
+                              "content-type": "application/json",
+                              "X-CAP-CLIENT-SIGNATURE": "jatin"
+                            }
+                          },
+                          "ValidateMakerAccess_Output": true,
+                          "ValidatePayload_Output": true
+                        }
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "requestId": {
+                          "type": "string",
+                          "example": "d9df3b65-62a7-11ee-aa6d-0aaee4e533d2"
+                        },
+                        "userId": {
+                          "type": "integer",
+                          "example": 232134,
+                          "default": 0
+                        },
+                        "userName": {
+                          "type": "string",
+                          "example": "tonob50495@tipent.com"
+                        },
+                        "requestType": {
+                          "type": "string",
+                          "example": "points-redemption"
+                        },
+                        "state": {
+                          "type": "string",
+                          "example": "AdminTask"
+                        },
+                        "startTime": {
+                          "type": "string",
+                          "example": "2023-10-04T16:49:14"
+                        },
+                        "endTime": {},
+                        "details": {
+                          "type": "object",
+                          "properties": {
+                            "IntouchAPITask-Payload": {
+                              "type": "object",
+                              "properties": {
+                                "hostname": {
+                                  "type": "string",
+                                  "example": "<https://crm-nightly-new.cc.capillarytech.com>"
+                                },
+                                "path": {
+                                  "type": "string",
+                                  "example": "/v1.1/points/redeem"
+                                },
+                                "method": {
+                                  "type": "string",
+                                  "example": "POST"
+                                },
+                                "pathParams": {
+                                  "type": "object",
+                                  "properties": {}
+                                },
+                                "queryParams": {
+                                  "type": "object",
+                                  "properties": {
+                                    "skip_validation": {
+                                      "type": "string",
+                                      "example": "true"
+                                    },
+                                    "format": {
+                                      "type": "string",
+                                      "example": "json"
+                                    }
+                                  }
+                                },
+                                "body": {
+                                  "type": "object",
+                                  "properties": {
+                                    "root": {
+                                      "type": "object",
+                                      "properties": {
+                                        "redeem": {
+                                          "type": "object",
+                                          "properties": {
+                                            "points_redeemed": {
+                                              "type": "string",
+                                              "example": "100"
+                                            },
+                                            "customer": {
+                                              "type": "object",
+                                              "properties": {
+                                                "mobile": {
+                                                  "type": "string",
+                                                  "example": "9877792149"
+                                                }
+                                              }
+                                            },
+                                            "redemption_time": {
+                                              "type": "string",
+                                              "example": "2020-04-15 23:01:46"
+                                            },
+                                            "transaction_number": {
+                                              "type": "string",
+                                              "example": "numbr892723330323421971280"
+                                            },
+                                            "notes": {
+                                              "type": "string",
+                                              "example": "Redemption by SMS"
+                                            },
+                                            "external_reference_number": {
+                                              "type": "string",
+                                              "example": "ACR-583523332039150121"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "headers": {
+                                  "type": "object",
+                                  "properties": {
+                                    "Authorization": {
+                                      "type": "string",
+                                      "example": "Basic aW5kLjE6MjAyY2I5NjJhYzU5MDc1Yjk2NGIwNzE1MmQyMzRiNzA="
+                                    },
+                                    "content-type": {
+                                      "type": "string",
+                                      "example": "application/json"
+                                    },
+                                    "X-CAP-CLIENT-SIGNATURE": {
+                                      "type": "string",
+                                      "example": "jatin"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "ValidateMakerAccess_Output": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "ValidatePayload_Output": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://eu.api.capillarytech.com/api_gateway/v2/request-workflow/POINTS-REDEMPTION' \\\n--header 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \\\n--header 'Cache-Control: no-cache' \\\n--header 'Connection: keep-alive' \\\n--header 'Content-Type: application/json' \\\n--header 'Cookie: JSESSIONID=6926CFEB1A30F0C6C83A4AFCEF3F4D4A' \\\n--header 'Origin: http://localhost:8080' \\\n--header 'Pragma: no-cache' \\\n--header 'Referer: http://localhost:8080/swagger-ui/index.html' \\\n--header 'Sec-Fetch-Dest: empty' \\\n--header 'Sec-Fetch-Mode: cors' \\\n--header 'Sec-Fetch-Site: same-origin' \\\n--header 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36' \\\n--header 'accept: */*' \\\n--header 'sec-ch-ua: \"Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"115\", \"Chromium\";v=\"115\"' \\\n--header 'sec-ch-ua-mobile: ?0' \\\n--header 'sec-ch-ua-platform: \"macOS\"' \\\n--header 'X-CAP-API-AUTH-ORG-ID: 0' \\\n--header 'X-CAP-UI-AUTH-TOKEN;' \\\n--header 'Authorization: Basic Y20uMjoyMDYjk2MmFjNTkwNzViOTY0YjA3MTUyZDIzNGI3MA==' \\\n--data '{\n    \"entityInfo\": {\n        \"tillId\" : \"50682289\",\n        \"storeId\": \"50682288\",\n        \"zoneId\": \"50682286\",\n        \"conceptId\": \"50678331\"\n    },\n    \"payload\": {\n        \"IntouchAPITask-Payload\" : {\n            \"hostname\" : \"https://eu.api.capillarytech.com\",\n            \"path\": \"/v1.1/points/redeem\",\n            \"method\": \"POST\",\n            \"pathParams\" : {},\n            \"queryParams\" : {\n                \"skip_validation\" :\"true\",\n                \"format\" : \"json\"\n            },\n            \"body\": {\n                \"root\": {\n                    \"redeem\": {\n                        \"points_redeemed\": \"100\",\n                        \"customer\": { \"mobile\": \"9877792149\" },\n                        \"redemption_time\": \"2020-04-15 23:01:46\",\n                        \"transaction_number\": \"numbr893421972122280\",\n                        \"notes\": \"Redemption by SMS\",\n                        \"external_reference_number\": \"ACR-58392150333121\"\n                    }\n                }\n            },\n            \"headers\": {\n                \"Authorization\": \"Basic aW5kLjE6MjAyY2I5NjJhYzU5MDc1Yjk2NGIwNzE1MmMzRiNzA=\",\n                \"content-type\": \"application/json\",\n                \"X-CAP-CLIENT-SIGNATURE\": \"jatin\"\n            }\n        }\n    }\n}\n'"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

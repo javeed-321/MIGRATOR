@@ -1,0 +1,624 @@
+---
+title: Get group points ledger
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Get group points ledger
+
+Retrieve a paginated history of group point redemptions and reversals for a group or for a specific member within their group.
+
+Retrieve group point redemption and reversal events for the caller's user group. The response includes a real-time group balance snapshot, per-member balances, and a paginated list of events. Use `scope=user` for a member's personal view (entries where they transacted or had points drawn), or `scope=group` for the full group history (CSR/admin use).
+
+**What this API supports**
+
+* Two views controlled by `scope`: a personal member view (`user`) and a full group history (`group`).
+* Filter by event type (`CROSS_MEMBER_REDEMPTION`, `CROSS_MEMBER_REDEMPTION_REVERSAL`), date range, or a specific `transactionRef`.
+* Per-entry breakdown showing exactly which member's wallet was affected and by how much.
+* `userRole` on each entry when `scope=user`: `TRANSACTING` (caller initiated the redemption), `SOURCE` (caller's points were drawn by another member's transaction), or `BOTH` (caller both initiated and had points drawn from their own wallet).
+* Group balance and individual member balances at query time.
+
+### Example request
+
+```curl scope=user (default)
+curl -X GET 'https://{host}/v2/customers/1003/crossMemberLedger?scope=user&pageNumber=1&pageSize=20' \
+  -u {username}:{password} \
+  -H 'Accept: application/json'
+````
+```curl scope=group with date filter
+curl -X GET 'https://{host}/v2/customers/1003/crossMemberLedger?scope=group&startDate=2026-03-01T00:00:00Z&endDate=2026-04-01T00:00:00Z' \
+  -u {username}:{password} \
+  -H 'Accept: application/json'
+````
+
+### API Quick Reference
+
+```
+GET /v2/customers/{id}/crossMemberLedger
+
+Response
+   └─ entity (object)
+       ├─ groupDetails (object)
+       │   ├─ groupId (number)
+       │   ├─ groupBalance (number)
+       │   ├─ memberCount (number)
+       │   └─ members [] (array)
+       │       ├─ customerId (number)
+       │       └─ balance (number)
+       ├─ pageDetails (object)
+       │   ├─ pageNumber (number)
+       │   ├─ pageSize (number)
+       │   ├─ totalEntries (number)
+       │   └─ pageCount (number)
+       └─ entries [] (array)
+           ├─ eventLogId (number)
+           ├─ eventName (string)
+           ├─ transactingCustomerId (number)
+           ├─ transactionRef (string)
+           ├─ createdDate (string)
+           ├─ createdDateISO (string)
+           ├─ netPointsOnEvent (string)
+           ├─ status (string — only on CROSS_MEMBER_REDEMPTION rows)
+           ├─ userRole (string — only when scope=user)
+           └─ entryDetails [] (array)
+               ├─ customerId (number)
+               ├─ points (string)
+               ├─ reversedAmount (string — only on CROSS_MEMBER_REDEMPTION rows)
+               ├─ expiryBatchDate (string — ISO-8601)
+               └─ status (string — only on CROSS_MEMBER_REDEMPTION rows)
+````
+
+### Prerequisites
+
+* Basic authentication. Credentials must be authorised for the org that owns the customer.
+* The org must have `ENABLE_CROSS_MEMBER_REDEMPTION` enabled.
+* The customer must be an active member of a user group.
+
+### Resource information
+
+|                    |                                 |
+| ------------------ | ------------------------------- |
+| Pagination support | Yes (`pageNumber` / `pageSize`) |
+| Batch support      | No                              |
+
+### Path parameters
+
+| Field | Type | Required | Description                                                                                                   |
+| ----- | ---- | -------- | ------------------------------------------------------------------------------------------------------------- |
+| `id`  | Long | Yes      | Customer ID of any active group member. The API resolves the caller's group from their UserGroup2 membership. |
+
+### Query parameters
+
+| Field            | Type         | Required | Description                                                                                                                                                                                                                                                              |
+| ---------------- | ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `scope`          | Enum         | Optional | Scope of the results. `user`: returns only entries where the customer was the transacting member or had points drawn from their wallet. `group`: returns all redemption and reversal events for the entire group. Supported values: `user`, `group`. Defaults to `user`. |
+| `eventName`      | String (CSV) | Optional | Filter by event type. Supported values: `CROSS_MEMBER_REDEMPTION`, `CROSS_MEMBER_REDEMPTION_REVERSAL`. Pass multiple values as a comma-separated list. Defaults to all event types.                                                                                      |
+| `transactionRef` | String       | Optional | Filter by transaction reference. Returns entries matching the given reference, including the original redemption and any associated reversal. Corresponds to the `externalReferenceNumber` passed at redemption time.                                                    |
+| `startDate`      | String       | Optional | Start date and time for filtering events. Date and time in ISO 8601 format. Example: `2026-03-25T11:00:00+05:30`. Defaults to 30 days before the request time.                                                                                                           |
+| `endDate`        | String       | Optional | End date and time for filtering events. Date and time in ISO 8601 format. Example: `2026-04-25T11:00:00+05:30`. Must be after `startDate`. Defaults to the current time.                                                                                                 |
+| `pageNumber`     | Integer      | Optional | Page number to retrieve. To view the first page, set the value to `1`. Defaults to `1`.                                                                                                                                                                                  |
+| `pageSize`       | Integer      | Optional | Number of ledger records to display per page. For example, if the total records are 15 and the limit is 5, the first page will display the first 5 records. The maximum supported limit is 100.                                                                          |
+| `sort`           | String       | Optional | Sort order for results. Supported values: `createdDate:desc` (newest first, default), `createdDate:asc` (oldest first).                                                                                                                                                  |
+
+### Example response
+
+```json scope=group
+{
+  "groupDetails": {
+    "groupId": 12345,
+    "groupBalance": 1250.000,
+    "memberCount": 4,
+    "members": [
+      { "customerId": 1001, "balance": 400.000 },
+      { "customerId": 1002, "balance": 260.000 },
+      { "customerId": 1003, "balance": 500.000 },
+      { "customerId": 1004, "balance": 90.000 }
+    ]
+  },
+  "pageDetails": {
+    "pageNumber": 1,
+    "pageSize": 20,
+    "totalEntries": 1,
+    "pageCount": 1
+  },
+  "entries": [
+    {
+      "eventLogId": 999821,
+      "eventName": "CROSS_MEMBER_REDEMPTION",
+      "transactingCustomerId": 1003,
+      "transactionRef": "TXN-882291",
+      "createdDate": "2026-04-01 10:30:00",
+      "createdDateISO": "2026-04-01T10:30:00Z",
+      "netPointsOnEvent": "-350.000",
+      "status": "PARTIALLY_REVERSED",
+      "entryDetails": [
+        { "customerId": 1004, "points": "-10.000",  "reversedAmount": "0.000",   "expiryBatchDate": "2026-04-02T00:00:00Z", "status": "ACTIVE" },
+        { "customerId": 1001, "points": "-100.000", "reversedAmount": "0.000",   "expiryBatchDate": "2026-04-05T00:00:00Z", "status": "ACTIVE" },
+        { "customerId": 1002, "points": "-240.000", "reversedAmount": "150.000", "expiryBatchDate": "2026-04-10T00:00:00Z", "status": "PARTIALLY_REVERSED" }
+      ]
+    }
+  ],
+  "warnings": []
+}
+````
+```json scope=user (customer 1003 as transactor)
+{
+  "groupDetails": {
+    "groupId": 12345,
+    "groupBalance": 1250.000,
+    "memberCount": 4,
+    "members": [
+      { "customerId": 1001, "balance": 400.000 },
+      { "customerId": 1002, "balance": 260.000 },
+      { "customerId": 1003, "balance": 500.000 },
+      { "customerId": 1004, "balance": 90.000 }
+    ]
+  },
+  "pageDetails": { "pageNumber": 1, "pageSize": 20, "totalEntries": 1, "pageCount": 1 },
+  "entries": [
+    {
+      "eventLogId": 999821,
+      "eventName": "CROSS_MEMBER_REDEMPTION",
+      "transactingCustomerId": 1003,
+      "transactionRef": "TXN-882291",
+      "createdDate": "2026-04-01 10:30:00",
+      "createdDateISO": "2026-04-01T10:30:00Z",
+      "netPointsOnEvent": "-350.000",
+      "status": "PARTIALLY_REVERSED",
+      "userRole": "TRANSACTING",
+      "entryDetails": [
+        { "customerId": 1004, "points": "-10.000",  "reversedAmount": "0.000",   "expiryBatchDate": "2026-04-02T00:00:00Z", "status": "ACTIVE" },
+        { "customerId": 1001, "points": "-100.000", "reversedAmount": "0.000",   "expiryBatchDate": "2026-04-05T00:00:00Z", "status": "ACTIVE" },
+        { "customerId": 1002, "points": "-240.000", "reversedAmount": "150.000", "expiryBatchDate": "2026-04-10T00:00:00Z", "status": "PARTIALLY_REVERSED" }
+      ]
+    }
+  ],
+  "warnings": []
+}
+````
+
+### Response parameters
+
+| Field                    | Type    | Description                                                                                                                                                                                                                                                                        |
+| ------------------------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `groupDetails`           | Object  | Real-time group balance snapshot at query time.                                                                                                                                                                                                                                    |
+| `.groupId`               | Long    | Unique identifier of the group.                                                                                                                                                                                                                                                    |
+| `.groupBalance`          | Number  | Sum of all active group members' current redeemable balances at query time.                                                                                                                                                                                                        |
+| `.memberCount`           | Integer | Count of active group members.                                                                                                                                                                                                                                                     |
+| `.members`               | Array   | Per-member balance list.                                                                                                                                                                                                                                                           |
+| `..customerId`           | Long    | Customer ID of the group member.                                                                                                                                                                                                                                                   |
+| `..balance`              | Number  | Current individual redeemable balance for this member.                                                                                                                                                                                                                             |
+| `pageDetails`            | Object  | Pagination metadata for the current response.                                                                                                                                                                                                                                      |
+| `.pageNumber`            | Integer | Current page number (1-based).                                                                                                                                                                                                                                                     |
+| `.pageSize`              | Integer | Number of entries on this page.                                                                                                                                                                                                                                                    |
+| `.totalEntries`          | Integer | Total entries across all pages. Reflects the date-range and `scope` filters but may not account for the `eventName` filter — treat it as an upper bound when filtering by event type.                                                                                              |
+| `.pageCount`             | Integer | Total pages: `ceil(totalEntries / pageSize)`.                                                                                                                                                                                                                                      |
+| `entries`                | Array   | Paginated list of redemption and reversal events.                                                                                                                                                                                                                                  |
+| `.eventLogId`            | Long    | Shared event log ID across all source-member rows of a single redemption.                                                                                                                                                                                                          |
+| `.eventName`             | Enum    | Type of event. Supported values: `CROSS_MEMBER_REDEMPTION`, `CROSS_MEMBER_REDEMPTION_REVERSAL`.                                                                                                                                                                                    |
+| `.transactingCustomerId` | Long    | Customer ID of the member who initiated the redemption.                                                                                                                                                                                                                            |
+| `.transactionRef`        | String  | Transaction reference. The same value appears on the original redemption and on any reversal. Corresponds to the `externalReferenceNumber` passed at redemption time.                                                                                                              |
+| `.createdDate`           | String  | Event timestamp in `yyyy-MM-dd HH:mm:ss` format (org timezone).                                                                                                                                                                                                                    |
+| `.createdDateISO`        | String  | Same timestamp in ISO 8601 format (UTC).                                                                                                                                                                                                                                           |
+| `.netPointsOnEvent`      | String  | Signed net change across the group for this event. Negative on redemption rows, positive on reversal rows.                                                                                                                                                                         |
+| `.status`                | Enum    | Aggregate status of the redemption. Only present on `CROSS_MEMBER_REDEMPTION` rows. Supported values: `ACTIVE`, `REVERSED`, `PARTIALLY_REVERSED`.                                                                                                                                  |
+| `.userRole`              | Enum    | Role of the caller in this event. Only present when `scope=user`. Supported values: `TRANSACTING` (caller initiated the redemption), `SOURCE` (caller's points were drawn but caller did not transact), `BOTH` (caller initiated and also had points drawn from their own wallet). |
+| `.entryDetails`          | Array   | Per-source-member breakdown for this event.                                                                                                                                                                                                                                        |
+| `..customerId`           | Long    | Customer ID of the source member whose wallet was affected.                                                                                                                                                                                                                        |
+| `..points`               | String  | Signed point change on this member's wallet. Negative on redemption rows, positive on reversal rows.                                                                                                                                                                               |
+| `..reversedAmount`       | String  | Cumulative points reversed from this member's contribution to date. Only present on `CROSS_MEMBER_REDEMPTION` rows.                                                                                                                                                                |
+| `..expiryBatchDate`      | String  | Expiry date of the points batch drawn from or restored to this member. Date and time in ISO 8601 format.                                                                                                                                                                           |
+| `..status`               | Enum    | Per-row status. Only present on `CROSS_MEMBER_REDEMPTION` rows. Supported values: `ACTIVE`, `REVERSED`, `PARTIALLY_REVERSED`.                                                                                                                                                      |
+
+***
+
+### Error and warning codes
+
+| Code | Type  | Description                                                                                                                                   |
+| ---- | ----- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1001 | Error | Invalid date format. Use ISO 8601 (e.g. `2026-03-25T11:00:00+05:30`).                                                                         |
+| 1002 | Error | `endDate` is before `startDate`.                                                                                                              |
+| 1003 | Error | `pageSize` is outside the allowed range (1–100), or `pageNumber` is less than 1.                                                              |
+| 1004 | Error | Invalid value for `scope` (allowed: `user`, `group`) or `eventName` (allowed: `CROSS_MEMBER_REDEMPTION`, `CROSS_MEMBER_REDEMPTION_REVERSAL`). |
+| 3301 | Error | The customer is not enrolled in a cross-member-eligible group.                                                                                |
+| 3401 | Error | The customer does not belong to this org.                                                                                                     |
+| 500  | Error | Internal server error. Retry the request after a short delay.                                                                                 |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Get Group Points Ledger",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{Host}",
+      "variables": {
+        "Host": {
+          "enum": [
+            "{Host}",
+            "eu.intouch.capillarytech.com",
+            "intouch.capillary.co.in",
+            "apac2.intouch.capillarytech.com",
+            "sgcrm.cc.capillarytech.com",
+            "intouch.capillary.cn.com",
+            "north-america.intouch.capillarytech.com"
+          ],
+          "default": "{Host}"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/v2/customers/{id}/crossMemberLedger": {
+      "get": {
+        "summary": "Get group points ledger",
+        "operationId": "get-group-points-ledger",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1003
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "user"
+          },
+          {
+            "name": "eventName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "CROSS_MEMBER_REDEMPTION"
+          },
+          {
+            "name": "transactionRef",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2026-03-25T11:00:00+05:30"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2026-04-25T11:00:00+05:30"
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 20
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "createdDate:desc"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Basic <base64>XXXXXXXX"
+          },
+          {
+            "name": "X-CAP-API-OAUTH-TOKEN",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "<token>"
+          }
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "groupDetails": {
+                      "type": "object",
+                      "properties": {
+                        "groupId": {
+                          "type": "integer",
+                          "example": 12345
+                        },
+                        "groupBalance": {
+                          "type": "number",
+                          "example": 1250
+                        },
+                        "memberCount": {
+                          "type": "integer",
+                          "example": 4
+                        },
+                        "members": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "customerId": {
+                                "type": "integer",
+                                "example": 1001
+                              },
+                              "balance": {
+                                "type": "number",
+                                "example": 400
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "pageDetails": {
+                      "type": "object",
+                      "properties": {
+                        "pageNumber": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "example": 20
+                        },
+                        "totalEntries": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "pageCount": {
+                          "type": "integer",
+                          "example": 1
+                        }
+                      }
+                    },
+                    "entries": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "eventLogId": {
+                            "type": "integer",
+                            "example": 999821
+                          },
+                          "eventName": {
+                            "type": "string",
+                            "enum": [
+                              "CROSS_MEMBER_REDEMPTION",
+                              "CROSS_MEMBER_REDEMPTION_REVERSAL"
+                            ],
+                            "example": "CROSS_MEMBER_REDEMPTION"
+                          },
+                          "transactingCustomerId": {
+                            "type": "integer",
+                            "example": 1003
+                          },
+                          "transactionRef": {
+                            "type": "string",
+                            "example": "TXN-882291"
+                          },
+                          "createdDate": {
+                            "type": "string",
+                            "example": "2026-04-01 10:30:00"
+                          },
+                          "createdDateISO": {
+                            "type": "string",
+                            "example": "2026-04-01T10:30:00Z"
+                          },
+                          "netPointsOnEvent": {
+                            "type": "string",
+                            "example": "-350.000"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "ACTIVE",
+                              "REVERSED",
+                              "PARTIALLY_REVERSED"
+                            ],
+                            "example": "ACTIVE"
+                          },
+                          "userRole": {
+                            "type": "string",
+                            "enum": [
+                              "TRANSACTING",
+                              "SOURCE",
+                              "BOTH"
+                            ],
+                            "example": "TRANSACTING"
+                          },
+                          "entryDetails": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "customerId": {
+                                  "type": "integer",
+                                  "example": 1001
+                                },
+                                "points": {
+                                  "type": "string",
+                                  "example": "-100.000"
+                                },
+                                "reversedAmount": {
+                                  "type": "string",
+                                  "example": "0.000"
+                                },
+                                "expiryBatchDate": {
+                                  "type": "string",
+                                  "example": "2026-04-05T00:00:00Z"
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "enum": [
+                                    "ACTIVE",
+                                    "REVERSED",
+                                    "PARTIALLY_REVERSED"
+                                  ],
+                                  "example": "ACTIVE"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "boolean",
+                            "example": false
+                          },
+                          "code": {
+                            "type": "integer",
+                            "example": 1004
+                          },
+                          "message": {
+                            "type": "string",
+                            "example": "Invalid scope. Allowed: user, group"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized — invalid or missing credentials"
+          },
+          "404": {
+            "description": "Customer not enrolled in a cross-member group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "boolean",
+                            "example": false
+                          },
+                          "code": {
+                            "type": "integer",
+                            "example": 3301
+                          },
+                          "message": {
+                            "type": "string",
+                            "example": "Customer 9999 not enrolled in a cross-member group"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a paginated history of group point redemptions and reversals for a group or for a specific member within their group."
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}
+````

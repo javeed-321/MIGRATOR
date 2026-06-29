@@ -6,8 +6,10 @@ import remarkParse from "remark-parse";
 import remarkMdx from "remark-mdx";
 import remarkGfm from "remark-gfm";
 import { compile } from "@mdx-js/mdx";
+import { load as yamlLoad } from "js-yaml";
+import SwaggerParser from "@apidevtools/swagger-parser";
 
-const MDX_DIR = path.join(process.cwd(), "mdx");
+const MDX_DIR = path.join(process.cwd(), "output-mdx");
 
 interface Issue {
   file: string;
@@ -524,22 +526,434 @@ async function checkMdxCompile(content: string, relPath: string): Promise<Issue[
   return issues;
 }
 
+// ====================================================================
+// OpenAPI YAML validation — 8 checks
+// ====================================================================
+
+interface OpenApiIssue {
+  file: string;
+  rule: string;
+  severity: "error" | "warning";
+  message: string;
+  location: string;
+}
+
+type OASpec = Record<string, unknown>;
+type OAOperation = { summary?: string; operationId?: string; parameters?: OAParam[]; responses?: Record<string, unknown>; tags?: string[] };
+type OAParam = { name?: string; in?: string; required?: boolean; schema?: unknown; description?: string };
+
+function oaIssue(file: string, rule: string, severity: "error" | "warning", message: string, location: string): OpenApiIssue {
+  return { file, rule, severity, message, location };
+}
+
+function validateOpenApi(file: string, spec: OASpec): OpenApiIssue[] {
+  const issues: OpenApiIssue[] = [];
+
+  // Check 1: Required top-level fields
+  if (!spec.openapi && !spec.swagger) {
+    issues.push(oaIssue(file, "oa-missing-version", "error",
+      "Missing `openapi` field. Must be e.g. `openapi: 3.0.0`.", "root"));
+  } else {
+    const ver = String(spec.openapi || spec.swagger || "");
+    if (!/^(3\.\d+\.\d+|2\.\d+)$/.test(ver)) {
+      issues.push(oaIssue(file, "oa-invalid-version", "error",
+        `Invalid OpenAPI version "${ver}". Expected 3.x.x (e.g. 3.0.0) or 2.x.`, "root.openapi"));
+    }
+  }
+
+  if (!spec.info) {
+    issues.push(oaIssue(file, "oa-missing-info", "error",
+      "Missing `info` object. Required: info.title and info.version.", "root"));
+  } else {
+    const info = spec.info as Record<string, unknown>;
+    if (!info.title) {
+      issues.push(oaIssue(file, "oa-missing-info-title", "error",
+        "Missing `info.title`. Every OpenAPI spec must have a title.", "info"));
+    }
+    if (!info.version) {
+      issues.push(oaIssue(file, "oa-missing-info-version", "error",
+        "Missing `info.version`. Every OpenAPI spec must have a version.", "info"));
+    }
+  }
+
+  if (!spec.paths) {
+    issues.push(oaIssue(file, "oa-missing-paths", "error",
+      "Missing `paths` object. At least one path must be defined.", "root"));
+    return issues;
+  }
+
+  const VALID_METHODS = new Set(["get","post","put","patch","delete","head","options","trace"]);
+  const paths = spec.paths as Record<string, unknown>;
+
+  // Check 2: Each path must start with /
+  for (const pathKey of Object.keys(paths)) {
+    if (!pathKey.startsWith("/")) {
+      issues.push(oaIssue(file, "oa-invalid-path", "error",
+        `Path "${pathKey}" must start with /`, `paths.${pathKey}`));
+    }
+
+    const pathItem = paths[pathKey] as Record<string, unknown>;
+    if (!pathItem || typeof pathItem !== "object") continue;
+
+    const ops = Object.keys(pathItem).filter(k => VALID_METHODS.has(k));
+
+    // Check 3: Path must have at least one HTTP method
+    if (ops.length === 0) {
+      issues.push(oaIssue(file, "oa-no-operations", "warning",
+        `Path "${pathKey}" has no HTTP method operations (get, post, put, etc.).`, `paths.${pathKey}`));
+      continue;
+    }
+
+    // Extract {param} names from path template
+    const pathParamNames = [...pathKey.matchAll(/\{([^}]+)\}/g)].map(m => m[1]);
+
+    for (const method of ops) {
+      const op = pathItem[method] as OAOperation;
+      if (!op || typeof op !== "object") continue;
+      const loc = `paths.${pathKey}.${method}`;
+
+      // Check 4: Each operation must have responses
+      if (!op.responses || Object.keys(op.responses).length === 0) {
+        issues.push(oaIssue(file, "oa-missing-responses", "error",
+          `Operation ${method.toUpperCase()} ${pathKey} has no responses defined.`, loc));
+      } else {
+        // Check 5: At least one 2xx response
+        const codes = Object.keys(op.responses);
+        const has2xx = codes.some(c => c.startsWith("2") || c === "default");
+        if (!has2xx) {
+          issues.push(oaIssue(file, "oa-no-success-response", "warning",
+            `Operation ${method.toUpperCase()} ${pathKey} has no 2xx or default response. Add a 200/201 response.`, loc));
+        }
+      }
+
+      // Check 6: operationId should be present and unique
+      if (!op.operationId) {
+        issues.push(oaIssue(file, "oa-missing-operation-id", "warning",
+          `Operation ${method.toUpperCase()} ${pathKey} is missing \`operationId\`. Recommended for code generation.`, loc));
+      }
+
+      // Check 7: Parameters validation
+      const params: OAParam[] = op.parameters || [];
+      const paramNames = new Set<string>();
+
+      for (let i = 0; i < params.length; i++) {
+        const param = params[i];
+        const pLoc = `${loc}.parameters[${i}]`;
+
+        if (!param.name) {
+          issues.push(oaIssue(file, "oa-param-missing-name", "error",
+            `Parameter at index ${i} in ${method.toUpperCase()} ${pathKey} is missing \`name\`.`, pLoc));
+          continue;
+        }
+
+        if (!param.in) {
+          issues.push(oaIssue(file, "oa-param-missing-in", "error",
+            `Parameter "${param.name}" is missing \`in\` field. Must be: path, query, header, or cookie.`, pLoc));
+        } else if (!["path","query","header","cookie"].includes(param.in)) {
+          issues.push(oaIssue(file, "oa-param-invalid-in", "error",
+            `Parameter "${param.name}" has invalid \`in: ${param.in}\`. Must be: path, query, header, or cookie.`, pLoc));
+        }
+
+        if (!param.schema) {
+          issues.push(oaIssue(file, "oa-param-missing-schema", "warning",
+            `Parameter "${param.name}" has no \`schema\`. Add a schema with at least a type.`, pLoc));
+        }
+
+        // Path params must be required: true
+        if (param.in === "path" && param.required !== true) {
+          issues.push(oaIssue(file, "oa-path-param-not-required", "error",
+            `Path parameter "${param.name}" must have \`required: true\` (OpenAPI 3 rule).`, pLoc));
+        }
+
+        paramNames.add(param.name);
+      }
+
+      // Check 8: Path template params must be declared in parameters
+      for (const pName of pathParamNames) {
+        if (!paramNames.has(pName)) {
+          issues.push(oaIssue(file, "oa-undeclared-path-param", "error",
+            `Path template uses {${pName}} but no parameter with name "${pName}" is defined in ${method.toUpperCase()} ${pathKey}.`, loc));
+        }
+      }
+    }
+  }
+
+  // Check: Server variables declared if URL has {variable}
+  if (Array.isArray(spec.servers)) {
+    const servers = spec.servers as Array<{ url?: string; variables?: Record<string, unknown> }>;
+    for (const server of servers) {
+      const urlVars = [...(server.url || "").matchAll(/\{([^}]+)\}/g)].map(m => m[1]);
+      for (const v of urlVars) {
+        if (!server.variables || !server.variables[v]) {
+          issues.push(oaIssue(file, "oa-undeclared-server-variable", "warning",
+            `Server URL uses {${v}} but no variable definition found in servers[].variables.`, "servers"));
+        }
+      }
+    }
+  }
+
+  return issues;
+}
+
+async function validateOpenApiContent(file: string, content: string): Promise<OpenApiIssue[]> {
+  // Step 1: parse — try JSON first (matches syntaxChecks.ts), then fall back to YAML
+  let spec: unknown;
+  let parseSource: "json" | "yaml" = "yaml";
+
+  try {
+    spec = JSON.parse(content);
+    parseSource = "json";
+  } catch {
+    try {
+      spec = yamlLoad(content);
+    } catch (err: unknown) {
+      // js-yaml YAMLException has `reason` (short clean string) and `message` (multi-line with ^ pointer).
+      // Use `reason` so the JSON response contains a readable one-liner, not the raw visual snippet.
+      const e = err as { mark?: { line?: number; column?: number }; reason?: string; message?: string };
+      const lineNum = (e.mark?.line ?? 0) + 1;
+      const reason = e.reason || (e.message || "invalid YAML").split("\n")[0].trim();
+
+      // Detect the most common fixable pattern: unquoted value containing ': ' (colon-space),
+      // which YAML interprets as a nested key separator.
+      const lines = content.split("\n");
+      const badLine = lines[lineNum - 1] || "";
+      const colonValueMatch = badLine.match(/^(\s*[\w][\w\s-]*?)\s*:\s+(.+:\s.+)$/);
+      const suggestion = colonValueMatch
+        ? ` Fix: quote the value — ${colonValueMatch[1].trim()}: "${colonValueMatch[2].replace(/"/g, '\\"')}"`
+        : "";
+
+      return [{
+        file,
+        rule: "yaml-syntax",
+        severity: "error",
+        message: `YAML syntax error at line ${lineNum}: ${reason}.${suggestion}`,
+        location: `line ${lineNum}`,
+      }];
+    }
+  }
+
+  if (!spec || typeof spec !== "object" || Array.isArray(spec)) {
+    return [{
+      file,
+      rule: parseSource === "json" ? "json-not-object" : "yaml-not-object",
+      severity: "error",
+      message: `${parseSource.toUpperCase()} root must be an object (OpenAPI spec), not an array or scalar.`,
+      location: "root",
+    }];
+  }
+
+  // Step 2: bail out if this is not an OpenAPI/Swagger document.
+  // JSON files are pre-filtered by openapi/swagger key before reaching here, but YAML files are not
+  // (they can't be pre-filtered without parsing first). A non-OpenAPI YAML is valid YAML — no issues.
+  const specObj = spec as Record<string, unknown>;
+  if (!specObj.openapi && !specObj.swagger) {
+    return [];
+  }
+
+  // Step 3: run the structural checks
+  const issues = validateOpenApi(file, spec as OASpec);
+
+  // Step 4: run SwaggerParser.validate() — deep JSON Schema spec validation
+  // (same library used by documentation-ai-backend openapi.validator.ts and syntaxChecks.ts)
+  try {
+    await SwaggerParser.validate(spec as unknown as string);
+  } catch (err: unknown) {
+    const e = err as Error;
+    const msg = e?.message || String(err);
+    // Only add if not already surfaced by the custom checks
+    const alreadyCovered = issues.some(i => i.severity === "error");
+    if (!alreadyCovered) {
+      const lineMatch = msg.match(/line (\d+)/i);
+      issues.push({
+        file,
+        rule: "swagger-parser-validate",
+        severity: "error",
+        message: `SwaggerParser.validate() failed: ${msg.slice(0, 400)}`,
+        location: lineMatch ? `line ${lineMatch[1]}` : "spec",
+      });
+    } else {
+      // Still surface SwaggerParser errors even when custom checks found issues — they may be different
+      const lineMatch = msg.match(/line (\d+)/i);
+      issues.push({
+        file,
+        rule: "swagger-parser-validate",
+        severity: "warning",
+        message: `SwaggerParser.validate() also reported: ${msg.slice(0, 400)}`,
+        location: lineMatch ? `line ${lineMatch[1]}` : "spec",
+      });
+    }
+  }
+
+  return issues;
+}
+
+/** @deprecated use validateOpenApiContent */
+async function validateYamlFile(file: string, content: string): Promise<OpenApiIssue[]> {
+  return validateOpenApiContent(file, content);
+}
+
 function sanitize(name: string): string {
   return name.replace(/[<>:"/\\|?*]/g, "-").replace(/\s+/g, " ").trim();
 }
 
 export async function POST(req: Request) {
-  let body: { site?: string; section?: string };
+  let body: { site?: string; section?: string; dir?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { site, section } = body;
+  const { site, section, dir } = body;
+
+  // --- Flat directory mode: validate .mdx/.md AND .yaml/.yml files in `dir` ---
+  if (dir) {
+    if (!path.isAbsolute(dir)) {
+      return NextResponse.json(
+        { error: "`dir` must be an absolute path, e.g. /home/user/my-folder" },
+        { status: 400 }
+      );
+    }
+
+    let allFiles: string[];
+    try {
+      allFiles = await readdir(dir);
+    } catch {
+      return NextResponse.json(
+        { error: `Directory not found or not readable: ${dir}` },
+        { status: 404 }
+      );
+    }
+
+    const mdxFiles = allFiles.filter((f) => f.endsWith(".mdx") || f.endsWith(".md"));
+    const yamlFiles = allFiles.filter((f) => f.endsWith(".yaml") || f.endsWith(".yml"));
+
+    // Also detect .json files that are OpenAPI specs (have openapi or swagger key)
+    // Matches syntaxChecks.ts behaviour in documentation-ai-backend
+    const jsonOpenapiFiles: string[] = [];
+    for (const f of allFiles.filter((f) => f.endsWith(".json"))) {
+      try {
+        const raw = await readFile(path.join(dir, f), "utf-8");
+        const parsed = JSON.parse(raw);
+        if (typeof parsed === "object" && parsed !== null && (parsed.openapi || parsed.swagger)) {
+          jsonOpenapiFiles.push(f);
+        }
+      } catch { /* not valid JSON or no openapi key — skip */ }
+    }
+    const allOpenApiFiles = [...yamlFiles, ...jsonOpenapiFiles];
+
+    const startTime = Date.now();
+
+    // --- MDX validation ---
+    const mdxReports: FileReport[] = [];
+    let mdxErrors = 0, mdxWarnings = 0;
+    const mdxRuleCounts: Record<string, number> = {};
+
+    for (const file of mdxFiles) {
+      const content = await readFile(path.join(dir, file), "utf-8");
+      const issues = await validateFile(file, content);
+      const errors = issues.filter((i) => i.severity === "error").length;
+      const warnings = issues.filter((i) => i.severity === "warning").length;
+      mdxErrors += errors;
+      mdxWarnings += warnings;
+      for (const issue of issues) {
+        mdxRuleCounts[issue.rule] = (mdxRuleCounts[issue.rule] || 0) + 1;
+      }
+      if (issues.length > 0) mdxReports.push({ file, errors, warnings, issues });
+    }
+    mdxReports.sort((a, b) => b.errors - a.errors || b.warnings - a.warnings);
+
+    // --- OpenAPI validation (YAML + JSON OpenAPI files) ---
+    interface YamlReport { file: string; errors: number; warnings: number; issues: OpenApiIssue[] }
+    const yamlReports: YamlReport[] = [];
+    let yamlErrors = 0, yamlWarnings = 0;
+    const yamlRuleCounts: Record<string, number> = {};
+
+    for (const file of allOpenApiFiles) {
+      const content = await readFile(path.join(dir, file), "utf-8");
+      const issues = await validateOpenApiContent(file, content);
+      const errors = issues.filter((i) => i.severity === "error").length;
+      const warnings = issues.filter((i) => i.severity === "warning").length;
+      yamlErrors += errors;
+      yamlWarnings += warnings;
+      for (const issue of issues) {
+        yamlRuleCounts[issue.rule] = (yamlRuleCounts[issue.rule] || 0) + 1;
+      }
+      if (issues.length > 0) yamlReports.push({ file, errors, warnings, issues });
+    }
+    yamlReports.sort((a, b) => b.errors - a.errors || b.warnings - a.warnings);
+
+    return NextResponse.json({
+      dir,
+      stats: {
+        totalFiles: mdxFiles.length + allOpenApiFiles.length,
+        mdxFiles: mdxFiles.length,
+        yamlFiles: allOpenApiFiles.length,
+        jsonOpenapiFiles: jsonOpenapiFiles.length,
+        totalErrors: mdxErrors + yamlErrors,
+        totalWarnings: mdxWarnings + yamlWarnings,
+        timeMs: Date.now() - startTime,
+      },
+      mdx: {
+        validationSource: "Documentation.AI deployment rules (8 checks)",
+        checks: [
+          "1. Frontmatter — must be closed if present",
+          "2. HTML entities in JSX attributes — &#x22; in double quotes etc.",
+          "3. Nested code blocks — same fence count breaks structure",
+          "4. Invalid table components — <Table>, <tr>, <td>, <th>, <thead>, <tbody> forbidden",
+          "5. Unescaped braces — {UPPERCASE_VAR} in text causes JSX parse error",
+          "6. Unsupported components — PascalCase tags not in allowlist",
+          "7. Component attributes — required attrs missing (src on Image, title on Card, etc.)",
+          "8. MDX parse + compile — real remark-mdx/mdx-js compiler",
+        ],
+        stats: {
+          total: mdxFiles.length,
+          filesWithIssues: mdxReports.length,
+          clean: mdxFiles.length - mdxReports.length,
+          errors: mdxErrors,
+          warnings: mdxWarnings,
+        },
+        ruleBreakdown: Object.entries(mdxRuleCounts)
+          .sort(([, a], [, b]) => b - a)
+          .map(([rule, count]) => ({ rule, count })),
+        files: mdxReports,
+      },
+      openapi: {
+        validationSource: "OpenAPI 3.x / Swagger 2.x rules (9 checks) — matches documentation-ai-backend",
+        checks: [
+          "1. JSON/YAML parse — tries JSON first, falls back to YAML (matches syntaxChecks.ts)",
+          "2. Required fields — openapi, info, paths",
+          "3. info object — title and version required",
+          "4. OpenAPI version — must be 3.x.x or 2.x",
+          "5. Path format — must start with /",
+          "6. Operations — must have responses; path params must be required: true",
+          "7. Parameters — name, in, schema required; in must be path/query/header/cookie",
+          "8. Path template params — {param} in URL must be declared in parameters",
+          "9. SwaggerParser.validate() — deep JSON Schema spec validation (@apidevtools/swagger-parser, same as openapi.validator.ts)",
+        ],
+        sources: [
+          "documentation-ai-backend/src/services/ai/starter-kit/validators/openapi.validator.ts",
+          "documentation-ai-backend/src/services/ai/dashboard-agent/background/syntaxChecks.ts",
+        ],
+        stats: {
+          total: allOpenApiFiles.length,
+          filesWithIssues: yamlReports.length,
+          clean: allOpenApiFiles.length - yamlReports.length,
+          errors: yamlErrors,
+          warnings: yamlWarnings,
+        },
+        ruleBreakdown: Object.entries(yamlRuleCounts)
+          .sort(([, a], [, b]) => b - a)
+          .map(([rule, count]) => ({ rule, count })),
+        files: yamlReports,
+      },
+    });
+  }
+
+  // --- Original site/section mode ---
   if (!site || typeof site !== "string") {
     return NextResponse.json(
-      { error: "site (hostname) required" },
+      { error: "Either `dir` (absolute path) or `site` (hostname) is required" },
       { status: 400 }
     );
   }

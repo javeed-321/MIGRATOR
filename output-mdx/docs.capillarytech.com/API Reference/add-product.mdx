@@ -1,0 +1,667 @@
+---
+title: Add Product
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Add Product
+
+Allows you to add product to the inventory.
+
+<Callout kind="info" title="Enabling OU support for product entities">
+
+To enable OU support for product entities, you need to create a JIRA ticket and enable the config `CONF_OU_LEVEL_PRODUCTS_ENABLED`. For more information, see [Configuring Organisation Unit (OU) support for product entities](https://docs.capillarytech.com/docs/inventory-profiles#configuring-organisation-unit-ou-support-for-product-entities).
+
+</Callout>
+
+## Example request
+
+```json Sample request
+curl --location 'http://eu.api.capillarytech.com/v1.1/product/add' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic ' \
+--header 'Cookie: _cfuvid=Y.CE0cLFeZ23GEphcU4m6DAiMpC6h0VSaCmCV2JdZ30-1762424176935-0.0.1.1-604800000' \
+--data '{
+  "root": {
+    "product": [{
+      "sku": "SKU40",
+      "ean": "",
+      "price": "7000",
+      "description": "adding sample product",
+      "long_description": "Sample description",
+      "img_url": "https://nightly.capillary.in/productManagement/Colors/img.jpg",
+      "size": { "name": "Medium" },
+      "style": { "name": "slimFit" },
+      "brand": { "name": "Lee" },
+      "color": { "name": "blue" },
+      "category": { "name": "HANDBAG(S)" },
+      "attributes": {
+        "attribute": [
+          {
+            "name": "weight",
+            "value": "100g"
+          },
+          {
+            "name": "sampleName",
+            "value": "samplevalue"
+          }
+        ]
+      }
+    },
+   {
+      "sku": "Levis-015",
+      "ean": "Levis-015",
+      "price": "22",
+      "description": [],
+      "img_url": [],
+      "size": {
+         "name": "abcd",
+         "type": "type1"
+      },
+      "#text": ">",
+      "style": {
+         "name": "testcode"
+      },
+      "category": {
+         "name": "test1"
+      },
+      "attributes": {
+         "attribute": {
+            "name": "Jeans",
+            "value": "Levis13"
+         }
+      }
+   },
+   {
+      "sku": "Levis-014",
+      "ean": "Levis-014",
+      "price": "22",
+      "description": [],
+      "img_url": [],
+      "size": {
+         "name": "abcd",
+         "type": "type1"
+      },
+      "#text": ">",
+      "style": {
+         "name": "testcode"
+      },
+      "category": {
+         "name": "test1"
+      },
+      "attributes": {
+         "attribute": {
+            "name": "Jeans",
+            "value": "Levis13"
+         }
+      }
+   }
+    ]
+  }
+}'
+````
+```json Sample request with OU code
+{
+  "root": {
+    "product": [{
+      "sku": "SKU19",
+      "ean": "",
+      "price": "5000",
+      "description": "OU Product 15",
+      "long_description": "OU Product 14",
+      "ou_code": "tatacliq",
+      "size": { "name": "Small" },
+      "style": { "name": "slim" },
+      "brand": { "name": "Peter" },
+      "color": { "name": "Green" },
+      "category": { "name": "HANDBAG(S)" }    }
+    ]
+  }
+}
+````
+
+<br />
+
+| Parameter          | Datatype  | Description                                                                                                                                                                                                                                                                                                |
+| ------------------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `product*`         | array-obj | list of products to add.                                                                                                                                                                                                                                                                                   |
+| `sku*`             | string    | SKU of the product to add.                                                                                                                                                                                                                                                                                 |
+| `ean`              | string    | European article number of the product.                                                                                                                                                                                                                                                                    |
+| `price*`           | double    | Price of the product.                                                                                                                                                                                                                                                                                      |
+| `description`      | string    | Brief description of the product.                                                                                                                                                                                                                                                                          |
+| `returnable`       | boolean   | Pass `true` if the item is allowed to return post purchase. You also need to mention `returnableDays`. Default value is `false`.                                                                                                                                                                           |
+| `returnableDays`   | int       | Number of days in which the item can be returned after purchasing. Default value is `-1` (no limit).                                                                                                                                                                                                       |
+| `long_description` | string    | Detailed description of the product.                                                                                                                                                                                                                                                                       |
+| `ou_code`          | string    | Identification code of the organisation unit. This is applicable only if OU support for product inventory is enabled.  For more information, see [OU support for product inventory](https://docs.capillarytech.com/docs/inventory-profiles#configuring-organisation-unit-ou-support-for-product-entities). |
+| `img_url`          | string    | URL of the product image.                                                                                                                                                                                                                                                                                  |
+| `size`             | obj       | Size of the product in name:value pairs.                                                                                                                                                                                                                                                                   |
+| `style`            | obj       | Product style in name:value pairs.                                                                                                                                                                                                                                                                         |
+| `type`             | string    | Size type.                                                                                                                                                                                                                                                                                                 |
+| `brand`            | obj       | Pass a valid brand name (as per the database) of the product.                                                                                                                                                                                                                                              |
+| `color`            | obj       | Pass a valid product color (as per the database) .                                                                                                                                                                                                                                                         |
+| `category`         | obj       | Pass a valid product category name ((as per the database).                                                                                                                                                                                                                                                 |
+| `attributes`       | obj       | Other product attributes in name-value pairs.                                                                                                                                                                                                                                                              |
+
+<Callout kind="info">
+
+  Parameters marked with * are mandatory. Values of product attributes such as style, size, brand, type, color, and category should have been configured for the org.  You can set these on the Organization Settings page on InTouch.
+
+</Callout>
+
+## Response Parameters
+
+| Parameter     | Datatype  | Description                                                   |
+| ------------- | --------- | ------------------------------------------------------------- |
+| `item_id`     | long      | Unique ID of the product generated by the system.             |
+| `name`        | string    | Name of the entry.                                            |
+| `label`       | string    | UI name of the specific entry (style, color, category, brand) |
+| `added_on`    | date-time | Date and time of the product addition.                        |
+| `description` | string    | Description of the specific entry as in the database.         |
+| `ou_code`     | string    | Identification code of the organisation unit.                 |
+| `ou_id`       | Integer   | Identification number of the organisation unit.               |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "customer-v11",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v1.1",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/product/add": {
+      "post": {
+        "summary": "Add Product",
+        "description": "Allows you to add product to the inventory.",
+        "operationId": "add-product",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "Sample POST Body": {
+                  "value": {
+                    "root": {
+                      "product": [
+                        {
+                          "sku": "SKU40",
+                          "ean": "",
+                          "price": "7000",
+                          "description": "adding sample product",
+                          "long_description": "Sample description",
+                          "img_url": "https://nightly.capillary.in/productManagement/Colors/img.jpg",
+                          "size": {
+                            "name": "Medium"
+                          },
+                          "style": {
+                            "name": "slimFit"
+                          },
+                          "brand": {
+                            "name": "Lee"
+                          },
+                          "color": {
+                            "name": "blue"
+                          },
+                          "category": {
+                            "name": "HANDBAG(S)"
+                          },
+                          "attributes": {
+                            "attribute": [
+                              {
+                                "name": "weight",
+                                "value": "100g"
+                              },
+                              {
+                                "name": "sampleName",
+                                "value": "samplevalue"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "sku": "Levis-015",
+                          "ean": "Levis-015",
+                          "price": "22",
+                          "description": [],
+                          "img_url": [],
+                          "size": {
+                            "name": "abcd",
+                            "type": "type1"
+                          },
+                          "#text": ">",
+                          "style": {
+                            "name": "testcode"
+                          },
+                          "category": {
+                            "name": "test1"
+                          },
+                          "attributes": {
+                            "attribute": {
+                              "name": "Jeans",
+                              "value": "Levis13"
+                            }
+                          }
+                        },
+                        {
+                          "sku": "Levis-014",
+                          "ean": "Levis-014",
+                          "price": "22",
+                          "description": [],
+                          "img_url": [],
+                          "size": {
+                            "name": "abcd",
+                            "type": "type1"
+                          },
+                          "#text": ">",
+                          "style": {
+                            "name": "testcode"
+                          },
+                          "category": {
+                            "name": "test1"
+                          },
+                          "attributes": {
+                            "attribute": {
+                              "name": "Jeans",
+                              "value": "Levis13"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "with ou code": {
+                  "value": {
+                    "root": {
+                      "product": [
+                        {
+                          "sku": "SKU19",
+                          "ean": "",
+                          "price": "5000",
+                          "description": "OU Product 15",
+                          "long_description": "OU Product 14",
+                          "ou_code": "tatacliq",
+                          "size": {
+                            "name": "Small"
+                          },
+                          "style": {
+                            "name": "slim"
+                          },
+                          "brand": {
+                            "name": "Peter"
+                          },
+                          "color": {
+                            "name": "Green"
+                          },
+                          "category": {
+                            "name": "HANDBAG(S)"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"response\": {\n        \"status\": {\n            \"success\": true,\n            \"code\": 200,\n            \"message\": \"Success\"\n        },\n        \"product\": [\n            {\n                \"item_id\": \"28267591\",\n                \"sku\": \"SKU40\",\n                \"ean\": \"SKU40\",\n                \"price\": \"7000\",\n                \"img_url\": \"https://nightly.capillary.in/productManagement/Colors/img.jpg\",\n                \"in_stock\": \"false\",\n                \"description\": \"adding sample product\",\n                \"returnable\": \"true\",\n                \"returnable_days\": -1,\n                \"long_description\": \"Sample description\",\n                \"size\": {\n                    \"name\": null\n                },\n                \"style\": {\n                    \"name\": null\n                },\n                \"brand\": {\n                    \"name\": null\n                },\n                \"color\": {\n                    \"name\": null\n                },\n                \"category\": {\n                    \"name\": null\n                },\n                \"attributes\": [],\n                \"item_status\": {\n                    \"success\": true,\n                    \"code\": 9100,\n                    \"message\": \"Product added successfully\"\n                }\n            },\n            {\n                \"item_id\": \"28267592\",\n                \"sku\": \"Levis-015\",\n                \"ean\": \"Levis-015\",\n                \"price\": \"22\",\n                \"img_url\": \"[]\",\n                \"in_stock\": \"false\",\n                \"description\": \"[]\",\n                \"returnable\": \"true\",\n                \"returnable_days\": -1,\n                \"long_description\": \"\",\n                \"size\": {\n                    \"name\": null\n                },\n                \"style\": {\n                    \"name\": null\n                },\n                \"brand\": {\n                    \"name\": null\n                },\n                \"color\": {\n                    \"name\": null\n                },\n                \"category\": {\n                    \"name\": null\n                },\n                \"attributes\": [],\n                \"item_status\": {\n                    \"success\": true,\n                    \"code\": 9100,\n                    \"message\": \"Product added successfully\"\n                }\n            },\n            {\n                \"item_id\": \"28267593\",\n                \"sku\": \"Levis-014\",\n                \"ean\": \"Levis-014\",\n                \"price\": \"22\",\n                \"img_url\": \"[]\",\n                \"in_stock\": \"false\",\n                \"description\": \"[]\",\n                \"returnable\": \"true\",\n                \"returnable_days\": -1,\n                \"long_description\": \"\",\n                \"size\": {\n                    \"name\": null\n                },\n                \"style\": {\n                    \"name\": null\n                },\n                \"brand\": {\n                    \"name\": null\n                },\n                \"color\": {\n                    \"name\": null\n                },\n                \"category\": {\n                    \"name\": null\n                },\n                \"attributes\": [],\n                \"item_status\": {\n                    \"success\": true,\n                    \"code\": 9100,\n                    \"message\": \"Product added successfully\"\n                }\n            }\n        ]\n    }\n}"
+                  },
+                  "with ou code": {
+                    "value": "{\n    \"response\": {\n        \"status\": {\n            \"success\": true,\n            \"code\": 200,\n            \"message\": \"Success\"\n        },\n        \"product\": [\n            {\n                \"item_id\": \"293670943\",\n                \"sku\": \"SKU19\",\n                \"ean\": \"SKU19\",\n                \"price\": \"5000\",\n                \"img_url\": \"\",\n                \"in_stock\": \"false\",\n                \"description\": \"OU Product 15\",\n                \"returnable\": \"true\",\n                \"ou_code\": \"tatacliq\",\n                \"ou_id\": \"12969858\",\n                \"returnable_days\": -1,\n                \"long_description\": \"OU Product 14\",\n                \"size\": {\n                    \"name\": null\n                },\n                \"style\": {\n                    \"name\": null\n                },\n                \"brand\": {\n                    \"name\": null\n                },\n                \"color\": {\n                    \"name\": null\n                },\n                \"category\": {\n                    \"name\": null\n                },\n                \"attributes\": [],\n                \"item_status\": {\n                    \"success\": true,\n                    \"code\": 9100,\n                    \"message\": \"Product added successfully\"\n                }\n            }\n        ]\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "response": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "object",
+                              "properties": {
+                                "success": {
+                                  "type": "boolean",
+                                  "example": true,
+                                  "default": true
+                                },
+                                "code": {
+                                  "type": "integer",
+                                  "example": 200,
+                                  "default": 0
+                                },
+                                "message": {
+                                  "type": "string",
+                                  "example": "Success"
+                                }
+                              }
+                            },
+                            "product": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "item_id": {
+                                    "type": "string",
+                                    "example": "28267591"
+                                  },
+                                  "sku": {
+                                    "type": "string",
+                                    "example": "SKU40"
+                                  },
+                                  "ean": {
+                                    "type": "string",
+                                    "example": "SKU40"
+                                  },
+                                  "price": {
+                                    "type": "string",
+                                    "example": "7000"
+                                  },
+                                  "img_url": {
+                                    "type": "string",
+                                    "example": "https://nightly.capillary.in/productManagement/Colors/img.jpg"
+                                  },
+                                  "in_stock": {
+                                    "type": "string",
+                                    "example": "false"
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "example": "adding sample product"
+                                  },
+                                  "returnable": {
+                                    "type": "string",
+                                    "example": "true"
+                                  },
+                                  "returnable_days": {
+                                    "type": "integer",
+                                    "example": -1,
+                                    "default": 0
+                                  },
+                                  "long_description": {
+                                    "type": "string",
+                                    "example": "Sample description"
+                                  },
+                                  "size": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {}
+                                    }
+                                  },
+                                  "style": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {}
+                                    }
+                                  },
+                                  "brand": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {}
+                                    }
+                                  },
+                                  "color": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {}
+                                    }
+                                  },
+                                  "category": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {}
+                                    }
+                                  },
+                                  "attributes": {
+                                    "type": "array"
+                                  },
+                                  "item_status": {
+                                    "type": "object",
+                                    "properties": {
+                                      "success": {
+                                        "type": "boolean",
+                                        "example": true,
+                                        "default": true
+                                      },
+                                      "code": {
+                                        "type": "integer",
+                                        "example": 9100,
+                                        "default": 0
+                                      },
+                                      "message": {
+                                        "type": "string",
+                                        "example": "Product added successfully"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "title": "with ou code",
+                      "type": "object",
+                      "properties": {
+                        "response": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "object",
+                              "properties": {
+                                "success": {
+                                  "type": "boolean",
+                                  "example": true,
+                                  "default": true
+                                },
+                                "code": {
+                                  "type": "integer",
+                                  "example": 200,
+                                  "default": 0
+                                },
+                                "message": {
+                                  "type": "string",
+                                  "example": "Success"
+                                }
+                              }
+                            },
+                            "product": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "item_id": {
+                                    "type": "string",
+                                    "example": "293670943"
+                                  },
+                                  "sku": {
+                                    "type": "string",
+                                    "example": "SKU19"
+                                  },
+                                  "ean": {
+                                    "type": "string",
+                                    "example": "SKU19"
+                                  },
+                                  "price": {
+                                    "type": "string",
+                                    "example": "5000"
+                                  },
+                                  "img_url": {
+                                    "type": "string",
+                                    "example": ""
+                                  },
+                                  "in_stock": {
+                                    "type": "string",
+                                    "example": "false"
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "example": "OU Product 15"
+                                  },
+                                  "returnable": {
+                                    "type": "string",
+                                    "example": "true"
+                                  },
+                                  "ou_code": {
+                                    "type": "string",
+                                    "example": "tatacliq"
+                                  },
+                                  "ou_id": {
+                                    "type": "string",
+                                    "example": "12969858"
+                                  },
+                                  "returnable_days": {
+                                    "type": "integer",
+                                    "example": -1,
+                                    "default": 0
+                                  },
+                                  "long_description": {
+                                    "type": "string",
+                                    "example": "OU Product 14"
+                                  },
+                                  "size": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {}
+                                    }
+                                  },
+                                  "style": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {}
+                                    }
+                                  },
+                                  "brand": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {}
+                                    }
+                                  },
+                                  "color": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {}
+                                    }
+                                  },
+                                  "category": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {}
+                                    }
+                                  },
+                                  "attributes": {
+                                    "type": "array"
+                                  },
+                                  "item_status": {
+                                    "type": "object",
+                                    "properties": {
+                                      "success": {
+                                        "type": "boolean",
+                                        "example": true,
+                                        "default": true
+                                      },
+                                      "code": {
+                                        "type": "integer",
+                                        "example": 9100,
+                                        "default": 0
+                                      },
+                                      "message": {
+                                        "type": "string",
+                                        "example": "Product added successfully"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

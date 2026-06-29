@@ -1,0 +1,217 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Get Product Attributes
+
+Retrieves the list of all product attributes of the org.
+
+
+Some attributes like price, item_sku, description, img_url would be common across organizations.
+
+### Response Parameters
+
+| Parameter                         | Datatype | Description                                                                                                                                                |
+| --------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                            | string   | Name of the attribute.                                                                                                                                     |
+| `label`                           | string   | Label name of the attribute                                                                                                                                |
+| `is\_enum`                        | enum     | Whether the attribute values are predefined values. `1` if enum type, `0` if not enum.                                                                     |
+| `type`                            | string   | Datatype of the attribute value.                                                                                                                           |
+| `default\_attribute\_value\_name` | string   | Default value of the attribute if any.                                                                                                                     |
+| `inventory\_item\_attributes`     | string   | Name of the table (in the database) from which the attributes are retrieved.                                                                               |
+| `ou\_id`                          | integer  | Indicates the ID of the OU. -1 indicates that the product belongs to a master org. This is applicable only if OU support for product inventory is enabled. |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "customer-v11",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v1.1",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/product/attributes": {
+      "get": {
+        "summary": "Get Product Attributes",
+        "description": "Retrieves the list of all product attributes of the org.\n\n\nSome attributes like price, item_sku, description, img_url would be common across organizations.",
+        "operationId": "get-product-attributes",
+        "parameters": [
+          {
+            "name": "include_id",
+            "in": "query",
+            "description": "Retrieves category ids of each product attribute size fetched.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "values",
+            "in": "query",
+            "description": "Pass true to retrieve all child attributes.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "value_limit",
+            "in": "query",
+            "description": "Limits number of child attributes to be retrieved per attribute.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Retrieves details of an an attribute based on the attribute name (name is not case sensitive).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Pass an attribute id to fetch the details of that specific attribute.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limits the number of results to be retrieved.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Entries to be ignored from the top.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ou_code",
+            "in": "query",
+            "description": "Identifier code of the organisation.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fetch_type",
+            "in": "query",
+            "description": "ALL - Fetches details of product associated with both master org and org unit. ORG-Fetches details of products associated with master ORG. SCOPE-Fetches details of products associated with an org unit.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "ORG",
+                "SCOPE"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"response\":{\n    \"status\":{\n      \"success\":true,\n      \"code\":200,\n      \"message\":\"Success\"\n    },\n    \"product\":{\n      \"count\":5,\n      \"attributes\":{\n        \"attribute\":[\n          {\n            \"name\":\"E1\",\n            \"label\":\"ee1\",\n            \"is_enum\":\"0\",\n            \"type\":\"Int\",\n            \"extraction_rule_type\":\"UPLOAD\",\n            \"extraction_rule_data\":\"E1\",\n            \"is_soft_enum\":\"1\",\n            \"use_in_dump\":\"1\",\n            \"default_attribute_value_name\":\"e10\",\n            \"item_status\":{\n              \"success\":true,\n              \"code\":9176,\n              \"message\":\"Attribute retrieval successful\"\n            }\n          },\n          {\n            \"name\":\"D1\",\n            \"label\":\"\",\n            \"is_enum\":\"0\",\n            \"type\":\"Int\",\n            \"extraction_rule_type\":\"UPLOAD\",\n            \"extraction_rule_data\":\"D1\",\n            \"is_soft_enum\":\"1\",\n            \"use_in_dump\":\"1\",\n            \"default_attribute_value_name\":\"d10\",\n            \"item_status\":{\n              \"success\":true,\n              \"code\":9176,\n              \"message\":\"Attribute retrieval successful\"\n            }\n          },\n          {\n            \"name\":\"C1\",\n            \"label\":\"cc1\",\n            \"is_enum\":\"0\",\n            \"type\":\"Boolean\",\n            \"extraction_rule_type\":\"POS\",\n            \"extraction_rule_data\":\"\",\n            \"is_soft_enum\":\"0\",\n            \"use_in_dump\":\"1\",\n            \"default_attribute_value_name\":\"c11\",\n            \"item_status\":{\n              \"success\":true,\n              \"code\":9176,\n              \"message\":\"Attribute retrieval successful\"\n            }\n          },\n\n\n        ]\n      }\n    }\n  }\n}"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "http://apac.api.capillarytech.com/v1.1/product/categories?ou_code=tatacliq&fetch_type=ORG&format=json",
+              "name": "get attributes_org"
+            },
+            {
+              "language": "curl",
+              "code": "http://apac.api.capillarytech.com/v1.1/product/attributes?sku=SKU12&ou_code=tatacliq&fetch_type=SCOPE&format=json",
+              "name": "get attributes_OU"
+            },
+            {
+              "language": "curl",
+              "code": "https://api.us.capillarytech.com/v1.1/product/attributes?format=json",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

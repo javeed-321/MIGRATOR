@@ -1,0 +1,201 @@
+---
+title: Retrieve Workspaces
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Retrieve Workspaces
+
+Retrieves the workspace ID
+
+The [Workspace ](https://docs.capillarytech.com/docs/connectplus_overview#workspace)ID identifies the specific workspace in Connect+ where you create the template. The API retrieves the Workspace ID, which you use in the  [Create DIY template](https://docs.capillarytech.com/reference/post-create-api-diy-template-connectplus) API to create a DIY template. The `id `parameter in the response payload is the Workspace ID.
+
+## API endpoint example
+
+[https://uscrm.connectplus.capillarytech.com/api/workspaces](https://uscrm.connectplus.capillarytech.com/api/workspaces)
+
+## Prerequisites
+
+* [ ] Access to Connect+
+* [ ] Keep the Connect+ UI open
+
+## Response parameters
+
+| **Field**     | **Data Type** | **Description**                                                                                            |
+| ------------- | ------------- | ---------------------------------------------------------------------------------------------------------- |
+| id            | Integer       | Unique identifier for the [workspace](https://docs.capillarytech.com/docs/connectplus_overview#workspace). |
+| name          | String        | Name of the workspace.                                                                                     |
+| uuid          | String        | Universally unique identifier of the workspace (organisation).                                             |
+| enabled       | Boolean       | Indicates if you can access, make changes, run processes, and perform any operations within the workspace. |
+| organisations | Array         | List of organisation details associated with the workspace.                                                |
+| - id          | Integer       | Unique identifier for the organisation.                                                                    |
+| - name        | String        | Name of the organisation.                                                                                  |
+| - cluster     | String        | Cluster region of the organisation. **Example**: US cluster, India cluster                                 |
+| locked        | Boolean       | Indicates if the workspace is locked                                                                       |
+
+```json Sample response
+[
+    {
+        "id": 209,
+        "name": "8_uscrm_Automation",
+        "uuid": "e1bc9b40-018e-1000-ffff-fffff0638f69",
+        "enabled": true,
+        "organisations": [
+            {
+                "id": 8,
+                "name": "EventNotification_Automation",
+                "cluster": "us"
+            }
+        ],
+        "locked": false
+    }
+]
+
+````
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "diy-template",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}.connectplus.capillarytech.com",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/api/workspaces": {
+      "get": {
+        "summary": "Retrieve Workspaces",
+        "description": "Retrieves the workspace ID",
+        "operationId": "get-workspaces-diy-connectplus-template",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[\n    {\n        \"id\": 209,\n        \"name\": \"8_uscrm_Automation\",\n        \"uuid\": \"e1bc9b40-018e-1000-ffff-fffff0638f69\",\n        \"enabled\": true,\n        \"organisations\": [\n            {\n                \"id\": 8,\n                \"name\": \"EventNotification_Automation\",\n                \"cluster\": \"us\"\n            }\n        ],\n        \"locked\": false\n    }\n]\n"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 209,
+                        "default": 0
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "8_uscrm_Automation"
+                      },
+                      "uuid": {
+                        "type": "string",
+                        "example": "e1bc9b40-018e-1000-ffff-fffff0638f69"
+                      },
+                      "enabled": {
+                        "type": "boolean",
+                        "example": true,
+                        "default": true
+                      },
+                      "organisations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 8,
+                              "default": 0
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "EventNotification_Automation"
+                            },
+                            "cluster": {
+                              "type": "string",
+                              "example": "us"
+                            }
+                          }
+                        }
+                      },
+                      "locked": {
+                        "type": "boolean",
+                        "example": false,
+                        "default": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "https://uscrm.connectplus.capillarytech.com/api/workspaces",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+````

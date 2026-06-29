@@ -1,0 +1,323 @@
+---
+title: Add Categories
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Add Categories
+
+Creates new product categories in bulk.
+
+**Code uniqueness:** Category codes are validated case-insensitively. For example, "CATEGORY1" and "category1" are treated as duplicates. The same code can exist for different organizational units (ouCode).
+
+Creates product categories in bulk. You can add up to 100 categories per request, including both parent and child categories. Parent categories are automatically processed before their children, and the system handles dependency resolution.
+
+You can control how many categories can be created via the `CONF_PRODUCT_CREATE_UPDATE_BATCH_SIZE` configuration. To modify this limit, raise a JIRA ticket to the Capillary Product Support team.
+
+* You can create an entire category hierarchy in a single request, limited to a default maximum depth of 5 levels. You can raise a ticket with the Capillary Product team to increase the limit for your organization.
+* Include parent categories in the same request as their children; the API automatically processes them in the correct order.
+
+## Example request
+
+<CodeGroup tabs="curl,Parent & child in single in same request,Only child categories,Only parent categories">
+
+```bash
+curl --location 'https://{Host}.com/v2/product/categories' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic bmVlcmFqa3Jpc2huYTpkY2VhNU0M2JhODdkMTFkMTM2ODI2NmMxOQ==' \
+--data '[
+  {
+    "code": "Tables",
+    "name": "Tables",
+    "ouCode": "krishna.ou1"
+  }
+]'
+````
+
+```Text
+curl --location 'https://{Host}/v2/product/categories' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic bmVlcmFqa3Jpc2huYTpkY2VhNmODdkMTFkMTM2ODI2NmMxOQ==' \
+--data '[
+    {
+        "code": "HOME_APPLIANCES",
+        "name": "Home Appliances",
+        "description": "Household electrical machines.",
+        "ouCode": "krishna.ou1"
+    },
+    {
+        "code": "REFRIGERATORS",
+        "name": "Refrigerators",
+        "description": "Cooling and freezing units.",
+        "ouCode": "krishna.ou1",
+        "parentCode": "HOME_APPLIANCES"
+    },
+    {
+        "code": "FURNITURE",
+        "name": "Furniture",
+        "description": "Home and office furnishings.",
+        "ouCode": "krishna.ou1"
+    },
+    {
+        "code": "OFFICE_CHAIRS",
+        "name": "Office Chairs",
+        "description": "Ergonomic seating for work environments.",
+        "ouCode": "krishna.ou1",
+        "parentCode": "FURNITURE"
+    }
+]'
+````
+
+```Text
+curl --location 'https://{Host}/v2/product/categories' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic a3Jpc2huYS50aWxsMDEjk2NGIwNzE1MmQyMzRiNzA=' \
+--data '[
+    {
+        "code": "CHILD_SHIPPING_501",
+        "name": "Express Shipping",
+        "description": "Next-day and priority delivery services.",
+        "ouCode": "krishna.ou1",
+        "parentCode": "PARENT_LOGISTICS_500"
+    },
+    {
+        "code": "CHILD_GAMING_601",
+        "name": "Cloud Gaming",
+        "description": "Subscription-based remote gaming services.",
+        "ouCode": "krishna.ou1",
+        "parentCode": "PARENT_MEDIA_600"
+    }
+]'
+````
+
+```Text
+curl --location 'https://{Host}/v2/product/categories' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic a3Jpc2huYS50aWxsMDE6MjAyY2I5wNzE1MmQyMzRiNzA=' \
+--data '[
+    {
+        "code": "PARENT_LOGISTICS_500",
+        "name": "Logistics Services",
+        "description": "Shipping, warehousing, and fulfillment solutions.",
+        "ouCode": "krishna.ou1"
+    },
+    {
+        "code": "PARENT_MEDIA_600",
+        "name": "Media & Entertainment",
+        "description": "Streaming, gaming, and broadcast content.",
+        "ouCode": "krishna.ou1"
+    }
+]'
+````
+
+</CodeGroup>
+## Prerequisites
+
+* **Access Group:** WRITE access to Product resource
+* **Authorization:** Basic or OAuth token
+
+## Body parameters
+
+The body should be a JSON array of category objects.
+
+| Field         | Type   | Required | Description                                                                                                                                                                                                                                                                                        |
+| :------------ | :----- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `code`        | string | Yes      | Defines the unique identifier for the category. Must be unique within your organization unit. Max 50 characters. Codes are validated case-insensitively. For example, "CATEGORY1" and "category1" are treated as duplicates.  The same code can exist for different organizational units (ouCode). |
+| `name`        | string | Yes      | Specifies the display name of the category (e.g., "Men's Footwear"). Supports up to 100 alphanumeric characters.                                                                                                                                                                                   |
+| `description` | string | No       | Provides additional details about the category.                                                                                                                                                                                                                                                    |
+| `ouCode`      | string | No       | Identifies the organization unit code to which the category is associated. If not provided, defaults to organization level (ouId = -1).                                                                                                                                                            |
+| `parentCode`  | string | No       | Indicates the unique code of the parent category. The parent must exist or be included in the request. Max depth: 5 levels.                                                                                                                                                                        |
+
+## API Quick Reference
+
+```json Tree structure
+{{/v2/product/categories}}
+   └─ {{RequestBody}} (Batch Array)
+      ├─ {{code}} (string)
+      ├─ {{name}} (string)
+      ├─ {{description}} (string)
+      ├─ {{ouCode}} (string)
+      ├─ {{parentCode}} (string)
+      └─ {{ResponseBody}}
+          ├─ {{created}} []
+          │   ├─ {{responseId}} (integer)
+          │   ├─ {{responseOuId}} (integer)
+          │   ├─ {{responseCode}} (string)
+          │   └─ {{responseOuCode}} (string)
+          ├─ {{summary}}
+          │   ├─ {{totalRequested}} (integer)
+          │   ├─ {{successCount}} (integer)
+          │   └─ {{failureCount}} (integer)
+          ├─ {{warnings}} []
+          └─ {{errors}} []
+````
+
+## Example response
+
+```Text 200 OK
+{
+    "created": [
+        {
+            "ouCode": "krishna.ou1",
+            "id": 11420907,
+            "ouId": 50025951,
+            "code": "HOME_APPLIANCES"
+        },
+        {
+            "ouCode": "krishna.ou1",
+            "id": 11420908,
+            "ouId": 50025951,
+            "code": "FURNITURE"
+        },
+        {
+            "ouCode": "krishna.ou1",
+            "id": 11420909,
+            "ouId": 50025951,
+            "code": "REFRIGERATORS"
+        },
+        {
+            "ouCode": "krishna.ou1",
+            "id": 11420910,
+            "ouId": 50025951,
+            "code": "OFFICE_CHAIRS"
+        }
+    ],
+    "summary": {
+        "totalRequested": 4,
+        "successCount": 4,
+        "failureCount": 0
+    },
+    "warnings": [],
+    "errors": []
+}
+````
+
+## Response parameters
+
+| Field             | Type    | Description                                                                                             |
+| :---------------- | :------ | :------------------------------------------------------------------------------------------------------ |
+| `created`         | array   | Contains the array of successfully created category objects.                                            |
+| `.id`             | integer | Indicates the unique database ID of the created category.                                               |
+| `.ouId`           | integer | Specifies the Organization Unit ID, returning -1 if the category was created at the organization level. |
+| `.code`           | string  | Specifies the unique code of the category.                                                              |
+| `.name`           | string  | Specifies the display name of the category.                                                             |
+| `.parentId`       | integer | Indicates the database ID of the parent category, returning 0 for root-level categories.                |
+| `.addedBy`        | integer | Identifies the User ID of the person who created the category.                                          |
+| `.addedOn`        | string  | Indicates the timestamp when the category was created in ISO 8601 format.                               |
+| `summary`         | object  | Provides a summary of the bulk operation results.                                                       |
+| `.totalRequested` | integer | Indicates the total number of categories submitted in the request.                                      |
+| `.successCount`   | integer | Indicates the number of categories that were successfully created.                                      |
+| `.failureCount`   | integer | Indicates the number of categories that failed validation.                                              |
+| `errors`          | array   | Contains an array of error objects for any operations that failed.                                      |
+| `.code`           | integer | Specifies the error code associated with the failure.                                                   |
+| `.message`        | string  | Provides a human-readable error message explaining why the operation failed.                            |
+
+## Error codes
+
+| Code  | Description                                                                                                                                |
+| :---- | :----------------------------------------------------------------------------------------------------------------------------------------- |
+| 9182  | Organization-level category limit reached. Contact support to increase the limit.                                                          |
+| 9174  | The category code exceeds the maximum length. Shorten the category code and try again.                                                     |
+| 10001 | Invalid ouCode provided. Use a valid concept code.                                                                                         |
+| 10002 | OU level product filtering is disabled for your organization, but an `ouCode` was provided.                                                |
+| 10061 | The request body is empty. Include at least one category object in the array.                                                              |
+| 10062 | The request exceeds the processing limit. Reduce the batch size to 100 categories or fewer.                                                |
+| 10063 | A category code is missing. Provide a valid, non-empty string for the `code` field.                                                        |
+| 10064 | The category code already exists in the system. Use a unique code or verify if creation is necessary.                                      |
+| 10065 | The category name is missing. Provide a valid name string.                                                                                 |
+| 10066 | Duplicate category codes were found within the same request. Ensure every item in the array has a unique code.                             |
+| 10067 | The referenced parent category code does not exist. Verify the parent code or ensure the parent is included in the same request.           |
+| 10068 | The parent category has reached its maximum number of children. Assign the new category to a different parent or request a limit increase. |
+| 10069 | The new category would exceed the maximum hierarchy depth. Restructure the hierarchy to be flatter or request a depth limit increase.      |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Capillary InTouch API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "{Host}",
+      "variables": {
+        "Host": {
+          "default": "https://eu.intouch.capillarytech.com",
+          "enum": [
+            "https://eu.intouch.capillarytech.com",
+            "https://intouch.capillary.co.in",
+            "https://apac2.intouch.capillarytech.com",
+            "https://sgcrm.cc.capillarytech.com",
+            "http://intouch.capillarytech.cn.com",
+            "https://north-america.intouch.capillarytech.com"
+          ]
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Example (Corrupted): Basic bmVlcmFqa3Jpc2huYTpkY2VhNmU1ODlhM2U0M2JhODdkMTFkMTM2ODI2NmMx"
+      }
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "paths": {
+    "/v2/product/categories": {
+      "post": {
+        "summary": "Create Product Categories",
+        "description": "Creates new product categories in bulk.\n\n**Code uniqueness:** Category codes are validated case-insensitively. For example, \"CATEGORY1\" and \"category1\" are treated as duplicates. The same code can exist for different organizational units (ouCode).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "Unique identifier for the category. Codes are validated case-insensitively—\"CATEGORY1\" and \"category1\" are treated as duplicates.  The same code can exist for different organizational units (ouCode).",
+                      "example": "Tables"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Display name for the category.",
+                      "example": "Tables"
+                    },
+                    "ouCode": {
+                      "type": "string",
+                      "description": "Organizational unit code. When specified, category code uniqueness is scoped to this organizational unit,  allowing the same category code to exist in different organizational units.",
+                      "example": "krishna.ou1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Bad request. Possible error codes:\n- **10064** (ERR_CATEGORY_CODE_EXISTS): Category code already exists in the database. Codes are checked case-insensitively.\n- **10066** (ERR_CATEGORY_DUPLICATE_CODE_IN_PAYLOAD): Duplicate category codes found within the same request payload (for the same organizational unit). Codes are checked case-insensitively."
+          }
+        }
+      }
+    }
+  }
+}
+```

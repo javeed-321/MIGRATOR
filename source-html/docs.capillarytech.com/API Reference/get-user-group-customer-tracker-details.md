@@ -1,0 +1,345 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Get user group customer tracker details
+
+This API enables you to retrieve tracker details of a customer in a user group.
+
+# Example request
+
+```curl Sample request
+curl --location 'https://eu.api.capillarytech.com/v2/customers/userEntityTrackers?format=json&type=USERGROUP2&identifierType=id&identifierValue=3854766&source=INSTORE' \
+--header 'Authorization: Basic bWFkaMjU2YQ==' \
+--header 'Cookie: _cfuvid=Lnq8NOofFCcTsbLTTg8SIfFKr1Kgqe36yiCcgK9e_.8-1762161511381-0.0.1.1-604800000'
+```
+
+# Query parameters
+
+| Parameter       | Type   | Description                                                                                                                                                        |
+| --------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| type            | string | Type of entity tracker. In this case, it is always USERGROUP2.                                                                                                     |
+| identifierType  | string | Type of identifier. Supported values for identifiers are [`id` (`userGroupId`)](https://docs.capillarytech.com/reference/add-group), `externalId`, `primaryUserId` |
+| identifierValue | string | Value of the identifier.                                                                                                                                           |
+
+# Example response
+
+```curl Sample Response
+{
+    "pagination": {
+        "limit": 0,
+        "offset": 0,
+        "total": 0
+    },
+    "data": [
+        {
+            "id": 12446,
+            "name": "TransactionTotalQuantity_Tracker",
+            "conditionId": 638,
+            "type": "BILL_TOTAL_QTY",
+            "value": 0,
+            "updatedOn": "2025-04-24T15:12:51Z",
+            "conditionName": "TransactionQuantity_Tracker",
+            "periodStartDate": "2025-04-24T15:12:51Z",
+            "periodEndDate": "2125-04-24T23:59:59Z"
+        },
+        {
+            "id": 12364,
+            "name": "Tracker 1",
+            "conditionId": 635,
+            "type": "BILL_AMOUNT",
+            "value": 0,
+            "updatedOn": "2025-04-24T15:12:51Z",
+            "conditionName": "CapBigSale",
+            "periodStartDate": "2025-04-24T15:12:51Z",
+            "periodEndDate": "2125-04-24T23:59:59Z"
+        },
+        {
+            "id": 12445,
+            "name": "LineItemAmount_Tracker",
+            "conditionId": 637,
+            "type": "LINEITEM_AMOUNT",
+            "value": 0,
+            "updatedOn": "2025-04-24T15:12:51Z",
+            "conditionName": "LineItemAmount_Tracker",
+            "periodStartDate": "2025-04-24T15:12:51Z",
+            "periodEndDate": "2125-04-24T23:59:59Z"
+        }
+    ],
+    "warnings": [],
+    "errors": []
+}
+```
+
+# Response parameters
+
+| Parameter       | Description                                                                  |
+| --------------- | ---------------------------------------------------------------------------- |
+| pagination      | Pagination details for the data.                                             |
+| data            | Array containing tracked entity data.                                        |
+| id              | Unique identifier for the tracked entity.                                    |
+| name            | Name of the tracked entity.                                                  |
+| conditionId     | Identifier for the condition associated with the tracker.                    |
+| value           | Value associated with the tracker.                                           |
+| updatedOn       | Date when the tracker was last updated, in ISO YYYY-MM-DD HH:MM:SS.s format. |
+| conditionName   | Name of the associated condition.                                            |
+| periodStartDate | Start date of the tracking period, in ISO YYYY-MM-DD HH:MM:SS.s format.      |
+| periodEndDate   | End date of the tracking period, in ISO YYYY-MM-DD HH:MM:SS.s format.        |
+| warnings        | Array containing warning messages.                                           |
+| errors          | Array containing error messages.                                             |
+
+## API Specific Error Code
+
+| Code | Reason                                                                                 | Description                                                   |
+| :--- | :------------------------------------------------------------------------------------- | :------------------------------------------------------------ |
+| 1645 | group details passed are not valid.                                                    | The group details provided are invalid.                       |
+| 1099 | Error fetching tracker data for customer.                                              | The system was unable to fetch tracker data for the customer. |
+| 1647 | Get trackers entity type not set/invalid. supported types include USERGROUP2,CUSTOMER. | The provided entity type is invalid or unsupported.           |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/customers/userEntityTrackers": {
+      "get": {
+        "summary": "Get user group customer tracker details",
+        "description": "This API enables you to retrieve tracker details of a customer in a user group.",
+        "operationId": "get-user-group-customer-tracker-details",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Type of entity tracker. In this case, it is always USERGROUP2.",
+            "schema": {
+              "type": "string",
+              "default": "USERGROUP2"
+            }
+          },
+          {
+            "name": "identifierType",
+            "in": "query",
+            "description": "Type of identifier. Example- id (userGroupId), externalId, primaryUserId.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "identifierValue",
+            "in": "query",
+            "description": "Value of the identifier.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Source on which the customer is available.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": {
+                      "pagination": {
+                        "limit": 0,
+                        "offset": 0,
+                        "total": 0
+                      },
+                      "data": [
+                        {
+                          "id": 12446,
+                          "name": "TransactionTotalQuantity_Tracker",
+                          "conditionId": 638,
+                          "type": "BILL_TOTAL_QTY",
+                          "value": 0,
+                          "updatedOn": "2025-04-24T15:12:51Z",
+                          "conditionName": "TransactionQuantity_Tracker",
+                          "periodStartDate": "2025-04-24T15:12:51Z",
+                          "periodEndDate": "2125-04-24T23:59:59Z"
+                        },
+                        {
+                          "id": 12364,
+                          "name": "Tracker 1",
+                          "conditionId": 635,
+                          "type": "BILL_AMOUNT",
+                          "value": 0,
+                          "updatedOn": "2025-04-24T15:12:51Z",
+                          "conditionName": "CapBigSale",
+                          "periodStartDate": "2025-04-24T15:12:51Z",
+                          "periodEndDate": "2125-04-24T23:59:59Z"
+                        },
+                        {
+                          "id": 12445,
+                          "name": "LineItemAmount_Tracker",
+                          "conditionId": 637,
+                          "type": "LINEITEM_AMOUNT",
+                          "value": 0,
+                          "updatedOn": "2025-04-24T15:12:51Z",
+                          "conditionName": "LineItemAmount_Tracker",
+                          "periodStartDate": "2025-04-24T15:12:51Z",
+                          "periodEndDate": "2125-04-24T23:59:59Z"
+                        }
+                      ],
+                      "warnings": [],
+                      "errors": []
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "integer",
+                          "example": 0,
+                          "default": 0
+                        },
+                        "offset": {
+                          "type": "integer",
+                          "example": 0,
+                          "default": 0
+                        },
+                        "total": {
+                          "type": "integer",
+                          "example": 0,
+                          "default": 0
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 12446,
+                            "default": 0
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "TransactionTotalQuantity_Tracker"
+                          },
+                          "conditionId": {
+                            "type": "integer",
+                            "example": 638,
+                            "default": 0
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "BILL_TOTAL_QTY"
+                          },
+                          "value": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "updatedOn": {
+                            "type": "string",
+                            "example": "2025-04-24T15:12:51Z"
+                          },
+                          "conditionName": {
+                            "type": "string",
+                            "example": "TransactionQuantity_Tracker"
+                          },
+                          "periodStartDate": {
+                            "type": "string",
+                            "example": "2025-04-24T15:12:51Z"
+                          },
+                          "periodEndDate": {
+                            "type": "string",
+                            "example": "2125-04-24T23:59:59Z"
+                          }
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    },
+                    "errors": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "shell",
+              "code": "curl --location 'http://eu.api.capillarytech.com/v2/customers/userEntityTrackers?type=USERGROUP2&identifierType=id&identifierValue=3854766&source=INSTORE%3E' \\\n--header 'Authorization: Basic bWFkaHVfcINzI3MjU2YQ==' \\\n--header 'Cookie: _cfuvid=ywN2M_QcvOeDBcXJDUKvOxjmBgRNhIajgPZwZs86g6s-1746439488628-0.0.1.1-604800000; _cfuvid=.nkd7pnYHpzU8OtgKZj_vC6yHxaPnGvgtnXKempV8Dc-1758716619391-0.0.1.1-604800000'"
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

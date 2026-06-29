@@ -21,7 +21,7 @@ export async function POST(req: Request) {
   }
 
   const safeName = site.replace(/[^a-zA-Z0-9.-]/g, "_");
-  const scrapeFile = path.join(process.cwd(), "docJson", `${safeName}.json`);
+  const scrapeFile = path.join(process.cwd(), "doc-json", `${safeName}.json`);
 
   let scrapeResult: ScrapeResult;
   try {

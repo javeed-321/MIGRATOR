@@ -1,0 +1,411 @@
+---
+title: Update SKUs
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Update SKUs
+
+Updates existing product SKUs with the provided details.
+
+Use this API to update one or more existing product SKUs in bulk. You can modify SKU metadata, pricing, brand and category associations, return settings, and custom attribute values without recreating the SKU.
+
+You can update up to **100 SKUs per request**. This batch limit is controlled by the `CONF_PRODUCT_CREATE_UPDATE_BATCH_SIZE` configuration.
+
+Each SKU is identified using its unique `sku` code. The SKU code is **immutable** and cannot be changed. The `ean` field is also immutable and cannot be updated.
+
+#### What you can update
+
+You can update:
+
+* `price`
+* `description`
+* `longDescription`
+* `imageUrl`
+* `returnable`
+* `returnableDays`
+* `brandCode`
+* `categoryCode`
+* `attributes`
+
+The API updates only the fields you provide. Omitted fields remain unchanged.
+
+#### What you cannot update
+
+* `sku` (immutable identifier)
+* `ean` (immutable barcode)
+* `ouCode` (scope cannot be changed after creation)
+
+To change the SKU identifier or move the SKU to a different OU scope, delete and recreate the SKU.
+
+#### Validation and behaviour
+
+* The SKU must already exist; otherwise, the API returns error `10105`.
+* If some records succeed and others fail, the response includes summary counts and detailed errors.
+* Invalid brand, category, or attribute references result in validation errors.
+* The batch cannot be empty and cannot exceed 100 records.
+
+#### Organisation unit (OU) behaviour
+
+* If `ouCode` is provided, the API updates the OU-scoped SKU.
+* If `ouCode` is not provided, the API updates the organisation-level SKU (`ouId = -1`).
+* OU scope must be enabled before using OU-specific updates.
+
+## Example request
+
+<CodeGroup tabs="curl,Bulk SKU update">
+
+```bash
+curl --location --request PUT 'https://{Host}/v2/product/skus' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic bmVlcmFqa3Jpc2huYTpkY2VhNmU2U0M2JhODdkMTFkMTM2ODI2NmMxOQ==' \
+--data '[
+    {
+        "sku": "Colour",
+        
+        "price": "100",
+        "ouCode": "krishna.ou1",
+        "description": "tesht sku",
+        "longDescription": "detailed description",
+        "brandCode": "Airpods",
+        "categoryCode": "Apparel",
+        "attributes": [
+            {
+                "code": "producttype",
+                "value": "plastic"
+            }
+        ],
+        "returnable": "true",
+        "returnableDays": "2",
+        "imageUrl": "http://newimage.com/abc.png"
+    }
+]
+'
+````
+
+```Text
+curl --location --request PUT 'https://nightly.intouch.capillarytech.com/v2/product/skus' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic bmVlcmFqa3Jpc2huYTpkY2VhNmU1ODlhM2U0M2JhODdkMTFkMTM2ODI2NmMxOQ==' \
+--data '[
+    {
+        "sku": "SKU-1",
+        "ean": "EAN-1",
+        "price": "100",
+        "ouCode": "krishna.ou1",
+        "description": "tesht sku",
+        "longDescription": "detailed description",
+        "brandCode": "Airpods",
+        
+        "attributes": [
+            {
+                "code": "producttype12",
+                "value": "producttypecode1"
+            }
+        ],
+        "returnable": "true",
+        "returnableDays": "2",
+        "imageUrl": "http://newimage.com/abc.png"
+    },
+    {
+        "sku": "shirt-1",
+        "ean": "EAN-1",
+        "price": "100",
+        "ouCode": "krishna.ou1",
+        "description": "tesht sku",
+        "longDescription": "detailhed description",
+        "brandCode": "Airpods",
+        
+        "attributes": [
+            {
+                "code": "producttype12",
+                "value": "producttypecode1"
+            }
+        ],
+        "returnable": "true",
+        "returnableDays": "2",
+        "imageUrl": "http://newimage.com/abc.png"
+    }
+]
+'
+````
+
+</CodeGroup>
+## Prerequisites
+
+To enable OU support for product entities, you must create a JIRA ticket and enable the configCONF_OU_LEVEL_PRODUCTS_ENABLED. For more information, see [Configuring Organisation Unit (OU) support for product entities](https://docs.capillarytech.com/docs/inventory-profiles#configuring-organisation-unit-ou-support-for-product-entities).
+
+## Body parameters
+
+| Field             | Type    | Required    | Description                                                                                                                                                                                                                                                                                                      | Updatable |
+| :---------------- | :------ | :---------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------- |
+| `sku`             | string  | Yes         | Defines the unique identifier for the product article (e.g., "TSHIRT-RED-001"). This field is mandatory and cannot be changed once created, and is limited to 50 characters.                                                                                                                                     | No        |
+| `ouCode`          | string  | Optional    | Specifies the concept code of the organisation unit. This is applicable only if OU support for product inventory is enabled. For more information, see [OU support for product inventory](https://docs.capillarytech.com/docs/inventory-profiles#configuring-organisation-unit-ou-support-for-product-entities). | No        |
+| `price`           | decimal | Optional    | Indicates the monetary value or cost assigned to the SKU. Must be a positive value or zero; if not provided, the system defaults it to 0 and issues a warning.                                                                                                                                                   | Yes       |
+| `description`     | string  | Optional    | Defines a short text summary for the item (e.g., "Men's Cotton Polo Shirt"). This is an optional field typically limited to 100 characters.                                                                                                                                                                      | Yes       |
+| `longDescription` | string  | Optional    | Specifies comprehensive details about the SKU, such as materials or care instructions. There is no strict character limit.                                                                                                                                                                                       | Yes       |
+| `imageUrl`        | string  | Optional    | Indicates the web address for the product's image asset. - Must be a valid URL supporting formats like JPG, JPEG, and PNG (EXE or PDF are rejected).                                                                                                                                                             | Yes       |
+| `returnable`      | boolean | Optional    | Defines whether the product is eligible for return according to company policy. Defaults to the standard organizational policy if not explicitly passed.                                                                                                                                                         | Yes       |
+| `returnableDays`  | integer | Optional    | Specifies the duration of the window during which a customer can return the item. - Defaults to -1 where the customer can return it on any further day. - Cannot be any value less than -1.                                                                                                                      | Yes       |
+| `brandCode`       | string  | Optional    | Defines the identifier for the brand associated with the product. The brand must be pre-created via [Add product API](https://docs.capillarytech.com/reference/add-product); the SKU creation will fail if the code is invalid or non-existent.                                                                  | Yes       |
+| `categoryCode`    | string  | Optional    | Specifies the classification code for hierarchical product grouping (e.g., "Electronics > Audio"). The category must already exist in the system.                                                                                                                                                                | Yes       |
+| `attributes`      | array   | Optional    | Indicates an array of custom key-value pairs used for additional product specifications. attributes must be already created via [Add attribute API](https://docs.capillarytech.com/reference/postv2productattributes) in the specific org.                                                                       | Yes       |
+| `..code`          | string  | Conditional | Defines the unique identifier for a specific custom attribute. - Required if the attributes array is used. - Max 50 characters.                                                                                                                                                                                  | Yes       |
+| `..value`         | string  | Conditional | Specifies the actual data assigned to the attribute code, required if attributes are used, and must be a valid, pre-existing value associated with that attribute code.                                                                                                                                          | Yes       |
+| `ean`             | string  | Optional    | Specifies the [European Article Number](https://www.gs1india.org/blog/ean-13-the-barcode-number), acting as a unique barcode identifier. It is mandatory, must be unique across the request, and cannot be updated via PUT requests.                                                                             | No        |
+
+## API Quick Reference
+
+```html Tree Structure
+{{host_v2_product_skus_put}}
+   └─ {{RequestBody}} (Batch Array)
+      ├─ {{sku}} (string)
+      ├─ {{ean}} (string)
+      ├─ {{price}} (decimal)
+      ├─ {{description}} (string)
+      ├─ {{longDescription}} (string)
+      ├─ {{ouCode}} (string)
+      ├─ {{brandCode}} (string)
+      ├─ {{categoryCode}} (string)
+      ├─ {{imageUrl}} (string)
+      ├─ {{returnable}} (boolean)
+      ├─ {{returnableDays}} (integer)
+      ├─ {{attributes}} []
+      │   ├─ {{attributeCode}} (string)
+      │   └─ {{attributeValue}} (string)
+      └─ {{ResponseBody}}
+          ├─ {{updated}} []
+          │   ├─ {{responseId}} (integer)
+          │   ├─ {{responseCode}} (string)
+          │   ├─ {{responseOuCode}} (string)
+          │   └─ {{responseOuId}} (integer)
+          ├─ {{summary}}
+          │   ├─ {{totalRequested}} (integer)
+          │   ├─ {{successCount}} (integer)
+          │   └─ {{failureCount}} (integer)
+          ├─ {{warnings}} []
+          └─ {{errors}} []
+              ├─ {{errorCode}} (integer)
+              ├─ {{errorMessage}} (string)
+              └─ {{errorIdentifiers}} (object)
+```
+
+## Example response
+
+```
+{
+    "updated": [
+        {
+            "ouCode": "krishna.ou1",
+            "id": 32510109,
+            "ouId": 50025951,
+            "code": "1212jo12212"
+        },
+        {
+            "ouCode": "krishna.ou1",
+            "id": 32510514,
+            "ouId": 50025951,
+            "code": "shirt"
+        }
+    ],
+    "summary": {
+        "totalRequested": 2,
+        "successCount": 2,
+        "failureCount": 0
+    },
+    "warnings": [],
+    "errors": []
+}
+````
+
+## Response parameters
+
+| Field              | Type    | Description                                                                 |
+| :----------------- | :------ | :-------------------------------------------------------------------------- |
+| `updated`          | array   | Contains the list of successfully updated ProductSKU objects.               |
+| `..id`             | long    | Indicates the unique identifier for the SKU.                                |
+| `..ouId`           | long    | Indicates the Organization unit ID. Returns -1 for organization-level SKUs. |
+| `..code`           | string  | Specifies the SKU code.                                                     |
+| `summary`          | object  | Provides summary statistics for the bulk operation.                         |
+| `..totalRequested` | integer | Indicates the total number of SKUs in the request.                          |
+| `..successCount`   | integer | Indicates the number of SKUs successfully updated.                          |
+| `..failureCount`   | integer | Indicates the number of SKUs that failed validation.                        |
+| `warnings`         | array   | Lists warning status codes for non-blocking issues.                         |
+| `errors`           | array   | Lists error status codes for SKUs that failed validation.                   |
+| `..code`           | integer | Indicates the specific error code.                                          |
+| `..message`        | string  | Describes the error message.                                                |
+| `..identifiers`    | object  | Specifies the SKU identifiers related to the error.                         |
+
+## Error codes
+
+| Code  | Description                                                                                                                          |
+| :---- | :----------------------------------------------------------------------------------------------------------------------------------- |
+| 10001 | Indicates that the provided ouCode is invalid or does not exist.                                                                     |
+| 10002 | Indicates that OU level product filtering is disabled for your organization, but an `ouCode` was provided.                           |
+| 10003 | Indicates that a duplicate SKU code was found within the same request for the same OU.                                               |
+| 10101 | Indicates that the batch cannot be empty.                                                                                            |
+| 10102 | Indicates that the batch size cannot exceed 100 SKUs.                                                                                |
+| 10103 | Indicates that the SKU code cannot be empty. Provide a valid string for the `sku` field.                                             |
+| 10105 | Indicates that the SKU with the provided code was not found.                                                                         |
+| 10106 | Indicates that the SKU code exceeds the maximum length. Shorten the SKU code.                                                        |
+| 10108 | Indicates that the EAN cannot be updated as the field is immutable.                                                                  |
+| 10110 | Indicates that the price is invalid and must be a positive value.                                                                    |
+| 10112 | Indicates that fields colorPalletteId, styleCode, sizeCode, and baseSkuCode are not supported. Remove these fields from the request. |
+| 10113 | Indicates that the number of custom attributes for the SKU exceeds the maximum allowed limit. Reduce the number of attributes.       |
+| 10115 | Indicates that the image URL format is invalid.                                                                                      |
+| 10116 | Indicates that the image URL exceeds the maximum allowed length.                                                                     |
+| 10120 | Indicates that the attribute with the provided code was not found.                                                                   |
+| 10121 | Indicates that the attribute value with the provided code was not found.                                                             |
+| 10122 | Indicates that the category with the provided code was not found.                                                                    |
+| 10125 | Indicates that the brand with the provided code was not found.                                                                       |
+| 10127 | Indicates that an attribute value is required. Provide a value for the `value` field in the attributes array.                        |
+
+## Warning codes
+
+| Code  | Description                                                                                                                                                        |
+| :---- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 10117 | Indicates that a returnableDays value less than -1 was provided; the value has been set to -1. Ensure the returnableDays field is either a positive integer or -1. |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Update Product SKUs",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "{Host}",
+      "variables": {
+        "Host": {
+          "default": "https://eu.intouch.capillarytech.com",
+          "enum": [
+            "https://eu.intouch.capillarytech.com",
+            "https://intouch.capillary.co.in",
+            "https://apac2.intouch.capillarytech.com",
+            "https://sgcrm.cc.capillarytech.com",
+            "http://intouch.capillarytech.cn.com",
+            "https://north-america.intouch.capillarytech.com"
+          ]
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/v2/product/skus": {
+      "put": {
+        "summary": "Update Product SKUs",
+        "description": "Updates existing product SKUs with the provided details.",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Basic Auth Header (Corrupted example as per instructions)",
+            "example": "Basic bmVlcmFqa3Jpc2huYTpkY2VhNmU1ODlhM2U0M2JhODdkMTFkMTM2ODI2NmMx"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "sku": {
+                      "type": "string",
+                      "example": "1212jo12212"
+                    },
+                    "ean": {
+                      "type": "string",
+                      "example": "test-jo-nisght1"
+                    },
+                    "price": {
+                      "type": "string",
+                      "example": "100"
+                    },
+                    "ouCode": {
+                      "type": "string",
+                      "example": "krishna.ou1"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "tesht sku"
+                    },
+                    "longDescription": {
+                      "type": "string",
+                      "example": "detailhed description"
+                    },
+                    "brandCode": {
+                      "type": "string",
+                      "example": "Airpods"
+                    },
+                    "categoryCode": {
+                      "type": "string",
+                      "example": "Apparel"
+                    },
+                    "attributes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "string",
+                            "example": "producttype12"
+                          },
+                          "value": {
+                            "type": "string",
+                            "example": "producttypecode1"
+                          }
+                        }
+                      }
+                    },
+                    "returnable": {
+                      "type": "string",
+                      "example": "true"
+                    },
+                    "returnableDays": {
+                      "type": "string",
+                      "example": "2"
+                    },
+                    "imageUrl": {
+                      "type": "string",
+                      "example": "http://newimage.com/abc.png"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}
+````

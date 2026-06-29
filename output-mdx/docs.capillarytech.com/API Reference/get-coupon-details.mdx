@@ -1,0 +1,674 @@
+---
+title: Get coupon details
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Get coupon details
+
+This API retrieves the details of one or more coupons by coupon codes or IDs, or get coupons issued to specific customers.
+
+<Callout kind="tip" title="Note">
+
+* For detailed information about our APIs and for hands-on testing, refer documentation in [API overview](https://docs.capillarytech.com/reference/apioverview) and  step-by-step guide on making your first API call in [Make your first API call](https://docs.capillarytech.com/reference/make-your-first-api-call) .
+
+</Callout>
+
+## Example request
+
+<CodeGroup tabs="Sample request with coupon series details,json,With coupon_code_case=LOWER,Sample response with coupon series details">
+
+```bash
+curl --location 'https://eu.api.capillarytech.com/v2/coupon?couponCodes=YTOWAEN5N0&showCouponSeries=true' \
+--header 'Authorization: Basic YyZTZm' \
+--header 'Cookie: _cfuvid=N8eBMQkzAuS0B.TF12bNd.D2Foo6GiTEeU_Hb2aUc1U-1768823280663-0.0.1.1-604800000'
+````
+
+```json
+{
+    "data": [
+        {
+            "code": "5875447216353555",
+            "seriesId": 868760,
+            "description": "Gold star coupons",
+            "discountCode": "gold1234",
+            "validTill": "2026-06-11T00:00:00Z",
+            "validTillDateTime": "2026-06-11T23:59:59Z",
+            "discountType": "ABS",
+            "discountValue": 1000,
+            "discountUpto": 0,
+            "discountOn": "BILL",
+            "detailedInfo": "Gold star coupons"
+        }
+    ],
+    "warnings": [],
+    "errors": []
+}
+````
+
+```json
+{
+    "data": [
+        {
+            "code": "vmqvzcvymt",
+            "seriesId": 68579,
+            "description": "test-lekhana-2",
+            "discountCode": "NO_VALUE",
+            "validTill": "2024-10-31T00:00:00Z",
+            "discountType": "ABS",
+            "discountValue": 10.0,
+            "discountUpto": 0.0,
+            "discountOn": "BILL",
+            "detailedInfo": "test-lekhana-2"
+        },
+        {
+            "code": "x6wqg8kb01",
+            "seriesId": 68579,
+            "description": "test-lekhana-2",
+            "discountCode": "NO_VALUE",
+            "validTill": "2024-10-31T00:00:00Z",
+            "discountType": "ABS",
+            "discountValue": 10.0,
+            "discountUpto": 0.0,
+            "discountOn": "BILL",
+            "detailedInfo": "test-lekhana-2"
+        },
+        {
+            "code": "oo8hf7divr",
+            "seriesId": 68579,
+            "description": "test-lekhana-2",
+            "discountCode": "NO_VALUE",
+            "validTill": "2024-10-31T00:00:00Z",
+            "discountType": "ABS",
+            "discountValue": 10.0,
+            "discountUpto": 0.0,
+            "discountOn": "BILL",
+            "detailedInfo": "test-lekhana-2"
+        },
+        {
+            "code": "tt6wzp7xnw",
+            "seriesId": 68579,
+            "description": "test-lekhana-2",
+            "discountCode": "NO_VALUE",
+            "validTill": "2024-10-31T00:00:00Z",
+            "discountType": "ABS",
+            "discountValue": 10.0,
+            "discountUpto": 0.0,
+            "discountOn": "BILL",
+            "detailedInfo": "test-lekhana-2"
+        },
+        {
+            "code": "ziwy7lzgw8",
+            "seriesId": 68579,
+            "description": "test-lekhana-2",
+            "discountCode": "NO_VALUE",
+            "validTill": "2024-10-31T00:00:00Z",
+            "discountType": "ABS",
+            "discountValue": 10.0,
+            "discountUpto": 0.0,
+            "discountOn": "BILL",
+            "detailedInfo": "test-lekhana-2"
+        },
+        {
+            "code": "hu1dh75hny",
+            "seriesId": 68579,
+            "description": "test-lekhana-2",
+            "discountCode": "NO_VALUE",
+            "validTill": "2024-10-31T00:00:00Z",
+            "discountType": "ABS",
+            "discountValue": 10.0,
+            "discountUpto": 0.0,
+            "discountOn": "BILL",
+            "detailedInfo": "test-lekhana-2"
+        }
+    ],
+    "warnings": [],
+    "errors": []
+}
+````
+
+```json
+{
+  "data": [
+    {
+      "code": "YTOWAEN5N0",
+      "seriesId": 757291,
+      "description": "Vishu 10% OFF",
+      "discountCode": "XMM123",
+      "validTill": "2026-05-09T00:00:00Z",
+      "validTillDateTime": "2026-05-09T23:59:59Z",
+      "discountType": "ABS",
+      "discountValue": 500,
+      "discountUpto": 0,
+      "discountOn": "BILL",
+      "detailedInfo": "Evil coupon",
+      "couponSeries": {
+        "id": 757291,
+        "orgId": 100737,
+        "description": "Vishu 10% OFF",
+        "discountCode": "XMM123",
+        "validTillDate": "2026-05-09T00:00:00Z",
+        "validTillDateTime": "2026-05-09T23:59:59Z",
+        "validTillISODate": "2026-05-09",
+        "validDaysFromCreation": 30,
+        "expiryStrategyValue": 1,
+        "maxCreate": 5,
+        "maxRedeem": 5,
+        "isTransferrable": false,
+        "anyUser": true,
+        "sameUserMultipleRedeem": true,
+        "isReferralExistingUsersAllowed": false,
+        "isMultipleUseAllowed": true,
+        "isValidationRequired": false,
+        "isValidWithDiscountedItem": true,
+        "createdBy": 75161973,
+        "numIssued": 5,
+        "numRedeemed": 0,
+        "createdOn": "2025-04-25T12:29:05Z",
+        "lastUsed": "2025-04-25T12:29:05Z",
+        "seriesCode": "1458A78E8A2846FBBB01",
+        "smsTemplate": "Hi  {{first_name}} {{last_name}} your voucher code {{voucher}}is valid {{valid_days_from_create}}. {{fullname}} {{offer_name}}",
+        "isSMSDisabled": false,
+        "info": "Evil coupon",
+        "isMultipleVouchersPerUserAllowed": true,
+        "doNotResendExistingVoucher": true,
+        "mutualExclusiveSeriesIds": "[-1]",
+        "storeIdsJson": "[-1]",
+        "isDvsEnabled": false,
+        "dvsExpiryDate": "2025-04-25T00:00:00Z",
+        "priority": 0,
+        "shortSMSTemplate": "Hello {{cust_name}}, your voucher code is {{voucher_code}}",
+        "maxVouchersPerUser": 11,
+        "minDaysBetweenVouchers": 2,
+        "maxReferralsPerReferee": -1,
+        "discountUpto": 0,
+        "discountValue": 500,
+        "dvsItems": "items",
+        "redemptionRange": {
+          "dom": [
+            1
+          ],
+          "dow": [
+            1
+          ],
+          "hours": [
+            1
+          ]
+        },
+        "minBillAmount": 100,
+        "maxBillAmount": 20000,
+        "redeemAtStore": "[-1]",
+        "campaignId": -1,
+        "tag": "Vishu 10% OFF",
+        "maxRedemptionsInSeriesPerUser": 122,
+        "minDaysBetweenRedemption": 0,
+        "redemptionValidFrom": "2024-05-01T00:00:00Z",
+        "sourceOrgId": -1,
+        "issueToLoyalty": false,
+        "redeemStoreType": "redeemable_stores",
+        "offlineRedeemType": false,
+        "isOldFlowEnabled": false,
+        "isPreRedeemEventRequired": false,
+        "termsAndConditions": "T&C",
+        "signalRedemptionEvent": false,
+        "syncToClient": false,
+        "showPinCode": false,
+        "targetUserDetails": {
+          "validMaxUserTransactionLimit": 5,
+          "validUserRegistrationStartTime": 0,
+          "validUserRegistrationEndTime": 10000
+        },
+        "numUploadedNonIssued": 0,
+        "numUploadedTotal": 0,
+        "redemptionValidAfterDays": 0,
+        "ownedBy": "NONE",
+        "ownerId": -1,
+        "ownerValidity": 0,
+        "alphaNumeric": true,
+        "shortCodeLength": 0,
+        "randomCodeLength": 10,
+        "fixedExpiryDate": 1778284800000,
+        "numTotal": 5,
+        "latestIssualTime": 1750933819000,
+        "latestRedemptionTime": 0,
+        "resendMessageEnabled": true,
+        "redemptionPerCouponMaxLimit": -1,
+        "isPrefixEnabled": false,
+        "isSuffixEnabled": false,
+        "orgPrefixOverride": false,
+        "orgSuffixOverride": false,
+        "seriesType": "UNDEFINED",
+        "clientHandlingType": "DISC_CODE",
+        "expiryStrategyType": "SERIES_EXPIRY",
+        "discountOn": "BILL",
+        "discountType": "ABS",
+        "externalIssual": false,
+        "updateProductData": false
+      }
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}
+````
+
+</CodeGroup>
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/coupon": {
+      "get": {
+        "summary": "Get coupon details",
+        "description": "",
+        "operationId": "get-coupon-details",
+        "parameters": [
+          {
+            "name": "issuedToIds",
+            "in": "query",
+            "description": "Fetch coupons issued to specific customers. Pass customer IDs to fetch. Example: ?issuedToIds=126080386&issuedToIds=108573800",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "couponIds",
+            "in": "query",
+            "description": "Fetch coupon details by coupon IDs. Example: ?couponIds=126080386&issuedToIds=108573800.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          },
+          {
+            "name": "couponCodes",
+            "in": "query",
+            "description": "Fetch coupon details by coupon codes.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "coupon_code_case",
+            "in": "query",
+            "description": "This parameter helps to retrieve the coupon code in the desired letter cases. By default, the system automatically converts the coupon code to upper case. The query itself is not case sensitive. Supported Values:   LOWER: Converts the coupon code to lower case.   UPPER: Converts the coupon codes to upper case.   AS_IT_IS: It ensure that the coupon code is retrieved exactly as it was created or provided, without altering the letter case. For instance, if the code is \"abAB123,\" it should be retrieved and displayed as \"abAB123,\" maintaining its original formatting.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                ""
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": {
+                      "data": [
+                        {
+                          "code": "5875447216353555",
+                          "seriesId": 868760,
+                          "description": "Gold star coupons",
+                          "discountCode": "gold1234",
+                          "validTill": "2026-06-11T00:00:00Z",
+                          "validTillDateTime": "2026-06-11T23:59:59Z",
+                          "discountType": "ABS",
+                          "discountValue": 1000,
+                          "discountUpto": 0,
+                          "discountOn": "BILL",
+                          "detailedInfo": "Gold star coupons"
+                        }
+                      ],
+                      "warnings": [],
+                      "errors": []
+                    }
+                  },
+                  "With coupon_code_case=LOWER": {
+                    "value": "{\n    \"data\": [\n        {\n            \"code\": \"vmqvzcvymt\",\n            \"seriesId\": 68579,\n            \"description\": \"test-lekhana-2\",\n            \"discountCode\": \"NO_VALUE\",\n            \"validTill\": \"2024-10-31T00:00:00Z\",\n            \"discountType\": \"ABS\",\n            \"discountValue\": 10.0,\n            \"discountUpto\": 0.0,\n            \"discountOn\": \"BILL\",\n            \"detailedInfo\": \"test-lekhana-2\"\n        },\n        {\n            \"code\": \"x6wqg8kb01\",\n            \"seriesId\": 68579,\n            \"description\": \"test-lekhana-2\",\n            \"discountCode\": \"NO_VALUE\",\n            \"validTill\": \"2024-10-31T00:00:00Z\",\n            \"discountType\": \"ABS\",\n            \"discountValue\": 10.0,\n            \"discountUpto\": 0.0,\n            \"discountOn\": \"BILL\",\n            \"detailedInfo\": \"test-lekhana-2\"\n        },\n        {\n            \"code\": \"oo8hf7divr\",\n            \"seriesId\": 68579,\n            \"description\": \"test-lekhana-2\",\n            \"discountCode\": \"NO_VALUE\",\n            \"validTill\": \"2024-10-31T00:00:00Z\",\n            \"discountType\": \"ABS\",\n            \"discountValue\": 10.0,\n            \"discountUpto\": 0.0,\n            \"discountOn\": \"BILL\",\n            \"detailedInfo\": \"test-lekhana-2\"\n        },\n        {\n            \"code\": \"tt6wzp7xnw\",\n            \"seriesId\": 68579,\n            \"description\": \"test-lekhana-2\",\n            \"discountCode\": \"NO_VALUE\",\n            \"validTill\": \"2024-10-31T00:00:00Z\",\n            \"discountType\": \"ABS\",\n            \"discountValue\": 10.0,\n            \"discountUpto\": 0.0,\n            \"discountOn\": \"BILL\",\n            \"detailedInfo\": \"test-lekhana-2\"\n        },\n        {\n            \"code\": \"ziwy7lzgw8\",\n            \"seriesId\": 68579,\n            \"description\": \"test-lekhana-2\",\n            \"discountCode\": \"NO_VALUE\",\n            \"validTill\": \"2024-10-31T00:00:00Z\",\n            \"discountType\": \"ABS\",\n            \"discountValue\": 10.0,\n            \"discountUpto\": 0.0,\n            \"discountOn\": \"BILL\",\n            \"detailedInfo\": \"test-lekhana-2\"\n        },\n        {\n            \"code\": \"hu1dh75hny\",\n            \"seriesId\": 68579,\n            \"description\": \"test-lekhana-2\",\n            \"discountCode\": \"NO_VALUE\",\n            \"validTill\": \"2024-10-31T00:00:00Z\",\n            \"discountType\": \"ABS\",\n            \"discountValue\": 10.0,\n            \"discountUpto\": 0.0,\n            \"discountOn\": \"BILL\",\n            \"detailedInfo\": \"test-lekhana-2\"\n        }\n    ],\n    \"warnings\": [],\n    \"errors\": []\n}"
+                  },
+                  "Sample response with coupon series details": {
+                    "summary": "Sample response with coupon series details",
+                    "value": {
+                      "data": [
+                        {
+                          "code": "YTOWAEN5N0",
+                          "seriesId": 757291,
+                          "description": "Vishu 10% OFF",
+                          "discountCode": "XMM123",
+                          "validTill": "2026-05-09T00:00:00Z",
+                          "validTillDateTime": "2026-05-09T23:59:59Z",
+                          "discountType": "ABS",
+                          "discountValue": 500,
+                          "discountUpto": 0,
+                          "discountOn": "BILL",
+                          "detailedInfo": "Evil coupon",
+                          "couponSeries": {
+                            "id": 757291,
+                            "orgId": 100737,
+                            "description": "Vishu 10% OFF",
+                            "discountCode": "XMM123",
+                            "validTillDate": "2026-05-09T00:00:00Z",
+                            "validTillDateTime": "2026-05-09T23:59:59Z",
+                            "validTillISODate": "2026-05-09",
+                            "validDaysFromCreation": 30,
+                            "expiryStrategyValue": 1,
+                            "maxCreate": 5,
+                            "maxRedeem": 5,
+                            "isTransferrable": false,
+                            "anyUser": true,
+                            "sameUserMultipleRedeem": true,
+                            "isReferralExistingUsersAllowed": false,
+                            "isMultipleUseAllowed": true,
+                            "isValidationRequired": false,
+                            "isValidWithDiscountedItem": true,
+                            "createdBy": 75161973,
+                            "numIssued": 5,
+                            "numRedeemed": 0,
+                            "createdOn": "2025-04-25T12:29:05Z",
+                            "lastUsed": "2025-04-25T12:29:05Z",
+                            "seriesCode": "1458A78E8A2846FBBB01",
+                            "smsTemplate": "Hi  {{first_name}} {{last_name}} your voucher code {{voucher}}is valid {{valid_days_from_create}}. {{fullname}} {{offer_name}}",
+                            "isSMSDisabled": false,
+                            "info": "Evil coupon",
+                            "isMultipleVouchersPerUserAllowed": true,
+                            "doNotResendExistingVoucher": true,
+                            "mutualExclusiveSeriesIds": "[-1]",
+                            "storeIdsJson": "[-1]",
+                            "isDvsEnabled": false,
+                            "dvsExpiryDate": "2025-04-25T00:00:00Z",
+                            "priority": 0,
+                            "shortSMSTemplate": "Hello {{cust_name}}, your voucher code is {{voucher_code}}",
+                            "maxVouchersPerUser": 11,
+                            "minDaysBetweenVouchers": 2,
+                            "maxReferralsPerReferee": -1,
+                            "discountUpto": 0,
+                            "discountValue": 500,
+                            "dvsItems": "items",
+                            "redemptionRange": {
+                              "dom": [
+                                1
+                              ],
+                              "dow": [
+                                1
+                              ],
+                              "hours": [
+                                1
+                              ]
+                            },
+                            "minBillAmount": 100,
+                            "maxBillAmount": 20000,
+                            "redeemAtStore": "[-1]",
+                            "campaignId": -1,
+                            "tag": "Vishu 10% OFF",
+                            "maxRedemptionsInSeriesPerUser": 122,
+                            "minDaysBetweenRedemption": 0,
+                            "redemptionValidFrom": "2024-05-01T00:00:00Z",
+                            "sourceOrgId": -1,
+                            "issueToLoyalty": false,
+                            "redeemStoreType": "redeemable_stores",
+                            "offlineRedeemType": false,
+                            "isOldFlowEnabled": false,
+                            "isPreRedeemEventRequired": false,
+                            "termsAndConditions": "T&C",
+                            "signalRedemptionEvent": false,
+                            "syncToClient": false,
+                            "showPinCode": false,
+                            "targetUserDetails": {
+                              "validMaxUserTransactionLimit": 5,
+                              "validUserRegistrationStartTime": 0,
+                              "validUserRegistrationEndTime": 10000
+                            },
+                            "numUploadedNonIssued": 0,
+                            "numUploadedTotal": 0,
+                            "redemptionValidAfterDays": 0,
+                            "ownedBy": "NONE",
+                            "ownerId": -1,
+                            "ownerValidity": 0,
+                            "alphaNumeric": true,
+                            "shortCodeLength": 0,
+                            "randomCodeLength": 10,
+                            "fixedExpiryDate": 1778284800000,
+                            "numTotal": 5,
+                            "latestIssualTime": 1750933819000,
+                            "latestRedemptionTime": 0,
+                            "resendMessageEnabled": true,
+                            "redemptionPerCouponMaxLimit": -1,
+                            "isPrefixEnabled": false,
+                            "isSuffixEnabled": false,
+                            "orgPrefixOverride": false,
+                            "orgSuffixOverride": false,
+                            "seriesType": "UNDEFINED",
+                            "clientHandlingType": "DISC_CODE",
+                            "expiryStrategyType": "SERIES_EXPIRY",
+                            "discountOn": "BILL",
+                            "discountType": "ABS",
+                            "externalIssual": false,
+                            "updateProductData": false
+                          }
+                        }
+                      ],
+                      "warnings": [],
+                      "errors": []
+                    }
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string",
+                                "example": "GEV8LUGIDD"
+                              },
+                              "seriesId": {
+                                "type": "integer",
+                                "example": 757291,
+                                "default": 0
+                              },
+                              "description": {
+                                "type": "string",
+                                "example": "Vishu 10% OFF"
+                              },
+                              "discountCode": {
+                                "type": "string",
+                                "example": "XMM123"
+                              },
+                              "validTill": {
+                                "type": "string",
+                                "example": "2026-05-09T00:00:00Z"
+                              },
+                              "discountType": {
+                                "type": "string",
+                                "example": "ABS"
+                              },
+                              "discountValue": {
+                                "type": "integer",
+                                "example": 500,
+                                "default": 0
+                              },
+                              "discountUpto": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              },
+                              "discountOn": {
+                                "type": "string",
+                                "example": "BILL"
+                              },
+                              "detailedInfo": {
+                                "type": "string",
+                                "example": "Evil coupon"
+                              }
+                            }
+                          }
+                        },
+                        "warnings": {
+                          "type": "array"
+                        },
+                        "errors": {
+                          "type": "array"
+                        }
+                      }
+                    },
+                    {
+                      "title": "With coupon_code_case=LOWER",
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string",
+                                "example": "vmqvzcvymt"
+                              },
+                              "seriesId": {
+                                "type": "integer",
+                                "example": 68579,
+                                "default": 0
+                              },
+                              "description": {
+                                "type": "string",
+                                "example": "test-lekhana-2"
+                              },
+                              "discountCode": {
+                                "type": "string",
+                                "example": "NO_VALUE"
+                              },
+                              "validTill": {
+                                "type": "string",
+                                "example": "2024-10-31T00:00:00Z"
+                              },
+                              "discountType": {
+                                "type": "string",
+                                "example": "ABS"
+                              },
+                              "discountValue": {
+                                "type": "integer",
+                                "example": 10,
+                                "default": 0
+                              },
+                              "discountUpto": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              },
+                              "discountOn": {
+                                "type": "string",
+                                "example": "BILL"
+                              },
+                              "detailedInfo": {
+                                "type": "string",
+                                "example": "test-lekhana-2"
+                              }
+                            }
+                          }
+                        },
+                        "warnings": {
+                          "type": "array"
+                        },
+                        "errors": {
+                          "type": "array"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/coupon?couponCodes=YTOWAEN5N0&couponCodes=GEV8LUGIDD' \\\n--header 'Content-Type: application/json' \\\n--header 'Accept: application/json' \\\n--header 'Authorization: Basic EwYTEzNzg=' \\\n--header 'X-CAP-DIRECT-REPLAY: FALSE' \\\n--header 'user-agent: pyapps_auto_API1_Incrm_Sanity' \\\n--header 'Cookie: _cfuvid=nwcc5s1jYk2s4g1lv.gdYW2B5ncSYe.HWyv3aFwEYrk-1745916355000-0.0.1.1-604800000; _cfuvid=nwcc5s1jYk2s4g1lv.gdYW2B5ncSYe.HWyv3aFwEYrk-1745916355000-0.0.1.1-604800000; _cfuvid=E0nrhQ7TNJ2DrQjOfq8OPA3PDaMOEBRg7bVR12_ssr4-1749451653197-0.0.1.1-604800000'",
+              "name": "Sample Get Request"
+            },
+            {
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/coupon?couponCodes=YTOWAEN5N0&showCouponSeries=true' \\\n--header 'Authorization: Basic YyZTZm' \\\n--header 'Cookie: _cfuvid=N8eBMQkzAuS0B.TF12bNd.D2Foo6GiTEeU_Hb2aUc1U-1768823280663-0.0.1.1-604800000'",
+              "language": "shell",
+              "name": "Sample request with coupon series details"
+            }
+          ],
+          "samples-languages": [
+            "curl",
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

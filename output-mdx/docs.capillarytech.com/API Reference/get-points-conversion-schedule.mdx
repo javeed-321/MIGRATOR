@@ -1,0 +1,509 @@
+---
+title: Get Points Conversion Schedule
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Get Points Conversion Schedule
+
+Retrieves the history of promised points conversion schedules of a customer for a single program or across all programs of the org.This is a light API.
+
+### Resource Information
+
+|                       |                                            |
+| :-------------------- | :----------------------------------------- |
+| URI                   | v2/customers/userId/promisedPointsSchedule |
+| HTTP Method           | GET                                        |
+| Pagination supported? | NA                                         |
+| Rate limit            | NA                                         |
+| Batch support         | NA                                         |
+
+#### Important Note
+
+| When                    | `fetchDataForAllPrograms` is true                                                | `fetchDataForAllPrograms` is false                                       |
+| :---------------------- | :------------------------------------------------------------------------------- | :----------------------------------------------------------------------- |
+| programId is passed     | You will still see promised points schedules of the customer across all programs | You will still see promised points schedules of that particular program. |
+| programId is not passed | You will still see promised points schedules of the customer across all programs | You will still see promised points schedules of the default program.     |
+
+#### Response parameters
+
+| **Response Parameter** | **Description** |
+| --- | --- |
+| entityId | The unique identifier for the entity. |
+| entityType | The type of entity (in this case, "CUSTOMER"). |
+| promisedPointsScheduleList | A list of schedules detailing points that are promised. |
+| promisedPointsScheduleList.points | The number of points in the schedule. |
+| promisedPointsScheduleList.redeemableFrom | The date from which the points become redeemable in yyyy-mm-dd format. **Note:** This field will be deprecated in the future and is being replaced by `redeemableFromISO`. |
+| promisedPointsScheduleList.redeemableFromISO | Indicates the date and time from which the points are redeemable in ISO 8601 format, returned in the server time zone. **EU server example** 2025-12-16T14:30:45Z → 16 December 2025, 14:30:45 (UTC) **India server example** 2025-12-16T14:30:45+05:30 → 16 December 2025, 14:30:45 (IST) **Note:** The response time zone always matches the server time zone, regardless of the time zone offset in the request. |
+| promisedPointsScheduleList.programId | The identifier for the program associated with the points. |
+| promisedPointsScheduleList.pointsType | The type of points (e.g., "line_item_promotions", "bill_regular", etc.). |
+| triggerBasedPointsList | A list of points based on specific triggers |
+| warnings | A list of warnings related to the entity |
+
+#### Example
+
+**when fetchDataForAllPrograms=false and fetchEarliestExpiryOnly=false**
+
+```
+http://{{URL}}/v2/customers/lookup/promisedPointsSchedule?programId=2199&entityType=CUSTOMER&fetchDataForAllPrograms=false&identifierName=mobile&identifierValue=917752198768&source=INSTORE
+````
+
+```json
+{
+    "entityId": 374844123,
+    "entityType": "CUSTOMER",
+    "promisedPointsScheduleList": [
+        {
+            "points": 390.000,
+            "redeemableFrom": "2022-04-10",
+            "programId": 2199,
+            "pointsType": "line_item_promotions"
+        },
+        {
+            "points": 130.000,
+            "redeemableFrom": "2022-04-10",
+            "programId": 2199,
+            "pointsType": "bill_regular"
+        },
+        {
+            "points": 130.000,
+            "redeemableFrom": "2022-04-10",
+            "programId": 2199,
+            "pointsType": "bill_promotions"
+        },
+        {
+            "points": 390.000,
+            "redeemableFrom": "2022-04-10",
+            "programId": 2199,
+            "pointsType": "line_item_regular"
+        }
+    ],
+    "triggerBasedPointsList": [],
+    "warnings": []
+}
+
+````
+
+**when fetchDataForAllPrograms=true**
+
+```
+http://{{URL}}/v2/customers/lookup/promisedPointsSchedule?programId=1933&startDate=2022-04-01&endDate=2122-04-09&entityType=CUSTOMER&fetchDataForAllPrograms=true&identifierName=mobile&identifierValue=917752198768&source=INSTORE
+````
+
+<br />
+
+```json
+{
+    "entityId": 374844123,
+    "entityType": "CUSTOMER",
+    "promisedPointsScheduleList": [
+        {
+            "points": 390.000,
+            "redeemableFrom": "2022-04-10",
+            "programId": 2199,
+            "pointsType": "line_item_promotions"
+        },
+        {
+            "points": 300.00,
+            "redeemableFrom": "2022-04-08",
+            "programId": 1933,
+            "pointsType": "line_item_promotions"
+        },
+        {
+            "points": 130.000,
+            "redeemableFrom": "2022-04-10",
+            "programId": 2199,
+            "pointsType": "bill_regular"
+        },
+        {
+            "points": 130.000,
+            "redeemableFrom": "2022-04-10",
+            "programId": 2199,
+            "pointsType": "bill_promotions"
+        },
+        {
+            "points": 180.000,
+            "redeemableFrom": "2022-04-09",
+            "programId": 2199,
+            "pointsType": "line_item_promotions"
+        },
+        {
+            "points": 100.00,
+            "redeemableFrom": "2022-04-08",
+            "programId": 1933,
+            "pointsType": "bill_regular"
+        },
+        {
+            "points": 60.000,
+            "redeemableFrom": "2022-04-09",
+            "programId": 2199,
+            "pointsType": "bill_regular"
+        },
+        {
+            "points": 180.000,
+            "redeemableFrom": "2022-04-09",
+            "programId": 2199,
+            "pointsType": "line_item_regular"
+        },
+        {
+            "points": 390.000,
+            "redeemableFrom": "2022-04-10",
+            "programId": 2199,
+            "pointsType": "line_item_regular"
+        },
+        {
+            "points": 60.000,
+            "redeemableFrom": "2022-04-09",
+            "programId": 2199,
+            "pointsType": "bill_promotions"
+        },
+        {
+            "points": 100.00,
+            "redeemableFrom": "2022-04-08",
+            "programId": 1933,
+            "pointsType": "bill_promotions"
+        }
+    ],
+    "triggerBasedPointsList": [],
+    "warnings": []
+}
+````
+
+**Response for trigger-based points**
+
+```json
+{
+    "entityId": 342249069,
+    "entityType": "CUSTOMER",
+    "promisedPointsScheduleList": [],
+    "triggerBasedPointsList": [
+        {
+            "points": 300.000,
+            "programId": 890,
+            "pointsType": "line_item_promotions"
+        }
+    ],
+    "warnings": []
+}
+````
+
+### API specific error code
+
+| Error Code | Description                                            | Reason                                     |
+| :--------- | :----------------------------------------------------- | :----------------------------------------- |
+| 8015       | Customer not found for the given identifiers           | customer id is invalid or unsupported      |
+| 885        | Invalid program id passed                              | program Id is invalid or unsupported       |
+| 1632       | group id/externalId/primary userId passed is not valid | Invalid group id/externalid/primary userid |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/customers/{userId}/promisedPointsSchedule": {
+      "get": {
+        "summary": "Get Points Conversion Schedule",
+        "description": "Retrieves the history of promised points conversion schedules of a customer for a single program or across all programs of the org.\n\n**This is a light API**.",
+        "operationId": "get-points-conversion-schedule",
+        "parameters": [
+          {
+            "name": "IdentifierName",
+            "in": "query",
+            "description": "Identifier type used to fetch the customer's points conversion schedule details.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "IdentifierValue",
+            "in": "query",
+            "description": "Identifier of the customer specific to the identifierName.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Source on which the identifier is available.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fetchDataForAllPrograms",
+            "in": "query",
+            "description": "Pass true to fetch points conversion schedules from all the available programs of the org.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "entityType",
+            "in": "query",
+            "description": "Pass CUSTOMER to fetch the points conversion schedules of an individual (customer), FLEET to fetch details at the group level. Default value is CUSTOMER.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CUSTOMER",
+                "FLEET"
+              ]
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Date (YYYY-MM-DD) from which points conversion schedule details need to be fetched. Minimum supported date - current time + 1 day. Default value - current time.",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "End date (YYYY-MM-DD) for the points conversion schedule details need to be fetched. Maximum supported date - current time + 100 years (this is the default value).",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "programId",
+            "in": "query",
+            "description": "Fetch points conversion schedules of the customer from a specific program. Pass the programId. If not passed, it shows the points balance in the default program.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "X-CAP-API-OAUTH-TOKEN",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Unique ID of the customer.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample response": {
+                    "value": "{\n    \"entityId\": 565039505,\n    \"entityType\": \"CUSTOMER\",\n    \"promisedPointsScheduleList\": [],\n    \"triggerBasedPointsList\": [],\n    \"warnings\": []\n}"
+                  },
+                  "When fetchDataForAllPrograms=false and fetchEarliestExpiryOnly=false": {
+                    "value": "{\n    \"entityId\": 374844123,\n    \"entityType\": \"CUSTOMER\",\n    \"promisedPointsScheduleList\": [\n        {\n            \"points\": 390.000,\n            \"redeemableFrom\": \"2022-04-10\",\n            \"programId\": 2199,\n            \"pointsType\": \"line_item_promotions\"\n        },\n        {\n            \"points\": 130.000,\n            \"redeemableFrom\": \"2022-04-10\",\n            \"programId\": 2199,\n            \"pointsType\": \"bill_regular\"\n        },\n        {\n            \"points\": 130.000,\n            \"redeemableFrom\": \"2022-04-10\",\n            \"programId\": 2199,\n            \"pointsType\": \"bill_promotions\"\n        },\n        {\n            \"points\": 390.000,\n            \"redeemableFrom\": \"2022-04-10\",\n            \"programId\": 2199,\n            \"pointsType\": \"line_item_regular\"\n        }\n    ],\n    \"triggerBasedPointsList\": [],\n    \"warnings\": []\n}\n"
+                  },
+                  "When fetchDataForAllPrograms=true": {
+                    "value": "{\n    \"entityId\": 374844123,\n    \"entityType\": \"CUSTOMER\",\n    \"promisedPointsScheduleList\": [\n        {\n            \"points\": 390.000,\n            \"redeemableFrom\": \"2022-04-10\",\n            \"programId\": 2199,\n            \"pointsType\": \"line_item_promotions\"\n        },\n        {\n            \"points\": 300.00,\n            \"redeemableFrom\": \"2022-04-08\",\n            \"programId\": 1933,\n            \"pointsType\": \"line_item_promotions\"\n        },\n        {\n            \"points\": 130.000,\n            \"redeemableFrom\": \"2022-04-10\",\n            \"programId\": 2199,\n            \"pointsType\": \"bill_regular\"\n        },\n        {\n            \"points\": 130.000,\n            \"redeemableFrom\": \"2022-04-10\",\n            \"programId\": 2199,\n            \"pointsType\": \"bill_promotions\"\n        },\n        {\n            \"points\": 180.000,\n            \"redeemableFrom\": \"2022-04-09\",\n            \"programId\": 2199,\n            \"pointsType\": \"line_item_promotions\"\n        },\n        {\n            \"points\": 100.00,\n            \"redeemableFrom\": \"2022-04-08\",\n            \"programId\": 1933,\n            \"pointsType\": \"bill_regular\"\n        },\n        {\n            \"points\": 60.000,\n            \"redeemableFrom\": \"2022-04-09\",\n            \"programId\": 2199,\n            \"pointsType\": \"bill_regular\"\n        },\n        {\n            \"points\": 180.000,\n            \"redeemableFrom\": \"2022-04-09\",\n            \"programId\": 2199,\n            \"pointsType\": \"line_item_regular\"\n        },\n        {\n            \"points\": 390.000,\n            \"redeemableFrom\": \"2022-04-10\",\n            \"programId\": 2199,\n            \"pointsType\": \"line_item_regular\"\n        },\n        {\n            \"points\": 60.000,\n            \"redeemableFrom\": \"2022-04-09\",\n            \"programId\": 2199,\n            \"pointsType\": \"bill_promotions\"\n        },\n        {\n            \"points\": 100.00,\n            \"redeemableFrom\": \"2022-04-08\",\n            \"programId\": 1933,\n            \"pointsType\": \"bill_promotions\"\n        }\n    ],\n    \"triggerBasedPointsList\": [],\n    \"warnings\": []\n}"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "title": "Sample response",
+                      "type": "object",
+                      "properties": {
+                        "entityId": {
+                          "type": "integer",
+                          "example": 565039505,
+                          "default": 0
+                        },
+                        "entityType": {
+                          "type": "string",
+                          "example": "CUSTOMER"
+                        },
+                        "promisedPointsScheduleList": {
+                          "type": "array"
+                        },
+                        "triggerBasedPointsList": {
+                          "type": "array"
+                        },
+                        "warnings": {
+                          "type": "array"
+                        }
+                      }
+                    },
+                    {
+                      "title": "When fetchDataForAllPrograms=false and fetchEarliestExpiryOnly=false",
+                      "type": "object",
+                      "properties": {
+                        "entityId": {
+                          "type": "integer",
+                          "example": 374844123,
+                          "default": 0
+                        },
+                        "entityType": {
+                          "type": "string",
+                          "example": "CUSTOMER"
+                        },
+                        "promisedPointsScheduleList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "points": {
+                                "type": "integer",
+                                "example": 390,
+                                "default": 0
+                              },
+                              "redeemableFrom": {
+                                "type": "string",
+                                "example": "2022-04-10"
+                              },
+                              "programId": {
+                                "type": "integer",
+                                "example": 2199,
+                                "default": 0
+                              },
+                              "pointsType": {
+                                "type": "string",
+                                "example": "line_item_promotions"
+                              }
+                            }
+                          }
+                        },
+                        "triggerBasedPointsList": {
+                          "type": "array"
+                        },
+                        "warnings": {
+                          "type": "array"
+                        }
+                      }
+                    },
+                    {
+                      "title": "When fetchDataForAllPrograms=true",
+                      "type": "object",
+                      "properties": {
+                        "entityId": {
+                          "type": "integer",
+                          "example": 374844123,
+                          "default": 0
+                        },
+                        "entityType": {
+                          "type": "string",
+                          "example": "CUSTOMER"
+                        },
+                        "promisedPointsScheduleList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "points": {
+                                "type": "integer",
+                                "example": 390,
+                                "default": 0
+                              },
+                              "redeemableFrom": {
+                                "type": "string",
+                                "example": "2022-04-10"
+                              },
+                              "programId": {
+                                "type": "integer",
+                                "example": 2199,
+                                "default": 0
+                              },
+                              "pointsType": {
+                                "type": "string",
+                                "example": "line_item_promotions"
+                              }
+                            }
+                          }
+                        },
+                        "triggerBasedPointsList": {
+                          "type": "array"
+                        },
+                        "warnings": {
+                          "type": "array"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/customers/565345934/promisedPointsSchedule?endDate=2025-05-09' \\\n--header 'Authorization: Basic dGpfY2FwaWxsYXJ5OjVjMTc3MDJlOTI5NjQ4MjUzZTY3ZDJiMGM2ZTk5ZjE5' \\\n--header 'Cookie: _cfuvid=.parw7e5JcwPgE5IyA4k0PC9Kh0uW1XBo9yth2AMtb0-1746607313050-0.0.1.1-604800000; _cfuvid=3ZsvLJL189DRqRGrT6MDne_nj8yddNt44UtnArI793o-1746607532077-0.0.1.1-604800000'",
+              "name": "curl"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+````

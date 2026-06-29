@@ -1,0 +1,391 @@
+---
+title: Add Store
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Add Store
+
+Allows org admins to add a store to an org.
+
+The API allows the organisation admin to add a store to an organisation. It supports [custom fields](https://docs.capillarytech.com/docs/data-fields#custom-fields) used to store additional information related to the store.
+
+## Prerequisites
+
+* [ ] Authentication: OAuth authentication
+* [ ] Access group resource: Read and write access to the `Store` resource
+
+## Example request
+
+```
+curl --location 'https://eu.intouch.capillarytech.com/v2/orgEntity/store' \
+--header 'Content-Type: application/json' \
+--header 'X-CAP-API-OAUTH-TOKEN: eyJraWQiOiJrMSIsImFsLnUORZxL6LrVfmPrEs6J5qzio0WonSOis6E_i8WVDqKYN9Wl74O4i87Lrz7O41J-kYxiSIjH2gdjbpLqQ1FXtsdsFRQ1F3o7ps0xPdkv116ElEwvD4jbao1qNQI1MrvRQY2_Q6Q9GJAEmEUZROBps3AYG1ZN54Po-HaaNunHQDSAN4Um1CX_5o8q_ujU3bwBFdUqOe6WD4nqncnmpP-rwHlZP0fd5Ujj8bNSjIL8-PX_vVqO7H8IpN2NzJokz-MA' \
+--data-raw '{
+    "code": "singlestoretestforcreation3",
+    "description": "SingleStoreTest",
+    "name": "singlestoretestforcreation3",
+    "type": "STORE",
+    "adminType": "GENERAL",
+    "isActive": true,
+    "timeZoneId": "",
+    "currencyId": "",
+    "languageId": "",
+    "parentConceptId": "75216471",
+    "parentZoneId": "75152646",
+        
+    "externalIds": [
+        "nee11234"
+    ],
+    "email": "n.k1@capillarytech.com",
+    "mobile": "919686000000",
+    "landline": "",
+    "latitude": "",
+    "longitude": "",
+    "address": "",
+    "cityId": 0,
+    "areaId": 0
+}'
+````
+```Text with custom fields
+{
+    "code": "singlestoretestforcreation",
+    "description": "SingleStoreTest",
+    "name": "singlestoretestforcreation",
+    "type": "STORE",
+    "adminType": "GENERAL",
+    "isActive": true,
+    "timeZoneId": "",
+    "currencyId": "",
+    "languageId": "",
+    "parentZoneId": 50712290,
+    "parentConceptId": 50712302,
+    "externalIds": [
+        "Ex-93991234",
+      "Ex-93991237",
+      "Ex-93991235"
+    ],
+    "email": "demostore@example.com",
+    "mobile": "917262178832",
+    "landline": "",
+    "latitude": "",
+    "longitude": "",
+    "address": "",
+    "cityId": 0,
+    "areaId": 0,
+  "customFields":{
+    "store_custom_field":"Single store test"
+  }
+}
+````
+
+<br />
+
+## Request body parameter
+
+| Parameter (Parameters marked with * are mandatory) | Datatype | Description                                                                                                                                                                                                                                                                                  |
+| --------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `code`*                                            | String   | Unique store code used for identification in the Capillary system. Must start with a lowercase letter or digit, followed by any combination of lowercase letters, digits, periods, underscores, and hyphens. **Note**: Spaces are not allowed. Minimum length is 1 and maximum length is 50. |
+| `description`                                       | String   | Description of the store. **Note**: Maximum length is 250 characters.                                                                                                                                                                                                                        |
+| `name`*                                            | String   | Name of the store. Allows uppercase and lowercase letters, numbers, underscores, and spaces. Special characters such as periods, hyphens, or other symbols are not allowed. **Note**: Maximum length is 100 characters.                                                                      |
+| `type`                                              | Enum     | Type of the [entity](https://docs.capillarytech.com/docs/data-fields) you are creating. Here, the entity is `STORE`.                                                                                                                                                                         |
+| `adminType`                                         | Enum     | Type of admin user for the store. **Allowed values**: `GENERAL`, `ADMIN`.                                                                                                                                                                                                                    |
+| `isActive`                                          | Boolean  | Indicates whether the store is active.                                                                                                                                                                                                                                                       |
+| `timeZoneId`                                        | Integer  | Unique ID representing the timezone of the store’s geographical location. **Example**: `191` represents Asia/Kolkata.                                                                                                                                                                        |
+| `currencyId`                                        | Integer  | Unique ID representing the base currency of the store’s location. **Example**: `230` – Singapore Dollar, `211` – Australian Dollar.                                                                                                                                                          |
+| `languageId`                                        | Integer  | Unique ID representing the language used at the store. **Example**: `393`.                                                                                                                                                                                                                   |
+| `parentZoneId`                                      | Integer  | Unique ID identifying the zone where the parent store is located. Use the [get org entities](https://docs.capillarytech.com/reference/get-org-entities) API to fetch zones.                                                                                                                  |
+| `parentConceptId`                                   | Integer  | Unique ID representing the logical group (Concept) of the store. Use the [get org entities](https://docs.capillarytech.com/reference/get-org-entities) API to fetch concepts.                                                                                                                |
+| `externalIds`*                                     | Array    | List of external identifiers associated with the store.                                                                                                                                                                                                                                      |
+| `email`                                             | String   | Store email address.                                                                                                                                                                                                                                                                         |
+| `mobile`                                            | String   | Store mobile number.                                                                                                                                                                                                                                                                         |
+| `landline`                                          | String   | Store landline number.                                                                                                                                                                                                                                                                       |
+| `latitude`                                          | String   | Latitude coordinate of the store.                                                                                                                                                                                                                                                            |
+| `longitude`                                         | String   | Longitude coordinate of the store.                                                                                                                                                                                                                                                           |
+| `address`                                           | String   | Physical address of the store.                                                                                                                                                                                                                                                               |
+| `cityId`                                            | Integer  | Unique ID for the city where the store is located.                                                                                                                                                                                                                                           |
+| `areaId`                                            | Integer  | Unique ID for the area where the store is located.                                                                                                                                                                                                                                           |
+| `customFields`                                      | Array    | Array containing the [custom fields](https://docs.capillarytech.com/docs/data-fields#custom-fields) and their values. These store additional information related to the store.                                                                                                               |
+
+<br />
+
+## Response parameter
+
+| Parameter | Description                                       |
+| --------- | ------------------------------------------------- |
+| createdId | Store ID generated for the store.                 |
+| warnings  | List of any warnings associated with the request. |
+
+<br />
+
+```json Sample response with custom fields
+{
+    "createdId": 50770954,
+    "warnings": []
+}
+````
+
+## API-specific error codes
+
+| Error code | Description       |
+| :--------- | :---------------- |
+| 1220       | Store code exists |
+| 1206       | Store name exists |
+
+### Country IDs by timezone
+
+| country_id | timezone                        | std_offset | summer_offset |
+| ----------- | ------------------------------- | ----------- | -------------- |
+| 312         | Europe/Andorra                  | UTC+01:00   | UTC+02         |
+| 4           | Asia/Dubai                      | UTC+04:00   | NULL           |
+| 308         | Asia/Kabul                      | UTC+04:30   | NULL           |
+| 316         | America/Antigua                 | UTC-04:00   | NULL           |
+| 314         | America/Anguilla                | UTC-04:00   | NULL           |
+| 309         | Europe/Tirane                   | UTC+01:00   | UTC+02         |
+| 318         | Asia/Yerevan                    | UTC+04:00   | UTC+05         |
+| 313         | Africa/Luanda                   | UTC+01:00   | NULL           |
+| 315         | Antarctica/McMurdo              | UTC+12:00   | UTC+13         |
+| 315         | Antarctica/South_Pole          | UTC+12:00   | UTC+13         |
+| 315         | Antarctica/Rothera              | UTC-03:00   | NULL           |
+| 315         | Antarctica/Palmer               | UTC-04:00   | UTC-03         |
+| 315         | Antarctica/Mawson               | UTC+06:00   | NULL           |
+| 315         | Antarctica/Davis                | UTC+07:00   | NULL           |
+| 315         | Antarctica/Casey                | UTC+08:00   | NULL           |
+| 315         | Antarctica/Vostok               | UTC+00:00   | NULL           |
+| 315         | Antarctica/DumontDUrville       | UTC+10:00   | NULL           |
+| 315         | Antarctica/Syowa                | UTC+03:00   | NULL           |
+| 317         | America/Argentina/Buenos_Aires | UTC-03:00   | UTC-02         |
+| 317         | America/Argentina/Cordoba       | UTC-03:00   | UTC-02         |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/orgEntity/store": {
+      "post": {
+        "summary": "Add Store",
+        "description": "Allows org admins to add a store to an org.",
+        "operationId": "add-store",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "code",
+                  "name",
+                  "type"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "Unique code of the store."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the store."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Short description about the store."
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "Type of the store.",
+                    "enum": [
+                      "STORE"
+                    ]
+                  },
+                  "adminType": {
+                    "type": "string",
+                    "description": "Type of the store - normal store or admin store.",
+                    "enum": [
+                      "GENERAL",
+                      "ADMIN"
+                    ]
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "description": "Pass `true` to activate the store, `false` to inactivate."
+                  },
+                  "timeZoneId": {
+                    "type": "integer",
+                    "description": "Base time-zone ID of the store.",
+                    "format": "int64"
+                  },
+                  "currencyId": {
+                    "type": "integer",
+                    "description": "Base currency ID of the store based on the store location.",
+                    "format": "int32"
+                  },
+                  "languageId": {
+                    "type": "integer",
+                    "description": "Unique ID of the base language associated with the store.",
+                    "format": "int64"
+                  },
+                  "parentZoneId": {
+                    "type": "string",
+                    "description": "Unique ID of the associated parent zone."
+                  },
+                  "externalIds": {
+                    "type": "array",
+                    "description": "External IDs of the store.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email Id of the store."
+                  },
+                  "mobile": {
+                    "type": "string",
+                    "description": "Mobile number of the store."
+                  },
+                  "landline": {
+                    "type": "string"
+                  },
+                  "cityId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "areaId": {
+                    "type": "string"
+                  },
+                  "customFields": {
+                    "type": "array",
+                    "description": "Array containing the custom fields and it's value. These custom fields store special or custom information related to the store.",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample Response": {
+                    "value": "{\n    \"createdId\": 50026755,\n    \"warnings\": []\n}"
+                  },
+                  "Sample response with custom fields": {
+                    "value": "{\n    \"createdId\": 50770954,\n    \"warnings\": []\n}"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "title": "Sample Response",
+                      "type": "object",
+                      "properties": {
+                        "createdId": {
+                          "type": "integer",
+                          "example": 50026755,
+                          "default": 0
+                        },
+                        "warnings": {
+                          "type": "array"
+                        }
+                      }
+                    },
+                    {
+                      "title": "Sample response with custom fields",
+                      "type": "object",
+                      "properties": {
+                        "createdId": {
+                          "type": "integer",
+                          "example": 50770954,
+                          "default": 0
+                        },
+                        "warnings": {
+                          "type": "array"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://eu.intouch.capillarytech.com/v2/orgEntity/store' \\\n--header 'Content-Type: application/json' \\\n--header 'X-CAP-API-OAUTH-TOKEN: YOUR_JWT_TOKEN' \\\n--data-raw '{\n    \"code\": \"singlestoretestforcreation3\",\n    \"description\": \"SingleStoreTest\",\n    \"name\": \"singlestoretestforcreation3\",\n    \"type\": \"STORE\",\n    \"adminType\": \"GENERAL\",\n    \"isActive\": true,\n    \"timeZoneId\": \"\",\n    \"currencyId\": \"\",\n    \"languageId\": \"\",\n    \"parentConceptId\": \"75216471\",\n    \"parentZoneId\": \"75152646\",\n        \n    \"externalIds\": [\n        \"nee11234\"\n    ],\n    \"email\": \"neeraj.k1@capillarytech.com\",\n    \"mobile\": \"919686000585\",\n    \"landline\": \"\",\n    \"latitude\": \"\",\n    \"longitude\": \"\",\n    \"address\": \"\",\n    \"cityId\": 0,\n    \"areaId\": 0\n}'",
+              "name": ""
+            },
+            {
+              "language": "curl",
+              "code": "{\n    \"code\": \"singlestoretestforcreation\",\n    \"description\": \"SingleStoreTest\",\n    \"name\": \"singlestoretestforcreation\",\n    \"type\": \"STORE\",\n    \"adminType\": \"GENERAL\",\n    \"isActive\": true,\n    \"timeZoneId\": \"\",\n    \"currencyId\": \"\",\n    \"languageId\": \"\",\n    \"parentZoneId\": 50712290,\n    \"parentConceptId\": 50712302,\n    \"externalIds\": [\n        \"Ex-93991234\",\n      \"Ex-93991237\",\n      \"Ex-93991235\"\n    ],\n    \"email\": \"tom.swayer@capillarytech.com\",\n    \"mobile\": \"917262178832\",\n    \"landline\": \"\",\n    \"latitude\": \"\",\n    \"longitude\": \"\",\n    \"address\": \"\",\n    \"cityId\": 0,\n    \"areaId\": 0,\n  \"customFields\":{\n    \"store_custom_field\":\"Single store test\"\n  }\n}",
+              "name": "Sample request with custom fields"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+````

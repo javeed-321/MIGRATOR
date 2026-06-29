@@ -1,0 +1,186 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Get Company Details
+
+Retrieves details of a company by company ID or external ID.
+
+> 📘 Note
+>
+> Either one of the query parameters is mandatory.
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/companies": {
+      "get": {
+        "summary": "Get Company Details",
+        "description": "Retrieves details of a company by company ID or external ID.",
+        "operationId": "get-company-details",
+        "parameters": [
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "External ID of the company.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Unique ID of the company.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n   \"externalId\":\"Purple2345\",\n   \"companyId\":98,\n   \"name\":\"Purple Distributors\",\n   \"hierarchyDefinitionCode\":\"code-association2\",\n   \"isActive\":true,\n   \"extendedFields\":{\n      \"address1\":\"Temple Street, X Road\",\n      \"company_city\":\"Bangalore\",\n      \"company_country\":\"India\",\n      \"company_state\":\"Karnataka\",\n      \"owner\":\"Capillary\",\n      \"phone\":\"919900000000\",\n      \"pincode\":\"560068\"\n   },\n   \"warnings\":[\n\n   ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "externalId": {
+                      "type": "string",
+                      "example": "Purple2345"
+                    },
+                    "companyId": {
+                      "type": "integer",
+                      "example": 98,
+                      "default": 0
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Purple Distributors"
+                    },
+                    "hierarchyDefinitionCode": {
+                      "type": "string",
+                      "example": "code-association2"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true,
+                      "default": true
+                    },
+                    "extendedFields": {
+                      "type": "object",
+                      "properties": {
+                        "address1": {
+                          "type": "string",
+                          "example": "Temple Street, X Road"
+                        },
+                        "company_city": {
+                          "type": "string",
+                          "example": "Bangalore"
+                        },
+                        "company_country": {
+                          "type": "string",
+                          "example": "India"
+                        },
+                        "company_state": {
+                          "type": "string",
+                          "example": "Karnataka"
+                        },
+                        "owner": {
+                          "type": "string",
+                          "example": "Capillary"
+                        },
+                        "phone": {
+                          "type": "string",
+                          "example": "919900000000"
+                        },
+                        "pincode": {
+                          "type": "string",
+                          "example": "560068"
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "http://us.api.capillarytech.com/v2/companies?externalId=Purple2345",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

@@ -1,0 +1,508 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Delete Webhook
+
+Delete a webhook.
+
+# API endpoint example
+
+`http://eu.api.capillarytech.com/v3/webHooks/69254f46749e644bc01328c1`
+
+# Prerequisites
+
+* [ ] Authentication: Basic or OAuth authentication details
+* [ ] Access group resource: Read and write permission on webhook resource group.
+
+# Resource information
+
+|                       |                            |
+| :-------------------- | :------------------------- |
+| URL                   | /v3/webHooks/`{webHookId}` |
+| HTTP method           | DELETE                     |
+| Pagination supported? | NA                         |
+| Rate limit            | NA                         |
+| Batch support         | NA                         |
+
+# Request parameters
+
+| (Parameters marked with \* are mandatory) | Type   | Description                 |
+| ----------------------------------------- | ------ | --------------------------- |
+| webHookId\*                               | String | Identifier for the webhook. |
+
+```bash
+curl --location --request DELETE 'http://eu.api.capillarytech.com/v3/webHooks/69254f46749e644bc01328c1' \
+--header 'Authorization: Basic ****' \
+--header 'Cookie: _cfuvid=yYsH7ns18uvZ6yJ8YEDgIPw.ZjqHMYsSsHCnY00XLAM-1764052824812-0.0.1.1-604800000'
+```
+
+# Response parameters
+
+| Parameter                               | Description                                                                                                                                                                                                                                           |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| data                                    | Contains main details about the webhook configuration.                                                                                                                                                                                                |
+| -attribution                            | Metadata about the creation and last update of the webhook.                                                                                                                                                                                           |
+| -- createdOn                            | Timestamp when the webhook was created. It is in the local time zone of the org and in ISO 8601 format.                                                                                                                                               |
+| -- lastUpdatedOn                        | Timestamp when the webhook was last updated. It is in the local time zone of the org and in ISO 8601 format.                                                                                                                                          |
+| -- lastUpdatedBy                        | Information about the user who last updated the webhook.                                                                                                                                                                                              |
+| --- id                                  | Unique identifier of the user.                                                                                                                                                                                                                        |
+| --- code                                | Code of the user.                                                                                                                                                                                                                                     |
+| --- description                         | Description of the user.                                                                                                                                                                                                                              |
+| --- name                                | Name of the user.                                                                                                                                                                                                                                     |
+| --- type                                | Type of user. **Example:** `TILL`                                                                                                                                                                                                                     |
+| -- createdBy                            | Information about the user who created the webhook.                                                                                                                                                                                                   |
+| --- id                                  | Unique identifier of the user.                                                                                                                                                                                                                        |
+| --- code                                | Code of the user.                                                                                                                                                                                                                                     |
+| --- description                         | Description of the user.                                                                                                                                                                                                                              |
+| --- name                                | Name of the user.                                                                                                                                                                                                                                     |
+| --- type                                | Type of user. **Example:** `TILL`                                                                                                                                                                                                                     |
+| webHookId                               | Unique identifier of the webhook.                                                                                                                                                                                                                     |
+| name                                    | Name of the webhook.                                                                                                                                                                                                                                  |
+| eventNames                              | List of event names that trigger the webhook.                                                                                                                                                                                                         |
+| webHookUrl                              | URL where the webhook sends its requests.                                                                                                                                                                                                             |
+| webHookType                             | Type of webhook, **Example:** `HTTP`                                                                                                                                                                                                                  |
+| methodType                              | HTTP method used by the webhook. **Example:** `POST`, `PUT`,` GET` or `DELETE`.                                                                                                                                                                       |
+| webHookHeaders                          | Headers sent with the webhook request.                                                                                                                                                                                                                |
+| -Authorization                          | Authorization header for authentication.                                                                                                                                                                                                              |
+| -Content-Type                           | Specifies the content, **Example:** `application/json`                                                                                                                                                                                                |
+| noOfRetryAttempts                       | Number of retry attempts configured.                                                                                                                                                                                                                  |
+| maxAllowedConnections                   | Maximum allowed concurrent connections for this webhook.                                                                                                                                                                                              |
+| active                                  | Indicates if the webhook is active.                                                                                                                                                                                                                   |
+| slaInSeconds                            | Expected delivery time of the [event notification](https://docs.capillarytech.com/docs/configure_event_notification)  in seconds. This is used to track notifications that took more time than the SLA set.                                           |
+| consumerGroupId                         | Identifier for the consumer group.                                                                                                                                                                                                                    |
+| tillDetailsEnrichmentEnabled            | Indicates if the event payload is enriched with till details.                                                                                                                                                                                         |
+| storeDetailsEnrichmentEnabled           | Indicates if the event payload is enriched with store details                                                                                                                                                                                         |
+| customerIdentifiersToBeEnriched         | List of customer identifiers enrichment available in the payload.                                                                                                                                                                                     |
+| awardedReferenceEnrichmentEnabled       | Indicates if the event payload is enriched with [awarded reference ID](https://docs.capillarytech.com/docs/add-event-notification-account) . It is a unique identifier associated with each issued point or redemption transaction within the system. |
+| availablePointsBalanceEnrichmentEnabled | Indicates if the event payload is enriched with the available points balance.                                                                                                                                                                         |
+| errors                                  | Array containing errors, if any.                                                                                                                                                                                                                      |
+| warnings                                | Array containing warnings, if any.                                                                                                                                                                                                                    |
+
+# Sample response
+
+```json Sample response
+{
+    "data": {
+        "attribution": {
+            "createdOn": "2025-11-25T06:40:06.036+0000",
+            "createdOnISO": "2025-11-25T06:40:06Z",
+            "lastUpdatedOn": "2025-11-25T08:58:27.608+0000",
+            "lastUpdatedOnISO": "2025-11-25T08:58:27Z",
+            "lastUpdatedBy": {
+                "id": 75152722,
+                "code": "divya_doc",
+                "description": "",
+                "name": "divya_doc",
+                "type": "TILL"
+            },
+            "createdBy": {
+                "id": 75152722,
+                "code": "divya_doc",
+                "description": "",
+                "name": "divya_doc",
+                "type": "TILL"
+            }
+        },
+        "webHookId": "69254f46749e644bc01328c1",
+        "name": "All_Events_v3",
+        "eventNames": [
+            "loyaltyCustomerMerge",
+            "partnerProgramLinked",
+            "pointsExpired",
+            "customerAdded",
+            "transactionUpdated",
+            "groupUpdated",
+            "promisedToCurrentPointsConversion",
+            "pointsTransferredReceived",
+            "groupMemberRemoved",
+            "groupCreated",
+            "partnerProgramUpdated",
+            "pointsIssued",
+            "tierDowngradeReminder",
+            "pointsContributionToGroup",
+            "CouponRedeem",
+            "pointsExpiryReminder",
+            "partnerProgramDelinked",
+            "CouponIssue",
+            "tierRenewed",
+            "tierDowngraded",
+            "pointsTransferredInitiated",
+            "customerUpdated",
+            "tierUpgraded",
+            "rewardIssued",
+            "pointsExpiryChange",
+            "rewardUpdated",
+            "supplementaryMembershipExpiryReminder",
+            "singlePointsExpiryUpdated",
+            "issuedPointsReversed",
+            "redeemedPointsReversed"
+        ],
+        "webHookUrl": "https://eo4qiclzg50n2q8.m.pipedream.net",
+        "webHookType": "HTTP",
+        "methodType": "PUT",
+        "webHookHeaders": {
+            "Authorization": "Basic Q2FwaWxsYXJ5OklVTmhjR2xzYkdGeWVVQTROekl5",
+            "Content-Type": "application/json"
+        },
+        "noOfRetryAttempts": 0,
+        "maxAllowedConnections": 10,
+        "active": false,
+        "slaInSeconds": 150,
+        "consumerGroupId": "b3bd2ff7-1525-46d0-b855-08bee77209fc",
+        "listenToChildEvents": false,
+        "tillDetailsEnrichmentEnabled": false,
+        "storeDetailsEnrichmentEnabled": false,
+        "customerIdentifiersToBeEnriched": [],
+        "awardedReferenceEnrichmentEnabled": false,
+        "availablePointsBalanceEnrichmentEnabled": false
+    },
+    "errors": null,
+    "warnings": null
+}
+```
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v3",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v3",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/webHooks/{webHookId}": {
+      "delete": {
+        "summary": "Delete Webhook",
+        "description": "Delete a webhook.",
+        "operationId": "delete-v3-webhook",
+        "parameters": [
+          {
+            "name": "webHookId",
+            "in": "path",
+            "description": "Identifier for the webhook.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample response": {
+                    "value": {
+                      "data": {
+                        "attribution": {
+                          "createdOn": "2025-11-25T06:40:06.036+0000",
+                          "createdOnISO": "2025-11-25T06:40:06Z",
+                          "lastUpdatedOn": "2025-11-25T08:58:27.608+0000",
+                          "lastUpdatedOnISO": "2025-11-25T08:58:27Z",
+                          "lastUpdatedBy": {
+                            "id": 75152722,
+                            "code": "divya_doc",
+                            "description": "",
+                            "name": "divya_doc",
+                            "type": "TILL"
+                          },
+                          "createdBy": {
+                            "id": 75152722,
+                            "code": "divya_doc",
+                            "description": "",
+                            "name": "divya_doc",
+                            "type": "TILL"
+                          }
+                        },
+                        "webHookId": "69254f46749e644bc01328c1",
+                        "name": "All_Events_v3",
+                        "eventNames": [
+                          "loyaltyCustomerMerge",
+                          "partnerProgramLinked",
+                          "pointsExpired",
+                          "customerAdded",
+                          "transactionUpdated",
+                          "groupUpdated",
+                          "promisedToCurrentPointsConversion",
+                          "pointsTransferredReceived",
+                          "groupMemberRemoved",
+                          "groupCreated",
+                          "partnerProgramUpdated",
+                          "pointsIssued",
+                          "tierDowngradeReminder",
+                          "pointsContributionToGroup",
+                          "CouponRedeem",
+                          "pointsExpiryReminder",
+                          "partnerProgramDelinked",
+                          "CouponIssue",
+                          "tierRenewed",
+                          "tierDowngraded",
+                          "pointsTransferredInitiated",
+                          "customerUpdated",
+                          "tierUpgraded",
+                          "rewardIssued",
+                          "pointsExpiryChange",
+                          "rewardUpdated",
+                          "supplementaryMembershipExpiryReminder",
+                          "singlePointsExpiryUpdated",
+                          "issuedPointsReversed",
+                          "redeemedPointsReversed"
+                        ],
+                        "webHookUrl": "https://eo4qiclzg50n2q8.m.pipedream.net",
+                        "webHookType": "HTTP",
+                        "methodType": "PUT",
+                        "webHookHeaders": {
+                          "Authorization": "Basic Q2FwaWxsYXJ5OklVTmhjR2xzYkdGeWVVQTROekl5",
+                          "Content-Type": "application/json"
+                        },
+                        "noOfRetryAttempts": 0,
+                        "maxAllowedConnections": 10,
+                        "active": false,
+                        "slaInSeconds": 150,
+                        "consumerGroupId": "b3bd2ff7-1525-46d0-b855-08bee77209fc",
+                        "listenToChildEvents": false,
+                        "tillDetailsEnrichmentEnabled": false,
+                        "storeDetailsEnrichmentEnabled": false,
+                        "customerIdentifiersToBeEnriched": [],
+                        "awardedReferenceEnrichmentEnabled": false,
+                        "availablePointsBalanceEnrichmentEnabled": false
+                      },
+                      "errors": null,
+                      "warnings": null
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "attribution": {
+                          "type": "object",
+                          "properties": {
+                            "createdOn": {
+                              "type": "string",
+                              "example": "2024-10-25T11:43:34.087+0000"
+                            },
+                            "lastUpdatedOn": {
+                              "type": "string",
+                              "example": "2024-10-28T06:44:05.025+0000"
+                            },
+                            "lastUpdatedBy": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 75121810,
+                                  "default": 0
+                                },
+                                "code": {
+                                  "type": "string",
+                                  "example": "test_123"
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "example": ""
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "example": "test_123"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "example": "TILL"
+                                }
+                              }
+                            },
+                            "createdBy": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 75121810,
+                                  "default": 0
+                                },
+                                "code": {
+                                  "type": "string",
+                                  "example": "test_123"
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "example": ""
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "example": "test_123"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "example": "TILL"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "webHookId": {
+                          "type": "string",
+                          "example": "671b8466760af0000761b640"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "test_post_webhook_1234"
+                        },
+                        "eventNames": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "example": "loyaltyCustomerMerge"
+                          }
+                        },
+                        "webHookUrl": {
+                          "type": "string",
+                          "example": "http://eu.api.capillarytech.com"
+                        },
+                        "webHookType": {
+                          "type": "string",
+                          "example": "HTTP"
+                        },
+                        "methodType": {
+                          "type": "string",
+                          "example": "PUT"
+                        },
+                        "webHookHeaders": {
+                          "type": "object",
+                          "properties": {
+                            "Authorization": {
+                              "type": "string",
+                              "example": "Basic Q2FwaWxsYXJ5OklVTmhjR2xzYkdGeWVVQTROekl5"
+                            },
+                            "Content-Type": {
+                              "type": "string",
+                              "example": "application/json"
+                            }
+                          }
+                        },
+                        "noOfRetryAttempts": {
+                          "type": "integer",
+                          "example": 0,
+                          "default": 0
+                        },
+                        "maxAllowedConnections": {
+                          "type": "integer",
+                          "example": 10,
+                          "default": 0
+                        },
+                        "active": {
+                          "type": "boolean",
+                          "example": false,
+                          "default": true
+                        },
+                        "slaInSeconds": {
+                          "type": "integer",
+                          "example": 150,
+                          "default": 0
+                        },
+                        "consumerGroupId": {
+                          "type": "string",
+                          "example": "8fb2fdec-53ba-44de-bce9-82eedcb29026"
+                        },
+                        "tillDetailsEnrichmentEnabled": {
+                          "type": "boolean",
+                          "example": false,
+                          "default": true
+                        },
+                        "storeDetailsEnrichmentEnabled": {
+                          "type": "boolean",
+                          "example": false,
+                          "default": true
+                        },
+                        "customerIdentifiersToBeEnriched": {
+                          "type": "array"
+                        },
+                        "awardedReferenceEnrichmentEnabled": {
+                          "type": "boolean",
+                          "example": false,
+                          "default": true
+                        },
+                        "availablePointsBalanceEnrichmentEnabled": {
+                          "type": "boolean",
+                          "example": false,
+                          "default": true
+                        }
+                      }
+                    },
+                    "errors": {},
+                    "warnings": {}
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location --request DELETE 'http://eu.api.capillarytech.com/v3/webHooks/69254f46749e644bc01328c1' \\\n--header 'Authorization: Basic ****' \\\n--header 'Cookie: _cfuvid=yYsH7ns18uvZ6yJ8YEDgIPw.ZjqHMYsSsHCnY00XLAM-1764052824812-0.0.1.1-604800000'",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

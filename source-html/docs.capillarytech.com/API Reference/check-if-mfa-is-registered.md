@@ -1,0 +1,195 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Check if MFA is Registered
+
+Checks whether Multi-Factor Authentication (MFA) is registered for a user in a specific organization. The `authorizedToken` used in the request is the token obtained after successfully validating the <Anchor label="MFA OTP" target="_blank" href="https://docs.capillarytech.com/reference/validate-mfa-otp">MFA OTP</Anchor>.
+
+Using this API, you can verify if the user's organization has MFA registered before continuing further in the authentication flow.
+
+# Example request
+
+```curl Sample request
+curl --location 'https://eu.api.capillarytech.com/auth/v1/mfa/token/isMfaRegistered' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: _cfuvid=YGkYDipZ5aBgYCycHPYGm3r4bevpFjl.Nx.qd7YzlMg-1777013162.9910796-1.0.1.1-PI6UPVMzkCBpVJISUfINvbiR_f9kmL1cobDGXWzeQzU' \
+--data '{
+    "deviceId": "123356682",
+    "brand": "DocDemo",
+    "authorizedToken": "eyJpZHYiOlsiTU9CSUxFfDkxOTk5OTk5MjgiXSwiZGV2IjoiMTIzMzU2NjgyIiwib3JnIjoiRE9DREVNTyIsImFsZyI6IkhTMjU2In0.eyJ1aWQiOiI1MDU4MTgzIiwiaXNzIjoiQ0FQSUxMQVJZIFRFQ0hOT0xPR0lFUyIsImlzYyI6ImZhbHNlIiwib2djIjpbIjEwMDczN3xuZWVyYWouZG9jIl0sImV4cCI6MTc3NzAxNDUwNSwiaWF0IjoxNzc3MDEzNjA1LCJyb2wiOiJVU0VSIn0.YP6v6C-klpdyZFFEvSqyB4RTjc3s4zMJ5dL8811S8lU"
+}'
+```
+
+# Prerequisites
+
+* The org must have MFA enabled.
+* A valid `authorizedToken` must be passed, obtained from a prior token generation step.
+
+# Resource information
+
+|                       |                                    |
+| :-------------------- | :--------------------------------- |
+| URI                   | /auth/v1/mfa/token/isMfaRegistered |
+| HTTP method           | POST                               |
+| Pagination supported? | No                                 |
+| Batch support         | No                                 |
+
+# Request body parameters
+
+| (Parameters marked with \* are mandatory) | Type   | Description                                                                                   |
+| :---------------------------------------- | :----- | :-------------------------------------------------------------------------------------------- |
+| `brand`\*                                 | String | Name of the brand or organization for which the MFA registration status is checked.           |
+| `deviceId`\*                              | String | Unique ID for the user's device, used to determine whether MFA is registered for that device. |
+| `authorizedToken`\*                       | String | Authentication token from /otp/validate of Multifactor factor.                                |
+
+# Example response
+
+```json Sample response
+{
+    "status": {
+        "success": true,
+        "code": 200,
+        "message": "SUCCESS"
+    },
+    "auth": null,
+    "user": null
+}
+```
+
+# Response parameters
+
+| Parameter  | Data Type | Description                                                                                                                                                  |
+| :--------- | :-------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `status`   | Object    | Object containing status information.                                                                                                                        |
+| -`success` | Boolean   | Boolean indicating the status of the request.                                                                                                                |
+| -`code`    | Integer   | HTTP status code indicating the result. Example: 200 indicates success.                                                                                      |
+| -`message` | String    | Message describing the status of the request.                                                                                                                |
+| `auth`     | Object    | Contains the authentication token details of the user. Returns null for this endpoint as no token is generated or returned during an MFA registration check. |
+| `user`     | Object    | Contains the user session details such as session ID. Returns null for this endpoint as no user session is created during an MFA registration check.         |
+
+# Error codes
+
+| Code   | Description                                         |
+| ------ | --------------------------------------------------- |
+| `200`  | MFA is registered for the user.                     |
+| `404`  | User exists but has not completed MFA registration. |
+| `1513` | The org/brand does not have MFA enabled.            |
+| `1504` | Token validation or creation failed.                |
+| `401`  | Token is expired. Ensure to provide active token.   |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "POST /auth/v1/mfa/token/isMfaRegistered",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{Host}",
+      "variables": {
+        "Host": {
+          "enum": [
+            "{Host}",
+            "eu.intouch.capillarytech.com",
+            "intouch.capillary.co.in",
+            "apac2.intouch.capillarytech.com",
+            "sgcrm.cc.capillarytech.com",
+            "intouch.capillarytech.cn.com",
+            "north-america.intouch.capillarytech.com"
+          ],
+          "default": "{Host}"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/auth/v1/mfa/token/isMfaRegistered": {
+      "post": {
+        "summary": "Check if MFA is Registered",
+        "operationId": "postIsMfaRegistered",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "_cfuvid=YGkYDipZ5aBgYCycHPYGm3r4bevpFjl.Nx.qd7YzlMg-1777013162.9910796-1.0.1.1-PI6UPVMzkCBpVJISUfINvbiR_f9kmL1cobDGXWzeQzU"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "deviceId": {
+                    "type": "string",
+                    "example": "123356682"
+                  },
+                  "brand": {
+                    "type": "string",
+                    "example": "DocDemo"
+                  },
+                  "authorizedToken": {
+                    "type": "string",
+                    "example": "eyJpZHYiOlsiTU9CSUxFfDkxOTk5OTk5MjgiXSwiZGV2IjoiMTIzMzU2NjgyIiwib3JnIjoiRE9DREVNTyIsImFsZyI6IkhTMjU2In0.eyJ1aWQiOiI1MDU4MTgzIiwiaXNzIjoiQ0FQSUxMQVJZIFRFQ0hOT0xPR0lFUyIsImlzYyI6ImZhbHNlIiwib2djIjpbIjEwMDczN3xuZWVyYWouZG9jIl0sImV4cCI6MTc3NzAxNDUwNSwiaWF0IjoxNzc3MDEzNjA1LCJyb2wiOiJVU0VSIn0.YP6v6C-klpdyZFFEvSqyB4RTjc3s4zMJ5dL8811S8lU"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "OK": {
+                    "summary": "OK",
+                    "value": {
+                      "status": {
+                        "success": true,
+                        "code": 200,
+                        "message": "SUCCESS"
+                      },
+                      "auth": null,
+                      "user": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "201": {
+            "description": "Successful response"
+          }
+        },
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'https://eu.api.capillarytech.com/auth/v1/mfa/token/isMfaRegistered' \\\n--header 'Content-Type: application/json' \\\n--header 'Cookie: _cfuvid=YGkYDipZ5aBgYCycHPYGm3r4bevpFjl.Nx.qd7YzlMg-1777013162.9910796-1.0.1.1-PI6UPVMzkCBpVJISUfINvbiR_f9kmL1cobDGXWzeQzU' \\\n--data '{\n    \"deviceId\": \"123356682\",\n    \"brand\": \"DocDemo\",\n    \"authorizedToken\": \"eyJpZHYiOlsiTU9CSUxFfDkxOTk5OTk5MjgiXSwiZGV2IjoiMTIzMzU2NjgyIiwib3JnIjoiRE9DREVNTyIsImFsZyI6IkhTMjU2In0.eyJ1aWQiOiI1MDU4MTgzIiwiaXNzIjoiQ0FQSUxMQVJZIFRFQ0hOT0xPR0lFUyIsImlzYyI6ImZhbHNlIiwib2djIjpbIjEwMDczN3xuZWVyYWouZG9jIl0sImV4cCI6MTc3NzAxNDUwNSwiaWF0IjoxNzc3MDEzNjA1LCJyb2wiOiJVU0VSIn0.YP6v6C-klpdyZFFEvSqyB4RTjc3s4zMJ5dL8811S8lU\"\n}'",
+              "language": "shell",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  }
+}
+```

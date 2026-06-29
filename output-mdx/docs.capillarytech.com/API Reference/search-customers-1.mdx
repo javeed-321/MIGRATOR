@@ -1,0 +1,239 @@
+---
+title: Search Customers
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Search Customers
+
+Fetches customers from all sources using query string.  
+
+For example, you can fetch customers whose identifiers starting with 99455, or name that starts with ‘john’ and so on.
+
+<Callout kind="info">
+
+The keyword that you pass will be fetched automatically from all the sources. You do not need to explicitly specify the source type for this API.
+
+</Callout>
+
+#### Request URL
+
+`{host}/v2/customers/search?q={search keyword}`
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/customers/search": {
+      "get": {
+        "summary": "Search Customers",
+        "description": "Fetches customers from all sources using query string.  \n\nFor example, you can fetch customers whose identifiers starting with 99455, or name that starts with ‘john’ and so on.",
+        "operationId": "search-customers-1",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Enter the keyword based on which you want to fetch customers. It will fetch customers whose first name, last name, or registered identifiers start with keyword that you pass.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CAP-API-OAUTH-TOKEN",
+            "in": "header",
+            "description": "Generated access token for oAuth authentication. If the token expires, you need to regenerate the access token.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"pagination\": {\n    \"limit\": 10,\n    \"offset\": 0,\n    \"total\": 33\n  },\n  \"data\": [\n    {\n      \"userId\": 261504789,\n      \"matchedIdentifiers\": [\n        {\n          \"idType\": \"firstName\",\n          \"idValue\": \"Tom\",\n          \"source\": \"INSTORE\",\n          \"accountId\": \"\"\n        }\n      ],\n      \"profiles\": [\n        {\n          \"source\": \"INSTORE\",\n          \"firstName\": \"Tom\",\n          \"lastName\": \"Sawyer\"\n        }\n      ]\n    },\n    {\n      \"userId\": 261506099,\n      \"matchedIdentifiers\": [\n        {\n          \"idType\": \"firstName\",\n          \"idValue\": \"Tom\",\n          \"source\": \"INSTORE\",\n          \"accountId\": \"\"\n        }\n      ],\n      \"profiles\": [\n        {\n          \"source\": \"INSTORE\",\n          \"firstName\": \"Tom\",\n          \"lastName\": \"Sawyer\"\n        }\n      ]\n    },\n    {\n      \"userId\": 261504579,\n      \"matchedIdentifiers\": [\n        {\n          \"idType\": \"firstName\",\n          \"idValue\": \"Tom\",\n          \"source\": \"INSTORE\",\n          \"accountId\": \"\"\n        }\n      ],\n\n      \"profiles\": [\n        {\n          \"source\": \"INSTORE\",\n          \"firstName\": \"Tom\",\n          \"lastName\": \"Sawyer\"\n        }\n      ]\n    },\n    {\n      \"userId\": 261506077,\n      \"matchedIdentifiers\": [\n        {\n          \"idType\": \"firstName\",\n          \"idValue\": \"Tom\",\n          \"source\": \"INSTORE\",\n          \"accountId\": \"\"\n        }\n      ],\n      \"profiles\": [\n        {\n          \"source\": \"INSTORE\",\n          \"firstName\": \"Tom\",\n          \"lastName\": \"Sawyer\"\n        }\n      ]\n    }\n  ],\n  \"warnings\": [],\n  \"errors\": []\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "integer",
+                          "example": 10,
+                          "default": 0
+                        },
+                        "offset": {
+                          "type": "integer",
+                          "example": 0,
+                          "default": 0
+                        },
+                        "total": {
+                          "type": "integer",
+                          "example": 33,
+                          "default": 0
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "userId": {
+                            "type": "integer",
+                            "example": 261504789,
+                            "default": 0
+                          },
+                          "matchedIdentifiers": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "idType": {
+                                  "type": "string",
+                                  "example": "firstName"
+                                },
+                                "idValue": {
+                                  "type": "string",
+                                  "example": "Tom"
+                                },
+                                "source": {
+                                  "type": "string",
+                                  "example": "INSTORE"
+                                },
+                                "accountId": {
+                                  "type": "string",
+                                  "example": ""
+                                }
+                              }
+                            }
+                          },
+                          "profiles": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "source": {
+                                  "type": "string",
+                                  "example": "INSTORE"
+                                },
+                                "firstName": {
+                                  "type": "string",
+                                  "example": "Tom"
+                                },
+                                "lastName": {
+                                  "type": "string",
+                                  "example": "Sawyer"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    },
+                    "errors": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "http://eu.api.capillarytech.com/v2/customers/search?limit=10&offset=0&q=tom",
+              "name": "Sample Request"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

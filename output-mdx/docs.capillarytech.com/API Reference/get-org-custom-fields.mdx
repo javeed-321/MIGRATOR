@@ -1,0 +1,270 @@
+---
+title: Get Custom Fields
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Get Custom Fields
+
+Retrieves all the custom fields created for the org.
+
+| Parameter        | Data Type | Description                                                                                                                                                                                                              |
+| ---------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| name             | String    | Name of the custom field                                                                                                                                                                                                 |
+| type             | String    | Type of the field. For example, text, datepicker, checkbox, dropdown etc                                                                                                                                                 |
+| dataType         | String    | Data type of the field.                                                                                                                                                                                                  |
+| label            | String    | Label assigned to the custom field to identify the custom field. For example, address, date of birt etc.                                                                                                                 |
+| scope            | String    | Defines the purpose or where the custom field is used.                                                                                                                                                                   |
+| defaultValue     | String    | Default value for the field. This field applies to client-side applications like Instore and does not undergo any server-side validation.                                                                                |
+| phase            | String    | This is applicable for Instore and is not in use.                                                                                                                                                                        |
+| position         | String    | Position of the field. Indicates the order of the field on UI. This field applies to client-side applications like Instore and does not undergo any server-side validation.                                              |
+| rule             | String    | Rule for the field. Client-side validation rule for the field (Infix expression)                                                                                                                                         |
+| serverRule       | String    | Server-side rule for the field. Server-side validation rule for the field (Infix expression)                                                                                                                             |
+| regex            | String    | Regular expression for validation. Validation for the field.                                                                                                                                                             |
+| error            | String    | Error message for validation                                                                                                                                                                                             |
+| options          | String    | Displays the options available to choose from if it is a drop-down.                                                                                                                                                      |
+| isDisabled       | Integer   | Whether the field is disabled (0 or 1).                                                                                                                                                                                  |
+| isCompulsory     | Integer   | Whether the field is compulsory (0 or 1). This field applies to client-side applications like Instore and does not undergo any server-side validation.                                                                   |
+| disableAtServer  | Integer   | Whether disabling at server (0 or 1)                                                                                                                                                                                     |
+| isUpdatable      | Integer   | Whether the field is updatable (0 or 1). This field applies to client-side applications like Instore and does not undergo any server-side validation.                                                                    |
+| enableAuditTrail | Integer   | Whether enable audit trail is enabled (0 or 1)                                                                                                                                                                           |
+| isPiiData        | Integer   | Whether the field is PII data (0 or 1)                                                                                                                                                                                   |
+| isPsiData        | Integer   | Indicates if the custom field is sensitive data. Refer to the PSI data documentation for more [information on classifying PSI data](https://docs.capillarytech.com/docs/classify-potentially-sensitive-information-psi). |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/organization/customFields": {
+      "get": {
+        "summary": "Get Custom Fields",
+        "description": "Retrieves all the custom fields created for the org.",
+        "operationId": "get-org-custom-fields",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "query",
+            "description": "Get custom fields of a specific type.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "loyalty_registration loyalty_transaction",
+                "customer_feedback",
+                "customer_preferences",
+                "store_custom_fields",
+                "points_redemption",
+                "voucher_redemption",
+                "check_in_feedback",
+                "customer_card"
+              ]
+            }
+          },
+          {
+            "name": "includeDisabled",
+            "in": "query",
+            "description": "Whether to show custom fields that are disabled or inactive for the org.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "includeDisabledAtServer",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample Response": {
+                    "value": "{\n    \"data\": [\n        {\n            \"name\": \"age_group\",\n            \"type\": \"text\",\n            \"dataType\": \"String\",\n            \"label\": \"Age Group\",\n            \"scope\": \"loyalty_registration\",\n            \"defaultValue\": \"\",\n            \"phase\": \"1\",\n            \"position\": 0,\n            \"rule\": \"\",\n            \"serverRule\": \"\",\n            \"regex\": \"\",\n            \"error\": \"\",\n            \"options\": \"\",\n            \"isDisabled\": 0,\n            \"isCompulsory\": 0,\n            \"disableAtServer\": 0,\n            \"isUpdatable\": 0,\n            \"enableAuditTrail\": 0,\n            \"isPiiData\": 0,\n            \"isPsiData\": 0\n        },\n        {\n            \"name\": \"anniversary\",\n            \"type\": \"datepicker\",\n            \"dataType\": \"String\",\n            \"label\": \"Anniversary\",\n            \"scope\": \"loyalty_registration\",\n            \"defaultValue\": \"\",\n            \"phase\": \"1\",\n            \"position\": 0,\n            \"rule\": \"\",\n            \"serverRule\": \"\",\n            \"regex\": \"\",\n            \"error\": \"\",\n            \"options\": \"\",\n            \"isDisabled\": 0,\n            \"isCompulsory\": 0,\n            \"disableAtServer\": 0,\n            \"isUpdatable\": 0,\n            \"enableAuditTrail\": 0,\n            \"isPiiData\": 0,\n            \"isPsiData\": 0\n        },\n        {\n            \"name\": \"birthday\",\n            \"type\": \"datepicker\",\n            \"dataType\": \"String\",\n            \"label\": \"Birthday\",\n            \"scope\": \"loyalty_registration\",\n            \"defaultValue\": \"\",\n            \"phase\": \"1\",\n            \"position\": 0,\n            \"rule\": \"\",\n            \"serverRule\": \"\",\n            \"regex\": \"\",\n            \"error\": \"\",\n            \"options\": \"\",\n            \"isDisabled\": 0,\n            \"isCompulsory\": 0,\n            \"disableAtServer\": 0,\n            \"isUpdatable\": 0,\n            \"enableAuditTrail\": 0,\n            \"isPiiData\": 0,\n            \"isPsiData\": 0\n        },\n        {\n            \"name\": \"cf_1\",\n            \"type\": \"text\",\n            \"dataType\": \"string\",\n            \"label\": \"Custom Field Label\",\n            \"scope\": \"till_custom_fields\",\n            \"defaultValue\": \"14\",\n            \"phase\": \"0\",\n            \"position\": 1,\n            \"rule\": \"\",\n            \"serverRule\": \"\",\n            \"regex\": \"\",\n            \"error\": \"\",\n            \"options\": \"\",\n            \"isDisabled\": 0,\n            \"isCompulsory\": 0,\n            \"disableAtServer\": 0,\n            \"isUpdatable\": 1,\n            \"enableAuditTrail\": 0,\n            \"isPiiData\": 0,\n            \"isPsiData\": 0\n        },\n        {\n            \"name\": \"cf_2\",\n            \"type\": \"\",\n            \"dataType\": \"\",\n            \"label\": \"\",\n            \"scope\": \"till_custom_fields\",\n            \"defaultValue\": \"\",\n            \"phase\": \"0\",\n            \"position\": 0,\n            \"rule\": \"\",\n            \"serverRule\": \"\",\n            \"regex\": \"\",\n            \"error\": \"\",\n            \"options\": \"\",\n            \"isDisabled\": 0,\n            \"isCompulsory\": 0,\n            \"disableAtServer\": 0,\n            \"isUpdatable\": 0,\n            \"enableAuditTrail\": 0,\n            \"isPiiData\": 0,\n            \"isPsiData\": 0\n        },\n        {\n            \"name\": \"cf_3\",\n            \"type\": \"text\",\n            \"dataType\": \"string\",\n            \"label\": \"Custom Field Label\",\n            \"scope\": \"till_custom_fields\",\n            \"defaultValue\": \"20\",\n            \"phase\": \"0\",\n            \"position\": 1,\n            \"rule\": \"\",\n            \"serverRule\": \"\",\n            \"regex\": \"\",\n            \"error\": \"\",\n            \"options\": \"\",\n            \"isDisabled\": 0,\n            \"isCompulsory\": 0,\n            \"disableAtServer\": 0,\n            \"isUpdatable\": 1,\n            \"enableAuditTrail\": 0,\n            \"isPiiData\": 0,\n            \"isPsiData\": 0\n        },\n        {\n            \"name\": \"cf_test_1\",\n            \"type\": \"text\",\n            \"dataType\": \"string\",\n            \"label\": \"Custom Field Label\",\n            \"scope\": \"till_custom_fields\",\n            \"defaultValue\": \"\",\n            \"phase\": \"0\",\n            \"position\": 1,\n            \"rule\": \"\",\n            \"serverRule\": \"\",\n            \"regex\": \"\",\n            \"error\": \"\",\n            \"options\": \"\",\n            \"isDisabled\": 0,\n            \"isCompulsory\": 0,\n            \"disableAtServer\": 0,\n            \"isUpdatable\": 1,\n            \"enableAuditTrail\": 0,\n            \"isPiiData\": 0,\n            \"isPsiData\": 0\n        },\n        {\n            \"name\": \"cf_test_2\",\n            \"type\": \"text\",\n            \"dataType\": \"string\",\n            \"label\": \"Custom Field Label\",\n            \"scope\": \"till_custom_fields\",\n            \"defaultValue\": \"14\",\n            \"phase\": \"0\",\n            \"position\": 1,\n            \"rule\": \"\",\n            \"serverRule\": \"\",\n            \"regex\": \"\",\n            \"error\": \"\",\n            \"options\": \"\",\n            \"isDisabled\": 0,\n            \"isCompulsory\": 0,\n            \"disableAtServer\": 0,\n            \"isUpdatable\": 1,\n            \"enableAuditTrail\": 0,\n            \"isPiiData\": 0,\n            \"isPsiData\": 0\n        },\n        {\n            \"name\": \"gender\",\n            \"type\": \"select\",\n            \"dataType\": \"String\",\n            \"label\": \"Gender\",\n            \"scope\": \"loyalty_registration\",\n            \"defaultValue\": \"\",\n            \"phase\": \"1\",\n            \"position\": 0,\n            \"rule\": \"\",\n            \"serverRule\": \"\",\n            \"regex\": \"\",\n            \"error\": \"\",\n            \"options\": \"{\\\"Male\\\":\\\"Male\\\",\\\"Female\\\":\\\"Female\\\"}\",\n            \"isDisabled\": 0,\n            \"isCompulsory\": 0,\n            \"disableAtServer\": 0,\n            \"isUpdatable\": 0,\n            \"enableAuditTrail\": 0,\n            \"isPiiData\": 0,\n            \"isPsiData\": 0\n        },\n        {\n            \"name\": \"pincode\",\n            \"type\": \"text\",\n            \"dataType\": \"String\",\n            \"label\": \"Pincode\",\n            \"scope\": \"loyalty_registration\",\n            \"defaultValue\": \"\",\n            \"phase\": \"1\",\n            \"position\": 0,\n            \"rule\": \"\",\n            \"serverRule\": \"\",\n            \"regex\": \"\",\n            \"error\": \"\",\n            \"options\": \"\",\n            \"isDisabled\": 0,\n            \"isCompulsory\": 0,\n            \"disableAtServer\": 0,\n            \"isUpdatable\": 0,\n            \"enableAuditTrail\": 0,\n            \"isPiiData\": 0,\n            \"isPsiData\": 0\n        }\n    ],\n    \"warnings\": [],\n    \"errors\": []\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "age_group"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "text"
+                          },
+                          "dataType": {
+                            "type": "string",
+                            "example": "String"
+                          },
+                          "label": {
+                            "type": "string",
+                            "example": "Age Group"
+                          },
+                          "scope": {
+                            "type": "string",
+                            "example": "loyalty_registration"
+                          },
+                          "defaultValue": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "phase": {
+                            "type": "string",
+                            "example": "1"
+                          },
+                          "position": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "rule": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "serverRule": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "regex": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "error": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "options": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "isDisabled": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "isCompulsory": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "disableAtServer": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "isUpdatable": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "enableAuditTrail": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "isPiiData": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "isPsiData": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          }
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    },
+                    "errors": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "https://eu.api.capillarytech.com/v2/organization/customFields"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

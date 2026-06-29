@@ -1,0 +1,414 @@
+---
+title: Add Attributes
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Add Attributes 
+
+Endpoint for POST /v2/product/attributes
+
+Use this API to create **custom product attributes**. Product attributes define additional properties that describe and classify products beyond core fields such as SKU, price, brand, and category.
+
+Attributes act as the metadata layer of your catalogue. You can use them to model characteristics such as material, size, season, or any custom property required by your business.
+
+#### What this API supports
+
+* Bulk creation of attributes (up to 100 per request)
+* Definition of attribute data types (`String`, `Int`, `Double`, `Boolean`)
+* Optional OU-scoped attribute creation
+* Setting a default value for an attribute
+* Creating a default value inline using `valueCode`
+
+#### Limits and configuration
+
+* You can create up to **100 attributes per request**. This limit is controlled by `CONF_PRODUCT_CREATE_UPDATE_BATCH_SIZE`.
+* By default, an organisation can create up to **30 custom attributes**. This limit is controlled by `org_product_custom_attribute_limit`.
+* You can raise a JIRA ticket to modify these configuration values.
+
+#### Default and OU behaviour
+
+* If `type` is not provided, the API defaults it to `String` and returns warning code `10209`.
+* If `ouCode` is not provided, the attribute is created at the organisation level (`ouId = -1`).
+* OU-scoped attributes require OU support to be enabled.
+* Attribute codes are immutable after creation.
+
+## Example request
+
+```bash
+curl --location 'https://{host}.api.capillarytech.com/v2/product/attributes' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic <auth_token>' \
+--data '[
+  {
+    "code": "material_type",
+    "name": "Material Type",
+    "type": "String"
+  },
+  {
+    "ouCode": "zone_north_01",
+    "code": "seasonal_stock",
+    "name": "Seasonal Stock",
+    "type": "Int",
+    "defaultValueId": 101
+  }
+]'
+
+````
+
+## Prerequisites
+
+* Access Group: You must have WRITE access to the Product resource.
+* OU Configuration: If you intend to scope attributes to specific Organization Units (OUs), ensure OU support for product entities is enabled.
+
+## Body parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `code` | string | Yes | Defines the unique identifier for the attribute. Maximum 30 characters are supported. Codes are validated case-insensitively. For example, "ATTRIBUTE1" and "attribute1" are treated as duplicates. The same code can exist for different organizational units (ouCode). |
+| `name` | string | Yes | Defines a display name of the attribute. There is no strict character limit. |
+| `type` | string | Optional | Specifies the data type of the attribute. Supported values: `String`, `Int`, `Double`, `Boolean`. Defaults to String. |
+| `ouCode` | string | Optional | The OU code to scope the attribute. If omitted, the attribute is created at the org level (ouId = -1). Specifies the concept code of the organisation unit. This is applicable only if OU support for product inventory is enabled. For more information, see [OU support for product inventory](https://docs.capillarytech.com/docs/inventory-profiles?isFramePreview=true#configuring-organisation-unit-ou-support-for-product-entities). |
+| `defaultValueId` | long | Optional | Specifies an ID of an existing attribute value to be set as the default. |
+| `valueCode` | string | Optional | Creates an attribute value with this code and sets it as the default value in a single API call. Maximum 30 characters. If the value exceeds this limit, the attribute is created but the default value is not set, and warning code 10252 is returned. |
+
+## API Quick Reference
+
+```html
+{{https://{host}.api.capillarytech.com/v2/product/attributes}}
+   └─ {{RequestBody}} (Batch Array)
+      ├─ {{code}} (string)
+      ├─ {{name}} (string)
+      ├─ {{type}} (string)
+      ├─ {{ouCode}} (string)
+      ├─ {{defaultValueId}} (long)
+      ├─ {{valueCode}} (string)
+      └─ {{ResponseBody}}
+          ├─ {{created}} []
+          │   ├─ {{responseId}} (integer)
+          │   ├─ {{responseOuId}} (integer)
+          │   └─ {{responseCode}} (string)
+          ├─ {{summary}}
+          │   ├─ {{totalRequested}} (integer)
+          │   ├─ {{successCount}} (integer)
+          │   └─ {{failureCount}} (integer)
+          ├─ {{warnings}} []
+          └─ {{errors}} []
+````
+
+## Example response
+
+```
+{
+    "created": [
+        {
+            "id": 91459,
+            "ouId": 50025951,
+            "code": "productcolour"
+        },
+        {
+            "id": 91458,
+            "ouId": 50025951,
+            "code": "producttype"
+        }
+    ],
+    "summary": {
+        "totalRequested": 2,
+        "successCount": 2,
+        "failureCount": 0
+    },
+    "warnings": [],
+    "errors": []
+}
+````
+
+## Response parameters
+
+| Field             | Type    | Description                                                                                                                               |
+| :---------------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| `created`         | array   | Contains a list of successfully created product attribute objects.                                                                        |
+| `.id`             | long    | Specifies the auto-generated unique identifier for the attribute.                                                                         |
+| `.ouId`           | integer | Indicates the ID of the Organization Unit (OU) where the attribute was created.                                                           |
+| `.code`           | string  | Defines the unique attribute code provided in the request.                                                                                |
+| `.ouCode`         | string  | Organization unit code. Only included if the brand belongs to a specific OU (not returned for organization-level brands where ouId = -1). |
+| `summary`         | object  | Provides a statistical overview of the results of the bulk operation.                                                                     |
+| `.totalRequested` | integer | Specifies the total number of attributes processed in the request.                                                                        |
+| `.successCount`   | integer | Indicates the total number of attributes successfully created.                                                                            |
+| `.failureCount`   | integer | Indicates the total number of attributes that failed validation or creation.                                                              |
+| `warnings`        | array   | Contains non-blocking notices, such as warning code 10209 for missing types that were defaulted to String.                                |
+| `errors`          | array   | Contains detailed error information for each attribute that failed validation.                                                            |
+
+## Error codes
+
+| Code  | Description                                                                                                     |
+| :---- | :-------------------------------------------------------------------------------------------------------------- |
+| 9182  | Organization-level attribute limit reached (Default 30). Contact support to increase the limit.                 |
+| 10001 | Invalid ouCode provided. Use a valid concept code.                                                              |
+| 10002 | OU level product filtering is disabled for your organization, but an `ouCode` was provided.                     |
+| 10003 | Duplicate attribute code found within the same request payload. Use a unique attribute code within all objects. |
+| 10201 | At least one attribute must be present in the request.                                                          |
+| 10202 | Batch size exceeded. A maximum of 100 attributes can be processed in a single request.                          |
+| 10203 | Attribute code cannot be empty. Provide a valid string for the `code` field.                                    |
+| 10204 | Attribute code already exists. Use a unique attribute code.                                                     |
+| 10205 | Attribute code exceeds the maximum length of 30 characters.                                                     |
+| 10206 | Attribute name cannot be empty. Provide a valid string for the `name` field.                                    |
+| 10207 | Attribute name exceeds the maximum length of 50 characters.                                                     |
+| 10208 | Invalid attribute type provided. Use a valid attribute type such as `String`, `Int`, `Double` or `Boolean`.     |
+
+## Warning codes
+
+| Code  | Description                                                                                                             |
+| :---- | :---------------------------------------------------------------------------------------------------------------------- |
+| 10209 | Attribute type was missing and defaulted to `String`.                                                                   |
+| 10210 | The `defaultValueId` provided does not exist. The attribute is created without setting the default value.               |
+| 10252 | The `valueCode` exceeds the maximum length of 30 characters. The attribute is created but the default value is not set. |
+
+<br />
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Sample API",
+    "version": "1.0.0",
+    "description": "API specification generated from cURL for POST /v2/product/attributes"
+  },
+  "servers": [
+    {
+      "url": "https://{hostregion}.api.capillarytech.com"
+    }
+  ],
+  "paths": {
+    "/v2/product/attributes": {
+      "post": {
+        "summary": "Operation for POST /v2/product/attributes",
+        "description": "Endpoint for POST /v2/product/attributes",
+        "operationId": "postV2productattributes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation (default from cURL)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "created": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1069853
+                          },
+                          "ouId": {
+                            "type": "integer",
+                            "example": 50022271
+                          },
+                          "code": {
+                            "type": "string",
+                            "example": "attr124"
+                          }
+                        }
+                      }
+                    },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "totalRequested": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "successCount": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "failureCount": {
+                          "type": "integer",
+                          "example": 0
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": []
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": []
+                    }
+                  }
+                },
+                "examples": {
+                  "OK": {
+                    "summary": "OK",
+                    "value": {
+                      "created": [
+                        {
+                          "id": 1069853,
+                          "ouId": 50022271,
+                          "code": "attr124"
+                        },
+                        {
+                          "id": 1069852,
+                          "ouId": -1,
+                          "code": "attr125"
+                        }
+                      ],
+                      "summary": {
+                        "totalRequested": 2,
+                        "successCount": 2,
+                        "failureCount": 0
+                      },
+                      "warnings": [],
+                      "errors": []
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "207": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "Multi-Status": {
+                    "summary": "Multi-Status",
+                    "value": {
+                      "created": [
+                        {
+                          "id": 1069858,
+                          "ouId": -1,
+                          "code": "attr128"
+                        }
+                      ],
+                      "summary": {
+                        "totalRequested": 2,
+                        "successCount": 1,
+                        "failureCount": 1
+                      },
+                      "warnings": [],
+                      "errors": [
+                        {
+                          "entityIdentifier": "attr124",
+                          "status": false,
+                          "code": 9155,
+                          "message": "Cannot create attributes with the following codes as they already exist: attr124"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Multi-Status"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "description": "Request body as an array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "": {
+                      "type": "array",
+                      "example": [
+                        {
+                          "code": "attr125",
+                          "name": "attr125",
+                          "type": "String"
+                        },
+                        {
+                          "ouCode": "zone1concept2",
+                          "code": "attr124",
+                          "name": "attr124",
+                          "type": "Int"
+                        }
+                      ],
+                      "items": {
+                        "type": "object",
+                        "example": {
+                          "code": "attr125",
+                          "name": "attr125",
+                          "type": "String"
+                        },
+                        "properties": {
+                          "code": {
+                            "type": "string",
+                            "example": "attr125"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "attr125"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "String"
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "name"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {}
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/product/attributes' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic WUzOjIwMmNiOTYyYWM1OTA3NWI5NjRiMDcxNTJkMjM0Yjcw' \\\n--header 'Cookie: _cfuvidLZ1_rpjmFeUA-1764931787098-0.0.1.1-604800000' \\\n--data '[\n  {\n    \"code\": \"attr128\",\n    \"name\": \"attr128\",\n    \"type\": \"String\"\n  },\n  {\n    \"ouCode\": \"zone1concept2\",\n    \"code\": \"attr124\",\n    \"name\": \"attr124\",\n    \"type\": \"Int\"\n    \n  }\n]'",
+              "language": "shell",
+              "name": "curl"
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {}
+}
+````

@@ -1,0 +1,162 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Delete Custom Fields for Historical Points
+
+Use this GET API to delete a custom field configured for historical points import. The API performs a soft delete. It marks the custom field as inactive but does not remove existing historical points data associated with that field. Historical records continue to retain previously stored values.
+
+**Use this API when you want to**:
+
+* Prevent further use of a custom field in historical points imports.
+* Clean up unused or incorrectly configured custom fields.
+* Deactivate a field without affecting existing historical data.
+
+# Prerequisites
+
+* The custom field you want to delete must exist.
+
+> 🚧 Warning
+>
+> Deleting a custom field is a soft delete operation. The field is marked as inactive, but existing historical points data retains the field values.
+
+# Example request
+
+```curl Sample request
+curl --location 'https://eu.intouch.capillarytech.com/v2/historicalPoints/deleteCustomFields?field_name=testField2' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Basic bmVlIwMzZhNGNjZGMzMzQzMWVmOWFjOQ==' \
+--data ''
+```
+
+# Query parameters
+
+| Parameter   | Type   | Required? | Description                              |
+| :---------- | :----- | :-------- | :--------------------------------------- |
+| field\_name | string | Yes       | Name of the custom field to soft delete. |
+
+# Example response
+
+```json Sample response
+{
+    "status": true,
+    "message": "SUCCESSFULLY_DELETED_HISTORICAL_POINTS_CUSTOM_FIELD",
+    "warnings": []
+}
+```
+
+# Response parameters
+
+| Parameter | Datatype | Description                                                |
+| :-------- | :------- | :--------------------------------------------------------- |
+| -status   | boolean  | `true` if the operation was successful, `false` otherwise. |
+| -message  | string   | Describes the result of the operation.                     |
+| warnings  | array    | List of warning messages.                                  |
+
+# Error codes
+
+| Code | Description                                                                                                               |
+| ---- | ------------------------------------------------------------------------------------------------------------------------- |
+| 2203 | Error while deleting the historical points custom field. Returned when the delete operation fails or an exception occurs. |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Delete Custom Fields for Historical Points",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "{Host}",
+      "variables": {
+        "Host": {
+          "default": "https://eu.intouch.capillarytech.com",
+          "enum": [
+            "https://eu.intouch.capillarytech.com",
+            "https://intouch.capillary.co.in",
+            "https://apac2.intouch.capillarytech.com",
+            "https://sgcrm.cc.capillarytech.com",
+            "http://intouch.capillarytech.cn.com",
+            "https://north-america.intouch.capillarytech.com"
+          ]
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/v2/historicalPoints/deleteCustomFields": {
+      "get": {
+        "summary": "Delete Custom Fields for Historical Points",
+        "parameters": [
+          {
+            "name": "field_name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "testField2"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "Basic bmVlcmFqLmRvYzpiNGFmODA0MDA5Y2IwMzZhNGNjZGMzMzQzMWVmOWFj"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "OK": {
+                    "summary": "OK",
+                    "value": {
+                      "status": true,
+                      "message": "SUCCESSFULLY_DELETED_HISTORICAL_POINTS_CUSTOM_FIELD",
+                      "warnings": []
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'https://eu.intouch.capillarytech.com/v2/historicalPoints/deleteCustomFields?field_name=testField2' \\\n--header 'Content-Type: application/json' \\\n--header 'Accept: application/json' \\\n--header 'Authorization: Basic bmGFmODA0MDA5Y2IwMzZhNGNjZGMzMzQzMWVmOWFjOQ==' \\\n--data ''",
+              "language": "shell",
+              "name": "curl"
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        },
+        "operationId": "get_v2-historicalpoints-deletecustomfields"
+      }
+    }
+  }
+}
+```

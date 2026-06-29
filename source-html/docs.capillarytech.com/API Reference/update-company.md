@@ -1,0 +1,255 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Update Company
+
+Lets you update details of a company.
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/companies": {
+      "put": {
+        "summary": "Update Company",
+        "description": "Lets you update details of a company.",
+        "operationId": "update-company",
+        "parameters": [
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "External ID of the company.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Unique ID of the company.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "New name of the company."
+                  },
+                  "parentCompany": {
+                    "properties": {
+                      "externalId": {
+                        "type": "string",
+                        "description": "External ID of the parent company."
+                      }
+                    },
+                    "required": [],
+                    "type": "object",
+                    "description": "Details of parent company for the current company. This is required for child companies."
+                  },
+                  "extendedFields": {
+                    "properties": {
+                      "industry": {
+                        "type": "string"
+                      },
+                      "owner": {
+                        "type": "string"
+                      },
+                      "address1": {
+                        "type": "string"
+                      },
+                      "address2": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      },
+                      "pincode": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [],
+                    "type": "object",
+                    "description": "Details of the company in name:value pairs."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"externalId\": \"Purple2345\",\n    \"companyId\": 98,\n    \"name\": \"Purple US\",\n    \"hierarchyDefinitionCode\": \"code-association2\",\n    \"isActive\": true,\n    \"extendedFields\": {\n        \"address1\": \"Hill Town\",\n        \"address2\": \"US\",\n        \"address3\": \"UK\",\n        \"address4\": \"Paris\",\n        \"company_city\": \"VC\",\n        \"company_country\": \"India\",\n        \"company_state\": \"Karnataka\",\n        \"owner\": \"James\",\n        \"phone\": \"9870000000\",\n        \"pincode\": \"560068\"\n    },\n    \"warnings\": [\n        {}\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "externalId": {
+                      "type": "string",
+                      "example": "Purple2345"
+                    },
+                    "companyId": {
+                      "type": "integer",
+                      "example": 98,
+                      "default": 0
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Purple US"
+                    },
+                    "hierarchyDefinitionCode": {
+                      "type": "string",
+                      "example": "code-association2"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true,
+                      "default": true
+                    },
+                    "extendedFields": {
+                      "type": "object",
+                      "properties": {
+                        "address1": {
+                          "type": "string",
+                          "example": "Hill Town"
+                        },
+                        "address2": {
+                          "type": "string",
+                          "example": "US"
+                        },
+                        "address3": {
+                          "type": "string",
+                          "example": "UK"
+                        },
+                        "address4": {
+                          "type": "string",
+                          "example": "Paris"
+                        },
+                        "company_city": {
+                          "type": "string",
+                          "example": "VC"
+                        },
+                        "company_country": {
+                          "type": "string",
+                          "example": "India"
+                        },
+                        "company_state": {
+                          "type": "string",
+                          "example": "Karnataka"
+                        },
+                        "owner": {
+                          "type": "string",
+                          "example": "James"
+                        },
+                        "phone": {
+                          "type": "string",
+                          "example": "9870000000"
+                        },
+                        "pincode": {
+                          "type": "string",
+                          "example": "560068"
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "{\n  \"name\": \"Purple2346\",\n  \"externalId\": \"Purple US\",\n  \"hierarchyDefinitionCode\": \"code-tst1111\",\n  \"extendedFields\": {\n    \"industry\": \"\",\n    \"owner\": \"James\",\n    \"address1\": \"Hill Town\",\n    \"address2\": \"US\",\n    \"address3\": \"UK\",\n    \"address4\": \"Paris\",\n    \"company_city\": \"VC\",\n    \"company_state\": \"\",\n    \"company_country\": \"Georgia\",\n    \"pincode\": \"560068\",\n    \"phone\": \"9870000000\"\n  }\n}",
+              "name": "Sample PUT Body - Update Parent Company"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

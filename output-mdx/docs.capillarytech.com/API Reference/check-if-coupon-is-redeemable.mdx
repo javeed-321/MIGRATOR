@@ -1,0 +1,1549 @@
+---
+title: Check if coupon is Redeemable
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Check if coupon is Redeemable
+
+Lets you check whether a set of coupons can be redeemed or not.
+
+<Callout kind="info">
+
+  Note:  
+  Any one customer identifier is mandatory.
+
+</Callout>
+
+## Example request
+
+```curl Sample request with details=extended
+curl --location 'http://eu.api.capillarytech.com/v2/coupon/is_redeemable?mobile=1234512345&code=230995767&details=extended' \
+--header 'Authorization: Basic ZYyZTZm' \
+--header 'Cookie: _cfuvid=.fLKDm.AUqJYZlLjow7gfWbYpw6LsG1ZfgYwyCrsnLs-1746168467271-0.0.1.1-604800000; _cfuvid=pW_WnoL4RnshSjHbHtyXwbqGe6DZNu_HWa.Etq3DQrs-1768379637553-0.0.1.1-604800000; _cfuvid=.fxWhOLsAhwsxi7zp.oMiFJYBK.km4OyCE25KDjxKok-1768558550749-0.0.1.1-604800000'
+````
+
+## Query parameter
+
+| Parameter | Datatype | Description |
+| --- | --- | --- |
+| mobile/email/externalId/id* | string | The customer's unique identifier. You must provide at least one of these fields inside the user object. |
+| code* | string | The unique coupon code(s) to validate. To check multiple codes in a single request, provide them as a comma-separated string. |
+| details | string | A flag to control the level of detail in the response. If this parameter is omitted, a minimal response is returned. * `true`: Returns complete coupon series details, including discount values, expiration dates, and redemption limits. * `extended`: Returns the enriched coupon series object with all fields, including configuration and metadata such as validity, discount details, and redemption rules. **Note**: The coupon must be redeemable for the enriched coupon series object to appear in the response. |
+
+## Example response
+
+```json Sample response with details=extended
+{
+    "redemption": [
+        {
+            "currencyInput": false,
+            "localToBaseCurrencyExchangeRate": 0,
+            "isRedeemable": true,
+            "warnings": [],
+            "appendedErrorMessage": "",
+            "code": "230995767",
+            "couponseries": {
+                "id": 947797,
+                "orgId": 100737,
+                "description": "Gold star coupons12",
+                "discountCode": "gold1234",
+                "validTillDate": "2026-06-11T00:00:00Z",
+                "validTillISODate": "2026-06-11",
+                "validDaysFromCreation": 30,
+                "expiryStrategyValue": -1,
+                "maxCreate": -1,
+                "maxRedeem": -1,
+                "isTransferrable": false,
+                "anyUser": true,
+                "sameUserMultipleRedeem": false,
+                "isReferralExistingUsersAllowed": false,
+                "isMultipleUseAllowed": false,
+                "isValidationRequired": false,
+                "isValidWithDiscountedItem": false,
+                "createdBy": 75197941,
+                "numIssued": 1,
+                "numRedeemed": 0,
+                "createdOn": "2026-01-14T08:29:19Z",
+                "lastUsed": "2026-01-14T08:29:19Z",
+                "seriesCode": "4DFB0705CD8F4E60A968",
+                "smsTemplate": "Hi {{first_name}} {{last_name}} your voucher code //////{{voucher}}is valid",
+                "isSMSDisabled": false,
+                "isUpdateProductData": false,
+                "info": "Gold star coupons12",
+                "isMultipleVouchersPerUserAllowed": false,
+                "doNotResendExistingVoucher": false,
+                "mutualExclusiveSeriesIds": "[-1]",
+                "storeIdsJson": "[-1]",
+                "isDvsEnabled": false,
+                "dvsExpiryDate": "2026-01-14T00:00:00Z",
+                "priority": 0,
+                "shortSMSTemplate": "Hello {{cust_name}}, your voucher code is {{voucher_code}}",
+                "maxVouchersPerUser": -1,
+                "minDaysBetweenVouchers": -1,
+                "maxReferralsPerReferee": -1,
+                "discountUpto": 0,
+                "discountValue": 1000,
+                "dvsItems": "items",
+                "redemptionRange": "{\"dom\" : [-1], \"dow\": [-1], \"hours\": [-1]}",
+                "minBillAmount": -1,
+                "maxBillAmount": -1,
+                "redeemAtStore": "[-1]",
+                "campaignId": -1,
+                "tag": "Gold star coupons12",
+                "maxRedemptionsInSeriesPerUser": -1,
+                "minDaysBetweenRedemption": -1,
+                "redemptionValidFrom": "2026-01-14T00:00:00Z",
+                "sourceOrgId": -1,
+                "issueToLoyalty": false,
+                "redeemStoreType": "redeemable_stores",
+                "offlineRedeemType": false,
+                "isOldFlowEnabled": false,
+                "isPreRedeemEventRequired": false,
+                "brands": [],
+                "products": [],
+                "categories": [],
+                "termsAndConditions": "T&C",
+                "signalRedemptionEvent": false,
+                "syncToClient": false,
+                "showPinCode": false,
+                "redemptionPerCouponMaxLimit": -1,
+                "validRedemptionOrgEntityDetails": {
+                    "concepts": [],
+                    "zones": [],
+                    "stores": [],
+                    "tills": []
+                },
+                "seriesType": "UNDEFINED",
+                "clientHandlingType": "DISC_CODE",
+                "expiryStrategyType": "SERIES_EXPIRY",
+                "discountOn": "BILL",
+                "discountType": "ABS",
+                "entityLevelRedemptionConfigsValues": [],
+                "updateProductData": false,
+                "validTilldateFormat": "2026-06-11",
+                "redemptionValidFromFormat": "2026-01-14",
+                "dvsExpiryDateFormat": "2026-01-14"
+            },
+            "isAbsolute": false,
+            "redemptionsLeft": 1,
+            "numberOfRedemptionsByUser": 0
+        }
+    ],
+    "redemptionStatus": {
+        "status": true,
+        "code": 700,
+        "message": "Coupon isRedeem successful"
+    },
+    "customer": {
+        "id": 566881933,
+        "profiles": [
+            {
+                "firstName": "Bubalus",
+                "lastName": "bubalis",
+                "fields": {},
+                "allFields": {},
+                "identifiers": [
+                    {
+                        "type": "mobile",
+                        "value": "1234512345"
+                    },
+                    {
+                        "type": "email",
+                        "value": "dead.fool@capillarytech.com"
+                    },
+                    {
+                        "type": "externalId",
+                        "value": "12341234"
+                    }
+                ],
+                "commChannels": [],
+                "userId": 566881933,
+                "accountId": "",
+                "autoUpdateTime": "2026-01-16T10:15:50Z",
+                "identifiersAll": [
+                    {
+                        "type": "mobile",
+                        "value": "1234512345"
+                    },
+                    {
+                        "type": "email",
+                        "value": "dead.fool@capillarytech.com"
+                    },
+                    {
+                        "type": "externalId",
+                        "value": "12341234"
+                    }
+                ]
+            }
+        ]
+    },
+    "warnings": []
+}
+````
+
+## Response parameter
+
+| Parameter | Data type | Description |
+| --- | --- | --- |
+| .redemption | Array | Array containing the list of redemption details for the requested coupon. |
+| ..currencyInput | Boolean | Indicates whether a redemption request uses currency value instead of points. It applies to points redemption, not coupon redemption. **Value**: `true`: The request specifies a currency amount, and the system converts it to points using exchange rates. `false`: The request specifies points directly. |
+| ..localToBaseCurrencyExchangeRate | Double | Indicates the exchange rate used to convert local currency to base currency. |
+| ..isRedeemable | Boolean | Indicates whether the coupon is currently redeemable. |
+| ..warnings | Array | Array containing the list of warnings related to the redemption. |
+| ..appendedErrorMessage | String | Error message in case of any errors. |
+| ..code | String | Coupon code being checked for redeemability. |
+| ..couponseries | Object | Object containing the coupon series object and related metadata. |
+| ...id | Long | Indicates coupon series ID. |
+| ...orgId | Long | Indicates the organization ID associated with the coupon series. |
+| ...description | String | Indicates the description of the coupon. |
+| ...discountCode | String | Indicates the discount code used. |
+| ...validTillDate | String | Indicates the expiration date of the coupon in ISO 8601 format, returned in the server time zone. **EU server example** 2025-12-16T00:00:00Z → 16 December 2025. **India server example** 2025-12-16T00:00:00+05:30 → 16 December 2025. **Note**: The response time zone always matches the server time zone, regardless of the time zone offset in the request. |
+| ...validTillISODate | String | Returns the coupon expiration date as a date-only string in `YYYY-MM-DD` format. This field does not include a time component or timezone offset. |
+| ...validDaysFromCreation | Integer | Indicates the number of days for which the coupon is valid from the date of creation. |
+| ...expiryStrategyValue | Integer | Indicates the configured expiry strategy value for the coupon series. |
+| ...maxCreate | Integer | Indicates the maximum number of coupons that can be created in the series. |
+| ...maxRedeem | Integer | Indicates the maximum number of redemptions allowed for the series. |
+| ...isTransferrable | Boolean | Indicates whether the coupon can be transferred to another customer. **Values**: `true` : Indicates that the coupon is transferable. `false`: Indicates that the coupon is not transferable. |
+| ...anyUser | Boolean | Indicates whether any customer can redeem the coupon. **Values**: `true` : Indicates that any user can redeem the coupon. `false`: Indicates that the coupon can only be redeemed by the customer to whom it was issued. |
+| ...sameUserMultipleRedeem | Boolean | Indicates whether the same customer can redeem the coupon multiple times. **Values**: `true`: Indicates that the same user can redeem the coupon multiple times. `false`: Indicates that the same user can't redeem the coupon multiple times. |
+| ...isReferralExistingUsersAllowed | Boolean | Indicates whether existing loyalty customers can be invited/referred when coupons are issued through referral campaigns. **Values**: `true`: Existing loyalty customers can be invited/referred in referral campaigns for this coupon series. `false`: Existing loyalty customers are excluded from referral campaigns for this coupon series. |
+| ...isMultipleUseAllowed | Boolean | Indicates whether the coupon can be used multiple times. **Values**: `true`: Indicates that the coupon can be used multiple times. `false`: Indicates that the coupon can't be used multiple times. |
+| ...isValidationRequired | Boolean | Indicates whether the system validates the user and store before redemption. **Values**: `true`: The system validates the user and store before redemption. `false`: The coupon can be redeemed without validation. |
+| ...isValidWithDiscountedItem | Boolean | Indicates whether the coupon can be used with discounted items. **Values**: `true`: Indicates that the coupon is valid with discounted items. `false`: Indicates that the coupon is not valid with discounted items. |
+| ...createdBy | Long | User ID of the person who created the coupon series. |
+| ...numIssued | Integer | Indicates the number of coupons issued in the series. |
+| ...numRedeemed | Integer | Indicates the number of coupons redeemed in the series. |
+| ...createdOn | String | Indicates the date and time when the coupon series was created in ISO 8601 format, returned in the server time zone. **EU server example** 2025-12-16T14:30:45Z → 16 December 2025, 14:30:45 (UTC) **India server example** 2025-12-16T14:30:45+05:30 → 16 December 2025, 14:30:45 (IST) **Note**: The response time zone always matches the server time zone, regardless of the time zone offset in the request. |
+| ...lastUsed | String | Indicates the date and time when the coupon series was last used in ISO 8601 format, returned in the server time zone. **EU server example** 2025-12-16T14:30:45Z → 16 December 2025, 14:30:45 (UTC) **India server example** 2025-12-16T14:30:45+05:30 → 16 December 2025, 14:30:45 (IST) **Note**: The response time zone always matches the server time zone, regardless of the time zone offset in the request. |
+| ...seriesCode | String | Indicates the unique series code for the coupon series. |
+| ...smsTemplate | String | Indicates the SMS template associated with the coupon series. |
+| ...isSMSDisabled | Boolean | Indicates whether SMS communication is disabled for the coupon series. **Values**: `true`: Indicates that SMS communication is disabled for the coupon series. `false`: Indicates that SMS communication is enabled for the coupon series. |
+| ...isUpdateProductData | Boolean | Indicates whether product data should be updated. **Values**: `true`: The system deletes the existing product data associated with the coupon and inserts the new product data provided in the request. The product attributes updated are SKU, Brand, and Category. `false`: If the coupon already has product data, the new product data in your request is ignored. The system keeps the old data. If the coupon does not have any product data yet, the new data is inserted. |
+| ...info | String | Additional coupon information provided by the user while creating or updating the coupon. **Example**: Festive Coupon |
+| ...isMultipleVouchersPerUserAllowed | Boolean | Indicates whether multiple vouchers can be issued to the same user. **Values**: `true`: Indicates that multiple vouchers can be issued to the same user. `false`: Indicates that multiple vouchers can't be issued to the same user. |
+| ...doNotResendExistingVoucher | Boolean | Indicates whether the system resends an existing coupon code when issuing a coupon to a customer who already has an active, unredeemed coupon from the same series. **Values**:`true`: Resends the existing coupon code. `false`: Generates a new coupon code instead of resending the existing one. |
+| ...mutualExclusiveSeriesIds | Array | JSON array of mutually exclusive series IDs |
+| ...storeIdsJson | Array | JSON array of store IDs |
+| ...isDvsEnabled | Boolean | Indicates whether [DVS](https://docs.capillarytech.com/docs/bounceback-or-dvs-campaign) (Dynamic Voucher System) is enabled for the coupon series. **Values**: `true`: Indicates that DVS is enabled. `false`: Indicates that DVS is disabled. |
+| ...dvsExpiryDate | String | Indicates the expiry date for DVS vouchers in ISO 8601 format, returned in the server time zone. **EU server example** 2025-12-16T00:00:00Z → 16 December 2025. **India server example** 2025-12-16T00:00:00+05:30 → 16 December 2025. **Note**: The response time zone always matches the server time zone, regardless of the time zone offset in the request. |
+| ...priority | Integer | Indicates the priority of the coupon series. Lower numbers have higher priority, with 0 being the highest. |
+| ...shortSMSTemplate | String | Indicates the short SMS template used for the coupon series. |
+| ...maxVouchersPerUser | Integer | Indicates the maximum number of vouchers allowed per user. |
+| ...minDaysBetweenVouchers | Integer | Indicates the minimum days gap between issuing multiple vouchers in this series to the same user. |
+| ...maxReferralsPerReferee | Integer | Indicates the maximum number of referrals allowed per referee. |
+| ...discountUpto | Integer | Indicates the maximum discount value allowed. |
+| ...discountValue | Integer | Indicates the value of the discount. |
+| ...dvsItems | String | Indicates the [DVS](https://docs.capillarytech.com/docs/bounceback-or-dvs-campaign) items configuration for the coupon series. |
+| ...redemptionRange | Object | JSON object containing the redemption range. |
+| ...minBillAmount | Double | Indicates the minimum bill amount required for redemption. |
+| ...maxBillAmount | Double | Indicates the maximum bill amount allowed for redemption. |
+| ...redeemAtStore | Array | JSON array of store IDs that indicate the list of stores where the coupon can be redeemed. |
+| ...campaignId | Long | Indicates the campaign ID associated with the coupon series. |
+| ...tag | String | Indicates the tag associated with the coupon series. |
+| ...maxRedemptionsInSeriesPerUser | Integer | Indicates the maximum redemptions allowed per user in the coupon series. |
+| ...minDaysBetweenRedemption | Integer | Indicates the minimum number of days required between redemptions for a user. |
+| ...redemptionValidFrom | String | Indicates the date and time from which redemption is allowed in ISO 8601 format, returned in the server time zone. **EU server example** 2025-12-16T00:00:00Z → 16 December 2025. **India server example** 2025-12-16T00:00:00+05:30 → 16 December 2025. **Note**: The response time zone always matches the server time zone, regardless of the time zone offset in the request. |
+| ...sourceOrgId | Long | Indicates the source organization ID, if the series is shared across organizations. |
+| ...issueToLoyalty | Boolean | Indicates whether issued to loyalty customers |
+| ...redeemStoreType | String | Indicates the store selection type used for redemption eligibility. **Possible values**: `redeemable_stores` |
+| ...offlineRedeemType | Boolean | Indicates whether the coupon supports offline redemption. |
+| ...isOldFlowEnabled | Boolean | Indicates whether the old redemption flow is enabled. **Value**: `true`: Old flow enabled. `false`: Old flow is not enabled. |
+| ...isPreRedeemEventRequired | Boolean | Indicates whether a pre-redemption event is required. **Example scenario**: In a high-demand flash sale, setting `isPreRedeemEventRequired` to `true` reserves the coupon when the customer applies it at checkout, instead of redeeming it immediately. If the payment fails or the customer abandons the cart, the reservation expires, and the coupon is made available for other customers. The coupon is redeemed only after the payment is successfully confirmed, preventing coupon inventory from being blocked by failed transactions. |
+| ...brands | Array | Array of brand objects. |
+| ...products | Array | Array containing product details. |
+| ...categories | Array | Array containing category information. |
+| ...termsAndConditions | String | Indicates the terms and conditions configured for the coupon series. |
+| ...signalRedemptionEvent | Boolean | Indicates whether to signal a [redemption event](https://docs.capillarytech.com/docs/supported_events#). |
+| ...syncToClient | Boolean | Indicates whether the coupon series is synced to the client system. |
+| ...showPinCode | Boolean | Indicates whether the PIN code is displayed for the coupon. |
+| ...redemptionPerCouponMaxLimit | Integer | Indicates the maximum number of redemptions allowed per coupon. |
+| ...validRedemptionOrgEntityDetails | Object | Object listing the organizational entities where a coupon can be redeemed. |
+| ....concepts | Array | Array containing the concept-level entity IDs where the coupon can be redeemed. A null or empty array indicates no concept-level restriction. |
+| ....zones | Array | Array containing the zone-level entity IDs where the coupon can be redeemed. A null or empty array indicates no zone-level restriction. |
+| ....stores | Array | Array containing the store-level entity IDs where the coupon can be redeemed. A null or empty array indicates no store-level restriction. |
+| ....tills | Array | Array containing the till-level entity IDs where the coupon can be redeemed. A null or empty array indicates no till-level restriction. |
+| ...seriesType | Enum | Indicates the coupon series type. **Possible values**: * `CAMPAIGN` - Campaign-based coupon series * `DVS` - Distributed Voucher Service series * `ALLIANCE` - Alliance partner series * `GOODWILL` - Goodwill coupon series * `LOYALTY` - Loyalty program series * `TIMELINE` - Timeline-based series * `REFERRAL` - Referral program series * `UNDEFINED` - Undefined/unspecified type * `JOURNEY` - Customer journey series |
+| ...clientHandlingType | Enum | Indicates how the client handles the coupon series. **Possible values**: * `DISC_CODE` - Discount code handling * `RULE_BASED` - Rule-based handling * `DISC_GV` - Discount gift voucher * `DISC_PROMO` - Discount promotion * `DISC_CODE_PIN` - Discount code with PIN * `AMOUNT_BASED` - Amount-based handling * `ARTICLE_BASED` - Article/item-based handling * `GENERIC` - Generic handling * `EXTERNAL_ISSUAL` - External issual handling * `EXTERNALLY_MANAGED` - Externally managed handling |
+| ...expiryStrategyType | Enum | Indicates the expiry strategy type for the coupon series. **Possible values**: * `DAYS` - Expiry based on the number of days from creation * `MONTHS` - Expiry based on the number of months from creation * `MONTHS_END` - Expiry at the end of the month * `SERIES_EXPIRY` - Expiry based on the series expiry date |
+| ...discountOn | Enum | Indicates what the discount applies to. **Possible values**: `BILL, ITEM` |
+| ...discountType | Enum | Indicates the type of discount. **Possible values**: `ABS, PERC` |
+| ...entityLevelRedemptionConfigsValues | Array | Array of redemption configuration objects that define different redemption rules per organizational entity (Organization Unit (OU), Concept, Store). It allows a coupon series to have different settings at different organizational levels. **Example use case** A coupon series with: OU 1: 10% discount, min bill ₹500, max 2 redemptions per user OU 2: ₹50 flat discount, min bill ₹200, max 5 redemptions per user Each OU has its own configuration in the `entityLevelRedemptionConfigsValues` array. |
+| ...updateProductData | Boolean | Indicates whether product information, like brands, categories, SKUs, product IDs is included/updated when saving or retrieving a coupon series configuration. **Value**: `true`: Indicates that the product information is saved with the coupon series. `false`: Indicates that the product information is not saved/updated. |
+| ...validTilldateFormat | String | Returns the expiry date of the coupon as a date-only string in `YYYY-MM-DD` format. This field does not include a time component or timezone offset. |
+| ...redemptionValidFromFormat | String | Returns the redemption start date as a date-only string in `YYYY-MM-DD` format. This field does not include a time component or timezone offset. |
+| ...dvsExpiryDateFormat | String | Returns the DVS voucher expiry date as a date-only string in `YYYY-MM-DD` format. This field does not include a time component or timezone offset. |
+| ..isAbsolute | Boolean | Indicates whether the discount is absolute or a percentage. **Value**: `true`: Indicates the discount is absolute. `false`: Indicates the discount is a percentage. |
+| ..redemptionsLeft | Integer | Indicates the number of redemptions left for the coupon. |
+| ..numberOfRedemptionsByUser | Integer | Indicates the number of times the user has redeemed the coupon. |
+| .redemptionStatus | Object | Object containing the overall redemption status details. |
+| ..status | Boolean | Indicates the overall status of the redemption. |
+| ..code | Integer | Indicates the response code for the redemption status. |
+| ..message | String | Indicates the message related to the redemption status. |
+| .customer | Object | Object containing the customer details associated with the redemption. |
+| ..id | Long | Indicates the customer ID. |
+| ..profiles | Array | Array containing the customer profiles returned in the response. |
+| ...firstName | String | Indicates the customer's first name in the profile. |
+| ...lastName | String | Indicates the customer's last name in the profile. |
+| ...fields | Object | Indicates any additional fields associated with the profile. |
+| ...allFields | Object | Indicates all additional fields associated with the profile. |
+| ...identifiers | Array | Array indicating the list of customer identifiers associated with the profile. |
+| ....type | String | Indicates the type of the identifier. **Example**: `email, externalId, mobile` |
+| ....value | String | Indicates the value of the identifier. |
+| ...commChannels | Array | Array indicating the list of communication channels associated with the profile. |
+| ...userId | Long | Indicates the user ID associated with the profile. |
+| ...accountId | String | Indicates the account ID associated with the profile. |
+| ...autoUpdateTime | String | Indicates the date and time in ISO 8601 format when the profile was last automatically updated. **EU server example** 2025-12-16T14:30:45Z → 16 December 2025, 14:30:45 (UTC) **India server example** 2025-12-16T14:30:45+05:30 → 16 December 2025, 14:30:45 (IST) **Note**: The response time zone always matches the server time zone, regardless of the time zone offset in the request. |
+| ...identifiersAll | Array | Array indicating the complete list of customer identifiers associated with the profile. |
+| ....type | String | Indicates the type of the identifier. **Example**: `email, externalId, mobile` |
+| ....value | String | Indicates the value of the identifier. |
+| .warnings | Array | Array containing the list of warnings returned in the response, if any. |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/coupon/is_redeemable": {
+      "get": {
+        "summary": "Check if coupon is Redeemable",
+        "description": "Lets you check whether a set of coupons can be redeemed or not.",
+        "operationId": "check-if-coupon-is-redeemable",
+        "parameters": [
+          {
+            "name": "mobile",
+            "in": "query",
+            "description": "Mobile number of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "details",
+            "in": "query",
+            "description": "Pass =true to retrieve the details of the coupon series. details=extended retrieves the details of coupon configurations (set on campaign) of that specific coupon series.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "extended"
+              ]
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Email ID of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "Email ID of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cardnumber",
+            "in": "query",
+            "description": "Card number of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cardExternalId",
+            "in": "query",
+            "description": "Card external ID of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Unique ID of the customer.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "description": "Pass the coupon code that you want to check for redemption. You can also pass multiple coupon codes separating each with a comma (,).",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Sample Response": {
+                    "value": "{\n    \"redemption\": [\n        {\n            \"currencyInput\": false,\n            \"localToBaseCurrencyExchangeRate\": 0,\n            \"isRedeemable\": true,\n            \"warnings\": [],\n            \"appendedErrorMessage\": \"\",\n            \"code\": \"UHI3T4V98MRGP0G0\",\n            \"isAbsolute\": false,\n            \"redemptionsLeft\": -1,\n            \"numberOfRedemptionsByUser\": 1\n        }\n    ],\n    \"redemptionStatus\": {\n        \"status\": true,\n        \"message\": \"Coupon isRedeem successful\",\n        \"code\": 700\n    },\n    \"customer\": {\n        \"id\": 565039504,\n        \"profiles\": [\n            {\n                \"firstName\": \"Tom\",\n                \"lastName\": \"Sawyer\",\n                \"fields\": {},\n                \"allFields\": {},\n                \"identifiers\": [\n                    {\n                        \"type\": \"email\",\n                        \"value\": \"tom.sawyer@capillarytech.com\"\n                    },\n                    {\n                        \"type\": \"mobile\",\n                        \"value\": \"919074794320\"\n                    }\n                ],\n                \"commChannels\": [],\n                \"userId\": 565039504,\n                \"accountId\": \"\",\n                \"autoUpdateTime\": \"2025-05-02T09:24:01Z\",\n                \"identifiersAll\": [\n                    {\n                        \"type\": \"email\",\n                        \"value\": \"tom.sawyer@capillarytech.com\"\n                    },\n                    {\n                        \"type\": \"mobile\",\n                        \"value\": \"919074794320\"\n                    }\n                ]\n            }\n        ]\n    },\n    \"warnings\": []\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "redemption": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "currencyInput": {
+                            "type": "boolean",
+                            "example": false,
+                            "default": true
+                          },
+                          "localToBaseCurrencyExchangeRate": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "isRedeemable": {
+                            "type": "boolean",
+                            "example": true,
+                            "default": true
+                          },
+                          "warnings": {
+                            "type": "array"
+                          },
+                          "appendedErrorMessage": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "code": {
+                            "type": "string",
+                            "example": "UHI3T4V98MRGP0G0"
+                          },
+                          "isAbsolute": {
+                            "type": "boolean",
+                            "example": false,
+                            "default": true
+                          },
+                          "redemptionsLeft": {
+                            "type": "integer",
+                            "example": -1,
+                            "default": 0
+                          },
+                          "numberOfRedemptionsByUser": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          }
+                        }
+                      }
+                    },
+                    "redemptionStatus": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "boolean",
+                          "example": true,
+                          "default": true
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Coupon isRedeem successful"
+                        },
+                        "code": {
+                          "type": "integer",
+                          "example": 700,
+                          "default": 0
+                        }
+                      }
+                    },
+                    "customer": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 565039504,
+                          "default": 0
+                        },
+                        "profiles": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "firstName": {
+                                "type": "string",
+                                "example": "Tom"
+                              },
+                              "lastName": {
+                                "type": "string",
+                                "example": "Sawyer"
+                              },
+                              "fields": {
+                                "type": "object",
+                                "properties": {}
+                              },
+                              "allFields": {
+                                "type": "object",
+                                "properties": {}
+                              },
+                              "identifiers": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "example": "email"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "example": "tom.sawyer@capillarytech.com"
+                                    }
+                                  }
+                                }
+                              },
+                              "commChannels": {
+                                "type": "array"
+                              },
+                              "userId": {
+                                "type": "integer",
+                                "example": 565039504,
+                                "default": 0
+                              },
+                              "accountId": {
+                                "type": "string",
+                                "example": ""
+                              },
+                              "autoUpdateTime": {
+                                "type": "string",
+                                "example": "2025-05-02T09:24:01Z"
+                              },
+                              "identifiersAll": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "example": "email"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "example": "tom.sawyer@capillarytech.com"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              },
+              "application/json": {
+                "examples": {
+                  "with details=true": {
+                    "value": "{\n    \"redemption\": [\n        {\n            \"currencyInput\": false,\n            \"localToBaseCurrencyExchangeRate\": 0,\n            \"isRedeemable\": true,\n            \"warnings\": [],\n            \"appendedErrorMessage\": \"\",\n            \"code\": \"UHI3T4V98MRGP0G0\",\n            \"couponseries\": {\n                \"description\": \"50% Off Holi Coupon\",\n                \"discountCode\": \"NO_VALUE\",\n                \"validTillDate\": \"2025-06-11T23:59:59Z\",\n                \"isValidWithDiscountedItem\": false,\n                \"isUpdateProductData\": false,\n                \"info\": \"50% Off Holi Coupon\",\n                \"discountUpto\": 0,\n                \"discountValue\": 200,\n                \"maxRedemptionsInSeriesPerUser\": -1,\n                \"issueToLoyalty\": false,\n                \"brands\": [],\n                \"products\": [],\n                \"categories\": [],\n                \"discountOn\": \"BILL\",\n                \"discountType\": \"ABS\",\n                \"updateProductData\": false,\n                \"validTilldateFormat\": \"2025-06-11\",\n                \"entityLevelRedemptionConfigsValues\": []\n            },\n            \"isAbsolute\": false,\n            \"redemptionsLeft\": -1,\n            \"numberOfRedemptionsByUser\": 1,\n            \"discountType\": \"ABS\",\n            \"discountValue\": 200,\n            \"discountUpto\": 0\n        }\n    ],\n    \"redemptionStatus\": {\n        \"status\": true,\n        \"code\": 700,\n        \"message\": \"Coupon isRedeem successful\"\n    },\n    \"customer\": {\n        \"id\": 565039504,\n        \"profiles\": [\n            {\n                \"firstName\": \"Tom\",\n                \"lastName\": \"Sawyer\",\n                \"fields\": {},\n                \"allFields\": {},\n                \"identifiers\": [\n                    {\n                        \"type\": \"email\",\n                        \"value\": \"tom.sawyer@capillarytech.com\"\n                    },\n                    {\n                        \"type\": \"mobile\",\n                        \"value\": \"919074794320\"\n                    }\n                ],\n                \"commChannels\": [],\n                \"userId\": 565039504,\n                \"accountId\": \"\",\n                \"autoUpdateTime\": \"2025-05-02T09:25:19Z\",\n                \"identifiersAll\": [\n                    {\n                        \"type\": \"email\",\n                        \"value\": \"tom.sawyer@capillarytech.com\"\n                    },\n                    {\n                        \"type\": \"mobile\",\n                        \"value\": \"919074794320\"\n                    }\n                ]\n            }\n        ]\n    },\n    \"warnings\": []\n}"
+                  },
+                  "with details=extended": {
+                    "value": {
+                      "redemption": [
+                        {
+                          "currencyInput": false,
+                          "localToBaseCurrencyExchangeRate": 0,
+                          "isRedeemable": true,
+                          "warnings": [],
+                          "appendedErrorMessage": "",
+                          "code": "230995767",
+                          "couponseries": {
+                            "id": 947797,
+                            "orgId": 100737,
+                            "description": "Gold star coupons12",
+                            "discountCode": "gold1234",
+                            "validTillDate": "2026-06-11T00:00:00Z",
+                            "validDaysFromCreation": 30,
+                            "expiryStrategyValue": -1,
+                            "maxCreate": -1,
+                            "maxRedeem": -1,
+                            "isTransferrable": false,
+                            "anyUser": true,
+                            "sameUserMultipleRedeem": false,
+                            "isReferralExistingUsersAllowed": false,
+                            "isMultipleUseAllowed": false,
+                            "isValidationRequired": false,
+                            "isValidWithDiscountedItem": false,
+                            "createdBy": 75197941,
+                            "numIssued": 1,
+                            "numRedeemed": 0,
+                            "createdOn": "2026-01-14T08:29:19Z",
+                            "lastUsed": "2026-01-14T08:29:19Z",
+                            "seriesCode": "4DFB0705CD8F4E60A968",
+                            "smsTemplate": "Hi {{first_name}} {{last_name}} your voucher code //////{{voucher}}is valid",
+                            "isSMSDisabled": false,
+                            "isUpdateProductData": false,
+                            "info": "Gold star coupons12",
+                            "isMultipleVouchersPerUserAllowed": false,
+                            "doNotResendExistingVoucher": false,
+                            "mutualExclusiveSeriesIds": "[-1]",
+                            "storeIdsJson": "[-1]",
+                            "isDvsEnabled": false,
+                            "dvsExpiryDate": "2026-01-14T00:00:00Z",
+                            "priority": 0,
+                            "shortSMSTemplate": "Hello {{cust_name}}, your voucher code is {{voucher_code}}",
+                            "maxVouchersPerUser": -1,
+                            "minDaysBetweenVouchers": -1,
+                            "maxReferralsPerReferee": -1,
+                            "discountUpto": 0,
+                            "discountValue": 1000,
+                            "dvsItems": "items",
+                            "redemptionRange": {
+                              "dom": [
+                                -1
+                              ],
+                              "dow": [
+                                -1
+                              ],
+                              "hours": [
+                                -1
+                              ]
+                            },
+                            "minBillAmount": -1,
+                            "maxBillAmount": -1,
+                            "redeemAtStore": "[-1]",
+                            "campaignId": -1,
+                            "tag": "Gold star coupons12",
+                            "maxRedemptionsInSeriesPerUser": -1,
+                            "minDaysBetweenRedemption": -1,
+                            "redemptionValidFrom": "2026-01-14T00:00:00Z",
+                            "sourceOrgId": -1,
+                            "issueToLoyalty": false,
+                            "redeemStoreType": "redeemable_stores",
+                            "offlineRedeemType": false,
+                            "isOldFlowEnabled": false,
+                            "isPreRedeemEventRequired": false,
+                            "brands": [],
+                            "products": [],
+                            "categories": [],
+                            "termsAndConditions": "T&C",
+                            "signalRedemptionEvent": false,
+                            "syncToClient": false,
+                            "showPinCode": false,
+                            "redemptionPerCouponMaxLimit": -1,
+                            "validRedemptionOrgEntityDetails": {
+                              "concepts": [],
+                              "zones": [],
+                              "stores": [],
+                              "tills": []
+                            },
+                            "seriesType": "UNDEFINED",
+                            "clientHandlingType": "DISC_CODE",
+                            "expiryStrategyType": "SERIES_EXPIRY",
+                            "discountOn": "BILL",
+                            "discountType": "ABS",
+                            "entityLevelRedemptionConfigsValues": [],
+                            "updateProductData": false,
+                            "validTilldateFormat": "2026-06-11",
+                            "redemptionValidFromFormat": "2026-01-14",
+                            "dvsExpiryDateFormat": "2026-01-14"
+                          },
+                          "isAbsolute": false,
+                          "redemptionsLeft": 1,
+                          "numberOfRedemptionsByUser": 0
+                        }
+                      ],
+                      "redemptionStatus": {
+                        "status": true,
+                        "code": 700,
+                        "message": "Coupon isRedeem successful"
+                      },
+                      "customer": {
+                        "id": 566881933,
+                        "profiles": [
+                          {
+                            "firstName": "Bubalus",
+                            "lastName": "bubalis",
+                            "fields": {},
+                            "allFields": {},
+                            "identifiers": [
+                              {
+                                "type": "mobile",
+                                "value": "1234512345"
+                              },
+                              {
+                                "type": "email",
+                                "value": "dead.fool@capillarytech.com"
+                              },
+                              {
+                                "type": "externalId",
+                                "value": "12341234"
+                              }
+                            ],
+                            "commChannels": [],
+                            "userId": 566881933,
+                            "accountId": "",
+                            "autoUpdateTime": "2026-01-16T10:15:50Z",
+                            "identifiersAll": [
+                              {
+                                "type": "mobile",
+                                "value": "1234512345"
+                              },
+                              {
+                                "type": "email",
+                                "value": "dead.fool@capillarytech.com"
+                              },
+                              {
+                                "type": "externalId",
+                                "value": "12341234"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "warnings": []
+                    }
+                  },
+                  "with details=true & details=extended": {
+                    "value": "{\n    \"redemption\": [\n        {\n            \"currencyInput\": false,\n            \"localToBaseCurrencyExchangeRate\": 0,\n            \"isRedeemable\": true,\n            \"warnings\": [],\n            \"appendedErrorMessage\": \"\",\n            \"code\": \"UHI3T4V98MRGP0G0\",\n            \"couponseries\": {\n                \"description\": \"50% Off Holi Coupon\",\n                \"discountCode\": \"NO_VALUE\",\n                \"validTillDate\": \"2025-06-11T23:59:59Z\",\n                \"isValidWithDiscountedItem\": false,\n                \"isUpdateProductData\": false,\n                \"info\": \"50% Off Holi Coupon\",\n                \"discountUpto\": 0,\n                \"discountValue\": 200,\n                \"maxRedemptionsInSeriesPerUser\": -1,\n                \"issueToLoyalty\": false,\n                \"brands\": [],\n                \"products\": [],\n                \"categories\": [],\n                \"discountOn\": \"BILL\",\n                \"discountType\": \"ABS\",\n                \"updateProductData\": false,\n                \"validTilldateFormat\": \"2025-06-11\",\n                \"entityLevelRedemptionConfigsValues\": []\n            },\n            \"isAbsolute\": false,\n            \"redemptionsLeft\": -1,\n            \"numberOfRedemptionsByUser\": 1,\n            \"discountType\": \"ABS\",\n            \"discountValue\": 200,\n            \"discountUpto\": 0\n        }\n    ],\n    \"redemptionStatus\": {\n        \"status\": true,\n        \"code\": 700,\n        \"message\": \"Coupon isRedeem successful\"\n    },\n    \"customer\": {\n        \"id\": 565039504,\n        \"profiles\": [\n            {\n                \"firstName\": \"Tom\",\n                \"lastName\": \"Sawyer\",\n                \"fields\": {},\n                \"allFields\": {},\n                \"identifiers\": [\n                    {\n                        \"type\": \"email\",\n                        \"value\": \"tom.sawyer@capillarytech.com\"\n                    },\n                    {\n                        \"type\": \"mobile\",\n                        \"value\": \"919074794320\"\n                    }\n                ],\n                \"commChannels\": [],\n                \"userId\": 565039504,\n                \"accountId\": \"\",\n                \"autoUpdateTime\": \"2025-05-02T09:27:40Z\",\n                \"identifiersAll\": [\n                    {\n                        \"type\": \"email\",\n                        \"value\": \"tom.sawyer@capillarytech.com\"\n                    },\n                    {\n                        \"type\": \"mobile\",\n                        \"value\": \"919074794320\"\n                    }\n                ]\n            }\n        ]\n    },\n    \"warnings\": []\n}"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "title": "with details=true",
+                      "type": "object",
+                      "properties": {
+                        "redemption": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "currencyInput": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              },
+                              "localToBaseCurrencyExchangeRate": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              },
+                              "isRedeemable": {
+                                "type": "boolean",
+                                "example": true,
+                                "default": true
+                              },
+                              "warnings": {
+                                "type": "array"
+                              },
+                              "appendedErrorMessage": {
+                                "type": "string",
+                                "example": ""
+                              },
+                              "code": {
+                                "type": "string",
+                                "example": "UHI3T4V98MRGP0G0"
+                              },
+                              "couponseries": {
+                                "type": "object",
+                                "properties": {
+                                  "description": {
+                                    "type": "string",
+                                    "example": "50% Off Holi Coupon"
+                                  },
+                                  "discountCode": {
+                                    "type": "string",
+                                    "example": "NO_VALUE"
+                                  },
+                                  "validTillDate": {
+                                    "type": "string",
+                                    "example": "2025-06-11T23:59:59Z"
+                                  },
+                                  "isValidWithDiscountedItem": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "default": true
+                                  },
+                                  "isUpdateProductData": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "default": true
+                                  },
+                                  "info": {
+                                    "type": "string",
+                                    "example": "50% Off Holi Coupon"
+                                  },
+                                  "discountUpto": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "discountValue": {
+                                    "type": "integer",
+                                    "example": 200,
+                                    "default": 0
+                                  },
+                                  "maxRedemptionsInSeriesPerUser": {
+                                    "type": "integer",
+                                    "example": -1,
+                                    "default": 0
+                                  },
+                                  "issueToLoyalty": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "default": true
+                                  },
+                                  "brands": {
+                                    "type": "array"
+                                  },
+                                  "products": {
+                                    "type": "array"
+                                  },
+                                  "categories": {
+                                    "type": "array"
+                                  },
+                                  "discountOn": {
+                                    "type": "string",
+                                    "example": "BILL"
+                                  },
+                                  "discountType": {
+                                    "type": "string",
+                                    "example": "ABS"
+                                  },
+                                  "updateProductData": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "default": true
+                                  },
+                                  "validTilldateFormat": {
+                                    "type": "string",
+                                    "example": "2025-06-11"
+                                  },
+                                  "entityLevelRedemptionConfigsValues": {
+                                    "type": "array"
+                                  }
+                                }
+                              },
+                              "isAbsolute": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              },
+                              "redemptionsLeft": {
+                                "type": "integer",
+                                "example": -1,
+                                "default": 0
+                              },
+                              "numberOfRedemptionsByUser": {
+                                "type": "integer",
+                                "example": 1,
+                                "default": 0
+                              },
+                              "discountType": {
+                                "type": "string",
+                                "example": "ABS"
+                              },
+                              "discountValue": {
+                                "type": "integer",
+                                "example": 200,
+                                "default": 0
+                              },
+                              "discountUpto": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              }
+                            }
+                          }
+                        },
+                        "redemptionStatus": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "code": {
+                              "type": "integer",
+                              "example": 700,
+                              "default": 0
+                            },
+                            "message": {
+                              "type": "string",
+                              "example": "Coupon isRedeem successful"
+                            }
+                          }
+                        },
+                        "customer": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 565039504,
+                              "default": 0
+                            },
+                            "profiles": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "firstName": {
+                                    "type": "string",
+                                    "example": "Tom"
+                                  },
+                                  "lastName": {
+                                    "type": "string",
+                                    "example": "Sawyer"
+                                  },
+                                  "fields": {
+                                    "type": "object",
+                                    "properties": {}
+                                  },
+                                  "allFields": {
+                                    "type": "object",
+                                    "properties": {}
+                                  },
+                                  "identifiers": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string",
+                                          "example": "email"
+                                        },
+                                        "value": {
+                                          "type": "string",
+                                          "example": "tom.sawyer@capillarytech.com"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "commChannels": {
+                                    "type": "array"
+                                  },
+                                  "userId": {
+                                    "type": "integer",
+                                    "example": 565039504,
+                                    "default": 0
+                                  },
+                                  "accountId": {
+                                    "type": "string",
+                                    "example": ""
+                                  },
+                                  "autoUpdateTime": {
+                                    "type": "string",
+                                    "example": "2025-05-02T09:25:19Z"
+                                  },
+                                  "identifiersAll": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string",
+                                          "example": "email"
+                                        },
+                                        "value": {
+                                          "type": "string",
+                                          "example": "tom.sawyer@capillarytech.com"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "warnings": {
+                          "type": "array"
+                        }
+                      }
+                    },
+                    {
+                      "title": "with details=extended",
+                      "type": "object",
+                      "properties": {
+                        "redemption": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "currencyInput": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              },
+                              "localToBaseCurrencyExchangeRate": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              },
+                              "isRedeemable": {
+                                "type": "boolean",
+                                "example": true,
+                                "default": true
+                              },
+                              "warnings": {
+                                "type": "array"
+                              },
+                              "appendedErrorMessage": {
+                                "type": "string",
+                                "example": ""
+                              },
+                              "code": {
+                                "type": "string",
+                                "example": "UHI3T4V98MRGP0G0"
+                              },
+                              "couponseries": {
+                                "type": "object",
+                                "properties": {
+                                  "description": {
+                                    "type": "string",
+                                    "example": "50% Off Holi Coupon"
+                                  },
+                                  "discountCode": {
+                                    "type": "string",
+                                    "example": "NO_VALUE"
+                                  },
+                                  "validTillDate": {
+                                    "type": "string",
+                                    "example": "2025-06-11T23:59:59Z"
+                                  },
+                                  "isValidWithDiscountedItem": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "default": true
+                                  },
+                                  "isUpdateProductData": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "default": true
+                                  },
+                                  "info": {
+                                    "type": "string",
+                                    "example": "50% Off Holi Coupon"
+                                  },
+                                  "discountUpto": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "discountValue": {
+                                    "type": "integer",
+                                    "example": 200,
+                                    "default": 0
+                                  },
+                                  "maxRedemptionsInSeriesPerUser": {
+                                    "type": "integer",
+                                    "example": -1,
+                                    "default": 0
+                                  },
+                                  "issueToLoyalty": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "default": true
+                                  },
+                                  "brands": {
+                                    "type": "array"
+                                  },
+                                  "products": {
+                                    "type": "array"
+                                  },
+                                  "categories": {
+                                    "type": "array"
+                                  },
+                                  "discountOn": {
+                                    "type": "string",
+                                    "example": "BILL"
+                                  },
+                                  "discountType": {
+                                    "type": "string",
+                                    "example": "ABS"
+                                  },
+                                  "updateProductData": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "default": true
+                                  },
+                                  "validTilldateFormat": {
+                                    "type": "string",
+                                    "example": "2025-06-11"
+                                  },
+                                  "entityLevelRedemptionConfigsValues": {
+                                    "type": "array"
+                                  }
+                                }
+                              },
+                              "isAbsolute": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              },
+                              "redemptionsLeft": {
+                                "type": "integer",
+                                "example": -1,
+                                "default": 0
+                              },
+                              "numberOfRedemptionsByUser": {
+                                "type": "integer",
+                                "example": 1,
+                                "default": 0
+                              },
+                              "discountType": {
+                                "type": "string",
+                                "example": "ABS"
+                              },
+                              "discountValue": {
+                                "type": "integer",
+                                "example": 200,
+                                "default": 0
+                              },
+                              "discountUpto": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              }
+                            }
+                          }
+                        },
+                        "redemptionStatus": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "code": {
+                              "type": "integer",
+                              "example": 700,
+                              "default": 0
+                            },
+                            "message": {
+                              "type": "string",
+                              "example": "Coupon isRedeem successful"
+                            }
+                          }
+                        },
+                        "customer": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 565039504,
+                              "default": 0
+                            },
+                            "profiles": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "firstName": {
+                                    "type": "string",
+                                    "example": "Tom"
+                                  },
+                                  "lastName": {
+                                    "type": "string",
+                                    "example": "Sawyer"
+                                  },
+                                  "fields": {
+                                    "type": "object",
+                                    "properties": {}
+                                  },
+                                  "allFields": {
+                                    "type": "object",
+                                    "properties": {}
+                                  },
+                                  "identifiers": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string",
+                                          "example": "email"
+                                        },
+                                        "value": {
+                                          "type": "string",
+                                          "example": "tom.sawyer@capillarytech.com"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "commChannels": {
+                                    "type": "array"
+                                  },
+                                  "userId": {
+                                    "type": "integer",
+                                    "example": 565039504,
+                                    "default": 0
+                                  },
+                                  "accountId": {
+                                    "type": "string",
+                                    "example": ""
+                                  },
+                                  "autoUpdateTime": {
+                                    "type": "string",
+                                    "example": "2025-05-02T09:25:19Z"
+                                  },
+                                  "identifiersAll": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string",
+                                          "example": "email"
+                                        },
+                                        "value": {
+                                          "type": "string",
+                                          "example": "tom.sawyer@capillarytech.com"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "warnings": {
+                          "type": "array"
+                        }
+                      }
+                    },
+                    {
+                      "title": "with details=true & details=extended",
+                      "type": "object",
+                      "properties": {
+                        "redemption": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "currencyInput": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              },
+                              "localToBaseCurrencyExchangeRate": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              },
+                              "isRedeemable": {
+                                "type": "boolean",
+                                "example": true,
+                                "default": true
+                              },
+                              "warnings": {
+                                "type": "array"
+                              },
+                              "appendedErrorMessage": {
+                                "type": "string",
+                                "example": ""
+                              },
+                              "code": {
+                                "type": "string",
+                                "example": "UHI3T4V98MRGP0G0"
+                              },
+                              "couponseries": {
+                                "type": "object",
+                                "properties": {
+                                  "description": {
+                                    "type": "string",
+                                    "example": "50% Off Holi Coupon"
+                                  },
+                                  "discountCode": {
+                                    "type": "string",
+                                    "example": "NO_VALUE"
+                                  },
+                                  "validTillDate": {
+                                    "type": "string",
+                                    "example": "2025-06-11T23:59:59Z"
+                                  },
+                                  "isValidWithDiscountedItem": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "default": true
+                                  },
+                                  "isUpdateProductData": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "default": true
+                                  },
+                                  "info": {
+                                    "type": "string",
+                                    "example": "50% Off Holi Coupon"
+                                  },
+                                  "discountUpto": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "discountValue": {
+                                    "type": "integer",
+                                    "example": 200,
+                                    "default": 0
+                                  },
+                                  "maxRedemptionsInSeriesPerUser": {
+                                    "type": "integer",
+                                    "example": -1,
+                                    "default": 0
+                                  },
+                                  "issueToLoyalty": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "default": true
+                                  },
+                                  "brands": {
+                                    "type": "array"
+                                  },
+                                  "products": {
+                                    "type": "array"
+                                  },
+                                  "categories": {
+                                    "type": "array"
+                                  },
+                                  "discountOn": {
+                                    "type": "string",
+                                    "example": "BILL"
+                                  },
+                                  "discountType": {
+                                    "type": "string",
+                                    "example": "ABS"
+                                  },
+                                  "updateProductData": {
+                                    "type": "boolean",
+                                    "example": false,
+                                    "default": true
+                                  },
+                                  "validTilldateFormat": {
+                                    "type": "string",
+                                    "example": "2025-06-11"
+                                  },
+                                  "entityLevelRedemptionConfigsValues": {
+                                    "type": "array"
+                                  }
+                                }
+                              },
+                              "isAbsolute": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              },
+                              "redemptionsLeft": {
+                                "type": "integer",
+                                "example": -1,
+                                "default": 0
+                              },
+                              "numberOfRedemptionsByUser": {
+                                "type": "integer",
+                                "example": 1,
+                                "default": 0
+                              },
+                              "discountType": {
+                                "type": "string",
+                                "example": "ABS"
+                              },
+                              "discountValue": {
+                                "type": "integer",
+                                "example": 200,
+                                "default": 0
+                              },
+                              "discountUpto": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              }
+                            }
+                          }
+                        },
+                        "redemptionStatus": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "code": {
+                              "type": "integer",
+                              "example": 700,
+                              "default": 0
+                            },
+                            "message": {
+                              "type": "string",
+                              "example": "Coupon isRedeem successful"
+                            }
+                          }
+                        },
+                        "customer": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 565039504,
+                              "default": 0
+                            },
+                            "profiles": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "firstName": {
+                                    "type": "string",
+                                    "example": "Tom"
+                                  },
+                                  "lastName": {
+                                    "type": "string",
+                                    "example": "Sawyer"
+                                  },
+                                  "fields": {
+                                    "type": "object",
+                                    "properties": {}
+                                  },
+                                  "allFields": {
+                                    "type": "object",
+                                    "properties": {}
+                                  },
+                                  "identifiers": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string",
+                                          "example": "email"
+                                        },
+                                        "value": {
+                                          "type": "string",
+                                          "example": "tom.sawyer@capillarytech.com"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "commChannels": {
+                                    "type": "array"
+                                  },
+                                  "userId": {
+                                    "type": "integer",
+                                    "example": 565039504,
+                                    "default": 0
+                                  },
+                                  "accountId": {
+                                    "type": "string",
+                                    "example": ""
+                                  },
+                                  "autoUpdateTime": {
+                                    "type": "string",
+                                    "example": "2025-05-02T09:27:40Z"
+                                  },
+                                  "identifiersAll": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "type": {
+                                          "type": "string",
+                                          "example": "email"
+                                        },
+                                        "value": {
+                                          "type": "string",
+                                          "example": "tom.sawyer@capillarytech.com"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "warnings": {
+                          "type": "array"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'http://eu.api.capillarytech.com/v2/coupon/is_redeemable?mobile=919074794320&code=UHI3T4V98MRGP0G0&details=true&details=extended' \\\n--header 'Authorization: Basic YTEzNzg=' \\\n--header 'Cookie: _cfuvid=.fLKDm.AUqJYZlLjow7gfWbYpw6LsG1ZfgYwyCrsnLs-1746168467271-0.0.1.1-604800000'",
+              "name": "Sample Request URL"
+            },
+            {
+              "code": "curl --location 'http://eu.api.capillarytech.com/v2/coupon/is_redeemable?mobile=1234512345&code=230995767&details=extended' \\\n--header 'Authorization: Basic ZYTYyZTZm' \\\n--header 'Cookie: _cfuvid=.fLKDm.AUqJYZlLjow7gfWbYpw6LsG1ZfgYwyCrsnLs-1746168467271-0.0.1.1-604800000; _cfuvid=pW_WnoL4RnshSjHbHtyXwbqGe6DZNu_HWa.Etq3DQrs-1768379637553-0.0.1.1-604800000; _cfuvid=.fxWhOLsAhwsxi7zp.oMiFJYBK.km4OyCE25KDjxKok-1768558550749-0.0.1.1-604800000'",
+              "language": "shell",
+              "name": "Sample request with details=extended"
+            }
+          ],
+          "samples-languages": [
+            "curl",
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

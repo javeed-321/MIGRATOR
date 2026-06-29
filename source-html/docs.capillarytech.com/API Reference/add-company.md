@@ -1,0 +1,237 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Add Company
+
+Lets you add a new company to the org.
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/companies": {
+      "post": {
+        "summary": "Add Company",
+        "description": "Lets you add a new company to the org.",
+        "operationId": "add-company",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "externalId",
+                  "hierarchyDefinitionCode"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the company,"
+                  },
+                  "externalId": {
+                    "type": "string",
+                    "description": "External ID of the company."
+                  },
+                  "hierarchyDefinitionCode": {
+                    "type": "string",
+                    "description": "Unique code of the hierarchy applicable for the company. You can use only from hierarchies that are configured for the org."
+                  },
+                  "parentCompany": {
+                    "properties": {
+                      "externalId": {
+                        "type": "string",
+                        "description": "External ID of the parent company."
+                      }
+                    },
+                    "required": [],
+                    "type": "object",
+                    "description": "Details of parent company for the current company. This is required for child companies."
+                  },
+                  "extendedFields": {
+                    "properties": {
+                      "industry": {
+                        "type": "string"
+                      },
+                      "owner": {
+                        "type": "string"
+                      },
+                      "address1": {
+                        "type": "string"
+                      },
+                      "address2": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      },
+                      "pincode": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [],
+                    "type": "object",
+                    "description": "Details of the company in name:value pairs."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"externalId\": \"Purple2345\",\n    \"companyId\": 98,\n    \"name\": \"Purple Distributors\",\n    \"hierarchyDefinitionCode\": \"code-association2\",\n    \"extendedFields\": {\n        \"address1\": \"Temple Street, X Road\",\n        \"company_city\": \"Bangalore\",\n        \"company_country\": \"India\",\n        \"company_state\": \"Karnataka\",\n        \"owner\": \"Capillary\",\n        \"phone\": \"919900000000\",\n        \"pincode\": \"560068\"\n    },\n    \"warnings\": [\n        {}\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "externalId": {
+                      "type": "string",
+                      "example": "Purple2345"
+                    },
+                    "companyId": {
+                      "type": "integer",
+                      "example": 98,
+                      "default": 0
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Purple Distributors"
+                    },
+                    "hierarchyDefinitionCode": {
+                      "type": "string",
+                      "example": "code-association2"
+                    },
+                    "extendedFields": {
+                      "type": "object",
+                      "properties": {
+                        "address1": {
+                          "type": "string",
+                          "example": "Temple Street, X Road"
+                        },
+                        "company_city": {
+                          "type": "string",
+                          "example": "Bangalore"
+                        },
+                        "company_country": {
+                          "type": "string",
+                          "example": "India"
+                        },
+                        "company_state": {
+                          "type": "string",
+                          "example": "Karnataka"
+                        },
+                        "owner": {
+                          "type": "string",
+                          "example": "Capillary"
+                        },
+                        "phone": {
+                          "type": "string",
+                          "example": "919900000000"
+                        },
+                        "pincode": {
+                          "type": "string",
+                          "example": "560068"
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "{\n  \"name\": \"Purple Distributors\",\n  \"externalId\": \"Purple2345\",\n  \"hierarchyDefinitionCode\": \"code-association2\",\n  \"extendedFields\": {\n   \"industry\": \"Partner\",\n    \"owner\": \"Capillary\",\n    \"address1\": \"Temple Street, X Road\",\n    \"address2\": \"\",\n    \"address3\": \"\",\n    \"address4\": \"\",\n    \"company_city\": \"Bangalore\",\n    \"company_state\": \"Karnataka\",\n    \"company_country\": \"India\",\n    \"pincode\": \"560068\",\n    \"phone\": \"919900000000\"\n  }\n}",
+              "name": "Sample POST Body - Add Parent Company"
+            },
+            {
+              "language": "curl",
+              "code": "{\n  \"name\": \"name-12345\",\n  \"externalId\": \"917902000000\",\n  \"hierarchyDefinitionCode\": \"code-tst1111\",\n  \"extendedFields\": {\n    \"industry\": \"Information Technology\",\n    \"owner\": \"Tom Sawyyer\",\n    \"address1\": \"maldivs\",\n    \"address2\": \"US\",\n    \"address3\": \"UK\",\n    \"address4\": \"Paris\",\n    \"city\": \"Bangalore\",\n    \"state\": \"Karnataka\",\n    \"country\": \"India\",\n    \"pincode\": \"560068\",\n    \"phone\": \"9988000000\"\n  },\n   \"parentCompany\": {\n    \"externalId\": \"917904511111\"\n  }\n}",
+              "name": "Sample POST - Add Child Company"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

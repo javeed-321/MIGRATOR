@@ -1,0 +1,147 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Configure lead reasons
+
+Lets you add your preferred reasons that are required while adding or updating a lead at the organization level.
+
+Reasons are used to add or update a lead status. Lead reasons are org specific. You can create reasons of your own and use the respective reason IDs to add or update a lead status.
+
+# Body parameter
+
+| Parameter | Description                                                          |
+| :-------- | :------------------------------------------------------------------- |
+| reason    | Specify a meaningful reason that you want to add to the organization |
+
+# Response parameter
+
+| Parameter | Description                                   |
+| --------- | --------------------------------------------- |
+| id        | Unique identifier for the reason              |
+| reason    | Description or explanation for the reason     |
+| warnings  | List of warnings related to the response      |
+| errors    | List of errors encountered during the request |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/leads/reasons": {
+      "post": {
+        "summary": "Configure lead reasons",
+        "description": "Lets you add your preferred reasons that are required while adding or updating a lead at the organization level.",
+        "operationId": "set-lead-reasons",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "reason"
+                ],
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "description": "Reason that you want to add."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample Response": {
+                    "value": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"reason\": \"Item not available in store\"\n        },\n        {\n            \"id\": 2,\n            \"reason\": \"Best price availabe at another store\"\n        },\n        {\n            \"id\": 3,\n            \"reason\": \"Interested in our brand products\"\n        }\n    ],\n    \"warnings\": [],\n    \"errors\": []\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          },
+                          "reason": {
+                            "type": "string",
+                            "example": "Item not available in store"
+                          }
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    },
+                    "errors": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "[\n  {\n    \"reason\": \"Item not available in store\"\n  },\n  {\n    \"reason\": \"Best price availabe at another store\"\n  },\n  {\n    \"reason\": \"Interested in our brand products\"  }\n]\n\n",
+              "name": "Sample POST  Body"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

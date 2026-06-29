@@ -1,0 +1,807 @@
+---
+title: "Welcome to Datafiniti Documentation"
+description: "Everything you need to integrate Datafiniti's product, business, property, and people data APIs into your application — from your first API call to production."
+---
+
+<style>{`
+  /* ── Reset & Base ── */
+  :root {
+    --df-bg: #FFFFFF;
+    --df-surface: #F7F7F8;
+    --df-text: #1A1A1A;
+    --df-text-secondary: #6B6B6B;
+    --df-text-tertiary: #9CA3AF;
+    --df-border: #E5E7EB;
+    --df-border-hover: #D1D5DB;
+    --df-card-bg: #FFFFFF;
+    --df-link: #7C3AED;
+    --df-link-hover: #6D28D9;
+    --df-nav-active: #1A1A1A;
+    --df-nav-default: #6B7280;
+    --df-search-bg: #F3F4F6;
+    --df-search-border: #E5E7EB;
+    --df-accent: #7C3AED;
+    --df-accent-dark: #6D28D9;
+    --df-get-started-bg: #7C3AED;
+    --df-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --df-radius-sm: 6px;
+    --df-radius-md: 10px;
+    --df-radius-lg: 16px;
+    --df-max-width: 1120px;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  .df-page {
+    font-family: var(--df-font);
+    background: var(--df-bg);
+    color: var(--df-text);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .df-page * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .df-page a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* ── Header ── */
+  .df-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--df-bg);
+    border-bottom: 1px solid var(--df-border);
+  }
+
+  .df-header-inner {
+    max-width: var(--df-max-width);
+    margin: 0 auto;
+    padding: 0 32px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .df-logo-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .df-logo-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #4A1D8E 0%, #7C3AED 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .df-logo-text {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--df-text);
+  }
+
+  .df-version-badge {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--df-text-tertiary);
+    background: var(--df-surface);
+    border: 1px solid var(--df-border);
+    padding: 2px 10px;
+    border-radius: var(--df-radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+
+  .df-version-badge svg {
+    opacity: 0.5;
+  }
+
+  /* Search + Ask AI */
+  .df-search-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .df-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--df-search-bg);
+    border: 1px solid var(--df-search-border);
+    border-radius: var(--df-radius-md);
+    padding: 0 12px;
+    height: 36px;
+    width: 220px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .df-search-bar:hover {
+    border-color: var(--df-border-hover);
+  }
+
+  .df-search-text {
+    font-size: 13px;
+    color: var(--df-text-tertiary);
+    flex: 1;
+    font-family: var(--df-font);
+  }
+
+  .df-search-shortcut {
+    font-size: 11px;
+    color: var(--df-text-tertiary);
+    background: var(--df-border);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+    font-weight: 500;
+  }
+
+  .df-ask-ai-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--df-text);
+    background: var(--df-surface);
+    border: 1px solid var(--df-border);
+    border-radius: var(--df-radius-md);
+    padding: 0 14px;
+    height: 36px;
+    cursor: pointer;
+    font-family: var(--df-font);
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .df-ask-ai-btn:hover {
+    border-color: var(--df-border-hover);
+    background: var(--df-bg);
+  }
+
+  /* Nav */
+  .df-nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .df-nav-link {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--df-nav-default);
+    padding: 6px 12px;
+    border-radius: var(--df-radius-sm);
+    transition: color 0.2s, background 0.15s;
+    cursor: pointer;
+  }
+
+  .df-nav-link:hover {
+    color: var(--df-nav-active);
+    background: var(--df-surface);
+  }
+
+  .df-nav-link--active {
+    font-weight: 600;
+    color: var(--df-nav-active);
+  }
+
+  .df-get-started {
+    font-size: 13px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background: var(--df-get-started-bg);
+    padding: 8px 18px;
+    border-radius: var(--df-radius-md);
+    margin-left: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    border: none;
+    font-family: var(--df-font);
+    transition: background 0.2s;
+  }
+
+  .df-get-started:hover {
+    background: var(--df-accent-dark);
+  }
+
+  .df-theme-toggle {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--df-radius-md);
+    border: 1px solid var(--df-border);
+    background: var(--df-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 6px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .df-theme-toggle:hover {
+    border-color: var(--df-border-hover);
+    background: var(--df-bg);
+  }
+
+  /* ── Hero ── */
+  .df-hero {
+    max-width: var(--df-max-width);
+    margin: 0 auto;
+    padding: 72px 32px 0;
+  }
+
+  .df-hero h1 {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    color: var(--df-text);
+  }
+
+  .df-hero p {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--df-text-secondary);
+    max-width: 600px;
+  }
+
+  /* ── Product Cards Grid ── */
+  .df-cards-section {
+    max-width: var(--df-max-width);
+    margin: 0 auto;
+    padding: 48px 32px 0;
+  }
+
+  .df-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .df-card {
+    display: block;
+    border-radius: var(--df-radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--df-border);
+    background: var(--df-card-bg);
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    cursor: pointer;
+  }
+
+  .df-card:hover {
+    border-color: var(--df-border-hover);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .df-card-gradient {
+    height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .df-card-gradient--property {
+    background: linear-gradient(135deg, #6B21A8 0%, #7C3AED 40%, #A855F7 70%, #C084FC 100%);
+  }
+
+  .df-card-gradient--business {
+    background: linear-gradient(135deg, #7C3AED 0%, #9333EA 35%, #A855F7 65%, #D8B4FE 100%);
+  }
+
+  .df-card-gradient--product {
+    background: linear-gradient(135deg, #4C1D95 0%, #6D28D9 40%, #8B5CF6 70%, #A78BFA 100%);
+  }
+
+  .df-card-gradient--people {
+    background: linear-gradient(135deg, #5B21B6 0%, #7C3AED 35%, #A855F7 65%, #E9D5FF 100%);
+  }
+
+  .df-card-glow {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .df-card-icon {
+    position: relative;
+    z-index: 1;
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .df-card-body {
+    padding: 22px 24px 28px;
+  }
+
+  .df-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--df-text);
+  }
+
+  .df-card-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--df-text-secondary);
+    margin-bottom: 18px;
+  }
+
+  .df-card-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--df-link);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.2s;
+  }
+
+  .df-card-link:hover {
+    color: var(--df-link-hover);
+  }
+
+  /* ── Divider ── */
+  .df-divider {
+    max-width: var(--df-max-width);
+    margin: 0 auto;
+    padding: 56px 32px 0;
+  }
+
+  .df-divider-line {
+    border: none;
+    border-top: 1px solid var(--df-border);
+  }
+
+  /* ── Others Section ── */
+  .df-others-section {
+    max-width: var(--df-max-width);
+    margin: 0 auto;
+    padding: 40px 32px 0;
+  }
+
+  .df-others-section h2 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    color: var(--df-text);
+  }
+
+  .df-others-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .df-others-card {
+    display: flex;
+    gap: 16px;
+    padding: 22px 24px;
+    border-radius: 14px;
+    border: 1px solid var(--df-border);
+    background: var(--df-card-bg);
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+
+  .df-others-card:hover {
+    border-color: var(--df-border-hover);
+    background: var(--df-surface);
+  }
+
+  .df-others-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--df-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid var(--df-border);
+  }
+
+  .df-others-content {
+    flex: 1;
+  }
+
+  .df-others-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--df-text);
+  }
+
+  .df-others-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--df-text-secondary);
+  }
+
+  /* ── Footer ── */
+  .df-footer {
+    max-width: var(--df-max-width);
+    margin: 0 auto;
+    padding: 64px 32px 36px;
+  }
+
+  .df-footer-inner {
+    border-top: 1px solid var(--df-border);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .df-footer-text {
+    font-size: 13px;
+    color: var(--df-text-tertiary);
+  }
+
+  .df-footer-text a {
+    color: var(--df-text-tertiary);
+    transition: color 0.2s;
+  }
+
+  .df-footer-text a:hover {
+    color: var(--df-text-secondary);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .df-header-inner {
+      padding: 0 16px;
+      height: 56px;
+    }
+
+    .df-nav {
+      display: none;
+    }
+
+    .df-search-bar {
+      width: 160px;
+    }
+
+    .df-hero {
+      padding: 48px 16px 0;
+    }
+
+    .df-hero h1 {
+      font-size: 28px;
+    }
+
+    .df-hero p {
+      font-size: 15px;
+    }
+
+    .df-cards-section {
+      padding: 32px 16px 0;
+    }
+
+    .df-cards-grid,
+    .df-others-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .df-others-section {
+      padding: 32px 16px 0;
+    }
+
+    .df-footer {
+      padding: 48px 16px 24px;
+    }
+
+    .df-footer-inner {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+`}</style>
+
+<div className="df-page">
+
+{/* ═══ HEADER ═══ */}
+<header className="df-header">
+  <div className="df-header-inner">
+
+    {/* Logo + Version */}
+    <div className="df-logo-group">
+      <div className="df-logo-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1L1 5v6l7 4 7-4V5L8 1z" fill="white" opacity="0.95"/>
+          <path d="M8 1v14M1 5l7 4 7-4" stroke="white" strokeWidth="0.5" opacity="0.3"/>
+        </svg>
+      </div>
+      <span className="df-logo-text">DATAFINITI</span>
+      <span className="df-version-badge">
+        v4.0
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path d="M3 4l2 2 2-2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </span>
+    </div>
+
+    {/* Search + Ask AI */}
+    <div className="df-search-group">
+      <div className="df-search-bar">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+          <circle cx="9" cy="9" r="5.5" stroke="#9CA3AF" strokeWidth="1.5"/>
+          <line x1="13" y1="13" x2="17" y2="17" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round"/>
+        </svg>
+        <span className="df-search-text">Search</span>
+        <span className="df-search-shortcut">Ctrl+K</span>
+      </div>
+      <button className="df-ask-ai-btn">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1l1.2 4.8L14 8l-4.8 1.2L8 14l-1.2-4.8L2 8l4.8-1.2z" fill="#7C3AED"/>
+        </svg>
+        Ask AI
+      </button>
+    </div>
+
+    {/* Nav + Get Started + Theme Toggle */}
+    <div className="df-nav">
+      <a href="#" className="df-nav-link df-nav-link--active">Home</a>
+      <a href="#" className="df-nav-link">Guides</a>
+      <a href="#" className="df-nav-link">API Reference</a>
+      <a href="#" className="df-nav-link">Changelog</a>
+      <a href="https://portal.datafiniti.co/" className="df-get-started">
+        Get Started
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2.5 6h7M7 3.5L9.5 6 7 8.5" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </a>
+      <button className="df-theme-toggle" aria-label="Toggle theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" stroke="#6B7280" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+{/* ═══ HERO ═══ */}
+<section className="df-hero">
+  <h1>Welcome to Datafiniti Documentation</h1>
+  <p>Everything you need to integrate Datafiniti's product, business, property, and people data APIs into your application — from your first API call to production.</p>
+</section>
+
+{/* ═══ PRODUCT CARDS ═══ */}
+<section className="df-cards-section">
+  <div className="df-cards-grid">
+
+    {/* Property Data */}
+    <a href="#" className="df-card">
+      <div className="df-card-gradient df-card-gradient--property">
+        <div className="df-card-glow"></div>
+        <div className="df-card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="4" y="4" width="8" height="8" rx="2" stroke="white" strokeWidth="1.5" fill="none"/>
+            <rect x="16" y="4" width="8" height="8" rx="2" stroke="white" strokeWidth="1.5" fill="none"/>
+            <rect x="4" y="16" width="8" height="8" rx="2" stroke="white" strokeWidth="1.5" fill="none"/>
+            <rect x="16" y="16" width="8" height="8" rx="2" stroke="white" strokeWidth="1.5" fill="none"/>
+            <circle cx="8" cy="8" r="1.5" fill="white" opacity="0.6"/>
+            <circle cx="20" cy="8" r="1.5" fill="white" opacity="0.6"/>
+            <circle cx="8" cy="20" r="1.5" fill="white" opacity="0.6"/>
+            <circle cx="20" cy="20" r="1.5" fill="white" opacity="0.6"/>
+          </svg>
+        </div>
+      </div>
+      <div className="df-card-body">
+        <div className="df-card-title">Property Data</div>
+        <div className="df-card-desc">Access structured real estate and property records, including addresses, valuations, and listing details.</div>
+        <span className="df-card-link">
+          Learn More
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M4 10L10 4M10 4H5.5M10 4v4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </span>
+      </div>
+    </a>
+
+    {/* Business Data */}
+    <a href="#" className="df-card">
+      <div className="df-card-gradient df-card-gradient--business">
+        <div className="df-card-glow"></div>
+        <div className="df-card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="3" y="5" width="22" height="16" rx="3" stroke="white" strokeWidth="1.5" fill="none"/>
+            <path d="M3 10h22" stroke="white" strokeWidth="1.2" opacity="0.4"/>
+            <rect x="7" y="13" width="6" height="4" rx="1" stroke="white" strokeWidth="1.2" fill="none" opacity="0.7"/>
+            <circle cx="20" cy="15" r="2" stroke="white" strokeWidth="1.2" fill="none" opacity="0.5"/>
+            <path d="M10 23h8" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
+          </svg>
+        </div>
+      </div>
+      <div className="df-card-body">
+        <div className="df-card-title">Business Data</div>
+        <div className="df-card-desc">Look up business profiles, including locations, categories, operating hours, and contact details.</div>
+        <span className="df-card-link">
+          Learn More
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M4 10L10 4M10 4H5.5M10 4v4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </span>
+      </div>
+    </a>
+
+    {/* Product Data */}
+    <a href="#" className="df-card">
+      <div className="df-card-gradient df-card-gradient--product">
+        <div className="df-card-glow"></div>
+        <div className="df-card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="5" y="4" width="18" height="20" rx="3" stroke="white" strokeWidth="1.5" fill="none"/>
+            <path d="M9 10h6" stroke="white" strokeWidth="1.3" strokeLinecap="round" opacity="0.7"/>
+            <path d="M9 14h10" stroke="white" strokeWidth="1.3" strokeLinecap="round" opacity="0.5"/>
+            <path d="M9 18h8" stroke="white" strokeWidth="1.3" strokeLinecap="round" opacity="0.3"/>
+            <rect x="18" y="8" width="4" height="4" rx="1" stroke="white" strokeWidth="1.2" fill="none" opacity="0.6"/>
+            <path d="M19 10l1 1 2-2" stroke="white" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" opacity="0.6"/>
+          </svg>
+        </div>
+      </div>
+      <div className="df-card-body">
+        <div className="df-card-title">Product Data</div>
+        <div className="df-card-desc">Query product listings with pricing, descriptions, reviews, and specifications across retailers.</div>
+        <span className="df-card-link">
+          Learn More
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M4 10L10 4M10 4H5.5M10 4v4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </span>
+      </div>
+    </a>
+
+    {/* People Data */}
+    <a href="#" className="df-card">
+      <div className="df-card-gradient df-card-gradient--people">
+        <div className="df-card-glow"></div>
+        <div className="df-card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <circle cx="10" cy="10" r="3.5" stroke="white" strokeWidth="1.5" fill="none"/>
+            <path d="M3 22c0-3.87 3.13-7 7-7s7 3.13 7 7" stroke="white" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+            <circle cx="19" cy="11" r="2.5" stroke="white" strokeWidth="1.3" fill="none" opacity="0.6"/>
+            <path d="M17 22c0-2.76 2.24-5 5-5 1.1 0 2.12.36 2.94.97" stroke="white" strokeWidth="1.3" strokeLinecap="round" fill="none" opacity="0.6"/>
+          </svg>
+        </div>
+      </div>
+      <div className="df-card-body">
+        <div className="df-card-title">People Data</div>
+        <div className="df-card-desc">Search and retrieve detailed people records with contact information and demographic attributes.</div>
+        <span className="df-card-link">
+          Learn More
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M4 10L10 4M10 4H5.5M10 4v4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+{/* ═══ DIVIDER ═══ */}
+<div className="df-divider">
+  <hr className="df-divider-line"/>
+</div>
+
+{/* ═══ OTHERS SECTION ═══ */}
+<section className="df-others-section">
+  <h2>Others</h2>
+  <div className="df-others-grid">
+
+    {/* Datafiniti API */}
+    <a href="#" className="df-others-card">
+      <div className="df-others-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M6 7l-4 3 4 3" stroke="#7C3AED" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M14 7l4 3-4 3" stroke="#7C3AED" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M12 4L8 16" stroke="#7C3AED" strokeWidth="1.5" strokeLinecap="round"/>
+        </svg>
+      </div>
+      <div className="df-others-content">
+        <div className="df-others-title">Datafiniti API</div>
+        <div className="df-others-desc">Learn how the unified Datafiniti API works, including authentication, endpoints, and core concepts.</div>
+      </div>
+    </a>
+
+    {/* Web Portal */}
+    <a href="#" className="df-others-card">
+      <div className="df-others-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="2" y="3" width="16" height="12" rx="2" stroke="#7C3AED" strokeWidth="1.5" fill="none"/>
+          <path d="M2 7h16" stroke="#7C3AED" strokeWidth="1.2" opacity="0.5"/>
+          <circle cx="4.5" cy="5" r="0.7" fill="#7C3AED" opacity="0.5"/>
+          <circle cx="6.5" cy="5" r="0.7" fill="#7C3AED" opacity="0.5"/>
+          <circle cx="8.5" cy="5" r="0.7" fill="#7C3AED" opacity="0.5"/>
+          <path d="M7 17h6" stroke="#7C3AED" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M10 15v2" stroke="#7C3AED" strokeWidth="1.5"/>
+        </svg>
+      </div>
+      <div className="df-others-content">
+        <div className="df-others-title">Web Portal</div>
+        <div className="df-others-desc">Explore the browser-based portal for searching data, managing downloads, and configuring your account.</div>
+      </div>
+    </a>
+
+    {/* API Reference */}
+    <a href="#" className="df-others-card">
+      <div className="df-others-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M4 3h8l4 4v10a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1z" stroke="#7C3AED" strokeWidth="1.5" fill="none"/>
+          <path d="M12 3v4h4" stroke="#7C3AED" strokeWidth="1.5" strokeLinejoin="round"/>
+          <path d="M7 10h6" stroke="#7C3AED" strokeWidth="1.2" strokeLinecap="round" opacity="0.5"/>
+          <path d="M7 13h4" stroke="#7C3AED" strokeWidth="1.2" strokeLinecap="round" opacity="0.5"/>
+        </svg>
+      </div>
+      <div className="df-others-content">
+        <div className="df-others-title">API Reference</div>
+        <div className="df-others-desc">Look up detailed endpoints, documentation, request and response formats, and example payloads.</div>
+      </div>
+    </a>
+
+    {/* Changelog */}
+    <a href="#" className="df-others-card">
+      <div className="df-others-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="7.5" stroke="#7C3AED" strokeWidth="1.5" fill="none"/>
+          <path d="M10 6v4.5l3 1.5" stroke="#7C3AED" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+      <div className="df-others-content">
+        <div className="df-others-title">Changelog</div>
+        <div className="df-others-desc">Review recent updates to the API, portal, and documentation, including new features and fixes.</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+{/* ═══ FOOTER ═══ */}
+<footer className="df-footer">
+  <div className="df-footer-inner">
+    <span className="df-footer-text">Last updated Apr 17, 2026</span>
+    <span className="df-footer-text">Built with <a href="https://documentation.ai">Documentation.AI</a></span>
+  </div>
+</footer>
+
+</div>

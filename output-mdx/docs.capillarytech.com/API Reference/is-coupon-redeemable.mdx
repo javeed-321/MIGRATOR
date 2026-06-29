@@ -1,0 +1,514 @@
+---
+title: Is Coupon Redeemable
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Is Coupon Redeemable
+
+This API allows you to verify whether a coupon is redeemable by a specific customer.
+
+<Callout kind="tip" title="Note">
+
+For detailed information about our APIs and for hands-on testing, refer documentation in [API overview](https://docs.capillarytech.com/reference/apioverview) and step-by-step guide on making your first API call in [Make your first API call](https://docs.capillarytech.com/reference/make-your-first-api-call).
+
+</Callout>
+
+## Prerequisites
+
+* [ ] Authentication: Basic or OAuth authentication
+* [ ] Default access group
+
+## Resource information
+
+|               |                          |
+| :------------ | :----------------------- |
+| URL           | v1.1/coupon/isredeemable |
+| HTTP Method   | GET                      |
+| Pagination    | No                       |
+| Batch support | No                       |
+
+<br />
+
+## API endpoint example
+
+`https://eu.api.capillarytech.com/v1.1/coupon/isredeemable?mobile=11223569865&code=F3LRU8&coupon_code_case=lower`
+
+## Request query parameters
+
+| Parameter          | Data Type | Description                                                                                                                                                                                                                                                                                              |
+| ------------------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mobile*`          | Integer   | Pass the customer ID that you want to retrieve the coupon details from.                                                                                                                                                                                                                                  |
+| `id`               | Integer   | Unique Customer ID.                                                                                                                                                                                                                                                                                      |
+| `external_id`      | String    | External ID of the customer.                                                                                                                                                                                                                                                                             |
+| `email`            | String    | Email ID of the customer.                                                                                                                                                                                                                                                                                |
+| `card_number`      | Integer   | Card number of the customer.                                                                                                                                                                                                                                                                             |
+| `card_external_id` | String    | Card external ID of the customer.                                                                                                                                                                                                                                                                        |
+| `details`          | Boolean   | Pass `true` to retrieve the details of the coupon series. Pass `extended` to retrieve the coupon configuration details (set on the campaign) for that specific coupon series.                                                                                                                            |
+| `code*`            | String    | Pass the coupon code that you want to retrieve. To retrieve details of multiple coupons, pass each code separated with a comma (`,`).                                                                                                                                                                    |
+| `coupon_code_case` | Enum      | This parameter helps retrieve the coupon code in the desired letter case. By default, the system converts the code to upper case. The query is not case-sensitive. **Supported values:****LOWER**: Converts to lower case. **UPPER**: Converts to upper case. **AS_IT_IS**: Preserves original format. |
+
+## Response parameters
+
+| Parameter                     | Description                                               |
+| ----------------------------- | --------------------------------------------------------- |
+| mobile                        | Customer's mobile number.                                 |
+| code                          | Coupon code.                                              |
+| is_redeemable                | Indicates if the coupon is redeemable.                    |
+| redemptions_left             | Number of redemptions left.                               |
+| no_of_redemptions_by_user | Number of times the coupon has been redeemed by the user. |
+| coupon_value                 | Value of the coupon.                                      |
+| mobile                        | Customer's mobile number (repeated from above).           |
+| email                         | Customer's email address.                                 |
+| external_id                  | External identifier for the customer.                     |
+| success                       | Status of the coupon redeem request.                      |
+| status                        | Overall status of the request.                            |
+| code                          | Status code for the request.                              |
+| message                       | Message describing the redeem status.                     |
+
+<br />
+
+```json
+{
+    "response": {
+        "status": {
+            "success": "true",
+            "code": 200,
+            "message": "Success"
+        },
+        "coupons": {
+            "redeemable": {
+                "mobile": "11223569865",
+                "code": "f3lru8",
+                "is_redeemable": "true",
+                "redemptions_left": -1,
+                "no_of_redemptions_by_user": 0,
+                "coupon_value": "17",
+                "customer": {
+                    "mobile": "11223569865",
+                    "email": null,
+                    "external_id": "000003873472"
+                },
+                "item_status": {
+                    "success": "true",
+                    "status": "true",
+                    "code": 700,
+                    "message": "Coupon isRedeem successful"
+                }
+            }
+        }
+    }
+}
+````
+```json With coupon_code_case=UPPER
+{
+    "response": {
+        "status": {
+            "success": "true",
+            "code": 200,
+            "message": "Success"
+        },
+        "coupons": {
+            "redeemable": {
+                "mobile": "11223569865",
+                "code": "F3LRU8",
+                "is_redeemable": "true",
+                "redemptions_left": -1,
+                "no_of_redemptions_by_user": 0,
+                "coupon_value": "17",
+                "customer": {
+                    "mobile": "11223569865",
+                    "email": null,
+                    "external_id": "000003873472"
+                },
+                "item_status": {
+                    "success": "true",
+                    "status": "true",
+                    "code": 700,
+                    "message": "Coupon isRedeem successful"
+                }
+            }
+        }
+    }
+}
+````
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "customer-v11",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v1.1",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/coupon/isredeemable": {
+      "get": {
+        "summary": "Is Coupon Redeemable",
+        "description": "",
+        "operationId": "is-coupon-redeemable",
+        "parameters": [
+          {
+            "name": "mobile",
+            "in": "query",
+            "description": "Mobile number of the customer.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Email ID of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Unique ID of the customer.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "external_id",
+            "in": "query",
+            "description": "External ID of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "card_number",
+            "in": "query",
+            "description": "Card number of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "card_external_id",
+            "in": "query",
+            "description": "Card external ID of the customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "description": "Coupon code to validate.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "details",
+            "in": "query",
+            "description": "Pass `true` to retrieve the details of the coupon series, `extended` to retrieve the details of coupon configurations (set on campaign) of that specific coupon series.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "extended"
+              ]
+            }
+          },
+          {
+            "name": "coupon_code_case",
+            "in": "query",
+            "description": "This parameter helps to retrieve the coupon code in the desired letter cases. By default, the system automatically converts the coupon code to upper case. The query itself is not case sensitive. Supported Values: LOWER: Converts the coupon code to lower case. UPPER: Converts the coupon codes to upper case. AS_IT_IS: It ensure that the coupon code is retrieved exactly as it was created or provided, without altering the letter case. For instance, if the code is \"abAB123,\" it should be retrieved and displayed as \"abAB123,\" maintaining its original formatting.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                ""
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"response\": {\n        \"status\": {\n            \"success\": \"true\",\n            \"code\": 200,\n            \"message\": \"Success\"\n        },\n        \"coupons\": {\n            \"redeemable\": {\n                \"mobile\": \"11223569865\",\n                \"code\": \"f3lru8\",\n                \"is_redeemable\": \"true\",\n                \"redemptions_left\": -1,\n                \"no_of_redemptions_by_user\": 0,\n                \"coupon_value\": \"17\",\n                \"customer\": {\n                    \"mobile\": \"11223569865\",\n                    \"email\": null,\n                    \"external_id\": \"000003873472\"\n                },\n                \"item_status\": {\n                    \"success\": \"true\",\n                    \"status\": \"true\",\n                    \"code\": 700,\n                    \"message\": \"Coupon isRedeem successful\"\n                }\n            }\n        }\n    }\n}"
+                  },
+                  "With coupon_code_case=UPPER": {
+                    "value": "{\n    \"response\": {\n        \"status\": {\n            \"success\": \"true\",\n            \"code\": 200,\n            \"message\": \"Success\"\n        },\n        \"coupons\": {\n            \"redeemable\": {\n                \"mobile\": \"11223569865\",\n                \"code\": \"F3LRU8\",\n                \"is_redeemable\": \"true\",\n                \"redemptions_left\": -1,\n                \"no_of_redemptions_by_user\": 0,\n                \"coupon_value\": \"17\",\n                \"customer\": {\n                    \"mobile\": \"11223569865\",\n                    \"email\": null,\n                    \"external_id\": \"000003873472\"\n                },\n                \"item_status\": {\n                    \"success\": \"true\",\n                    \"status\": \"true\",\n                    \"code\": 700,\n                    \"message\": \"Coupon isRedeem successful\"\n                }\n            }\n        }\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "response": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "object",
+                              "properties": {
+                                "success": {
+                                  "type": "string",
+                                  "example": "true"
+                                },
+                                "code": {
+                                  "type": "integer",
+                                  "example": 200,
+                                  "default": 0
+                                },
+                                "message": {
+                                  "type": "string",
+                                  "example": "Success"
+                                }
+                              }
+                            },
+                            "coupons": {
+                              "type": "object",
+                              "properties": {
+                                "redeemable": {
+                                  "type": "object",
+                                  "properties": {
+                                    "mobile": {
+                                      "type": "string",
+                                      "example": "11223569865"
+                                    },
+                                    "code": {
+                                      "type": "string",
+                                      "example": "f3lru8"
+                                    },
+                                    "is_redeemable": {
+                                      "type": "string",
+                                      "example": "true"
+                                    },
+                                    "redemptions_left": {
+                                      "type": "integer",
+                                      "example": -1,
+                                      "default": 0
+                                    },
+                                    "no_of_redemptions_by_user": {
+                                      "type": "integer",
+                                      "example": 0,
+                                      "default": 0
+                                    },
+                                    "coupon_value": {
+                                      "type": "string",
+                                      "example": "17"
+                                    },
+                                    "customer": {
+                                      "type": "object",
+                                      "properties": {
+                                        "mobile": {
+                                          "type": "string",
+                                          "example": "11223569865"
+                                        },
+                                        "email": {},
+                                        "external_id": {
+                                          "type": "string",
+                                          "example": "000003873472"
+                                        }
+                                      }
+                                    },
+                                    "item_status": {
+                                      "type": "object",
+                                      "properties": {
+                                        "success": {
+                                          "type": "string",
+                                          "example": "true"
+                                        },
+                                        "status": {
+                                          "type": "string",
+                                          "example": "true"
+                                        },
+                                        "code": {
+                                          "type": "integer",
+                                          "example": 700,
+                                          "default": 0
+                                        },
+                                        "message": {
+                                          "type": "string",
+                                          "example": "Coupon isRedeem successful"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "title": "With coupon_code_case=UPPER",
+                      "type": "object",
+                      "properties": {
+                        "response": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "object",
+                              "properties": {
+                                "success": {
+                                  "type": "string",
+                                  "example": "true"
+                                },
+                                "code": {
+                                  "type": "integer",
+                                  "example": 200,
+                                  "default": 0
+                                },
+                                "message": {
+                                  "type": "string",
+                                  "example": "Success"
+                                }
+                              }
+                            },
+                            "coupons": {
+                              "type": "object",
+                              "properties": {
+                                "redeemable": {
+                                  "type": "object",
+                                  "properties": {
+                                    "mobile": {
+                                      "type": "string",
+                                      "example": "11223569865"
+                                    },
+                                    "code": {
+                                      "type": "string",
+                                      "example": "F3LRU8"
+                                    },
+                                    "is_redeemable": {
+                                      "type": "string",
+                                      "example": "true"
+                                    },
+                                    "redemptions_left": {
+                                      "type": "integer",
+                                      "example": -1,
+                                      "default": 0
+                                    },
+                                    "no_of_redemptions_by_user": {
+                                      "type": "integer",
+                                      "example": 0,
+                                      "default": 0
+                                    },
+                                    "coupon_value": {
+                                      "type": "string",
+                                      "example": "17"
+                                    },
+                                    "customer": {
+                                      "type": "object",
+                                      "properties": {
+                                        "mobile": {
+                                          "type": "string",
+                                          "example": "11223569865"
+                                        },
+                                        "email": {},
+                                        "external_id": {
+                                          "type": "string",
+                                          "example": "000003873472"
+                                        }
+                                      }
+                                    },
+                                    "item_status": {
+                                      "type": "object",
+                                      "properties": {
+                                        "success": {
+                                          "type": "string",
+                                          "example": "true"
+                                        },
+                                        "status": {
+                                          "type": "string",
+                                          "example": "true"
+                                        },
+                                        "code": {
+                                          "type": "integer",
+                                          "example": 700,
+                                          "default": 0
+                                        },
+                                        "message": {
+                                          "type": "string",
+                                          "example": "Coupon isRedeem successful"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://eu.api.capillarytech.com/v1.1/coupon/isredeemable?mobile=11223569865&code=F3LRU8&coupon_code_case=lower' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic bmFtYW46Y2FiY2blahblahjk3ZTM5YTY0NTY0MTY=' \\\n--header 'Cookie: _cfuvid=pv8Ch1Dsldv_HdTK.8fgLgweqU.3NP3CFA3yXj2E438-1728557334548-0.0.1.1-604800000'",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

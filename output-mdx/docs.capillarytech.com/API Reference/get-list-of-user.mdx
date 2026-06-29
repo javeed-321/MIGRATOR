@@ -1,0 +1,428 @@
+---
+title: Get List of User
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Get List of User
+
+Allows you to retrieve a list of all users who have been granted access to the Capillary platform under your organisation. The API returns each user's details including their name, email address, active status, and assigned role.
+
+### Example request
+
+```curl Sample request
+curl --location 'https://nightly.intouch.capillarytech.com/launchpad/api/v2/Users' \
+--header 'Authorization: Bearer a7ba38a39712dff766414c43ef23dbf3c8d5138fd9db3ec3916b09a7a48da0c3' \
+--header 'Accept: application/json'
+````
+
+## Prerequisites
+
+* A valid SCIM bearer token for your organization, generated using the [Create SCIM Token](https://docs.capillarytech.com/reference/create-scim-token) API. Pass it in the request header as `Authorization: Bearer {token}`.
+
+### Resource information
+
+|                    |     |
+| ------------------ | --- |
+| Pagination support | No  |
+| Filter support     | Yes |
+
+### Example response
+
+```json
+{
+    "schemas": [
+        "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+    ],
+    "totalResults": 7,
+    "startIndex": 1,
+    "itemsPerPage": 7,
+    "Resources": [
+        {
+            "id": "15071474",
+            "userName": "",
+            "name": {
+                "givenName": "SUPER USER",
+                "familyName": ""
+            },
+            "displayName": "SUPER USER",
+            "emails": [],
+            "active": true,
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:2.0:User"
+            ]
+        },
+        {
+            "id": "50024381",
+            "userName": "vivek.khatri3@capillarytech.com",
+            "name": {
+                "givenName": "Vivek",
+                "familyName": "Khatri"
+            },
+            "displayName": "Vivek Khatri",
+            "emails": [
+                {
+                    "value": "vivek.khatri3@capillarytech.com",
+                    "type": "work",
+                    "primary": true
+                }
+            ],
+            "active": true,
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:2.0:User"
+            ]
+        },
+        {
+            "id": "50712442",
+            "userName": "upgrade.nightlytest1@gmail.com",
+            "name": {
+                "givenName": "upgrade",
+                "familyName": "test1"
+            },
+            "displayName": "upgrade test1",
+            "emails": [
+                {
+                    "value": "upgrade.nightlytest1@gmail.com",
+                    "type": "work",
+                    "primary": true
+                }
+            ],
+            "active": true,
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:2.0:User"
+            ]
+        },
+        {
+            "id": "50779683",
+            "userName": "arya-test-proxy@gmail.com",
+            "name": {
+                "givenName": "arya-text",
+                "familyName": "proxy"
+            },
+            "displayName": "arya-text proxy",
+            "emails": [
+                {
+                    "value": "arya-test-proxy@gmail.com",
+                    "type": "work",
+                    "primary": true
+                }
+            ],
+            "active": true,
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:2.0:User"
+            ]
+        },
+        {
+            "id": "50781523",
+            "userName": "my3@77.com",
+            "name": {
+                "givenName": "Steephan",
+                "familyName": "Raj"
+            },
+            "displayName": "Steephan Raj",
+            "emails": [
+                {
+                    "value": "my3@77.com",
+                    "type": "work",
+                    "primary": true
+                }
+            ],
+            "active": true,
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:2.0:User"
+            ]
+        },
+        {
+            "id": "50785952",
+            "userName": "redis-scan@gmail.com",
+            "name": {
+                "givenName": "redis-scan",
+                "familyName": ""
+            },
+            "displayName": "redis-scan",
+            "emails": [
+                {
+                    "value": "redis-scan@gmail.com",
+                    "type": "work",
+                    "primary": true
+                }
+            ],
+            "active": true,
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:2.0:User"
+            ]
+        },
+        {
+            "id": "50794631",
+            "userName": "intouch-test@productcapillarygmail.onmicrosoft.com",
+            "name": {
+                "givenName": "Intouch",
+                "familyName": "test"
+            },
+            "displayName": "Intouch test",
+            "emails": [
+                {
+                    "value": "intouch-test@productcapillarygmail.onmicrosoft.com",
+                    "type": "work",
+                    "primary": true
+                }
+            ],
+            "active": true,
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:2.0:User"
+            ]
+        }
+    ]
+}
+````
+
+## Response parameters
+
+| Field                       | Type    | Description                                                                                                                              |
+| --------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `schemas`                   | array   | Indicates the type of response being returned. Always returns `"urn:ietf:params:scim:api:messages:2.0:ListResponse"` for list responses. |
+| `totalResults`              | number  | The total number of users returned for the org.                                                                                          |
+| `startIndex`                | number  | The starting index of the returned results. Always `1` as pagination is not supported.                                                   |
+| `itemsPerPage`              | number  | The number of users returned in this response. Same as `totalResults` since all users are returned in a single response.                 |
+| `Resources`                 | array   | The list of user objects. Returns an empty array if no users exist for the org.                                                          |
+| `Resources.id`              | string  | The unique ID assigned to the user by Capillary. Used to identify the user in subsequent SCIM operations such as update or delete.       |
+| `Resources.userName`        | string  | The unique identifier of the user, typically their email address.                                                                        |
+| `Resources.displayName`     | string  | The name displayed for the user on the platform.                                                                                         |
+| `Resources.active`          | boolean | Indicates whether the user account is active.                                                                                            |
+| `Resources.name.givenName`  | string  | The first name of the user.                                                                                                              |
+| `Resources.name.familyName` | string  | The last name of the user.                                                                                                               |
+| `Resources.emails`          | array   | The email addresses associated with the user.                                                                                            |
+| `Resources.emails.value`    | string  | The email address of the user.                                                                                                           |
+| `Resources.emails.type`     | string  | The type of email address. Always returns `work` for users fetched from the platform.                                                    |
+| `Resources.emails.primary`  | boolean | Indicates whether this is the user's primary email address. Always returns `true`.                                                       |
+
+### Error and warning codes
+
+| Code | Type  | Description                                                       |
+| ---- | ----- | ----------------------------------------------------------------- |
+| 401  | Error | `Authorization` header is missing or is not a valid Bearer token. |
+| 403  | Error | Token is invalid or not associated with any org.                  |
+
+<br />
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "GET /launchpad/api/v2/Users",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{Host}",
+      "variables": {
+        "Host": {
+          "enum": [
+            "{Host}",
+            "eu.intouch.capillarytech.com",
+            "intouch.capillary.co.in",
+            "apac2.intouch.capillarytech.com",
+            "sgcrm.cc.capillarytech.com",
+            "intouch.capillarytech.cn.com",
+            "north-america.intouch.capillarytech.com"
+          ],
+          "default": "{Host}"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/launchpad/api/v2/Users": {
+      "get": {
+        "summary": "Get List of User",
+        "operationId": "getUsers",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer a7ba38a39712dff7XXXXXXXX"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample response": {
+                    "summary": "Sample response",
+                    "value": {
+                      "schemas": [
+                        "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+                      ],
+                      "totalResults": 7,
+                      "startIndex": 1,
+                      "itemsPerPage": 7,
+                      "Resources": [
+                        {
+                          "id": "15071474",
+                          "userName": "",
+                          "name": {
+                            "givenName": "SUPER USER",
+                            "familyName": ""
+                          },
+                          "displayName": "SUPER USER",
+                          "emails": [],
+                          "active": true,
+                          "schemas": [
+                            "urn:ietf:params:scim:schemas:core:2.0:User"
+                          ]
+                        },
+                        {
+                          "id": "50024381",
+                          "userName": "vivek.khatri3@capillarytech.com",
+                          "name": {
+                            "givenName": "Vivek",
+                            "familyName": "Khatri"
+                          },
+                          "displayName": "Vivek Khatri",
+                          "emails": [
+                            {
+                              "value": "vivek.khatri3@capillarytech.com",
+                              "type": "work",
+                              "primary": true
+                            }
+                          ],
+                          "active": true,
+                          "schemas": [
+                            "urn:ietf:params:scim:schemas:core:2.0:User"
+                          ]
+                        },
+                        {
+                          "id": "50712442",
+                          "userName": "upgrade.nightlytest1@gmail.com",
+                          "name": {
+                            "givenName": "upgrade",
+                            "familyName": "test1"
+                          },
+                          "displayName": "upgrade test1",
+                          "emails": [
+                            {
+                              "value": "upgrade.nightlytest1@gmail.com",
+                              "type": "work",
+                              "primary": true
+                            }
+                          ],
+                          "active": true,
+                          "schemas": [
+                            "urn:ietf:params:scim:schemas:core:2.0:User"
+                          ]
+                        },
+                        {
+                          "id": "50779683",
+                          "userName": "arya-test-proxy@gmail.com",
+                          "name": {
+                            "givenName": "arya-text",
+                            "familyName": "proxy"
+                          },
+                          "displayName": "arya-text proxy",
+                          "emails": [
+                            {
+                              "value": "arya-test-proxy@gmail.com",
+                              "type": "work",
+                              "primary": true
+                            }
+                          ],
+                          "active": true,
+                          "schemas": [
+                            "urn:ietf:params:scim:schemas:core:2.0:User"
+                          ]
+                        },
+                        {
+                          "id": "50781523",
+                          "userName": "my3@77.com",
+                          "name": {
+                            "givenName": "Steephan",
+                            "familyName": "Raj"
+                          },
+                          "displayName": "Steephan Raj",
+                          "emails": [
+                            {
+                              "value": "my3@77.com",
+                              "type": "work",
+                              "primary": true
+                            }
+                          ],
+                          "active": true,
+                          "schemas": [
+                            "urn:ietf:params:scim:schemas:core:2.0:User"
+                          ]
+                        },
+                        {
+                          "id": "50785952",
+                          "userName": "redis-scan@gmail.com",
+                          "name": {
+                            "givenName": "redis-scan",
+                            "familyName": ""
+                          },
+                          "displayName": "redis-scan",
+                          "emails": [
+                            {
+                              "value": "redis-scan@gmail.com",
+                              "type": "work",
+                              "primary": true
+                            }
+                          ],
+                          "active": true,
+                          "schemas": [
+                            "urn:ietf:params:scim:schemas:core:2.0:User"
+                          ]
+                        },
+                        {
+                          "id": "50794631",
+                          "userName": "intouch-test@productcapillarygmail.onmicrosoft.com",
+                          "name": {
+                            "givenName": "Intouch",
+                            "familyName": "test"
+                          },
+                          "displayName": "Intouch test",
+                          "emails": [
+                            {
+                              "value": "intouch-test@productcapillarygmail.onmicrosoft.com",
+                              "type": "work",
+                              "primary": true
+                            }
+                          ],
+                          "active": true,
+                          "schemas": [
+                            "urn:ietf:params:scim:schemas:core:2.0:User"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'https://nightly.intouch.capillarytech.com/launchpad/api/v2/Users' \\\n--header 'Authorization: Bearer a7ba38a39712dff766414c43ef23dbf3c8d5138fd9db3ec3916b09a7a48da0c3' \\\n--header 'Accept: application/json'",
+              "language": "shell",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  }
+}
+```

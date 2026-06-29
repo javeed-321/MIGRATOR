@@ -1,0 +1,408 @@
+---
+title: Create Labels
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Create Labels
+
+Create one or more labels for an organization in a single request. A label is a metadata tag that you can apply to customers, products, or stores to serve as a reusable building block for promotions and campaigns. You can create up to 10 labels per request.
+
+Use case: A marketer labels a set of products as "Month-End-Promo". Instead of rewriting complex promotion rules each time, they reference this label in the promotion configuration, and all labelled products automatically qualify. Labels can also be used to segment audiences in campaigns and slice analytics reports.
+
+### Example request
+
+<CodeGroup tabs="Single label,Multiple labels">
+
+```bash
+curl -X POST "https://{host}/v2/labels" \
+  -H "Authorization: Basic {base64_credentials}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "labels": [
+      {
+        "name": "Summer Sale",
+        "externalId": "summer-sale-2026",
+        "description": "Labels for summer sale products",
+        "entityType": "PRODUCT",
+        "expiryConfig": {
+          "type": "FIXED_DATE",
+          "expiryDate": "2027-12-31T23:59:59+05:30"
+        }
+      }
+    ]
+  }'
+````
+
+```text
+curl --location 'https://eu.api.capillarytech.com/v2/labels' \
+--header 'Content-Type: application/json' \
+--header 'X-CAP-API-OAUTH-TOKEN: {{your_token_here}}' \
+--data '{
+  "labels": [
+    {
+      "name": "DocDemo-Flash-Sale",
+      "externalId": "docdemo-flash-001",
+      "entityType": "PRODUCT",
+      "expiryConfig": { "type": "RELATIVE", "unit": "DAYS", "value": 90 }
+    },
+    {
+      "name": "DocDemo-Loyalty-Gold",
+      "externalId": "docdemo-loyalty-gold",
+      "description": "Gold tier loyalty customers",
+      "entityType": "CUSTOMER",
+      "expiryConfig": { "type": "NONE" }
+    },
+    {
+      "name": "DocDemo-Tier2-Store",
+      "externalId": "docdemo-tier2-001",
+      "entityType": "STORE",
+      "expiryConfig": { "type": "RELATIVE", "unit": "YEARS", "value": 1 }
+    }
+  ]
+}'
+````
+
+</CodeGroup>
+## API Quick Reference
+
+<CodeGroup tabs="Reference structure,single label,multiple labels,Partial failure">
+
+```bash
+{{https://eu.api.capillarytech.com/v2/labels}}
+   └─ {{labels}}
+      ├─ {{createLabels}}({{CreateLabelsRequest}}) -> {{CreateLabelsResponse}}
+      ├─ {{CreateLabelsRequest}}
+      │   └─ {{labels}} []
+      │       ├─ {{name}} (string, required)
+      │       ├─ {{externalId}} (string)
+      │       ├─ {{description}} (string)
+      │       ├─ {{entityType}} (enum: PRODUCT | CUSTOMER | STORE, required)
+      │       └─ {{expiryConfig}}
+      │           ├─ {{type}} (enum: NONE | FIXED_DATE | RELATIVE, required)
+      │           ├─ {{expiryDate}} (string, ISO-8601) [required if type = FIXED_DATE]
+      │           ├─ {{unit}} (enum: DAYS | MONTHS | YEARS) [required if type = RELATIVE]
+      │           └─ {{value}} (integer) [required if type = RELATIVE]
+      └─ {{CreateLabelsResponse}}
+          ├─ {{data}} []
+          │   ├─ {{id}} (integer)
+          │   └─ {{externalId}} (string)
+          ├─ {{warnings}} []
+          └─ {{errors}} []
+              ├─ {{code}} (integer)
+              ├─ {{field}} (string)
+              └─ {{message}} (string)
+````
+
+```json
+{
+  "data": [
+    {
+      "id": 108,
+      "externalId": "summer-sale-2026"
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}
+````
+
+```text
+{
+  "data": [
+    { "id": 116, "externalId": "docdemo-flash-001" },
+    { "id": 117, "externalId": "docdemo-loyalty-gold" },
+    { "id": 118, "externalId": "docdemo-tier2-001" }
+  ],
+  "warnings": [],
+  "errors": []
+}
+````
+
+```text
+{
+  "data": [
+    {
+      "id": 108,
+      "externalId": "summer-sale-2026"
+    }
+  ],
+  "warnings": [],
+  "errors": [
+    {
+      "code": 23019,
+      "field": "name",
+      "labelExternalId": "clearance-2026",
+      "message": "A label with the name 'Clearance' already exists for entity type 'PRODUCT'."
+    }
+  ]
+}
+````
+
+</CodeGroup>
+<br />
+
+### Response parameters
+
+| Field              | Type   | Description                                      |
+| ------------------ | ------ | ------------------------------------------------ |
+| `data`             | array  | List of successfully created labels.             |
+| `.id`              | number | Unique identifier assigned to the created label. |
+| `.externalId`      | string | External identifier of the created label.        |
+| `warnings`         | array  | List of warnings. Empty when no warnings occur.  |
+| `errors`           | array  | List of errors for labels that failed to create. |
+| `.code`            | number | Numeric error code.                              |
+| `.field`           | string | Name of the field that caused the error.         |
+| `.labelExternalId` | string | External ID of the label item that failed.       |
+| `.message`         | string | Description of the error.                        |
+
+> **Note:** If some labels are created and others fail, the API returns HTTP 207. If all labels fail, the API returns HTTP 400. If all labels are created successfully, the API returns HTTP 201.
+
+### Error and warning codes
+
+| Code                                   | Error number | Type  | Description                                                                                                  |
+| -------------------------------------- | ------------ | ----- | ------------------------------------------------------------------------------------------------------------ |
+| `LABEL_NAME_REQUIRED`                  | 23001        | Error | Label name is required. HTTP 400.                                                                            |
+| `LABEL_EXPIRY_DATE_PAST`               | 23004        | Error | Expiry date must be a future date. HTTP 400.                                                                 |
+| `LABEL_UNSUPPORTED_TIME_UNIT`          | 23005        | Error | Unsupported time unit. Supported values: `DAYS`, `MONTHS`, `YEARS`. HTTP 400.                                |
+| `LABEL_INVALID_ENTITY_TYPE`            | 23006        | Error | Invalid entity type. Supported values: `CUSTOMER`, `PRODUCT`, `STORE`. HTTP 400.                             |
+| `LABEL_NAME_TOO_LONG`                  | 23007        | Error | Label name must not exceed 255 characters. HTTP 400.                                                         |
+| `LABEL_EXTERNAL_ID_TOO_LONG`           | 23008        | Error | External ID must not exceed 255 characters. HTTP 400.                                                        |
+| `LABEL_DESCRIPTION_TOO_LONG`           | 23009        | Error | Description must not exceed 1,024 characters. HTTP 400.                                                      |
+| `LABEL_RELATIVE_EXPIRY_UNIT_REQUIRED`  | 23010        | Error | `unit` is required when `expiryConfig.type` is `RELATIVE`. HTTP 400.                                         |
+| `LABEL_RELATIVE_EXPIRY_VALUE_REQUIRED` | 23011        | Error | `value` must be a non-negative integer when `expiryConfig.type` is `RELATIVE`. HTTP 400.                     |
+| `LABEL_FIXED_EXPIRY_DATE_REQUIRED`     | 23012        | Error | `expiryDate` is required when `expiryConfig.type` is `FIXED_DATE`. HTTP 400.                                 |
+| `LABEL_INVALID_EXPIRY_CONFIG_TYPE`     | 23013        | Error | Invalid expiry config type. Supported values: `NONE`, `FIXED_DATE`, `RELATIVE`. HTTP 400.                    |
+| `LABEL_INVALID_EXPIRY_DATE_FORMAT`     | 23014        | Error | Invalid expiry date format. Expected ISO-8601 format: `YYYY-MM-DDThh:mm:ssZ`. HTTP 400.                      |
+| `LABEL_LOCK_FAILED`                    | 23015        | Error | Could not acquire lock for the label. Another operation is in progress. Retry after a short delay. HTTP 409. |
+| `LABEL_DUPLICATE_NAME`                 | 23019        | Error | A label with the same name already exists for this entity type. HTTP 409.                                    |
+| `LABEL_DUPLICATE_EXTERNAL_ID`          | 23020        | Error | A label with the same external ID already exists for this entity type. HTTP 409.                             |
+| `LABEL_BATCH_SIZE_EXCEEDED`            | 23021        | Error | Maximum 10 labels can be created in a single request. HTTP 400.                                              |
+| `LABEL_REQUEST_BODY_EMPTY`             | 23022        | Error | Request body must contain at least one label. HTTP 400.                                                      |
+| `LABEL_ITEM_NULL`                      | 23023        | Error | Label item must not be null. HTTP 400.                                                                       |
+| `LABEL_EXTERNAL_ID_REQUIRED`           | 23030        | Error | External ID is required. HTTP 400.                                                                           |
+
+<br />
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Create labels",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{Host}",
+      "variables": {
+        "Host": {
+          "enum": [
+            "{Host}",
+            "eu.intouch.capillarytech.com",
+            "intouch.capillary.co.in",
+            "apac2.intouch.capillarytech.com",
+            "sgcrm.cc.capillarytech.com",
+            "intouch.capillary.cn.com",
+            "north-america.intouch.capillarytech.com"
+          ],
+          "default": "{Host}"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/v2/labels": {
+      "post": {
+        "summary": "Create Labels",
+        "operationId": "create-labels",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Basic <base64>"
+          },
+          {
+            "name": "X-CAP-API-OAUTH-TOKEN",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "<token>"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "labels": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "entityType"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "maxLength": 255
+                        },
+                        "externalId": {
+                          "type": "string",
+                          "maxLength": 255
+                        },
+                        "description": {
+                          "type": "string",
+                          "maxLength": 1024
+                        },
+                        "entityType": {
+                          "type": "string",
+                          "enum": [
+                            "CUSTOMER",
+                            "PRODUCT",
+                            "STORE"
+                          ]
+                        },
+                        "expiryConfig": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "NONE",
+                                "FIXED_DATE",
+                                "RELATIVE"
+                              ]
+                            },
+                            "expiryDate": {
+                              "type": "string"
+                            },
+                            "unit": {
+                              "type": "string",
+                              "enum": [
+                                "DAYS",
+                                "MONTHS",
+                                "YEARS"
+                              ]
+                            },
+                            "value": {
+                              "type": "integer"
+                            },
+                            "roundingUnit": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "labels": [
+                  {
+                    "name": "Summer Sale",
+                    "externalId": "summer-sale-2026",
+                    "description": "Labels for summer sale products",
+                    "entityType": "PRODUCT",
+                    "expiryConfig": {
+                      "type": "FIXED_DATE",
+                      "expiryDate": "2027-12-31T23:59:59+05:30"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "All labels created.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": 101,
+                      "externalId": "summer-sale-2026"
+                    }
+                  ],
+                  "warnings": [],
+                  "errors": []
+                }
+              }
+            }
+          },
+          "207": {
+            "description": "Partial success — some labels created, some failed.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": 101,
+                      "externalId": "summer-sale-2026"
+                    }
+                  ],
+                  "warnings": [],
+                  "errors": [
+                    {
+                      "code": 23019,
+                      "field": "name",
+                      "labelExternalId": "clearance-2026",
+                      "message": "A label with the name 'Clearance' already exists for entity type 'PRODUCT'."
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "All labels failed validation.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "warnings": [],
+                  "errors": [
+                    {
+                      "code": 23001,
+                      "field": "name",
+                      "message": "Label name is required."
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}
+```

@@ -4,8 +4,8 @@ import path from "path";
 import { convertPage } from "../lib/convert";
 import type { Change } from "../lib/convert";
 
-const DOCS_DIR = path.join(process.cwd(), "docs");
-const MDX_DIR = path.join(process.cwd(), "mdx");
+const DOCS_DIR = path.join(process.cwd(), "source-html");
+const MDX_DIR = path.join(process.cwd(), "output-mdx");
 
 function sanitize(name: string): string {
   return name.replace(/[<>:"/\\|?*]/g, "-").replace(/\s+/g, " ").trim();

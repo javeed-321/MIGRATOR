@@ -1,0 +1,764 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Add Transaction with Local Currency
+
+Lets you add transactions with a different currency using the currency conversion ratio. The following are the prerequisites or checklists for the API.
+
+> **Important**
+>
+> All monetary fields in transaction line items (such as amount, rate, value, and discount) are rounded based on the AMOUNT\_ROUNDING\_OFF\_TO\_DECIMAL\_PLACES configuration. If this configuration is set to a value greater than or equal to 0, the system rounds all monetary fields to the specified number of decimal places using rounding down. For example, a value of 38.98 may become 38.97 if the configuration is set to 2 decimal places.
+>
+> To ensure correct storage and retrieval of decimal values in transaction APIs, set AMOUNT\_ROUNDING\_OFF\_TO\_DECIMAL\_PLACES to one more than the value of CONF\_DECIMAL\_PLACES\_FOR\_BASE\_CURRENCY. For example, if CONF\_DECIMAL\_PLACES\_FOR\_BASE\_CURRENCY is set to 2, set AMOUNT\_ROUNDING\_OFF\_TO\_DECIMAL\_PLACES to 3.
+
+> 📘 Notes
+>
+> * Enable `CONF_CURRENCY_CONVERSION_ENABLE` on the Billing Configuration page of **InTouch Profile** > **Organization Settings** > **Systems & Deployment** > **InTouch POS Configurations>Billing**.
+> * Configure org’s base currency and supported currencies on the Organization Setup page of **InTouch Profile** > **Organization Settings** > **Organization Setup** > **Organization Profile**.
+> * If no currency code is provided, the system will use the store's default currency.
+> * All monetary values should be provided in the local currency format.
+> * The API automatically handles conversion between local and base currency.
+> * The response includes both local and base currency values for all monetary fields.
+> * Add relevant currency conversion ratios in the back-end either through /v2/currencyratio API or through Data Import.
+> * The issual of points/coupon or redemption is calculated automatically as per the destination currency.
+> * Negative values for transaction values such as amount, discount are not considered.
+
+# Example request
+
+```
+curl --location 'https://eu.api.capillarytech.com/v1.1/transaction/add_with_local_currency?format=json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic dGpfY2FwaWxsYXJ5OjVjMTc3MDJlOTI5NjQ4MjUzZTY3ZDJiMGM2ZTk5ZjE5' \
+--header 'Cookie: _cfuvid=vExzxUfM1yVs0RkX2QTpuwcO53_TtBBvj4IQ3.2hA38-1739337355889-0.0.1.1-604800000; _cfuvid=TSCGvpdRkTXfEHaK7wh4GeeIIboDUZw.MFvq2rh0bhE-1739505014810-0.0.1.1-604800000; _cfuvid=Fa2ZZlikT6UXCljFwOpFWmmpr_ln0Nfz0KVEXjICAXM-1744170473439-0.0.1.1-604800000' \
+--data-raw '{
+    "root": {
+        "transaction": [
+            {
+                "line_items": {
+                    "line_item": [
+                        {
+                            "type": "Regular",
+                            "serial": 1,
+                            "value": 20,
+                            "description": "Steel Bottle",
+                            "item_code": "model_id_001",
+                            "qty": 4,
+                            "discount": 0,
+                            "rate": 5,
+                            "amount": 20,
+                            "transaction_date": "2025-02-26 09:00:00",
+                            "transaction_number": "test00transact064"
+                        }    
+                    ]
+                },
+                "type": "regular",
+                "currency_code": "USD",
+                "customer": {
+                    "mobile": "919999988886",
+                    "email": "testusertjone@gmail.com",
+                    "firstname": "Tjuser",
+                    "lastname": "Eightysix"
+                },
+                "credit_note": {
+                    "amount": "60",
+                    "notes": "Reason for credit",
+                    "number": "test00transact064"
+                },
+                "number": "test00transact074",
+                "amount": 60,
+                "billing_time": "2025-04-08 17:30:00",
+                "notes": "Transaction Number 74",
+                "gross_amount": 60,
+                "discount": 0
+            }
+        ]
+    }
+}'
+```
+
+<br />
+
+#### Rate Limit
+
+| Region               | Default Limit (RPM) |
+| :------------------- | :------------------ |
+| Asia-2 (Singapore)   | 1500                |
+| Asia-1 (N. Virginia) | 1500                |
+| EMEA (Ireland)       | 700                 |
+
+## Request Body Parameters
+
+<Table align={["left","left","left"]}>
+  <thead>
+    <tr>
+      <th>
+        Parameter
+      </th>
+
+      <th>
+        Type
+      </th>
+
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        type
+      </td>
+
+      <td>
+        Enum
+      </td>
+
+      <td>
+        Type of transaction. `regular` for loyalty transaction, ``not_interested` for non-loyalty or not-interested transactions.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        credit_note
+      </td>
+
+      <td>
+        obj
+      </td>
+
+      <td>
+        Details of credit note
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        currency_code
+      </td>
+
+      <td>
+        string
+      </td>
+
+      <td>
+        Currency code applicable in ISO format.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        notes
+      </td>
+
+      <td>
+        string
+      </td>
+
+      <td>
+        Additional information about the transaction.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        qty
+      </td>
+
+      <td>
+        double
+      </td>
+
+      <td>
+        Quantity of the current line-item.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        rate
+      </td>
+
+      <td>
+        float
+      </td>
+
+      <td>
+        Price of each line-item. This value is rounded based on the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration if set. The system rounds down to the specified number of decimal places.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        value
+      </td>
+
+      <td>
+        float
+      </td>
+
+      <td>
+        Represents the pre-discount total for a single line item. Calculated as: value = rate × quantity. Example: If a line item has a rate of $10 and quantity of 2, value would be $20. This value is rounded based on the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        amount
+      </td>
+
+      <td>
+        double
+      </td>
+
+      <td>
+        Net transaction amount. The actual transaction amount after discount. This value is rounded based on the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        billing_time
+      </td>
+
+      <td>
+        date-time
+      </td>
+
+      <td>
+        Date and time of the transaction. By default, the current system date and time will be considered.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        gross_amount
+      </td>
+
+      <td>
+        double
+      </td>
+
+      <td>
+        Represents the total transaction amount before any discounts are applied.  It's the sum of all line items' values before discounts. Used in calculations involving the total transaction value. This value is rounded based on the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        discount
+      </td>
+
+      <td>
+        double
+      </td>
+
+      <td>
+        Discount availed for the transaction (discount amount). This value is rounded based on the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration if set.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        outlier_status
+      </td>
+
+      <td>
+        Enum
+      </td>
+
+      <td>
+        Pass the outlier status of the transaction at transaction level, and outlier status of the line-item at line-item level.
+        Values: `INTERNAL`, `NORMAL`, `INVALID`, `OUTLIER`, `FAILED``, `DELETED`, `RETRO`, `FRAUD`, `TEST, OTHER```.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        source
+      </td>
+
+      <td>
+        Enum
+      </td>
+
+      <td>
+        Source from which the transaction is made.
+        Values: `INSTORE` (for InStore), `WECHAT` (WeChat), `MARTJACK` (AnywhereCommerce), `WEB_ENGAGE` (Web-engage integration), `ECOMMERCE` (ECOMMERCE), `JD` (JD), `TAOBAO` (Taobao), `TMALL` (TMall), `FACEBOOK` (Facebook), `WEBSITE` (other website), `OTHERS` (any other source).
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        not_interested_reason
+      </td>
+
+      <td>
+        string
+      </td>
+
+      <td>
+        Reason why the customer is not interested to register. Applicable only for not-interested transactions.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        customer
+      </td>
+
+      <td>
+        obj
+      </td>
+
+      <td>
+        Pass customer information. Applicable for non-loyalty and not-interested transactions.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        extended_fields
+      </td>
+
+      <td>
+        obj
+      </td>
+
+      <td>
+        Valid transaction level extended field details in name and value pairs. You can also pass line-item level extended field details in `line_item` object.
+      </td>
+    </tr>
+  </tbody>
+</Table>
+
+#### customer object
+
+| Parameter                    | Type   | Description                                                                                |
+| :--------------------------- | :----- | :----------------------------------------------------------------------------------------- |
+| mobile/email/id/external\_id | string | Pass any of the registered identifiers of the customer. Required for  regular transaction. |
+| firstname                    | string | First name of the customer.                                                                |
+| lastname                     | string | Last name of the customer.                                                                 |
+
+#### credit\_note object
+
+<Table align={["left","left","left"]}>
+  <thead>
+    <tr>
+      <th>
+        Parameter
+      </th>
+
+      <th>
+        Type
+      </th>
+
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        amount
+      </td>
+
+      <td>
+        double
+      </td>
+
+      <td>
+        Net transaction amount of the original bill. Represents the final amount after discounts are applied.  For line items: amount = value - discount. For transactions: amount = gross_amount - total_discount
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        notes
+      </td>
+
+      <td>
+        string
+      </td>
+
+      <td>
+        Additional information about the transaction.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        number*
+      </td>
+
+      <td>
+        string
+      </td>
+
+      <td>
+        Unique transaction number. The uniqueness depends on the configuration `CONF_LOYALTY_BILL_NUMBER_UNIQUE_IN_DAYS` set in **InTouch Settings > System & Deployment > InTouch POS Configuration > Billing**.
+
+        * _Note_*: The maximum length for a bill number is 50 characters.
+      </td>
+    </tr>
+  </tbody>
+</Table>
+
+## Error Codes
+
+| Code | Description                                      |
+| ---- | ------------------------------------------------ |
+| 400  | Bad Request - Invalid input parameters           |
+| 401  | Unauthorized - Invalid or missing authentication |
+| 403  | Forbidden - Insufficient permissions             |
+| 404  | Not Found - Resource not found                   |
+| 500  | Internal Server Error                            |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "customer-v11",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v1.1",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/transaction/add_with_local_currency": {
+      "post": {
+        "summary": "Add Transaction with Local Currency",
+        "description": "",
+        "operationId": "add-transaction-with-local-currency",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "string",
+                    "format": "json"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"response\": {\n        \"status\": {\n            \"success\": \"true\",\n            \"code\": 200,\n            \"message\": \"Success\"\n        },\n        \"transactions\": {\n            \"transaction\": [\n                {\n                    \"id\": 884722031,\n                    \"shipping_source_till_code\": \"\",\n                    \"number\": \"test00transact076\",\n                    \"bill_client_id\": \"\",\n                    \"type\": \"REGULAR\",\n                    \"delivery_status\": \"DELIVERED\",\n                    \"parent_bill_number\": \"\",\n                    \"outlier_status\": \"NORMAL\",\n                    \"customer\": {\n                        \"user_id\": \"564703252\",\n                        \"mobile\": \"919999988886\",\n                        \"firstname\": \"Tjuser\",\n                        \"lastname\": \"Eightysix\",\n                        \"email\": \"tom.sawyer@gmail.com\",\n                        \"external_id\": \"0000011110\",\n                        \"lifetime_points\": \"23010\",\n                        \"loyalty_points\": \"10\",\n                        \"current_slab\": \"Ruby\",\n                        \"tier_expiry_date\": \"2125-02-10 23:59:59\",\n                        \"points_summaries\": {\n                            \"points_summary\": [\n                                {\n                                    \"programId\": \"973\",\n                                    \"redeemed\": \"0\",\n                                    \"expired\": \"23000\",\n                                    \"returned\": \"0\",\n                                    \"adjusted\": \"0\",\n                                    \"lifetimePoints\": \"23000\",\n                                    \"loyaltyPoints\": \"0\",\n                                    \"cumulativePurchases\": \"169600\",\n                                    \"currentSlab\": \"Ruby\",\n                                    \"nextSlab\": \"Emerald\",\n                                    \"nextSlabSerialNumber\": \"6\",\n                                    \"nextSlabDescription\": \"Tier 6\",\n                                    \"slabSNo\": \"5\",\n                                    \"slabExpiryDate\": \"2125-02-10 23:59:59\",\n                                    \"totalPoints\": \"\"\n                                },\n                                {\n                                    \"programId\": \"983\",\n                                    \"redeemed\": \"0\",\n                                    \"expired\": \"0\",\n                                    \"returned\": \"0\",\n                                    \"adjusted\": \"0\",\n                                    \"lifetimePoints\": \"10\",\n                                    \"loyaltyPoints\": \"10\",\n                                    \"cumulativePurchases\": \"187600\",\n                                    \"currentSlab\": \"Coral\",\n                                    \"nextSlab\": \"Opal\",\n                                    \"nextSlabSerialNumber\": \"3\",\n                                    \"nextSlabDescription\": \"Tier 3\",\n                                    \"slabSNo\": \"2\",\n                                    \"slabExpiryDate\": \"2125-01-20 23:59:59\",\n                                    \"totalPoints\": \"\"\n                                }\n                            ]\n                        },\n                        \"lifetime_purchases\": \"169600\",\n                        \"type\": \"LOYALTY\",\n                        \"source\": \"instore\"\n                    },\n                    \"side_effects\": {\n                        \"effect\": [\n                            {\n                                \"awarded_points\": \"1\",\n                                \"total_points\": \"10\",\n                                \"customer_id\": \"564703252\",\n                                \"type\": \"points\"\n                            }\n                        ]\n                    },\n                    \"source\": \"instore\",\n                    \"item_status\": {\n                        \"success\": \"true\",\n                        \"code\": 600,\n                        \"message\": \"Transaction added successfully\"\n                    }\n                }\n            ]\n        }\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "object",
+                          "properties": {
+                            "success": {
+                              "type": "string",
+                              "example": "true"
+                            },
+                            "code": {
+                              "type": "integer",
+                              "example": 200,
+                              "default": 0
+                            },
+                            "message": {
+                              "type": "string",
+                              "example": "Success"
+                            }
+                          }
+                        },
+                        "transactions": {
+                          "type": "object",
+                          "properties": {
+                            "transaction": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 884722031,
+                                    "default": 0
+                                  },
+                                  "shipping_source_till_code": {
+                                    "type": "string",
+                                    "example": ""
+                                  },
+                                  "number": {
+                                    "type": "string",
+                                    "example": "test00transact076"
+                                  },
+                                  "bill_client_id": {
+                                    "type": "string",
+                                    "example": ""
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "example": "REGULAR"
+                                  },
+                                  "delivery_status": {
+                                    "type": "string",
+                                    "example": "DELIVERED"
+                                  },
+                                  "parent_bill_number": {
+                                    "type": "string",
+                                    "example": ""
+                                  },
+                                  "outlier_status": {
+                                    "type": "string",
+                                    "example": "NORMAL"
+                                  },
+                                  "customer": {
+                                    "type": "object",
+                                    "properties": {
+                                      "user_id": {
+                                        "type": "string",
+                                        "example": "564703252"
+                                      },
+                                      "mobile": {
+                                        "type": "string",
+                                        "example": "919999988886"
+                                      },
+                                      "firstname": {
+                                        "type": "string",
+                                        "example": "Tjuser"
+                                      },
+                                      "lastname": {
+                                        "type": "string",
+                                        "example": "Eightysix"
+                                      },
+                                      "email": {
+                                        "type": "string",
+                                        "example": "testusertjone@gmail.com"
+                                      },
+                                      "external_id": {
+                                        "type": "string",
+                                        "example": "0000011110"
+                                      },
+                                      "lifetime_points": {
+                                        "type": "string",
+                                        "example": "23010"
+                                      },
+                                      "loyalty_points": {
+                                        "type": "string",
+                                        "example": "10"
+                                      },
+                                      "current_slab": {
+                                        "type": "string",
+                                        "example": "Ruby"
+                                      },
+                                      "tier_expiry_date": {
+                                        "type": "string",
+                                        "example": "2125-02-10 23:59:59"
+                                      },
+                                      "points_summaries": {
+                                        "type": "object",
+                                        "properties": {
+                                          "points_summary": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "programId": {
+                                                  "type": "string",
+                                                  "example": "973"
+                                                },
+                                                "redeemed": {
+                                                  "type": "string",
+                                                  "example": "0"
+                                                },
+                                                "expired": {
+                                                  "type": "string",
+                                                  "example": "23000"
+                                                },
+                                                "returned": {
+                                                  "type": "string",
+                                                  "example": "0"
+                                                },
+                                                "adjusted": {
+                                                  "type": "string",
+                                                  "example": "0"
+                                                },
+                                                "lifetimePoints": {
+                                                  "type": "string",
+                                                  "example": "23000"
+                                                },
+                                                "loyaltyPoints": {
+                                                  "type": "string",
+                                                  "example": "0"
+                                                },
+                                                "cumulativePurchases": {
+                                                  "type": "string",
+                                                  "example": "169600"
+                                                },
+                                                "currentSlab": {
+                                                  "type": "string",
+                                                  "example": "Ruby"
+                                                },
+                                                "nextSlab": {
+                                                  "type": "string",
+                                                  "example": "Emerald"
+                                                },
+                                                "nextSlabSerialNumber": {
+                                                  "type": "string",
+                                                  "example": "6"
+                                                },
+                                                "nextSlabDescription": {
+                                                  "type": "string",
+                                                  "example": "Tier 6"
+                                                },
+                                                "slabSNo": {
+                                                  "type": "string",
+                                                  "example": "5"
+                                                },
+                                                "slabExpiryDate": {
+                                                  "type": "string",
+                                                  "example": "2125-02-10 23:59:59"
+                                                },
+                                                "totalPoints": {
+                                                  "type": "string",
+                                                  "example": ""
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "lifetime_purchases": {
+                                        "type": "string",
+                                        "example": "169600"
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "example": "LOYALTY"
+                                      },
+                                      "source": {
+                                        "type": "string",
+                                        "example": "instore"
+                                      }
+                                    }
+                                  },
+                                  "side_effects": {
+                                    "type": "object",
+                                    "properties": {
+                                      "effect": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "awarded_points": {
+                                              "type": "string",
+                                              "example": "1"
+                                            },
+                                            "total_points": {
+                                              "type": "string",
+                                              "example": "10"
+                                            },
+                                            "customer_id": {
+                                              "type": "string",
+                                              "example": "564703252"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "example": "points"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "source": {
+                                    "type": "string",
+                                    "example": "instore"
+                                  },
+                                  "item_status": {
+                                    "type": "object",
+                                    "properties": {
+                                      "success": {
+                                        "type": "string",
+                                        "example": "true"
+                                      },
+                                      "code": {
+                                        "type": "integer",
+                                        "example": 600,
+                                        "default": 0
+                                      },
+                                      "message": {
+                                        "type": "string",
+                                        "example": "Transaction added successfully"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

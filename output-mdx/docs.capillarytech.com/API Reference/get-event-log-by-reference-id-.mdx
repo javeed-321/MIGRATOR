@@ -1,0 +1,160 @@
+---
+title: Get Event Log (by Reference ID)
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Get Event Log (by Reference ID)
+
+Retrieves the details of a specific event call based on the reference ID of the request.
+
+**refID:** You can retrieve the reference ID from the response of the [Get event log by request ID API](https://docs.capillarytech.com/reference/get-event-log-by-reference-id-).  Reference ID is a combination of \{orgId\}\{uniqueId\}. For example, for a transactionAdd event it is \{orgId\}\{transactionId\}, for a customerAdd event, it is \{orgId\}\{userId\}, for points redemption it is \{orgId\}\{redemptionId\}.\
+**Example url:**  [https://eu.intouch.api.capillarytech.com/v3/webHooks/eventLog/refId/2000089_123563158](https://eu.intouch.api.capillarytech.com/v3/webHooks/eventLog/refId/2000089_123563158)
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v3",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v3",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/webHooks/eventLog/refId/{refid}": {
+      "get": {
+        "summary": "Get Event Log (by Reference ID)",
+        "description": "Retrieves the details of a specific event call based on the reference ID of the request.",
+        "operationId": "get-event-log-by-reference-id-",
+        "parameters": [
+          {
+            "name": "refId",
+            "in": "path",
+            "description": "Pass the reference ID of the API call to fetch details. Reference ID is a combination of {orgId}{uniqueId}. For example for a transactionAdd event it is {orgId}{transactionId}, for a customerAdd event, it is {orgId}{userId}, for points redemption it is {orgId}{redemptionId}.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"data\": {\n    \"refId\": \"2000089_123563158\",\n    \"requestId\": \"194e41f2-5544-4fc5-9365-1f4452daf239\",\n    \"eventName\": \"customerUpdated\",\n    \"eventId\": \"a7351361-793c-46e0-b00d-3629eb1e5e45\",\n    \"consumerGroupId\": \"55bd9129-72ca-4e8d-a94c-08c1316c9d72\",\n    \"eventIngestionTimestamp\": \"2025-03-05T15:43:43.549-0600\",\n    \"eventStartTimestamp\": \"2025-03-05T15:43:43.600-0600\",\n    \"eventEndTimestamp\": null,\n    \"slaBreachTimestamp\": null,\n    \"consumerResponse\": null\n  },\n  \"errors\": null,\n  \"warnings\": null\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "refId": {
+                          "type": "string",
+                          "example": "2000089_123563158"
+                        },
+                        "requestId": {
+                          "type": "string",
+                          "example": "194e41f2-5544-4fc5-9365-1f4452daf239"
+                        },
+                        "eventName": {
+                          "type": "string",
+                          "example": "customerUpdated"
+                        },
+                        "eventId": {
+                          "type": "string",
+                          "example": "a7351361-793c-46e0-b00d-3629eb1e5e45"
+                        },
+                        "consumerGroupId": {
+                          "type": "string",
+                          "example": "55bd9129-72ca-4e8d-a94c-08c1316c9d72"
+                        },
+                        "eventIngestionTimestamp": {
+                          "type": "string",
+                          "example": "2025-03-05T15:43:43.549-0600"
+                        },
+                        "eventStartTimestamp": {
+                          "type": "string",
+                          "example": "2025-03-05T15:43:43.600-0600"
+                        },
+                        "eventEndTimestamp": {},
+                        "slaBreachTimestamp": {},
+                        "consumerResponse": {}
+                      }
+                    },
+                    "errors": {},
+                    "warnings": {}
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://north-america.api.capillarytech.com/v3/webHooks/eventLog/refId/2000089_123563158' \\\n--header 'X-CAP-API-OAUTH-TOKEN: YOUR_JWT_TOKEN' \\\n--header 'X-CAP-API-ATTRIBUTION-ENTITY-TYPE: TILL' \\\n--header 'X-CAP-API-ATTRIBUTION-ENTITY-CODE: flt.100.015' \\\n--header 'Accept: application/json' \\\n--header 'Content-Type: application/json' \\\n--header 'Cookie: _cfuvid=V9gz5M6w1DEozxHdBz2cYsUbw8iDGlMbc8aboxwGuiE-1741294936696-0.0.1.1-604800000'"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

@@ -1,0 +1,475 @@
+---
+title: Update Subscription Details
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Update Subscription Details
+
+You can also use this API endpoint to update subscription details:` /lookup/subscriptions?{queryParams}`
+
+This API allows updating (opt-in or opt-out) subscription status of transactional and bulk messaging services for a customer.
+
+* **Transaction Messages:** These are personalized messages sent to a customer instantly. For example, a new transaction details, points or coupon redeemed, send birthday or anniversary wishes and so on.
+* **Bulk Messages:** These are promotion messages sent to a list of customers. For example, through campaigns.
+
+<Callout kind="info" title="Note">
+
+Make sure communication channels like [Mobile ](https://docs.capillarytech.com/docs/subscription_management#/sms-based-subscription-settings)and [Email ](https://docs.capillarytech.com/docs/subscription_management#/email-subscription-settings)are configured in InTouch for subscription.
+
+</Callout>
+
+<Image src="https://files.readme.io/fbad66fb001361daf225f2c963cfaca13983a821567ba83f239d4941b7f0f9ab-Screenshot_2025-04-30_at_12.28.46_PM.png" width="1920" height="1080" alt="" />
+
+#### API Endpoint example
+
+`https://eu.api.capillarytech.com/v2/customers/565039505/subscriptions?format=json`
+
+<CodeGroup tabs="curl,Sample request for update subscription">
+
+```bash
+curl --location --globoff 'https://eu.api.capillarytech.com/v2/customers/{userId}/subscriptions?format=json' \
+--header 'accept: application/json' \
+--header 'content-type: application/json' \
+--header 'Authorization: Basic cnV0dWphX2NhcGlsbGFyeTpkMTNlMmEyYmY4OWRkNDAxN2U0Y2EwOTk1MGI0NzZjNg==' \
+--header 'Cookie: _cfuvid=rxRpkG0ZaHhqCspOGoNMJ1Zw3B.833ToyoOw1GvD6HU-1750747343765-0.0.1.1-604800000' \
+--data '
+{
+  "communicationId": -1,
+  "campaignId": -1,
+  "reason": "This is V2 subscription api",
+  "scope": {
+    "scope": "USER",
+    "subScope": "NONE"
+  },
+  "subscriptions": [
+    {
+      "channel": "EMAIL",
+      "priority": "BULK",
+      "type": "OPTOUT",
+      "orgUnitId": 200031782,
+      "sourceName": "FACEBOOK",
+      "accountId": "01"
+    },
+    {
+      "channel": "MOBILE",
+      "accountId": "01",
+      "priority": "BULK",
+      "type": "OPTIN",
+      "orgUnitId": 200031782,
+      "sourceName": "FACEBOOK"
+    },
+    {
+      "channel": "EMAIL",
+      "accountId": "01",
+      "priority": "TRANS",
+      "type": "OPTIN",
+      "orgUnitId": 200031782,
+      "sourceName": "FACEBOOK"
+    },
+    {
+      "channel": "MOBILE",
+      "accountId": "01",
+      "priority": "TRANS",
+      "type": "OPTOUT",
+      "orgUnitId": 200031782,
+      "sourceName": "FACEBOOK"
+    }
+  ]
+}
+'
+````
+
+```json
+curl --location 'https://eu.api.capillarytech.com/v2/customers/564590100/subscriptions?format=json' \
+--header 'accept: application/json' \
+--header 'content-type: application/json' \
+--data '
+{
+  "communicationId": -1,
+  "campaignId": -1,
+  "reason": "This is V2 subscription api",
+  "scope": {
+    "scope": "USER",
+    "subScope": "NONE"
+  },
+  "subscriptions": [
+    {
+      "channel": "EMAIL",
+      "priority": "BULK",
+      "type": "OPTOUT",
+      "orgUnitId": 200031782,
+      "sourceName": "FACEBOOK",
+      "accountId": "01"
+    },
+    {
+      "channel": "MOBILE",
+      "accountId": "01",
+      "priority": "BULK",
+      "type": "OPTIN",
+      "orgUnitId": 200031782,
+      "sourceName": "FACEBOOK"
+    },
+    {
+      "channel": "EMAIL",
+      "accountId": "01",
+      "priority": "TRANS",
+      "type": "OPTIN",
+      "orgUnitId": 200031782,
+      "sourceName": "FACEBOOK"
+    },
+    {
+      "channel": "MOBILE",
+      "accountId": "01",
+      "priority": "TRANS",
+      "type": "OPTOUT",
+      "orgUnitId": 200031782,
+      "sourceName": "FACEBOOK"
+    }
+  ]
+}
+'
+````
+
+</CodeGroup>
+### Path parameter
+
+| Field  | Type | Required | Description                        |
+| :----- | :--- | :------- | :--------------------------------- |
+| userId | long | Yes      | Unique identification of the user. |
+
+#### Request Body Parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| communicationId | long | Optional | ID of the communication that initiated the request. Pass `-1` when not applicable or when updating general subscription preferences. |
+| campaignId | long | Optional | Campaign ID related to the request. Pass `-1` when not applicable. |
+| reason | string | Optional | Free-text reason/context. Reason for updating the subscription. |
+| scope | object | Optional | Scope of subscription change. |
+| * scope | string | Optional | Main scope of the subscription. Scope value example: `USER`. |
+| * subScope | string | Optional | Sub-scope of the subscription. Example: `NONE`. |
+| subscriptions | array | Yes | List of subscription objects defining detailed preferences. At least one object is required. |
+| * channel | enum | Yes | Communication channel. Values: `MOBILE`, `EMAIL`, `wechat`, `whatsapp`, `ios`, `android`, `line`. |
+| * accountId | string | Optional | Account identifier for the given channel. |
+| * priority | enum | Yes | Type of message priority. `TRANS` for transactional/personalized messages, `BULK` for campaign or promotional messages. |
+| * type | enum | Yes | Subscription action. `OPTIN` to subscribe, `OPTOUT` to unsubscribe. |
+| * orgUnitId | long | Optional | Org unit to which the subscription change applies. Org unit or concept ID where the subscription should be updated. |
+| * sourceName | enum | Optional | Source of the change. Source in which the identifier is registered. Values: `INSTORE`, `FACEBOOK`, `WEB_ENGAGE`, `WECHAT`, `MARTJACK`, `TMALL`, `TAOBAO`, `JD`, `ECOMMERCE`, `WEBSITE`, `LINE`, `MOBILE_APP`. |
+
+### Example response
+
+```json Sample response update subscription
+{
+    "scope": {
+        "scope": "USER",
+        "subScope": "NONE"
+    },
+    "subscriptions": [
+        {
+            "channel": "EMAIL",
+            "accountId": "01",
+            "priority": "BULK",
+            "type": "OPTOUT",
+            "orgUnitId": 200031782,
+            "sourceName": "FACEBOOK"
+        },
+        {
+            "channel": "MOBILE",
+            "accountId": "01",
+            "priority": "BULK",
+            "type": "OPTIN",
+            "orgUnitId": 200031782,
+            "sourceName": "FACEBOOK"
+        },
+        {
+            "channel": "EMAIL",
+            "accountId": "01",
+            "priority": "TRANS",
+            "type": "OPTIN",
+            "orgUnitId": 200031782,
+            "sourceName": "FACEBOOK"
+        },
+        {
+            "channel": "MOBILE",
+            "accountId": "01",
+            "priority": "TRANS",
+            "type": "OPTOUT",
+            "orgUnitId": 200031782,
+            "sourceName": "FACEBOOK"
+        }
+    ],
+    "campaignId": -1,
+    "communicationId": -1,
+    "reason": "This is V2 subscription api",
+    "warnings": []
+}
+````
+```json Sample response update subscription - 500 
+{
+    "warnings": [],
+    "errors": [
+        {
+            "status": false,
+            "message": "All requests have failed due to errors",
+            "code": 500
+        }
+    ]
+}
+````
+
+<br />
+
+#### Response Parameter
+
+| Parameter       | Type             | Description                                                   |
+| --------------- | ---------------- | ------------------------------------------------------------- |
+| scope.scope     | String           | The scope of the subscription (e.g., "USER").                 |
+| scope.subScope  | String           | The sub-scope of the subscription (e.g., "NONE").             |
+| subscriptions   | Array of Objects | A list of subscription objects.                               |
+| campaignId      | Integer          | The ID of the campaign associated with the subscription.      |
+| communicationId | Integer          | The ID of the communication associated with the subscription. |
+| reason          | String           | A description or reason for the response.                     |
+| warnings        | Array            | A list of warnings, if any.                                   |
+
+#### Subscription Object Details:
+
+Each object in the `subscriptions` array has the following parameters:
+
+| Parameter  | Type    | Description                                                     |
+| ---------- | ------- | --------------------------------------------------------------- |
+| channel    | String  | The communication channel (e.g., "EMAIL", "MOBILE").            |
+| accountId  | String  | The account ID associated with the subscription.                |
+| priority   | String  | The priority level of the subscription (e.g., "BULK", "TRANS"). |
+| type       | String  | The subscription type (e.g., "OPTOUT", "OPTIN").                |
+| orgUnitId  | Integer | The organizational unit ID associated with the subscription.    |
+| sourceName | String  | The source of the subscription (e.g., "FACEBOOK").              |
+
+**Note:** An update to the subscription status of a customer doesn’t generate or trigger event notifications.
+
+### API specific error code
+
+| Error code | Description                                                    | Reason                                                                          |
+| :--------- | :------------------------------------------------------------- | :------------------------------------------------------------------------------ |
+| 1012       | Cannot find customer for provided mobile/external-id/e-mail/id | Mobile/Email id/External-id invalid                                             |
+| 1000       | Customer Subscriptions could not be added                      | Invalid customer details or missing data                                        |
+| 400        | Bad Request                                                    | The request is malformed or missing required parameters (e.g., invalid format). |
+| 401        | Unauthorized                                                   | Authentication failed or the user lacks valid credentials.                      |
+| 500        | Internal Server Error                                          | An unexpected server error occurred.                                            |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/customers/{userId}/subscriptions": {
+      "post": {
+        "summary": "Update Subscription Details",
+        "description": "",
+        "operationId": "update-subscription-details",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Unique ID of the customer to add or update subscription details.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          },
+          {
+            "name": "X-CAP-API-OAUTH-TOKEN",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "string",
+                    "format": "json"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample Response": {
+                    "value": "{\n  \"scope\": {\n    \"scopeId\": 0,\n    \"scope\": \"USER\",\n    \"subScope\": \"NONE\",\n    \"setCreatedOn\": false,\n    \"setPriority\": false,\n    \"setScopeId\": false,\n    \"setScope\": true,\n    \"setSubScope\": true\n  },\n  \"subscriptions\": [\n    {\n      \"channel\": \"EMAIL\",\n      \"accountId\": \"\",\n      \"priority\": \"BULK\",\n      \"type\": \"OPTOUT\"\n    },\n    {\n      \"channel\": \"EMAIL\",\n      \"accountId\": \"\",\n      \"priority\": \"TRANS\",\n      \"type\": \"OPTIN\"\n    },\n    {\n      \"channel\": \"SMS\",\n      \"accountId\": \"123\",\n      \"priority\": \"TRANS\",\n      \"type\": \"OPTIN\"\n    }\n  ],\n  \"campaignId\": -1,\n  \"communicationId\": -1,\n  \"reason\": \"Sample reason\",\n  \"warnings\": []\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "scope": {
+                      "type": "object",
+                      "properties": {
+                        "scopeId": {
+                          "type": "integer",
+                          "example": 0,
+                          "default": 0
+                        },
+                        "scope": {
+                          "type": "string",
+                          "example": "USER"
+                        },
+                        "subScope": {
+                          "type": "string",
+                          "example": "NONE"
+                        },
+                        "setCreatedOn": {
+                          "type": "boolean",
+                          "example": false,
+                          "default": true
+                        },
+                        "setPriority": {
+                          "type": "boolean",
+                          "example": false,
+                          "default": true
+                        },
+                        "setScopeId": {
+                          "type": "boolean",
+                          "example": false,
+                          "default": true
+                        },
+                        "setScope": {
+                          "type": "boolean",
+                          "example": true,
+                          "default": true
+                        },
+                        "setSubScope": {
+                          "type": "boolean",
+                          "example": true,
+                          "default": true
+                        }
+                      }
+                    },
+                    "subscriptions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "channel": {
+                            "type": "string",
+                            "example": "EMAIL"
+                          },
+                          "accountId": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "priority": {
+                            "type": "string",
+                            "example": "BULK"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "OPTOUT"
+                          }
+                        }
+                      }
+                    },
+                    "campaignId": {
+                      "type": "integer",
+                      "example": -1,
+                      "default": 0
+                    },
+                    "communicationId": {
+                      "type": "integer",
+                      "example": -1,
+                      "default": 0
+                    },
+                    "reason": {
+                      "type": "string",
+                      "example": "Sample reason"
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}{\n    \"warnings\": [],\n    \"errors\": [\n        {\n            \"status\": false,\n            \"code\": 400,\n            \"message\": \"Input is invalid, Please check request parameters or input xml/json\"\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/customers/564590100/subscriptions?format=json' \\\n--header 'accept: application/json' \\\n--header 'content-type: application/json' \\\n--header 'Authorization: Basic =' \\\n--header 'Cookie: _cfuvid=X10Acl1k9j7MrHQCJt3b1cfJ3SoAqnlKIOMGhKPmf8M-1756809013719-0.0.1.1-604800000' \\\n--data '\n{\n  \"communicationId\": -1,\n  \"campaignId\": -1,\n  \"reason\": \"This is V2 subscription api\",\n  \"scope\": {\n    \"scope\": \"USER\",\n    \"subScope\": \"NONE\"\n  },\n  \"subscriptions\": [\n    {\n      \"channel\": \"EMAIL\",\n      \"priority\": \"BULK\",\n      \"type\": \"OPTOUT\",\n      \"orgUnitId\": 200031782,\n      \"sourceName\": \"FACEBOOK\",\n      \"accountId\": \"01\"\n    },\n    {\n      \"channel\": \"MOBILE\",\n      \"accountId\": \"01\",\n      \"priority\": \"BULK\",\n      \"type\": \"OPTIN\",\n      \"orgUnitId\": 200031782,\n      \"sourceName\": \"FACEBOOK\"\n    },\n    {\n      \"channel\": \"EMAIL\",\n      \"accountId\": \"01\",\n      \"priority\": \"TRANS\",\n      \"type\": \"OPTIN\",\n      \"orgUnitId\": 200031782,\n      \"sourceName\": \"FACEBOOK\"\n    },\n    {\n      \"channel\": \"MOBILE\",\n      \"accountId\": \"01\",\n      \"priority\": \"TRANS\",\n      \"type\": \"OPTOUT\",\n      \"orgUnitId\": 200031782,\n      \"sourceName\": \"FACEBOOK\"\n    }\n  ]\n}\n'",
+              "name": "Sample request update subscription details"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

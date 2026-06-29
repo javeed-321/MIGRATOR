@@ -1,0 +1,315 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Update Lead
+
+Updates extended fields for an existing lead
+
+> 📘 To enable a specific language support for an org, contact the Platforms team to get the translations added to the database and activate translations for the org.
+
+# Path parameter
+
+| Parameter | Description            |
+| :-------- | :--------------------- |
+| leadID    | Unique ID of the lead. |
+
+# Query parameter
+
+| Parameter      | Description                                                                               |
+| :------------- | :---------------------------------------------------------------------------------------- |
+| extendedFields | Key-value pairs of extended fields and its values                                         |
+| owner          | Username of the owner or associate of the lead. Use this to assign leads to an associate. |
+
+# Response parameter
+
+| Parameter        | Description                                      |
+| ---------------- | ------------------------------------------------ |
+| id               | Unique identifier for the lead.                  |
+| userId           | User ID associated with the lead.                |
+| type             | Type of the lead.                                |
+| leadFor          | Description of what the lead is for.             |
+| status           | Current status of the lead.                      |
+| nextFollowUp     | Scheduled date and time for the next follow-up.  |
+| createdOn        | Date and time when the lead was created.         |
+| createdBy        | User ID of the person who created the lead.      |
+| lastUpdatedOn    | Date and time when the lead was last updated.    |
+| lastUpdatedBy    | User ID of the person who last updated the lead. |
+| followUpDetails  | Details of the follow-up activities.             |
+| statusLogDetails | Details of the status log activities.            |
+| orgSourceId      | Organization source ID.                          |
+| extendedFields   | Additional extended fields related to the lead.  |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/leads/{leadId}": {
+      "put": {
+        "summary": "Update Lead",
+        "description": "Updates extended fields for an existing lead",
+        "operationId": "update-lead",
+        "parameters": [
+          {
+            "name": "language",
+            "in": "header",
+            "description": "Specify the ISO code of a language to get extended field values in your preferred language. For example, zh for Chinese, id for Indonesian, ar for Arabic. English is the default language.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "leadId",
+            "in": "path",
+            "description": "Unique ID of the lead.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "required": true
+          },
+          {
+            "name": "extendedFields",
+            "in": "query",
+            "description": "Key-value pairs of extended fields and its values",
+            "schema": {
+              "properties": {},
+              "type": "object"
+            }
+          },
+          {
+            "name": "owner",
+            "in": "query",
+            "description": "Username of the owner or associate of the lead. Use this to assign leads to a associate.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample Response": {
+                    "value": "{\n    \"id\": 19,\n    \"userId\": 316804150,\n    \"type\": \"SKU\",\n    \"leadFor\": \"item001\",\n    \"status\": \"ON_HOLD\",\n    \"nextFollowUp\": \"2018-10-05T08:00:00+05:30\",\n    \"createdOn\": \"2018-10-04T13:30:00+05:30\",\n    \"createdBy\": 28812689,\n    \"lastUpdatedOn\": \"2018-11-28T10:31:19+05:30\",\n    \"lastUpdatedBy\": 15147364,\n    \"followUpDetails\": [\n        {\n            \"id\": 37,\n            \"userId\": 316804150,\n            \"leadId\": 19,\n            \"notes\": \"notes 1\",\n            \"createdBy\": 15147364,\n            \"createdOn\": \"2018-11-28T10:31:19+05:30\",\n            \"followedUpBy\": 28812689,\n            \"followedUpOn\": \"2018-10-04T12:45:00+05:30\",\n            \"scheduledFollowUp\": \"2018-10-04T12:30:00+05:30\"\n        },\n        {\n            \"id\": 38,\n            \"userId\": 316804150,\n            \"leadId\": 19,\n            \"notes\": \"notes 2\",\n            \"createdBy\": 15147364,\n            \"createdOn\": \"2018-11-28T10:31:19+05:30\",\n            \"followedUpBy\": 28812689,\n            \"followedUpOn\": \"2018-10-04T12:45:00+05:30\",\n            \"scheduledFollowUp\": \"2018-10-04T12:30:00+05:30\"\n        }\n    ],\n    \"statusLogDetails\": [\n        {\n            \"id\": 39,\n            \"userId\": 316804150,\n            \"leadId\": 19,\n            \"status\": \"OPEN\",\n            \"createdBy\": 15147364,\n            \"createdOn\": \"2018-11-28T10:31:19+05:30\",\n            \"reasonId\": 1,\n            \"reason\": \"not available\"\n        },\n        {\n            \"id\": 40,\n            \"userId\": 316804150,\n            \"leadId\": 19,\n            \"status\": \"ON_HOLD\",\n            \"createdBy\": 15147364,\n            \"createdOn\": \"2018-11-28T10:31:19+05:30\",\n            \"reasonId\": 2,\n            \"reason\": \"phone not working\"\n        }\n    ],\n    \"orgSourceId\": -1,\n    \"extendedFields\": {\n        \"trial_status\": \"Not Done\"\n    },\n    \"warnings\": [\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 19,
+                      "default": 0
+                    },
+                    "userId": {
+                      "type": "integer",
+                      "example": 316804150,
+                      "default": 0
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "SKU"
+                    },
+                    "leadFor": {
+                      "type": "string",
+                      "example": "item001"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "ON_HOLD"
+                    },
+                    "nextFollowUp": {
+                      "type": "string",
+                      "example": "2018-10-05T08:00:00+05:30"
+                    },
+                    "createdOn": {
+                      "type": "string",
+                      "example": "2018-10-04T13:30:00+05:30"
+                    },
+                    "createdBy": {
+                      "type": "integer",
+                      "example": 28812689,
+                      "default": 0
+                    },
+                    "lastUpdatedOn": {
+                      "type": "string",
+                      "example": "2018-11-28T10:31:19+05:30"
+                    },
+                    "lastUpdatedBy": {
+                      "type": "integer",
+                      "example": 15147364,
+                      "default": 0
+                    },
+                    "followUpDetails": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 37,
+                            "default": 0
+                          },
+                          "userId": {
+                            "type": "integer",
+                            "example": 316804150,
+                            "default": 0
+                          },
+                          "leadId": {
+                            "type": "integer",
+                            "example": 19,
+                            "default": 0
+                          },
+                          "notes": {
+                            "type": "string",
+                            "example": "notes 1"
+                          },
+                          "createdBy": {
+                            "type": "integer",
+                            "example": 15147364,
+                            "default": 0
+                          },
+                          "createdOn": {
+                            "type": "string",
+                            "example": "2018-11-28T10:31:19+05:30"
+                          },
+                          "followedUpBy": {
+                            "type": "integer",
+                            "example": 28812689,
+                            "default": 0
+                          },
+                          "followedUpOn": {
+                            "type": "string",
+                            "example": "2018-10-04T12:45:00+05:30"
+                          },
+                          "scheduledFollowUp": {
+                            "type": "string",
+                            "example": "2018-10-04T12:30:00+05:30"
+                          }
+                        }
+                      }
+                    },
+                    "statusLogDetails": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 39,
+                            "default": 0
+                          },
+                          "userId": {
+                            "type": "integer",
+                            "example": 316804150,
+                            "default": 0
+                          },
+                          "leadId": {
+                            "type": "integer",
+                            "example": 19,
+                            "default": 0
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "OPEN"
+                          },
+                          "createdBy": {
+                            "type": "integer",
+                            "example": 15147364,
+                            "default": 0
+                          },
+                          "createdOn": {
+                            "type": "string",
+                            "example": "2018-11-28T10:31:19+05:30"
+                          },
+                          "reasonId": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          },
+                          "reason": {
+                            "type": "string",
+                            "example": "not available"
+                          }
+                        }
+                      }
+                    },
+                    "orgSourceId": {
+                      "type": "integer",
+                      "example": -1,
+                      "default": 0
+                    },
+                    "extendedFields": {
+                      "type": "object",
+                      "properties": {
+                        "trial_status": {
+                          "type": "string",
+                          "example": "Not Done"
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "{\n\"extendedFields\":\n  {\n    \"trial_status\":\"Not Done\"\n  }\n\n}",
+              "name": "Sample PUT Body"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

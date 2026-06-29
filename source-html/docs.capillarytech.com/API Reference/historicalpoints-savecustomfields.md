@@ -1,0 +1,178 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Create Historical Points Custom Fields
+
+You can use this API to create custom fields for historical points import as part of your loyalty migration setup.
+
+Custom fields allow you to attach additional metadata to each historical point's entry when onboarding customers from an external or legacy loyalty system.
+
+You can use this API to:
+
+* Store additional attributes from the source loyalty platform.
+* Define required fields before uploading historical points.
+* Reference these fields during the historical points upload process. Ensure that you execute this API before initiating historical points import.
+
+# Example request
+
+```curl Sample request
+curl --location 'https://eu.intouch.capillarytech.com/v2/historicalPoints/saveCustomFields' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Basic bmVlcmFqLmRhNGNjZGMzMzQzMWVmOWFjOQ==' \
+--data '{
+    "customFieldName": [
+        "testField2"
+    ]
+}'
+```
+
+# Prerequisites
+
+Custom fields must be created before importing historical points data. These fields store additional metadata about each historical point's entry.
+
+> 📘 Note
+>
+> This API is for organizations migrating customers from an external or legacy loyalty program to Capillary. Custom fields allow you to capture additional metadata from the source system during import.
+
+# Body parameters
+
+| Field           | Type  | Required? | Description                                                                    |
+| :-------------- | :---- | :-------- | :----------------------------------------------------------------------------- |
+| customFieldName | array | Yes       | List of custom field names to create. Each name must be unique within the org. |
+
+# Example response
+
+```json Sample response
+{
+    "status": true,
+    "message": "SUCCESSFULLY_SAVED_HISTORICAL_POINTS_CUSTOM_FIELD",
+    "warnings": []
+}
+```
+
+# Response parameters
+
+| Parameter | Datatype | Description                                                |
+| :-------- | :------- | :--------------------------------------------------------- |
+| status    | boolean  | `true` if the operation was successful, `false` otherwise. |
+| message   | string   | Descriptive message about the result of the operation.     |
+| warnings  | array    | List of warning messages.                                  |
+
+# Error & warning codes
+
+| Code | Description                                                                                                                                                   |
+| :--- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2202 | Error in saving historical points custom fields. Returned when any exception occurs during the save operation (e.g., database error, thrift service failure). |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Historical Points API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "{Host}",
+      "variables": {
+        "Host": {
+          "default": "https://eu.intouch.capillarytech.com",
+          "enum": [
+            "https://eu.intouch.capillarytech.com",
+            "https://intouch.capillary.co.in",
+            "https://apac2.intouch.capillarytech.com",
+            "https://sgcrm.cc.capillarytech.com",
+            "http://intouch.capillarytech.cn.com",
+            "https://north-america.intouch.capillarytech.com"
+          ]
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/v2/historicalPoints/saveCustomFields": {
+      "post": {
+        "summary": "Save Custom Fields",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Basic Auth Header (Corrupted per instructions)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "Basic bmVlcmFqLmRvYzpiNGFmODA0MDA5Y2IwMzZhNGNjZGMzMzQzMWVmOWFj"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customFieldName": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "customFieldName": [
+                    "testField2"
+                  ]
+                }
+              },
+              "examples": {
+                "New Example": {
+                  "summary": "New Example",
+                  "value": {}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "OK": {
+                    "summary": "OK",
+                    "value": {
+                      "status": true,
+                      "message": "SUCCESSFULLY_SAVED_HISTORICAL_POINTS_CUSTOM_FIELD",
+                      "warnings": []
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'https://eu.intouch.capillarytech.com/v2/historicalPoints/saveCustomFields' \\\n--header 'Content-Type: application/json' \\\n--header 'Accept: application/json' \\\n--header 'Authorization: BasicGFmODA0MDA5Y2IwMzZhNGNjZGMzMzQzMWVmOWFjOQ==' \\\n--data '{\n    \"customFieldName\": [\n        \"testField4\",\n         \"testField5\"\n    ]\n}'",
+              "language": "shell",
+              "name": "curl"
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  }
+}
+```

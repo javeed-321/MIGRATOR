@@ -1,0 +1,383 @@
+---
+title: Delink Customer
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Delink Customer
+
+Lets you remove a customer from one or more partner programs.
+
+This API is used to Delink customer from Partner Program.
+
+<Callout kind="tip" title="Note">
+
+* For detailed information about our APIs and for hands-on testing, refer documentation in [API overview](https://docs.capillarytech.com/reference/apioverview) and step-by-step guide on making your first API call in [Make your first API call](https://docs.capillarytech.com/reference/make-your-first-api-call).
+
+</Callout>
+
+## Prerequisites
+
+* [ ] Authentication: Basic or OAuth credentials
+* [ ] Default access group
+
+## Resource information
+
+|                        |                                |
+| :--------------------- | :----------------------------- |
+| URI                    | /partnerProgram/deLinkCustomer |
+| HTTP Method            | POST                           |
+| Pagination             | No                             |
+| Batch support          | No                             |
+| Rate limit information | None                           |
+
+## API endpoint example
+
+`https://eu.api.capillarytech.com/v2/partnerProgram/deLinkCustomer`
+
+## Request body parameters
+
+| Parameter | Datatype | Description |
+| --- | --- | --- |
+| deLinkCustomers | array | List of customers to be delinked |
+| customer | object | Customer details |
+| * mobile | integer | Customer's mobile number |
+| deLinkFromPartnerPrograms | array | List of partner programs to delink from |
+| * partnerProgramName | string | Name of the partner program where it will be linked from. |
+
+```json
+{
+  "deLinkCustomers": [
+    {
+      "customer": {
+        "mobile": 919800000000
+      },
+      "deLinkFromPartnerPrograms": [
+        {
+          "partnerProgramName": "1stProgram"
+        },
+        {
+          "partnerProgramName": "p3e1"
+        }
+      ]
+    }
+  ]
+}
+````
+
+## Response Parameter
+
+| Parameter | Description |
+| --- | --- |
+| customersPartnerUpdates | List of customers with partner program updates |
+| customer | List of customer details |
+| id | Unique identifier for the customer. |
+| mobile | Customer's unique mobile number |
+| email | Customer's unique email |
+| externalId | Customer's unique external ID |
+| status | Status of the customer retrieval |
+| * message | Message regarding customer retrieval |
+| * code | Status code |
+| partnerProgramUpdates | List of partner program updates |
+| partnerProgramName | Name of the partner program |
+| updateType | Type of update (e.g., UPGRADE) |
+| updateStatus | List of update status |
+| * status | Status of the update |
+| * message | Message regarding the update |
+| * code | Status code |
+| warnings | List of warnings (if any) |
+
+```json
+{
+  "customersPartnerUpdates": [
+    {
+      "customer": {
+        "id": 382741349,
+        "mobile": "916215000000",
+        "email": "tomswayer@gmail.com",
+        "externalId": "X916215000000",
+        "status": {
+          "status": true,
+          "message": "Customer successfully retrieved",
+          "code": 1000
+        }
+      },
+      "partnerProgramUpdates": [
+        {
+          "partnerProgramName": "1stProgram",
+          "updateType": "UPGRADE",
+          "updateStatus": {
+            "status": true,
+            "message": "Success",
+            "code": 200
+          }
+        }
+      ]
+    }
+  ],
+  "warnings": []
+}
+````
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/partnerProgram/deLinkCustomer": {
+      "post": {
+        "summary": "Delink Customer",
+        "description": "Lets you remove a customer from one or more partner programs.",
+        "operationId": "delink-customer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "deLinkCustomers": {
+                    "properties": {
+                      "customer": {
+                        "properties": {
+                          "mobile": {
+                            "type": "string",
+                            "description": "Mobile number of the customer."
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Email ID of the customer."
+                          },
+                          "externalId": {
+                            "type": "string",
+                            "description": "External ID of the customer."
+                          }
+                        },
+                        "required": [],
+                        "type": "object"
+                      },
+                      "deLinkFromPartnerPrograms": {
+                        "properties": {
+                          "partnerProgramName": {
+                            "type": "string",
+                            "description": "Name of the partner program to delink."
+                          }
+                        },
+                        "required": [
+                          "partnerProgramName"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "required": [],
+                    "type": "object",
+                    "description": "Details of the customer and partner program to delink."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": {
+                      "customersPartnerUpdates": [
+                        {
+                          "customer": {
+                            "id": 382741349,
+                            "mobile": "916215000000",
+                            "email": "tom.swayer@capillarytech.com",
+                            "externalId": "X916215000000",
+                            "status": {
+                              "status": true,
+                              "message": "Customer successfully retrieved",
+                              "code": 1000
+                            }
+                          },
+                          "partnerProgramUpdates": [
+                            {
+                              "partnerProgramName": "1stProgram",
+                              "updateType": "UPGRADE",
+                              "updateStatus": {
+                                "status": true,
+                                "message": "Success",
+                                "code": 200
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "warnings": []
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "customersPartnerUpdates": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "customer": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 382741349,
+                                "default": 0
+                              },
+                              "mobile": {
+                                "type": "string",
+                                "example": "916215000000"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "tom.swayer@capillarytech.com"
+                              },
+                              "externalId": {
+                                "type": "string",
+                                "example": "X916215000000"
+                              },
+                              "status": {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "type": "boolean",
+                                    "example": true,
+                                    "default": true
+                                  },
+                                  "message": {
+                                    "type": "string",
+                                    "example": "Customer successfully retrieved"
+                                  },
+                                  "code": {
+                                    "type": "integer",
+                                    "example": 1000,
+                                    "default": 0
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "partnerProgramUpdates": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "partnerProgramName": {
+                                  "type": "string",
+                                  "example": "1stProgram"
+                                },
+                                "updateType": {
+                                  "type": "string",
+                                  "example": "UPGRADE"
+                                },
+                                "updateStatus": {
+                                  "type": "object",
+                                  "properties": {
+                                    "status": {
+                                      "type": "boolean",
+                                      "example": true,
+                                      "default": true
+                                    },
+                                    "message": {
+                                      "type": "string",
+                                      "example": "Success"
+                                    },
+                                    "code": {
+                                      "type": "integer",
+                                      "example": 200,
+                                      "default": 0
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "{\n  \"deLinkCustomers\": [\n    {\n      \"customer\": {\n        \"mobile\": 919800000000\n      },\n      \"deLinkFromPartnerPrograms\": [\n        {\n          \"partnerProgramName\": \"1stProgram\"\n        },\n        {\n          \"partnerProgramName\": \"p3e1\"\n        }\n      ]\n    }\n  ]\n}",
+              "name": "Sample POST Body"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

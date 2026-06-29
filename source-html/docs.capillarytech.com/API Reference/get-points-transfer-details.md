@@ -1,0 +1,815 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Get Points Transfer Details
+
+Retrieves the history of points transferred from a group or customer.
+
+# Example request
+
+```curl Sample request
+curl --location 'https://eu.api.capillarytech.com/v2/points/transfer?identifierName=mobile&source=INSTORE&identifierValue=919777785207' \
+--header 'Authorization: Basic bWFka2YQ==' \
+--header 'Cookie: _cfuvid=IEacVBB7xCaQXaYZNjqhVgGFNNBE1wcNyx6O5vnh4cA-1759831634361-0.0.1.1-604800000'
+```
+
+# Resource information
+
+|                    |    |
+| :----------------- | :- |
+| Pagination support | No |
+| Rate limit         | NA |
+| Batch support      | No |
+
+# Request parameters
+
+| Parameter       | Data Type | Description                                                                                                                                            |
+| :-------------- | :-------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| source          | string    | Source in which the customer identifier is available. For example, `INSTORE`, `MARTJACK`, `WECHAT`, `WEBSITE`, `MOBILE_APP`                            |
+| identifierName  | string    | Identifier type used to identify the customer. For example, `mobile`, `email`, `externalId`, `id`                                                      |
+| identifierValue | string    | Value of the specified identifier type of the customer.                                                                                                |
+| accountId       | string    | string	For sources with multiple accounts, pass the specific account ID in which the customer identifier is registered (not applicable for `INSTORE`). |
+
+# Example response
+
+```json Sample response
+{
+    "data": [
+        {
+            "toEntityId": 564955411,
+            "toEntityType": "CUSTOMER",
+            "fromEntityId": 564955302,
+            "fromEntityType": "CUSTOMER",
+            "pointsTransferDate": "2025-10-07 10:30:48",
+            "pointsTransferDateISO": "2025-10-07T10:30:48Z",
+            "pointsTransferred": 2.0,
+            "transferId": 1040871,
+            "transferType": "ADDITION",
+            "transferredFrom": {
+                "userId": 564955302,
+                "firstName": "testgrp4",
+                "lastName": "testgrpv2",
+                "externalId": "434548"
+            },
+            "transferredTo": {
+                "userId": 564955411,
+                "firstName": "testgrp5",
+                "lastName": "testgrpv2",
+                "externalId": "434549"
+            },
+            "notes": "",
+            "programName": "DocDemoDefaultProgram"
+        },
+        {
+            "toEntityId": 564955411,
+            "toEntityType": "CUSTOMER",
+            "fromEntityId": 564955302,
+            "fromEntityType": "CUSTOMER",
+            "pointsTransferDate": "2025-07-02 17:59:32",
+            "pointsTransferDateISO": "2025-07-02T17:59:32Z",
+            "pointsTransferred": 2.0,
+            "transferId": 1038615,
+            "transferType": "ADDITION",
+            "transferredFrom": {
+                "userId": 564955302,
+                "firstName": "testgrp4",
+                "lastName": "testgrpv2",
+                "externalId": "434548"
+            },
+            "transferredTo": {
+                "userId": 564955411,
+                "firstName": "testgrp5",
+                "lastName": "testgrpv2",
+                "externalId": "434549"
+            },
+            "notes": "",
+            "programName": "DocDemoDefaultProgram"
+        },
+        {
+            "toEntityId": 564955411,
+            "toEntityType": "CUSTOMER",
+            "fromEntityId": 564955302,
+            "fromEntityType": "CUSTOMER",
+            "pointsTransferDate": "2025-06-03 11:00:19",
+            "pointsTransferDateISO": "2025-06-03T11:00:19Z",
+            "pointsTransferred": 2.0,
+            "transferId": 1037933,
+            "transferType": "ADDITION",
+            "transferredFrom": {
+                "userId": 564955302,
+                "firstName": "testgrp4",
+                "lastName": "testgrpv2",
+                "externalId": "434548"
+            },
+            "transferredTo": {
+                "userId": 564955411,
+                "firstName": "testgrp5",
+                "lastName": "testgrpv2",
+                "externalId": "434549"
+            },
+            "notes": "",
+            "programName": "DocDemoDefaultProgram"
+        }
+    ],
+    "warnings": [],
+    "errors": []
+}
+```
+
+## Response Parameter
+
+<Table align={["left","left","left"]}>
+  <thead>
+    <tr>
+      <th>
+        Parameter
+      </th>
+
+      <th>
+        Type
+      </th>
+
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        toEntityId
+      </td>
+
+      <td>
+        Integer
+      </td>
+
+      <td>
+        The ID of the entity receiving the points
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        toEntityType
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        The type of entity receiving points (e.g., "CUSTOMER")
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        fromEntityId
+      </td>
+
+      <td>
+        Integer
+      </td>
+
+      <td>
+        The ID of the entity sending the points
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        fromEntityType
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        The type of entity sending points (e.g., "CUSTOMER")
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        pointsTransferDate
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        The date and time when points were transferred (yyyy-MM-dd HH:mm:ss format)
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        pointsTransferDateISO
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        Indicates the date and time when the points transfer occured in ISO 8601 format, returned in the server time zone.
+
+        EU server example  
+        2025-12-16T14:30:45Z → 16 December 2025, 14:30:45 (UTC)
+
+        India server example  
+        2025-12-16T14:30:45+05:30 → 16 December 2025, 14:30:45 (IST)
+
+        **Note**: The response time zone always matches the server time zone, regardless of the time zone offset in the request.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        pointsTransferred
+      </td>
+
+      <td>
+        Float
+      </td>
+
+      <td>
+        The number of points transferred
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        transferId
+      </td>
+
+      <td>
+        Integer
+      </td>
+
+      <td>
+        Unique identifier for the transfer transaction
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        transferType
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        Type of transfer (e.g., "DEDUCTION")
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        transferredFrom
+      </td>
+
+      <td>
+        Object
+      </td>
+
+      <td>
+        Details about the sender
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        -userId
+      </td>
+
+      <td>
+        Integer
+      </td>
+
+      <td>
+        Unique identifier of the sender user
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        -firstName
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        First name of the sender
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        -lastName
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        Last name of the sender
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        -externalId
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        External identifier of the sender
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        transferredTo
+      </td>
+
+      <td>
+        Object
+      </td>
+
+      <td>
+        Details about the receiver
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        -userId
+      </td>
+
+      <td>
+        Integer
+      </td>
+
+      <td>
+        Unique identifier of the receiver user
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        -firstName
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        First name of the receiver
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        -lastName
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        Last name of the receiver
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        -externalId
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        External identifier of the receiver
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        notes
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        Additional notes about the transfer
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        programName
+      </td>
+
+      <td>
+        String
+      </td>
+
+      <td>
+        Name of the loyalty program associated with the transfer
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        warnings
+      </td>
+
+      <td>
+        Array
+      </td>
+
+      <td>
+        List of warning messages
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        errors
+      </td>
+
+      <td>
+        Array
+      </td>
+
+      <td>
+        List of error messages
+      </td>
+    </tr>
+  </tbody>
+</Table>
+
+## API specific error code
+
+| Error code | Description                                  | Reason                                                 |
+| :--------- | :------------------------------------------- | :----------------------------------------------------- |
+| 8015       | Customer not found for the given identifiers | Invalid or missing identifier value in query parameter |
+
+# OpenAPI definition
+
+````json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/points/transfer": {
+      "get": {
+        "summary": "Get Points Transfer Details",
+        "description": "Retrieves the history of points transferred from a group or customer.",
+        "operationId": "get-points-transfer-details",
+        "parameters": [
+          {
+            "name": "identifierName",
+            "in": "query",
+            "description": "Identifier tyep to identify customer or group.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "mobile",
+                "email",
+                "externalId",
+                "cardnumber",
+                "wechat",
+                "martjackId",
+                "fbId"
+              ]
+            }
+          },
+          {
+            "name": "identifierValue",
+            "in": "query",
+            "description": "Value of the specified ```identifierType```.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Source in which customer account is available. Required for customer entity.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "FACEBOOK",
+                "WEB_ENGAGE",
+                "WECHAT",
+                "INSTORE",
+                "MARTJACK",
+                "TMALL",
+                "TAOBAO",
+                "JD",
+                "ECOMMERCE",
+                "WEBSITE",
+                "LINE",
+                "MOBILE_APP"
+              ]
+            }
+          },
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "Account ID for sources with multiple account IDs. Required for sources with multiple accounts.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "toEntityId": {
+                            "type": "integer",
+                            "example": 564955098,
+                            "default": 0
+                          },
+                          "toEntityType": {
+                            "type": "string",
+                            "example": "CUSTOMER"
+                          },
+                          "fromEntityId": {
+                            "type": "integer",
+                            "example": 564955097,
+                            "default": 0
+                          },
+                          "fromEntityType": {
+                            "type": "string",
+                            "example": "CUSTOMER"
+                          },
+                          "pointsTransferDate": {
+                            "type": "string",
+                            "example": "2025-03-26 17:49:22"
+                          },
+                          "pointsTransferred": {
+                            "type": "integer",
+                            "example": 40,
+                            "default": 0
+                          },
+                          "transferId": {
+                            "type": "integer",
+                            "example": 1035937,
+                            "default": 0
+                          },
+                          "transferType": {
+                            "type": "string",
+                            "example": "DEDUCTION"
+                          },
+                          "transferredFrom": {
+                            "type": "object",
+                            "properties": {
+                              "userId": {
+                                "type": "integer",
+                                "example": 564955097,
+                                "default": 0
+                              },
+                              "firstName": {
+                                "type": "string",
+                                "example": "testgrp1"
+                              },
+                              "lastName": {
+                                "type": "string",
+                                "example": "testgrpv2"
+                              },
+                              "externalId": {
+                                "type": "string",
+                                "example": "434545"
+                              }
+                            }
+                          },
+                          "transferredTo": {
+                            "type": "object",
+                            "properties": {
+                              "userId": {
+                                "type": "integer",
+                                "example": 564955098,
+                                "default": 0
+                              },
+                              "firstName": {
+                                "type": "string",
+                                "example": "testgrp2"
+                              },
+                              "lastName": {
+                                "type": "string",
+                                "example": "testgrpv2"
+                              },
+                              "externalId": {
+                                "type": "string",
+                                "example": "434546"
+                              }
+                            }
+                          },
+                          "notes": {
+                            "type": "string",
+                            "example": "Transferred on 28 feb 2025"
+                          },
+                          "programName": {
+                            "type": "string",
+                            "example": "DocDemoDefaultProgram"
+                          }
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    },
+                    "errors": {
+                      "type": "array"
+                    }
+                  }
+                },
+                "examples": {
+                  "Sample response": {
+                    "summary": "Sample response",
+                    "value": {
+                      "data": [
+                        {
+                          "toEntityId": 564955411,
+                          "toEntityType": "CUSTOMER",
+                          "fromEntityId": 564955302,
+                          "fromEntityType": "CUSTOMER",
+                          "pointsTransferDate": "2025-10-07 10:30:48",
+                          "pointsTransferDateISO": "2025-10-07T10:30:48Z",
+                          "pointsTransferred": 2,
+                          "transferId": 1040871,
+                          "transferType": "ADDITION",
+                          "transferredFrom": {
+                            "userId": 564955302,
+                            "firstName": "testgrp4",
+                            "lastName": "testgrpv2",
+                            "externalId": "434548"
+                          },
+                          "transferredTo": {
+                            "userId": 564955411,
+                            "firstName": "testgrp5",
+                            "lastName": "testgrpv2",
+                            "externalId": "434549"
+                          },
+                          "notes": "",
+                          "programName": "DocDemoDefaultProgram"
+                        },
+                        {
+                          "toEntityId": 564955411,
+                          "toEntityType": "CUSTOMER",
+                          "fromEntityId": 564955302,
+                          "fromEntityType": "CUSTOMER",
+                          "pointsTransferDate": "2025-07-02 17:59:32",
+                          "pointsTransferDateISO": "2025-07-02T17:59:32Z",
+                          "pointsTransferred": 2,
+                          "transferId": 1038615,
+                          "transferType": "ADDITION",
+                          "transferredFrom": {
+                            "userId": 564955302,
+                            "firstName": "testgrp4",
+                            "lastName": "testgrpv2",
+                            "externalId": "434548"
+                          },
+                          "transferredTo": {
+                            "userId": 564955411,
+                            "firstName": "testgrp5",
+                            "lastName": "testgrpv2",
+                            "externalId": "434549"
+                          },
+                          "notes": "",
+                          "programName": "DocDemoDefaultProgram"
+                        },
+                        {
+                          "toEntityId": 564955411,
+                          "toEntityType": "CUSTOMER",
+                          "fromEntityId": 564955302,
+                          "fromEntityType": "CUSTOMER",
+                          "pointsTransferDate": "2025-06-03 11:00:19",
+                          "pointsTransferDateISO": "2025-06-03T11:00:19Z",
+                          "pointsTransferred": 2,
+                          "transferId": 1037933,
+                          "transferType": "ADDITION",
+                          "transferredFrom": {
+                            "userId": 564955302,
+                            "firstName": "testgrp4",
+                            "lastName": "testgrpv2",
+                            "externalId": "434548"
+                          },
+                          "transferredTo": {
+                            "userId": 564955411,
+                            "firstName": "testgrp5",
+                            "lastName": "testgrpv2",
+                            "externalId": "434549"
+                          },
+                          "notes": "",
+                          "programName": "DocDemoDefaultProgram"
+                        }
+                      ],
+                      "warnings": [],
+                      "errors": []
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/points/transfer?identifierName=mobile&source=INSTORE&identifierValue=919777785207' \\\n--header 'Authorization: Basic bWFkNzI3MjU2YQ==' \\\n--header 'Cookie: _cfuvid=IEacVBB7xCaQXaYZNjqhVgGFNNBE1wcNyx6O5vnh4cA-1759831634361-0.0.1.1-604800000'"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+````

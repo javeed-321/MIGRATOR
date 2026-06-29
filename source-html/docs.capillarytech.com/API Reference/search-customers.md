@@ -1,0 +1,327 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Search Customers
+
+Lets you fetch customers based on partial or complete keywords passed. You can fetch customers by name, customer identifier, registered store id, registered date, loyalty points, lifetime points, lifetime purchases amount, current tier, transaction amount, and custom field values.
+
+> ❗️ This API is deprecated and is no longer supported.
+
+> 📘 **Note**
+>
+> * If customer details are not found, then customer data is not retrieved. However, currently, `customer not found error` is not shown in V1.1. As there are no integrations built on V1.1 `customer/search`, it is recommended to use V2.0 customer/Search API to see proper response status.
+> * Error Code: 461\
+>   This represents timeout error when you try to fetch customers with all the three identifiers - mobile, email, and external id - and Solr DB times out.
+>   This is because, when you make an API call, Solr DB is queried firstly. If Solr times out, MySQL is searched, but MySQL does not support search on multiple identifiers.
+
+### Query Parameter Names
+
+You need to understand Query Grammar to learn how to use input parameters for customer/search API. For more details, see the Query Grammar section.
+
+Example: `?q=(slab:EQUALS:CLASSIC)`
+
+| Parameter           | Datatype | Description                                                                                                                                                                                                                                                                         |
+| ------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| firstname           | string   | Retrieves the list of customers whose first name matches with the string passed. <br />**Query**: `firstname:EXACT:<code>&#123;</code>first name`}                                                                                                                                  |
+| lastname            | string   | Retrieves the list of customers whose last name matches with the string passed.<br />**Query**: `lastname:EXACT:<code>&#123;</code>last Name`}                                                                                                                                      |
+| org\_id             | long     | Retrieves the list of entire customers of the respective organization. <br />**Query**: `org_id:EQUALS:<code>&#123;</code>org_id`}                                                                                                                                                  |
+| mobile              | string   | Retrieves customers whose registered mobile numbers matches with the string passed. <br />**Query**: `mobile:EQUALS:<code>&#123;</code>mobile_number`}                                                                                                                              |
+| email               | string   | Retrieves the list of registered customers whose email id matches with the string passed. <br />**Query**: `email:EQUALS:<code>&#123;</code>email_id`}                                                                                                                              |
+| external\_id        | string   | Retrieves customers whose external id matches with the string passed. <br />**Query**: `external_id:EQUALS:<code>&#123;</code>external_id`}                                                                                                                                         |
+| registered\_date    | date     | Retrieves customers by registered date. <br />**Query**: `registered_date:ON:<code>&#123;</code>date in YYYY-MM-DD`}.                                                                                                                                                               |
+| loyalty\_points     | int      | Retrieves the list of customers whose active loyalty points matches the specified query. <br />**Query**: `loyalty_points:GREATER:<code>&#123;</code>loyalty_points`}                                                                                                               |
+| lifetime\_points    | int      | Retrieves the list of customers whose lifetime points matches the specified query. <br />**Query**: `lifetime_points:GREATER:<code>&#123;</code>lifetime_points`}                                                                                                                   |
+| lifetime\_purchases | int      | Retrieves the list of customers whose lifetime purchases amount matches the specified query. **Query**: `lifetime_purchases:GREATER:<code>&#123;</code>lifetime_purchases`}                                                                                                         |
+| slab                | string   | Retrieves the list of customers whose current loyalty tier matches the specified value. <br />**Query**: `slab:EQUALS:<code>&#123;</code>tier_name`}                                                                                                                                |
+| registered\_store   | string   | Retrieves customers by registered store. <br />**Query**: `registered_store:EQUALS:<code>&#123;</code>store_id`}                                                                                                                                                                    |
+| last\_trans\_value  | double   | Retrieves the list of customers whose transaction amount matches the specified query. <br />**Query**: `transaction_value:GREATER:<code>&#123;</code>transaction_amount`}                                                                                                           |
+| Operator            | enum     | Predefined conditions based on which you want to fetch results. Values: `STARTS<code>, </code>ENDS<code>, </code>EXACT<code>, </code>RANGE`, `LESS<code>, </code>GREATER<code>, </code>EQUALS<code>, </code>IN`. For more details, see the following section, Search Query Grammar. |
+
+### Search Query Grammar
+
+The following is a formal definition of the Query Grammar
+
+**QUERY**: `(CONDITION) | (CONDITION & (CONDITION)*)`
+
+**CONDITION**: `ATTRIBUTE:OPERATOR:VALUES`
+
+**ATTRIBUTE**: Set of inventory/customer attributes that are searchable.
+
+**Dynamic List**
+
+* **OPERATOR**: STARTS, ENDS, EXACT, RANGE, LESS, GREATER, EQUALS, IN, ON
+* **VALUES**: ALPHANUMERIC | ALPHANUMERIC;ALPHANUMERIC(for RANGE, IN OPERATOR, separator is ';' )
+
+### Response Parameters
+
+| Parameter           | Datatype  | Description                                                                                                |
+| ------------------- | --------- | ---------------------------------------------------------------------------------------------------------- |
+| count               | int       | Number of customer results retrieved.                                                                      |
+| item                | obj       | Details of each customer.                                                                                  |
+| user\_id            | long      | Unique ID of the customer generated by the system.                                                         |
+| lifetime\_points    | int       | Total loyalty points earned by the customer to date.                                                       |
+| lifetime\_purchases | int       | Total purchases amount (loyalty or non-loyalty transactions) of the customer across all stores of the org. |
+| loyalty\_points     | int       | Current active loyalty points (neither redeemed nor expired) of the customers.                             |
+| current\_slab       | string    | Current loyalty tier of the customer.                                                                      |
+| registered\_on      | date-time | Date on which the customer is enrolled in the org's loyalty.                                               |
+| registered\_by      | string    | TILL or store code from which the customer is enrolled in the loyalty program.                             |
+| last\_trans\_value  | double    | Bill amount of the recent transaction of the customer.                                                     |
+| attributes          | obj       | Customer attribute details in `name<code> and </code>value`                                                |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "customer-v11",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v1.1",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/customer/search": {
+      "get": {
+        "summary": "Search Customers",
+        "description": "Lets you fetch customers based on partial or complete keywords passed. You can fetch customers by name, customer identifier, registered store id, registered date, loyalty points, lifetime points, lifetime purchases amount, current tier, transaction amount, and custom field values.",
+        "operationId": "search-customers",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Preferred response format.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "json",
+                "xml"
+              ]
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Query string by which customers need to be fetched. q=({param}:{Operator}:{value})<br> Use Query Grammar.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n   \"response\":{\n      \"status\":{\n         \"success\":\"true\",\n         \"code\":\"200\",\n         \"message\":\"SUCCESS\"\n      },\n      \"customer\":{\n         \"count\":\"2\",\n         \"start\":\"0\",\n         \"rows\":\"10\",\n         \"results\":{\n            \"item\":[\n               {\n                  \"user_id\":\"102\",\n                  \"org_id\":\"29\",\n                  \"firstname\":\"Tom\",\n                  \"lastname\":\"Sawyer\",\n                  \"mobile\":\"44700900000\",\n                  \"email\":\"tom.sawyer@example.com\",\n                  \"external_id\":\"None\",\n                  \"loyalty_points\":\"355\",\n                  \"lifetime_points\":\"5400\",\n                  \"lifetime_purchases\":\"10800\",\n                  \"current_slab\":\"CLASSIC\",\n                  \"registered_on\":\"2012-12-25 11:25:32\",\n                  \"registered_by\":\"pe.london.bondstreet\",\n                  \"last_trans_value\":\"1000\",\n                  \"attributes\":{\n                     \"attribute\":{\n                        \"name\":\"customer_age\",\n                        \"value\":\"26-35\"\n                     }\n                  }\n               },\n               {\n                  \"user_id\":\"122\",\n                  \"org_id\":\"29\",\n                  \"firstname\":\"John\",\n                  \"lastname\":\"Smith\",\n                  \"mobile\":\"44700900888\",\n                  \"email\":\"john.smith@example.com\",\n                  \"external_id\":\"None\",\n                  \"loyalty_points\":\"355\",\n                  \"lifetime_points\":\"355\",\n                  \"lifetime_purchases\":\"4598\",\n                  \"current_slab\":\"CLASSIC\",\n                  \"registered_on\":\"2012-12-25 11:25:32\",\n                  \"registered_by\":\"px.london.bondstreet\",\n                  \"last_trans_value\":\"1000\",\n                  \"attributes\":{\n                     \"attribute\":[\n                        {\n                           \"name\":\"occupation\",\n                           \"value\":\"Student\"\n                        },\n                        {\n                           \"name\":\"customer_age\",\n                           \"value\":\"19-25\"\n                        }\n                     ]\n                  }\n               }\n            ]\n         }\n      }\n   }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "object",
+                          "properties": {
+                            "success": {
+                              "type": "string",
+                              "example": "true"
+                            },
+                            "code": {
+                              "type": "string",
+                              "example": "200"
+                            },
+                            "message": {
+                              "type": "string",
+                              "example": "SUCCESS"
+                            }
+                          }
+                        },
+                        "customer": {
+                          "type": "object",
+                          "properties": {
+                            "count": {
+                              "type": "string",
+                              "example": "2"
+                            },
+                            "start": {
+                              "type": "string",
+                              "example": "0"
+                            },
+                            "rows": {
+                              "type": "string",
+                              "example": "10"
+                            },
+                            "results": {
+                              "type": "object",
+                              "properties": {
+                                "item": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "user_id": {
+                                        "type": "string",
+                                        "example": "102"
+                                      },
+                                      "org_id": {
+                                        "type": "string",
+                                        "example": "29"
+                                      },
+                                      "firstname": {
+                                        "type": "string",
+                                        "example": "Tom"
+                                      },
+                                      "lastname": {
+                                        "type": "string",
+                                        "example": "Sawyer"
+                                      },
+                                      "mobile": {
+                                        "type": "string",
+                                        "example": "44700900000"
+                                      },
+                                      "email": {
+                                        "type": "string",
+                                        "example": "tom.sawyer@example.com"
+                                      },
+                                      "external_id": {
+                                        "type": "string",
+                                        "example": "None"
+                                      },
+                                      "loyalty_points": {
+                                        "type": "string",
+                                        "example": "355"
+                                      },
+                                      "lifetime_points": {
+                                        "type": "string",
+                                        "example": "5400"
+                                      },
+                                      "lifetime_purchases": {
+                                        "type": "string",
+                                        "example": "10800"
+                                      },
+                                      "current_slab": {
+                                        "type": "string",
+                                        "example": "CLASSIC"
+                                      },
+                                      "registered_on": {
+                                        "type": "string",
+                                        "example": "2012-12-25 11:25:32"
+                                      },
+                                      "registered_by": {
+                                        "type": "string",
+                                        "example": "pe.london.bondstreet"
+                                      },
+                                      "last_trans_value": {
+                                        "type": "string",
+                                        "example": "1000"
+                                      },
+                                      "attributes": {
+                                        "type": "object",
+                                        "properties": {
+                                          "attribute": {
+                                            "type": "object",
+                                            "properties": {
+                                              "name": {
+                                                "type": "string",
+                                                "example": "customer_age"
+                                              },
+                                              "value": {
+                                                "type": "string",
+                                                "example": "26-35"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "html",
+              "code": "https://us.api.capillarytech.tech.com/v1.1/customer/search?q=(slab:EQUALS:CLASSIC)",
+              "name": "Sample Request"
+            }
+          ],
+          "samples-languages": [
+            "html"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

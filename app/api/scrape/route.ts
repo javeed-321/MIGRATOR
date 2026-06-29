@@ -137,7 +137,7 @@ export async function POST(req: Request) {
     }
 
     // Auto-save raw scrape + converted documentation.json
-    const docJsonDir = path.join(process.cwd(), "docJson");
+    const docJsonDir = path.join(process.cwd(), "doc-json");
     const convertedDir = path.join(docJsonDir, "converted");
     const safeName = out.site.replace(/[^a-zA-Z0-9.-]/g, "_");
     try {

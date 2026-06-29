@@ -1,0 +1,422 @@
+---
+title: Join Member to Group
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Join Member to Group
+
+This API allows you to add a member to a group.
+
+<Callout kind="info">
+
+  Pass at least one among the query parameters. - id, externalId, primaryUserId.
+
+</Callout>
+
+<Callout kind="danger">
+
+️ Make sure you have the appropriate access control configured. For more information, see [access group documentation](https://docs.capillarytech.com/docs/access-group).
+
+</Callout>
+
+## Example request
+
+```curl Sample request
+curl --location 'https://eu.api.capillarytech.com/v2/userGroup2/join?id=3962910&primaryUserId=565039506' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic bWFkaHVfcI3MjU2YQ==' \
+--header 'Cookie: _cfuvid=vzCvOnzGrFLOd.qyWq3C1wR4U_d0NN8lePwtil_RTVU-1774957797145-0.0.1.1-604800000' \
+--data '[
+    {
+        "userId": 568557831,
+        "primaryMember": true,
+        "permissions": [
+            "allow_points_redemption",
+            "allow_points_transfer",
+            "block_points_redemption",
+            "block_points_transfer"
+        ],
+        "defaultGroup" : true,
+        "active" : true
+    }
+]'
+````
+
+## Query parameter
+
+| Parameter     | Data type | Description                                 |
+| :------------ | :-------- | :------------------------------------------ |
+| id            | long      | Unique ID of the user group.                |
+| externalId    | String    | External ID of the user group.              |
+| primaryUserId | long      | User ID of the primary member of the group. |
+
+**Note**: Either of the query parameters is mandatory.
+
+## Body parameters
+
+| Parameter | Data type | Mandatory | Description |
+| --- | --- | --- | --- |
+| `userId` | Long | Yes | The unique identifier for the user. |
+| `primaryMember` | boolean | No | A boolean value indicating whether the user is a primary member or not. **Notes**: * The primary member acts as the group owner and the primary member's identifier serves as the group's unique identifier. * Once a primary member is added, you cannot change the primary member of the group. * Only one primary member is allowed per group. * If the primary member leaves the group, the group becomes defunct. If you want the group to remain active after the primary member leaves the group, raise a ticket to the Product Support team and enable the config `CONF_DISABLE_GROUP_DEACTIVATION_ON_PRIMARY_MEMBER_EXIT`. |
+| `permissions` | String | Yes | An array of strings that represent the permissions assigned to the user. |
+
+## Example response
+
+```json Sample response
+{
+    "response": [
+        {
+            "entityId": {
+                "userId": 568557831,
+                "groupId": 3962910,
+                "permissions": [
+                    "allow_points_redemption",
+                    "allow_points_transfer",
+                    "block_points_redemption",
+                    "block_points_transfer"
+                ],
+                "primaryMember": true,
+                "active": true,
+                "defaultGroup": true
+            },
+            "result": {
+                "userId": 568557831,
+                "groupId": 3962910,
+                "permissions": [
+                    "allow_points_redemption",
+                    "allow_points_transfer",
+                    "block_points_redemption",
+                    "block_points_transfer"
+                ],
+                "primaryMember": true,
+                "active": true,
+                "defaultGroup": true
+            },
+            "warnings": []
+        }
+    ],
+    "totalCount": 1,
+    "failureCount": 0
+}
+````
+
+## Response parameters
+
+| Parameter                          | Description                                                                       |
+| ---------------------------------- | --------------------------------------------------------------------------------- |
+| response                           | Array containing details of the response entity and the result.                   |
+| response[].entityId               | Contains information about the entity's identification and associated properties. |
+| response[].entityId.userId        | Unique identifier of the user associated with the entity.                         |
+| response[].entityId.groupId       | Unique identifier of the group associated with the entity.                        |
+| response[].entityId.permissions   | Array of permissions granted to the entity.                                       |
+| response[].entityId.defaultGroup  | Boolean indicating whether the entity belongs to a default group or not.          |
+| response[].entityId.active        | Boolean indicating if the entity is active.                                       |
+| response[].entityId.primaryMember | Boolean indicating if the entity is a primary member or not.                      |
+| response[].result                 | Contains the resultant details after processing the request.                      |
+| response[].result.userId          | Unique identifier of the user associated with the result.                         |
+| response[].result.groupId         | Unique identifier of the group associated with the result.                        |
+| response[].result.permissions     | Array of permissions granted to the result.                                       |
+| response[].result.defaultGroup    | Boolean indicating whether the result belongs to a default group or not.          |
+| response[].result.active          | Boolean indicating if the result is active.                                       |
+| response[].result.primaryMember   | Boolean indicating if the result is a primary member or not.                      |
+| response[].warnings               | Array containing any warnings related to the response.                            |
+| totalCount                         | The total number of entities in the response.                                     |
+| failureCount                       | The total number of failures during the processing.                               |
+
+## Error code
+
+| Error code | Description                               |
+| :--------- | :---------------------------------------- |
+| 1636       | Customer is already a member of the group |
+| 1635       | group query param is not passed           |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/v2/userGroup2/join?id={id/externalId/primaryUserId}": {
+      "post": {
+        "summary": "Join Member to Group",
+        "description": "This API allows you to add a member to a group.",
+        "operationId": "join-member-to-group",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique ID of the user group.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "required": true
+          },
+          {
+            "name": "externalId",
+            "in": "path",
+            "description": "External ID of the user group.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "primaryUserId",
+            "in": "path",
+            "description": "User ID of the primary member of the group.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "userId"
+                ],
+                "properties": {
+                  "userId": {
+                    "type": "integer",
+                    "description": "Unique ID of the customer to be added to the group.",
+                    "format": "int64"
+                  },
+                  "primaryMember": {
+                    "type": "boolean",
+                    "description": "Pass false for secondary members."
+                  },
+                  "permissions": {
+                    "type": "array",
+                    "description": "The permissions/restrictions for the customer. Valus: block_points_redemption - This disables redeeming points.",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample Response": {
+                    "value": {
+                      "response": [
+                        {
+                          "entityId": {
+                            "userId": 568557831,
+                            "groupId": 3962910,
+                            "permissions": [
+                              "allow_points_redemption",
+                              "allow_points_transfer",
+                              "block_points_redemption",
+                              "block_points_transfer"
+                            ],
+                            "primaryMember": true,
+                            "active": true,
+                            "defaultGroup": true
+                          },
+                          "result": {
+                            "userId": 568557831,
+                            "groupId": 3962910,
+                            "permissions": [
+                              "allow_points_redemption",
+                              "allow_points_transfer",
+                              "block_points_redemption",
+                              "block_points_transfer"
+                            ],
+                            "primaryMember": true,
+                            "active": true,
+                            "defaultGroup": true
+                          },
+                          "warnings": []
+                        }
+                      ],
+                      "totalCount": 1,
+                      "failureCount": 0
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "entityId": {
+                            "type": "object",
+                            "properties": {
+                              "userId": {
+                                "type": "integer",
+                                "example": 416066472,
+                                "default": 0
+                              },
+                              "groupId": {
+                                "type": "integer",
+                                "example": 2361,
+                                "default": 0
+                              },
+                              "permissions": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "example": "block_points_redemption"
+                                }
+                              },
+                              "defaultGroup": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              },
+                              "active": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              },
+                              "primaryMember": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              }
+                            }
+                          },
+                          "result": {
+                            "type": "object",
+                            "properties": {
+                              "userId": {
+                                "type": "integer",
+                                "example": 416066472,
+                                "default": 0
+                              },
+                              "groupId": {
+                                "type": "integer",
+                                "example": 2361,
+                                "default": 0
+                              },
+                              "permissions": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "example": "block_points_redemption"
+                                }
+                              },
+                              "defaultGroup": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              },
+                              "active": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              },
+                              "primaryMember": {
+                                "type": "boolean",
+                                "example": false,
+                                "default": true
+                              }
+                            }
+                          },
+                          "warnings": {
+                            "type": "array"
+                          }
+                        }
+                      }
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "example": 1,
+                      "default": 0
+                    },
+                    "failureCount": {
+                      "type": "integer",
+                      "example": 0,
+                      "default": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/userGroup2/join?id=3962910&primaryUserId=565039506' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic bWFkaHI3MjU2YQ==' \\\n--header 'Cookie: _cfuvid=vzCvOnzGrFLOd.qyWq3C1wR4U_d0NN8lePwtil_RTVU-1774957797145-0.0.1.1-604800000' \\\n--data '[\n    {\n        \"userId\": 568557831,\n        \"primaryMember\": true,\n        \"permissions\": [\n            \"allow_points_redemption\",\n            \"allow_points_transfer\",\n            \"block_points_redemption\",\n            \"block_points_transfer\"\n        ],\n        \"defaultGroup\" : true,\n        \"active\" : true\n    }\n]'",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

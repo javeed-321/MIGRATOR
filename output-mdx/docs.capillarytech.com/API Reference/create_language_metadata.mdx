@@ -1,0 +1,244 @@
+---
+title: Create Language Metadata for Rewards
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Create Language Metadata for Rewards
+
+Endpoint for POST /api_gateway/rewards/core/v1/metadata/language/create
+
+This API allows you to create language metadata for rewards.
+
+## Prerequisites
+
+* [ ] Authentication: Basic or OAuth credentials
+* [ ] Default access group
+
+## Resource information
+
+|                        |                                                        |
+| :--------------------- | :----------------------------------------------------- |
+| URI                    | /api_gateway/rewards/core/v1/metadata/language/create |
+| HTTP Method            | POST                                                   |
+| Pagination             | NA                                                     |
+| Batch support          | NA                                                     |
+| Rate limit information | NA                                                     |
+
+## Sample API cURL
+
+```
+curl --location 'https://eu.api.capillarytech.com/api_gateway/rewards/core/v1/metadata/language/create' \
+--header 'Content-Type: application/json' \
+--header 'Accept: */*' \
+--header 'Authorization: Basic Z2VvcmdlLmpvaG5zb246OTg4OTU2NWI4OVhMmY4ZWE1MTk1MjA2NWEwYTEzNzg=' \
+--header 'Cookie: _cfuvid=Vo40i2sQt2b9D_BbvyU32Wbvu39g2t0iystT.W9RDJ0-1751522911573-0.0.1.1-604800000' \
+--data '{
+    "code" : "EN_DOC",
+    "name" : "English"
+}'
+````
+
+<br />
+
+## Request body parameters
+
+| Parameter | Data type | Description                                      |
+| --------- | --------- | ------------------------------------------------ |
+| code      | string    | Any unique identifier representing the language. |
+| name      | string    | The name of the language.                        |
+
+## Response parameters
+
+| Parameter | Data type | Description                                                     |
+| --------- | --------- | --------------------------------------------------------------- |
+| status    | object    | Indicates the status of the operation                           |
+| success   | boolean   | Indicates whether the operation was successful                  |
+| code      | integer   | A code representing the status of the operation.                |
+| message   | string    | A message providing additional information about the operation. |
+| language  | object    | Contains details about the language that was saved              |
+| code      | string    | Unique code representing the language.                          |
+| name      | string    | Indicates name of the language.                                 |
+| enabled   | boolean   | Indicates whether the language is enabled or not                |
+
+<br />
+
+```curl Sample Response
+{
+    "status": {
+        "success": true,
+        "code": 2102,
+        "message": "Language save successfully"
+    },
+    "language": {
+        "code": "EN_DO9",
+        "name": "English",
+        "enabled": true
+    }
+}
+````
+
+## API error codes
+
+| Code | Description             | Reason                                      |
+| :--- | :---------------------- | :------------------------------------------ |
+| 2107 | Language already exists | Language with the same name already exists. |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Sample API",
+    "version": "1.0.0",
+    "description": "API specification generated from cURL for POST /api_gateway/rewards/core/v1/metadata/language/create"
+  },
+  "servers": [
+    {
+      "url": "https://{host}"
+    }
+  ],
+  "paths": {
+    "/api_gateway/rewards/core/v1/metadata/language/create": {
+      "post": {
+        "summary": "Operation for POST /api_gateway/rewards/core/v1/metadata/language/create",
+        "description": "Endpoint for POST /api_gateway/rewards/core/v1/metadata/language/create",
+        "operationId": "postApi_gatewayrewardscorev1metadatalanguagecreate",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "*/*"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Basic Z2VvcmdlLmpvaG5zb246OTg4OTU2NWI4ODVhMmY4ZWE1MTk1MjA2NWEwYTEzNzg="
+            }
+          },
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "_cfuvid=Vo40i2sQt2b9D_BbvyU32Wbvu39g2t0iystT.W9RDJ0-1751522911573-0.0.1.1-604800000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation (default from cURL)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "code": {
+                          "type": "integer",
+                          "example": 2102
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Language save successfully"
+                        }
+                      }
+                    },
+                    "language": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "example": "EN_DOC"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "English"
+                        },
+                        "enabled": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "example": "EN_DOC"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "English"
+                  }
+                },
+                "description": "Request body as an object",
+                "required": [
+                  "code",
+                  "name"
+                ]
+              }
+            }
+          },
+          "description": "Request body",
+          "required": false
+        },
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'https://eu.api.capillarytech.com/api_gateway/rewards/core/v1/metadata/language/create' \\\n--header 'Content-Type: application/json' \\\n--header 'Accept: */*' \\\n--header 'Authorization: Basic Z2VvcmdlLmpvaG5zb246OTg4OTU2NWI4ODVhMmY4ZWE1MTk1MjA2NWEwYTEzNzg=' \\\n--header 'Cookie: _cfuvid=Vo40i2sQt2b9D_BbvyU32Wbvu39g2t0iystT.W9RDJ0-1751522911573-0.0.1.1-604800000' \\\n--data '{\n    \"code\" : \"EN_DOC\",\n    \"name\" : \"English\"\n}'",
+              "language": "shell",
+              "name": ""
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  }
+}
+```

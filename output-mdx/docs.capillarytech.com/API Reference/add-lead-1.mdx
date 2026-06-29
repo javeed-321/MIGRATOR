@@ -1,0 +1,287 @@
+---
+title: Add Lead
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Add Lead
+
+Adds a new lead. A new non-loyalty customer will be created if you pass a new customer identifier.
+
+#### Request Body Parameters
+
+| Parameter      | Data type | Description                                                                                                                                  |
+| -------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| type           | enum      | Item or hierarchy for which the lead is generated. Values: `SKU`, `BRAND`, `CATEGORY`, or `CUSTOM`. Default value is SKU                     |
+| leadFor*      | string    | Name of SKU, brand or category based on the `type` specified                                                                                 |
+| userId         | int       | Unique id of the customer associated to the lead. If this is left blank, then you need to pass idType and identifier as mandatory parameters |
+| idType         | enum      | Specified identifier type either `EMAIL` or `MOBILE`                                                                                         |
+| identifier     | string    | Value of the specified `idType`                                                                                                              |
+| nextFollowUp   | date      | Next follow up date of the lead                                                                                                              |
+| createdOn      | date-time | Date and time of lead creation in `YYYY-MM-DDThh:mm:ssTZD` format. Example: 2018-10-05T08:00:00+05:30                                        |
+| createdBy      | int       | Entity id of the staff who creates the lead. <br /> Default value is the id of the entity from which the request has come                    |
+| lastUpdatedOn  | date-time | Date and time when the lead is recently updated in `YYYY-MM-DDThh:mm:ssTZD` format                                                           |
+| lastUpdatedBy  | int       | Entity id of the staff who recently updated the lead                                                                                         |
+| extendedFields | obj       | Key-value pairs of extended fields and its values                                                                                            |
+| orgSourceId    | enum      | Unique id of the org channel account. Default value is -1 for InStore account                                                                |
+| lastFollowUp   |           | Date and time of recent follow up of the lead in `YYYY-MM-DDThh:mm:ssTZD` format                                                             |
+| owner          | string    | Username of the staff user who is assigned to the lead                                                                                       |
+| subStatus      | enum      | Current sub-status of the lead. Use only names that are created using `leads/substatus` API                                                  |
+
+<br />
+
+<Callout kind="info" title="Note">
+
+To enable a specific language support for an org, contact the Platforms team to get the translations added to the database and activate translations for the org.
+
+</Callout>
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/leads": {
+      "patch": {
+        "summary": "Add Lead",
+        "description": "Adds a new lead. A new non-loyalty customer will be created if you pass a new customer identifier.",
+        "operationId": "add-lead-1",
+        "parameters": [
+          {
+            "name": "language",
+            "in": "header",
+            "description": "Specify the ISO code of a language to get extended field values in your preferred language. For example, zh for Chinese, id for Indonesian, ar for Arabic. English is the default language.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample Response": {
+                    "value": "{\n    \"id\": 1,\n    \"userId\": 368754334,\n    \"type\": \"SKU\",\n    \"leadFor\": \"item001\",\n    \"status\": \"ON_HOLD\",\n    \"nextFollowUp\": \"2018-10-05T08:00:00+05:30\",\n    \"createdOn\": \"2018-10-04T13:30:00+05:30\",\n    \"createdBy\": 28812689,\n    \"lastUpdatedOn\": \"2018-11-14T15:38:04+05:30\",\n    \"lastUpdatedBy\": 15002926,\n    \"followUpDetails\": [\n        {\n            \"id\": 1,\n            \"userId\": 368754334,\n            \"leadId\": 1,\n            \"notes\": \"notes 1\",\n            \"createdBy\": 15002926,\n            \"createdOn\": \"2018-11-14T15:38:04+05:30\",\n            \"followedUpBy\": 28812689,\n            \"followedUpOn\": \"2018-10-04T12:45:00+05:30\",\n            \"scheduledFollowUp\": \"2018-10-04T12:30:00+05:30\"\n        },\n        {\n            \"id\": 2,\n            \"userId\": 368754334,\n            \"leadId\": 1,\n            \"notes\": \"notes 2\",\n            \"createdBy\": 15002926,\n            \"createdOn\": \"2018-11-14T15:38:04+05:30\",\n            \"followedUpBy\": 28812689,\n            \"followedUpOn\": \"2018-10-04T12:45:00+05:30\",\n            \"scheduledFollowUp\": \"2018-10-04T12:30:00+05:30\"\n        }\n    ],\n    \"extendedFields\":\n  {\n    \"trial_status\":\"Not Done\"\n  },\n    \"statusLogDetails\": [\n        {\n            \"id\": 1,\n            \"userId\": 368754334,\n            \"leadId\": 1,\n            \"status\": \"OPEN\",\n            \"createdBy\": 15002926,\n            \"createdOn\": \"2018-11-14T15:38:04+05:30\",\n            \"reasonId\": 5,\n            \"reason\": \"Best price available at another store\"\n        },\n        {\n            \"id\": 2,\n            \"userId\": 368754334,\n            \"leadId\": 1,\n            \"status\": \"ON_HOLD\",\n            \"createdBy\": 15002926,\n            \"createdOn\": \"2018-11-14T15:38:04+05:30\",\n            \"reasonId\": 4,\n            \"reason\": \"Item not available in store\"\n        }\n    ],\n    \"orgSourceId\": -1,\n    \"warnings\": []\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1,
+                      "default": 0
+                    },
+                    "userId": {
+                      "type": "integer",
+                      "example": 368754334,
+                      "default": 0
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "SKU"
+                    },
+                    "leadFor": {
+                      "type": "string",
+                      "example": "item001"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "ON_HOLD"
+                    },
+                    "nextFollowUp": {
+                      "type": "string",
+                      "example": "2018-10-05T08:00:00+05:30"
+                    },
+                    "createdOn": {
+                      "type": "string",
+                      "example": "2018-10-04T13:30:00+05:30"
+                    },
+                    "createdBy": {
+                      "type": "integer",
+                      "example": 28812689,
+                      "default": 0
+                    },
+                    "lastUpdatedOn": {
+                      "type": "string",
+                      "example": "2018-11-14T15:38:04+05:30"
+                    },
+                    "lastUpdatedBy": {
+                      "type": "integer",
+                      "example": 15002926,
+                      "default": 0
+                    },
+                    "followUpDetails": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          },
+                          "userId": {
+                            "type": "integer",
+                            "example": 368754334,
+                            "default": 0
+                          },
+                          "leadId": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          },
+                          "notes": {
+                            "type": "string",
+                            "example": "notes 1"
+                          },
+                          "createdBy": {
+                            "type": "integer",
+                            "example": 15002926,
+                            "default": 0
+                          },
+                          "createdOn": {
+                            "type": "string",
+                            "example": "2018-11-14T15:38:04+05:30"
+                          },
+                          "followedUpBy": {
+                            "type": "integer",
+                            "example": 28812689,
+                            "default": 0
+                          },
+                          "followedUpOn": {
+                            "type": "string",
+                            "example": "2018-10-04T12:45:00+05:30"
+                          },
+                          "scheduledFollowUp": {
+                            "type": "string",
+                            "example": "2018-10-04T12:30:00+05:30"
+                          }
+                        }
+                      }
+                    },
+                    "extendedFields": {
+                      "type": "object",
+                      "properties": {
+                        "trial_status": {
+                          "type": "string",
+                          "example": "Not Done"
+                        }
+                      }
+                    },
+                    "statusLogDetails": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          },
+                          "userId": {
+                            "type": "integer",
+                            "example": 368754334,
+                            "default": 0
+                          },
+                          "leadId": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "OPEN"
+                          },
+                          "createdBy": {
+                            "type": "integer",
+                            "example": 15002926,
+                            "default": 0
+                          },
+                          "createdOn": {
+                            "type": "string",
+                            "example": "2018-11-14T15:38:04+05:30"
+                          },
+                          "reasonId": {
+                            "type": "integer",
+                            "example": 5,
+                            "default": 0
+                          },
+                          "reason": {
+                            "type": "string",
+                            "example": "Best price available at another store"
+                          }
+                        }
+                      }
+                    },
+                    "orgSourceId": {
+                      "type": "integer",
+                      "example": -1,
+                      "default": 0
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "{  \n   \"type\":\"SKU\",\n   \"leadFor\":\"item001\",\n   \"idType\":\"EMAIL\",\n   \"identifier\":\"tom.sawyer@example.com\",\n   \"status\":\"ON_HOLD\",\n   \"nextFollowUp\":\"2018-10-05T08:00:00+05:30\",\n   \"createdOn\":\"2018-10-04T13:30:00+05:30\",\n   \"createdBy\":28812689,\n   \"followUpDetails\":[  \n      {  \n         \"scheduledFollowUp\":\"2018-10-04T12:30:00+05:30\",\n         \"followedUpOn\":\"2018-10-04T12:45:00+05:30\",\n         \"followedUpBy\":28812689,\n         \"notes\":\"notes 1\",\n         \"nextFollowUp\":\"2018-10-04T13:15:00+05:30\"\n      },\n      {  \n         \"scheduledFollowUp\":\"2018-10-04T12:30:00+05:30\",\n         \"followedUpOn\":\"2018-10-04T12:45:00+05:30\",\n         \"followedUpBy\":28812689,\n         \"notes\":\"notes 2\",\n         \"nextFollowUp\":\"2018-10-04T13:15:00+05:30\"\n      }\n   ],\n   \"extendedFields\": {\n    \"trial_status\":\"Not Done\"\n  },\n\n   \"statusLogDetails\":[  \n      {  \n         \"status\":\"OPEN\",\n         \"createdBy\":28812689,\n         \"reasonId\":1\n      },\n      {  \n         \"status\":\"ON_HOLD\",\n         \"createdBy\":28812689,\n         \"reasonId\":2\n      }\n   ],\n   \"orgSourceId\":-1\n}",
+              "name": "Sample POST  Body"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

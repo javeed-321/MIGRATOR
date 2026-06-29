@@ -1,0 +1,205 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Post Event
+
+Lets you post the behavioral event.
+
+Use this API to post the event that you have created. To know more about testing and publishing a new event, refer [\[Test & Publish Event\]](https://docs.capillarytech.com/docs/setup-test-behavioral-events#/test--publish-event)
+
+# API endpoint example
+
+<<https://spd6hzcltl.execute-api.eu-west-1.amazonaws.com/eucrm/webhooks/d61233f75191444e73a577bbbd4c26eb>>
+
+# Prerequisites
+
+* [ ] [Create a behavioural event](https://docs.capillarytech.com/docs/behavioral-loyalty)
+* [ ] [Configure webhook URL](https://docs.capillarytech.com/docs/add-webhook-integration)
+
+# Resource information
+
+|                       |                         |
+| :-------------------- | :---------------------- |
+| URI                   | `{webhooksUrl}/{host}/` |
+| HTTP method           | POST                    |
+| Pagination supported? | NA                      |
+| Rate limit            | NA                      |
+| Batch support         | NA                      |
+
+# Example request body parameters
+
+Consider you have an event 'be\_reserved' used for reserving rooms in a hotel. It utilizes customer information and stay details. The parameters below are for the event's attributes 'be\_reserved'.
+
+**Note:** The parameters change according to the attributes of the event.
+
+| Parameter Name (Parameters marked with \* are mandatory) | Data Type | Description                                                                                                                                                                                    |
+| -------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| age\*                                                    | Double    | Age of the customer.                                                                                                                                                                           |
+| customer\_id\*                                           | String    | Mobile number of the customer.                                                                                                                                                                 |
+| event\_name\*                                            | String    | Name of the event.                                                                                                                                                                             |
+| external\_event\_id\*                                    | String    | External identifier for Behavioral Events. This identifier allows brands to pass their unique identifiers for each event they send to the Customer Data Platform.                              |
+| hotel\_name\*                                            | String    | Name of the hotel where the customer wants to reserve rooms.                                                                                                                                   |
+| room\_nights\*                                           | Enum      | Number of nights the room is reserved.                                                                                                                                                         |
+| eventDateTime                                            | String    | Standard attribute that captures the event processing time. See [Standard Attributes](https://docs.capillarytech.com/docs/setup-test-behavioral-events#/standard-attributes) for more details. |
+
+```json Sample request
+curl --location 'https://spd6hzcltl.execute-api.eu-west-1.amazonaws.com/eucrm/webhooks/d61233f75191444e73a577bbbd4c26eb' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic dGVzdF9kaXY2OWZmZmRkYg==' \
+--data '{
+"age":20,
+"customer_id":"9933772255",
+"event_name":"be_reserved",
+"external_event_id":"RAND121",
+"hotel_name":"Indiranagar",
+"room_nights":"12",
+"eventDateTime":"2024-04-11 12:00:00"
+}'
+```
+
+# Response parameters
+
+| Parameter Name | Data Type | Description                                                                                  |
+| :------------- | :-------- | :------------------------------------------------------------------------------------------- |
+| status         | Object    | Object containing the status of the event.                                                   |
+| -code          | Number    | Status code indicating the result of the POST operation.                                     |
+| -message       | String    | Message describing the status of the event.                                                  |
+| requestId      | String    | Unique ID for the POST operation. The maximum number of characters for the request ID is 36. |
+
+```json
+{
+    "status": {
+        "code": 1100,
+        "message": "Event is pushed to transformation state"
+    },
+    "requestId": "defc955f-ebca-4f14-b8d7-e2b885b3f370"
+}
+```
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "webhook",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "{webhookUrl}",
+      "variables": {
+        "webhookUrl": {
+          "default": "webhookUrl"
+        }
+      }
+    }
+  ],
+  "security": [
+    {}
+  ],
+  "paths": {
+    "/{host}": {
+      "post": {
+        "summary": "Post Event",
+        "description": "Lets you post the behavioral event.",
+        "operationId": "post-event",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "string",
+                    "description": "curl --location 'https://spd6hzcltl.execute-api.eu-west-1.amazonaws.com/eucrm/webhooks/d61233f75191444e73a577bbbd4c26eb' \\ --header 'Content-Type: application/json' \\ --header 'Authorization: Basic dGVzdF9kaX2OWZmZmRkYg==' \\ --data '{ \"age\":20, \"customer_id\":\"9933772255\", \"event_name\":\"be_reserved\", \"external_event_id\":\"RAND121\", \"hotel_name\":\"Indiranagar\", \"room_nights\":\"12\", \"eventDateTime\":\"2024-04-11 12:00:00\" }'"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": {
+                      "status": {
+                        "code": 1100,
+                        "message": "Event is pushed to transformation state"
+                      },
+                      "requestId": "4126a009-1b5e-46e2-8ec3-ba06c280b309"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 1100,
+                          "default": 0
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Event is pushed to transformation state"
+                        }
+                      }
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "948d09c0-35f3-4d85-a8d5-b025caf959a6"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "shell",
+              "code": "curl --location 'https://spd6hzcltl.execute-api.eu-west-1.amazonaws.com/eucrm/webhooks/67b62dffb7f5337f8a8237970bd0a467' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic ******' \\\n--data '{\n    \"String\": \"rutuja_capillary\",\n    \"customer\": \"919970388310\",\n    \"enum\": \"customerUserGroup\",\n    \"event_name\": \"Group_User_Event\"\n}'",
+              "name": "Example request"
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

@@ -1,0 +1,126 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Get Access Token
+
+Generates access token (entity param in response) for a staff. No POST body required.
+
+<br />
+
+<Callout icon="❗️" theme="error">
+  All Staff related APIs are deprected and cannot be used any more.
+</Callout>
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/staff/accessToken": {
+      "post": {
+        "summary": "Get Access Token",
+        "description": "Generates access token (entity param in response) for a staff. No POST body required.",
+        "operationId": "get-access-token",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Sample Response": {
+                    "value": "{\n    \"entity\": \"M7ZuIxtfYy7xwZUN2ZfgjNy78GF9vU1rPd4U3Lwh5EJJ33OTFMuTutnH5_4g-Qi-\",\n    \"warnings\": [],\n    \"errors\": [],\n    \"success\": true\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "entity": {
+                      "type": "string",
+                      "example": "M7ZuIxtfYy7xwZUN2ZfgjNy78GF9vU1rPd4U3Lwh5EJJ33OTFMuTutnH5_4g-Qi-"
+                    },
+                    "warnings": {
+                      "type": "array"
+                    },
+                    "errors": {
+                      "type": "array"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": true,
+                      "default": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "https://us.api.capillarytech.com/v2/staff/accessToken",
+              "name": "Sample Request URL"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

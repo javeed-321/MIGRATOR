@@ -1,0 +1,238 @@
+---
+title: Generate Cards
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Generate Cards
+
+Lets you generate cards for a card series in bulk.
+
+This API generates card numbers in bulk for a specific card series. Generated cards have a status NOT_ISSUED, and you can assign or issue them to customers later.
+
+<Callout kind="tip" title="Note">
+
+For detailed information about the APIs and for hands-on testing, refer to the [API overview](https://docs.capillarytech.com/reference/apioverview) documentation and step-by-step guide on[ making your first API call.](https://docs.capillarytech.com/reference/make-your-first-api-call)
+
+</Callout>
+
+## Prerequisites
+
+* [ ] Basic Authentication
+* [ ] Default access group
+
+### Example request
+
+```bash
+curl --location 'https://eu.api.capillarytech.com/v2/card/generate' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic =' \
+--data '{
+  "seriesId":173,
+  "count": 5,
+  "statusLabel":"NOT_ISSUED"
+}'
+````
+
+### Body parameters
+
+| Field       | Type    | Required | Description                                                                    |
+| ----------- | ------- | -------- | ------------------------------------------------------------------------------ |
+| seriesID    | integer | Yes      | Unique ID of the card series to generate cards.                                |
+| count       | integer | Yes      | Number of cards to generate. Max 50,000 per request.                           |
+| statusLabel | string  | Optional | Status label to assign to the generated cards. Must be mapped to `NOT_ISSUED`. |
+
+### Example response
+
+**Successful generation (all cards new):**
+
+```json
+{
+  "data": [
+    "Test09000000000037end",
+    "Test09000000000036end",
+    "Test09000000000035end",
+    "Test09000000000034end",
+    "Test09000000000033end"
+  ],
+  "warnings": [],
+  "errors": []
+}
+````
+
+**Partial generation (some card numbers already exist):**
+
+```json
+{
+  "data": [
+    "Test09000000000037end",
+    "Test09000000000035end"
+  ],
+  "warnings": [
+    {
+      "code": 3059,
+      "message": "Few Card numbers already exists",
+      "duplicates": [
+        "Test09000000000036end"
+      ]
+    }
+  ],
+  "errors": []
+}
+````
+
+### Response parameters
+
+| Field         | Type   | Description                                                                                                      |
+| ------------- | ------ | ---------------------------------------------------------------------------------------------------------------- |
+| data          | Array  | Array of successfully generated card numbers. Cards that already existed are excluded.                           |
+| warnings      | Array  | Array of warning objects. Populated when some cards could not be created.                                        |
+| `.code`       | number | Warning code.                                                                                                    |
+| `.message`    | string | Warning message.                                                                                                 |
+| `.duplicates` | Array  | *(Present when code is `3059`)* Card numbers that already existed in the database and were excluded from `data`. |
+| errors        | Array  | Array of errors.                                                                                                 |
+
+### Error and warning codes
+
+| Code                          | Error number | Type    | Description                                                                                                                                                                                |
+| ----------------------------- | ------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `INVALID_CARD_SERIES`         | 3000         | Error   | Invalid card series. The specified `seriesId` does not exist. HTTP 400.                                                                                                                    |
+| `INVALID_CARD_STATUS_LABEL`   | 3017         | Error   | Status label is invalid. HTTP 400.                                                                                                                                                         |
+| `CARD_GEN_CARD_COUNT_INVALID` | 3025         | Error   | Count field is missing or zero. HTTP 400.                                                                                                                                                  |
+| `CARD_GEN_CARD_COUNT_EXCEEDS` | 3026         | Error   | Card count exceeds the maximum limit of 50,000 per request. HTTP 400.                                                                                                                      |
+| `FEW_CARDS_ALREADY_EXISTS`    | 3059         | Warning | Some generated card numbers already exist in the database. Duplicates are excluded from `data` and listed in `warnings[].duplicates`. Remaining new cards are returned normally. HTTP 200. |
+| `—`                           | 500          | Error   | Internal server error. The server encountered an unexpected condition. HTTP 500.                                                                                                           |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/card/generate": {
+      "post": {
+        "summary": "Generate Cards",
+        "description": "Lets you generate cards for a card series in bulk.",
+        "operationId": "generate-cards",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "seriedId",
+                  "count",
+                  "statusLabel"
+                ],
+                "properties": {
+                  "seriedId": {
+                    "type": "integer",
+                    "description": "Unique ID of the card series to generate cards.",
+                    "format": "int32"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "description": "Number of cards to generate.",
+                    "format": "int32"
+                  },
+                  "statusLabel": {
+                    "type": "string",
+                    "description": "Current user defined status of the card. Check your user defined values for the system values (not issued, active, inactive, deleted, expired)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": {
+                      "data": [
+                        "Test09000000000037end",
+                        "Test09000000000036end",
+                        "Test09000000000035end",
+                        "Test09000000000034end",
+                        "Test09000000000033end"
+                      ],
+                      "warnings": [],
+                      "errors": []
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "entity": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "TTM001113542235716ZS"
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/card/generate' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic bWF5YV9kb2M6MTAwOTBhNWRhOThiNzY5OWVhOTAwNmE2ZjliMzJhZWE=' \\\n--header 'Cookie: _cfuvid=1gjL.3hjs9_Sp0UkKbhUmEt34PmLhAZnVwEQw4nqdqU-1756726591406-0.0.1.1-604800000' \\\n--data '{\n  \"seriesId\":173,\n  \"count\": 5,\n  \"statusLabel\":\"NOT_ISSUED\"\n}\n'",
+              "name": "Sample POST Body"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+````

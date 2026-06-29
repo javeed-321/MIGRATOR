@@ -1,0 +1,211 @@
+---
+title: Get Card Generation Log
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Get Card Generation Log
+
+Retrieves the log of cards generated under a card series, along with the fileHandle using which you can download the history from S3 server.
+
+<Callout kind="tip" title="Note">
+
+For detailed information about the APIs and for hands-on testing, refer to the [API overview](https://docs.capillarytech.com/reference/apioverview) documentation and step-by-step guide on[ making your first API call.](https://docs.capillarytech.com/reference/make-your-first-api-call)
+
+</Callout>
+
+## Prerequisites
+
+* [ ] Basic Authentication
+* [ ] Default access group
+
+### Resource information
+
+| URI                   | v2/card/generation/logs |
+| :-------------------- | :---------------------- |
+| HTTP method           | GET                     |
+| Authentication        | Basic                   |
+| Pagination supported? | NO                      |
+| Rate limit            | YES                     |
+| Batch support         | NO                      |
+
+### Example request
+
+```json Sample request
+curl --location 'https://eu.api.capillarytech.com/v2/card/generation/logs?format=json&seriesId=169' \
+--header 'accept: application/json' \
+--header 'authorization: Basic cnV0dWphX2NhcGlsbGFyeTo='
+````
+
+### Query parameters
+
+| Field    | Type    | Required | Description                                                          |
+| :------- | :------ | :------- | :------------------------------------------------------------------- |
+| seriesId | integer | Optional | Unique identification number of the card series to retrieve the log. |
+
+<br />
+
+## Response Parameter
+
+| Parameter       | Data Type | Description                                                                  |
+| --------------- | --------- | ---------------------------------------------------------------------------- |
+| **entity**      | Array     | Array containing the details of the card series.                             |
+| **seriesName**  | String    | Name of the card series for which the cards were generated.                  |
+| **seriesCode**  | String    | Code identifying the card series.                                            |
+| **count**       | Integer   | Number of cards generated in this batch.                                     |
+| **createdBy**   | Integer   | User ID of the person who initiated the card generation request.             |
+| **date**        | String    | Date and time when the generation request was processed, in ISO 8601 format. |
+| **description** | String    | Optional description provided for the generation batch.                      |
+| **fileHandle**  | String    | Unique identifier for the generated card file.                               |
+| **id**          | Integer   | Unique identifier for the card generation log entry.                         |
+| **orgId**       | Integer   | Unique identifier for the organization.                                      |
+| **seriesId**    | Integer   | Unique identifier for the card series.                                       |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/card/generation/logs": {
+      "get": {
+        "summary": "Get Card Generation Log",
+        "description": "Retrieves the log of cards generated for a specific card series. It also retrieves fileHandle using which you can download the history from S3 server.",
+        "operationId": "get-card-generation-log",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"entity\": [\n        {\n            \"seriesName\": \"Gold Card\",\n            \"seriesCode\": \"26NOV2024TRYLEN17\",\n            \"count\": 2,\n            \"createdBy\": 75152820,\n            \"date\": \"2024-12-17T11:39:26Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"e5c3d330-02c5-4de5-bc02-c9fd45b91b74\",\n            \"id\": 28692,\n            \"orgId\": 100737,\n            \"seriesId\": 155\n        },\n        {\n            \"seriesName\": \"Gold Card\",\n            \"seriesCode\": \"26NOV2024TRYLEN18\",\n            \"count\": 5,\n            \"createdBy\": 75155291,\n            \"date\": \"2025-03-06T10:50:34Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"e84acbfe-69ac-4b81-8b31-b31828a04c44\",\n            \"id\": 32382,\n            \"orgId\": 100737,\n            \"seriesId\": 156\n        },\n        {\n            \"seriesName\": \"Gold Card\",\n            \"seriesCode\": \"26NOV2024TRYLEN18\",\n            \"count\": 6,\n            \"createdBy\": 75152721,\n            \"date\": \"2025-05-05T07:06:00Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"81267d1e-aad2-41c2-a527-a3f88d2f61cb\",\n            \"id\": 35149,\n            \"orgId\": 100737,\n            \"seriesId\": 156\n        },\n        {\n            \"seriesName\": \"Gold Card\",\n            \"seriesCode\": \"7544060889PNB\",\n            \"count\": 4,\n            \"createdBy\": 75152820,\n            \"date\": \"2024-12-17T07:16:22Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"3f8b6dec-1b9e-440b-841a-c243d86289b3\",\n            \"id\": 28683,\n            \"orgId\": 100737,\n            \"seriesId\": 157\n        },\n        {\n            \"seriesName\": \"Generate Card\",\n            \"seriesCode\": \"133961\",\n            \"count\": 1,\n            \"createdBy\": 75160045,\n            \"date\": \"2025-06-25T07:05:09Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"79e930e1-7387-4f1c-af94-195a2cecb0ee\",\n            \"id\": 37520,\n            \"orgId\": 100737,\n            \"seriesId\": 161\n        },\n        {\n            \"seriesName\": \"card series create new\",\n            \"seriesCode\": \"Test094\",\n            \"count\": 5,\n            \"createdBy\": 75155296,\n            \"date\": \"2025-03-07T07:38:43Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"eb674614-f641-453e-8d8f-ae2a1e226338\",\n            \"id\": 32421,\n            \"orgId\": 100737,\n            \"seriesId\": 169\n        },\n        {\n            \"seriesName\": \"card series create new\",\n            \"seriesCode\": \"Test094\",\n            \"count\": 2,\n            \"createdBy\": 75155373,\n            \"date\": \"2025-06-11T12:21:37Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"5308a174-04a9-4787-95dd-07f6fb341305\",\n            \"id\": 36865,\n            \"orgId\": 100737,\n            \"seriesId\": 169\n        },\n        {\n            \"seriesName\": \"card series create new\",\n            \"seriesCode\": \"Test094\",\n            \"count\": 1,\n            \"createdBy\": 75155373,\n            \"date\": \"2025-06-11T13:06:13Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"f68144ca-ccc9-4775-98aa-e32437c18273\",\n            \"id\": 36868,\n            \"orgId\": 100737,\n            \"seriesId\": 169\n        },\n        {\n            \"seriesName\": \"card series create new\",\n            \"seriesCode\": \"Test094\",\n            \"count\": 1,\n            \"createdBy\": 75155373,\n            \"date\": \"2025-06-12T04:50:36Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"0e51c434-aac1-4c11-b999-5bd08a0faf16\",\n            \"id\": 36899,\n            \"orgId\": 100737,\n            \"seriesId\": 169\n        },\n        {\n            \"seriesName\": \"card series create new\",\n            \"seriesCode\": \"Test094\",\n            \"count\": 2,\n            \"createdBy\": 75155373,\n            \"date\": \"2025-06-13T08:03:35Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"73b9a2f6-1610-49a3-ab3d-fcd862b237e3\",\n            \"id\": 36952,\n            \"orgId\": 100737,\n            \"seriesId\": 169\n        },\n        {\n            \"seriesName\": \"georgecardseries0808\",\n            \"seriesCode\": \"8888\",\n            \"count\": 1,\n            \"createdBy\": 75160045,\n            \"date\": \"2025-06-25T07:05:46Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"dcc062e1-e4e5-4827-87d9-5dfefa00d83b\",\n            \"id\": 37521,\n            \"orgId\": 100737,\n            \"seriesId\": 170\n        },\n        {\n            \"seriesName\": \"card series create new\",\n            \"seriesCode\": \"Test09\",\n            \"count\": 5,\n            \"createdBy\": 75155373,\n            \"date\": \"2025-04-16T05:29:39Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"fa219d54-4525-4799-9587-3f3b7694da40\",\n            \"id\": 34266,\n            \"orgId\": 100737,\n            \"seriesId\": 173\n        },\n        {\n            \"seriesName\": \"card series create new\",\n            \"seriesCode\": \"Test09\",\n            \"count\": 3,\n            \"createdBy\": 75155373,\n            \"date\": \"2025-06-19T05:25:54Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"6b048654-7c8a-45a3-9fa9-e4828f684834\",\n            \"id\": 37232,\n            \"orgId\": 100737,\n            \"seriesId\": 173\n        },\n        {\n            \"seriesName\": \"card series create new\",\n            \"seriesCode\": \"Test09\",\n            \"count\": 3,\n            \"createdBy\": 75155373,\n            \"date\": \"2025-06-19T05:25:59Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"78fd558e-3ed6-4d8e-a6dd-df267abd45ce\",\n            \"id\": 37233,\n            \"orgId\": 100737,\n            \"seriesId\": 173\n        },\n        {\n            \"seriesName\": \"card series create new\",\n            \"seriesCode\": \"Test09\",\n            \"count\": 5,\n            \"createdBy\": 75155373,\n            \"date\": \"2025-06-19T11:03:31Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"2987a255-917e-44d3-aa8a-fe446bb2c768\",\n            \"id\": 37246,\n            \"orgId\": 100737,\n            \"seriesId\": 173\n        },\n        {\n            \"seriesName\": \"card series create new\",\n            \"seriesCode\": \"Test09\",\n            \"count\": 5,\n            \"createdBy\": 75155295,\n            \"date\": \"2025-07-01T01:50:44Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"1b7ac16c-9a9a-4156-826f-70e8295af68b\",\n            \"id\": 37788,\n            \"orgId\": 100737,\n            \"seriesId\": 173\n        },\n        {\n            \"seriesName\": \"card series create new\",\n            \"seriesCode\": \"Test09\",\n            \"count\": 5,\n            \"createdBy\": 75155295,\n            \"date\": \"2025-07-03T05:29:35Z\",\n            \"description\": \"\",\n            \"fileHandle\": \"81dafa1e-8be6-4f6b-8f3f-5685038fc8de\",\n            \"id\": 37888,\n            \"orgId\": 100737,\n            \"seriesId\": 173\n        }\n    ],\n    \"warnings\": []\n}\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "entity": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "count": {
+                            "type": "integer",
+                            "example": 56,
+                            "default": 0
+                          },
+                          "createdBy": {
+                            "type": "integer",
+                            "example": 50006796,
+                            "default": 0
+                          },
+                          "date": {
+                            "type": "string",
+                            "example": "2020-11-04T12:47:53+05:30"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "fileHandle": {
+                            "type": "string",
+                            "example": "7aed5630-15ea-477c-bd35-d71200b22272"
+                          },
+                          "id": {
+                            "type": "integer",
+                            "example": 46,
+                            "default": 0
+                          },
+                          "orgId": {
+                            "type": "integer",
+                            "example": 50074,
+                            "default": 0
+                          },
+                          "seriesId": {
+                            "type": "integer",
+                            "example": 10,
+                            "default": 0
+                          }
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/card/generation/logs?format=json&seriesId=169' \\\n--header 'accept: application/json' \\\n--header 'authorization: Basic ***********=' \\\n--header 'Cookie: _cfuvid=bLf8kkW4RRknxHH88tPAELAmdQY6W4cEVV1NgzCTfGE-1756795607294-0.0.1.1-604800000'",
+              "language": "json",
+              "name": "Sample post body"
+            }
+          ],
+          "samples-languages": [
+            "json"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+````

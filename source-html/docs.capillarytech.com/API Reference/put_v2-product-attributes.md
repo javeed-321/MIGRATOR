@@ -1,0 +1,261 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Update Attributes 
+
+Use this API to update one or more existing product attributes in bulk. You can modify the attribute name, data type, and default value without recreating the attribute.
+
+Each attribute is identified using its `code`. These fields determine which attribute to update and **cannot be modified**.
+
+You can update up to **100 attributes per request**. This batch limit is controlled by the `CONF_PRODUCT_CREATE_UPDATE_BATCH_SIZE` configuration.
+
+### What you can update
+
+* `name`
+* `type`
+* `defaultValueId`
+
+The API updates only the fields you provide in the request. Omitted fields remain unchanged.
+
+### What you cannot update
+
+* `code` (immutable identifier)
+* `ouCode` (scope cannot be changed after creation)
+
+To change the attribute scope (org-level vs OU-level), create a new attribute with the correct configuration.
+
+### Default and validation behaviour
+
+* If the provided `defaultValueId` does not exist, the API returns warning code `10210` and updates the attribute without setting a default value.
+* If the attribute does not exist, the API returns error `10212`.
+* If some records succeed and others fail, the response reflects partial success using summary counts.
+
+### Organisation unit (OU) behaviour
+
+* If `ouCode` is provided, the API updates the OU-scoped attribute.
+* If `ouCode` is not provided, the API updates the organisation-level attribute (`ouId = -1`).
+* The OU scope of an attribute cannot be changed using this API.
+
+# Example request
+
+```curl
+curl --location --request PUT 'https://{Host}/v2/product/attributes' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic a3Jpc2huYS50aWxsMDE6MDc1Yjk2NGIwNzE1MmQyMzRiNzA=' \
+--data '[
+    {
+        "code": "v2_demo_17",
+        "name": "v2_demo_17",
+        "type": "Int"
+    }
+]'
+```
+```Text Bulk
+curl --location --request PUT 'https://{host}/v2/product/attributes' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic a3Jpc2huYS50aWxsMDE6YzU5MDc1Yjk2NGIwNzE1MmQyMzRiNzA=' \
+--data '[
+     {
+      "code": "warranty_years",
+      "name": "Warranty Duration (Years)",
+      "type": "Int"
+      
+    },
+    {
+      "code": "is_refurbished",
+      "name": "Refurbished Product",
+      "type": "Boolean"
+      
+    }
+
+]'
+```
+
+# Prerequisites
+
+* Access Group: WRITE access to Product resource
+* Authorization: Basic or OAuth token
+
+# Body parameters
+
+The request body should be a JSON array of attribute objects.
+
+| Field            | Type   | Required | Description                                                                                                                                                                      | Updatable |
+| :--------------- | :----- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------- |
+| `code`           | string | Yes      | Specifies the unique identifier for the attribute to update. This is used to locate the existing attribute. Maximum length: 50 characters.                                       | No        |
+| `name`           | string | Yes      | Specifies the new display name or label for the attribute. This will replace the existing name. Maximum length: 50 characters.                                                   | Yes       |
+| `type`           | string | Optional | Defines the new data type for the attribute. Valid values: String, Int, Double, Boolean, Date.                                                                                   | Yes       |
+| `ouCode`         | string | No       | Identifies the organization unit code to determine which attribute to update. If not provided, the organization-level attribute (ouId = -1) is updated.                          | No        |
+| `defaultValueId` | long   | No       | Specifies the ID of an existing attribute value to use as the new default value. If the ID doesn't exist, a warning (code 10210) is returned but the attribute is still updated. | Yes       |
+
+# API Quick Reference
+
+```Text Tree structure 
+{{PUT /v2/product/attributes}}
+   └─ {{RequestBody}} (Batch Array)
+      ├─ {{code}} (string)
+      ├─ {{name}} (string)
+      ├─ {{type}} (string)
+      ├─ {{ouCode}} (string)
+      ├─ {{defaultValueId}} (long)
+      └─ {{ResponseBody}}
+          ├─ {{updated}} []
+          │   ├─ {{id}} (long)
+          │   └─ {{code}} (string)
+          ├─ {{summary}}
+          │   ├─ {{totalRequested}} (integer)
+          │   ├─ {{successCount}} (integer)
+          │   └─ {{failureCount}} (integer)
+          ├─ {{warnings}} []
+          └─ {{errors}} []
+
+```
+
+# Example response
+
+```Text 200 OK
+{
+    "updated": [
+        {
+            "id": 91444,
+            "ouId": -1,
+            "code": "v2_demo_17"
+        }
+    ],
+    "summary": {
+        "totalRequested": 1,
+        "successCount": 1,
+        "failureCount": 0
+    },
+    "warnings": [],
+    "errors": []
+}
+```
+
+# Response parameters
+
+| Field             | Type    | Description                                                                    |
+| :---------------- | :------ | :----------------------------------------------------------------------------- |
+| `updated`         | array   | Contains the array of successfully updated ProductAttribute objects.           |
+| `.id`             | long    | Indicates the unique database identifier for the attribute.                    |
+| `.code`           | string  | Specifies the attribute code that was updated.                                 |
+| `summary`         | object  | Contains summary statistics for the bulk operation.                            |
+| `.totalRequested` | integer | Indicates the total number of attributes in the request.                       |
+| `.successCount`   | integer | Indicates the number of attributes successfully updated.                       |
+| `.failureCount`   | integer | Indicates the number of attributes that failed validation.                     |
+| `warnings`        | array   | Contains an array of warning status codes (non-blocking issues).               |
+| `errors`          | array   | Contains an array of error status codes for attributes that failed validation. |
+
+# Error codes
+
+| Code  | Description                                                                                                     |
+| :---- | :-------------------------------------------------------------------------------------------------------------- |
+| 10001 | The provided ouCode is invalid or does not exist. Ensure the organizational unit is correct.                    |
+| 10002 | OU level product filtering is disabled for your organization, but an `ouCode` was provided.                     |
+| 10003 | Duplicate attribute code found within the same request payload. Use a unique attribute code within all objects. |
+| 10201 | At least one attribute must be present in the request.                                                          |
+| 10202 | The maximum batch size was exceeded. Limit the request to 100 attributes.                                       |
+| 10203 | The attribute code is empty. Provide a valid string for the `code` field.                                       |
+| 10206 | The attribute name is empty. Provide a valid display name.                                                      |
+| 10207 | The attribute name exceeds the maximum length of 50 characters.                                                 |
+| 10208 | The attribute type provided is invalid. Use one of the supported types: `String`, `Int`, `Double`, `Boolean`.   |
+| 10212 | The attribute with the specified code was not found. Verify the code exists before updating.                    |
+| 10213 | The attribute type cannot be changed after creation.                                                            |
+
+# Warning codes
+
+| Code  | Description                                                                                              |
+| :---- | :------------------------------------------------------------------------------------------------------- |
+| 10210 | The `defaultValueId` provided does not exist. The update will proceed without setting the default value. |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Product Attributes API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "{Host}",
+      "variables": {
+        "Host": {
+          "default": "https://eu.intouch.capillarytech.com",
+          "enum": [
+            "https://eu.intouch.capillarytech.com",
+            "https://intouch.capillary.co.in",
+            "https://apac2.intouch.capillarytech.com",
+            "https://sgcrm.cc.capillarytech.com",
+            "http://intouch.capillarytech.cn.com",
+            "https://north-america.intouch.capillarytech.com"
+          ]
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "paths": {
+    "/v2/product/attributes": {
+      "put": {
+        "summary": "Update Product Attributes",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "default": "Basic a3Jpc2huYS50aWxsMDE6MjAyY2I5NjJhYzU5MDc1Yjk2NGIwNzE1MmQyMzRi"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "example": "v2_demo_17"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "v2_demo_17"
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "Int"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    }
+  }
+}
+```

@@ -1,0 +1,1079 @@
+---
+title: Add Request
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Add Request
+
+Lets you submit requests for customer identifier changes. It could be either mobile number, email ID, or external ID.
+
+Requests, when submitted, will be in pending status by default. Capillary back-end team verifies the request and could either approves or rejects it. The `request/add` API allows you to directly process a request by passing a query param client_auto_approve=true.
+
+If client_auto_approve=true, the request will be created in pending status by default and then processed automatically.
+
+However, requests can be approved automatically based on the following configs set on Member Care.
+
+| Config                     | Description                                               |
+| -------------------------- | --------------------------------------------------------- |
+| CI_EMAIL_AUTO_APPROVE   | Approves email id change requests automatically           |
+| CI_MOBILE_AUTO_APPROVE  | Approves mobile number change requests automatically      |
+| CI_EXTID_AUTO_APPROVE   | Approves external id change requests automatically        |
+| CI_ADDRESS_AUTO_APPROVE | Approves registered address change requests automatically |
+
+<Callout kind="info" title="**Note**">
+
+The param `client_auto_approve` overrides all the server side configurations mentioned in the table above. However, it is recommended not to use the param unless it is highly necessary.
+
+</Callout>
+
+#### Request Body Parameters (for Identifier change)
+
+| Parameter                      | Datatype | Description                                                                                                            |
+| ------------------------------ | -------- | ---------------------------------------------------------------------------------------------------------------------- |
+| mobile/email/external_id/id* | string   | Pass any of the identifiers of the customer with the identifier value.                                                 |
+| reference_id*                | long     | Unique reference id for the request                                                                                    |
+| type                           | enum     | Type of request. **Value**: `CHANGE_IDENTIFIER, TRANSACTION_UPDATE`                                                    |
+| base_type                     | enum     | Identifier that you want to update. **Value**: `MOBILE, EMAIL, EXTERNAL_ID`.<br />RETRO for transaction update. <br /> |
+| old_value                     | string   | The current value of the customer identifier.                                                                          |
+| new_value                     | string   | The new value of the customer identifier.                                                                              |
+
+#### Request Body Parameters (for retro transaction)
+
+| Parameter       | Datatype | Description                                                                       |
+| --------------- | -------- | --------------------------------------------------------------------------------- |
+| type            | enum     | Type of request. **Value**: `TRANSACTION_UPDATE`                                  |
+| base_type      | enum     | Base transaction type. **Value**: `RETRO`                                         |
+| old_type       | enum     | Current transaction type. **Value**: `NOT_INTERESTED`                             |
+| new_type       | enum     | New transaction type. **Value**: `REGULAR`                                        |
+| reason          | string   | Reason for issuing goodwill points/coupons. Applicable only for goodwill response |
+| comments        | string   | Small description on why goodwill points/coupons issued                           |
+| transaction_id | string   | Transaction ID of the *not-interested* transaction that you want to update.       |
+| misc_info      | string   | Additional information regarding the current retro conversion.                    |
+
+#### Request Body Parameters (for mobile number reallocation)
+
+| Parameter  | Datatype | Description                                                                                                                                                                                  |
+| ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| type       | enum     | Type of request. **Value**: `GOODWILL`                                                                                                                                                       |
+| base_type | enum     | Sub-type of the request. **Value**: `POINTS` for goodwill points issual, `COUPONS` for goodwill coupon issual.                                                                               |
+| series_id | long     | Offer ID from which coupon has to be issued. Ensure that the offer is consumed by Member Care module (Goodwill Adjustment Settings > Coupon). Applicable only for *base_type* as `COUPONS`. |
+| points     | int      | Number of points to issue. Applicable only for *base_type* as `POINTS`.                                                                                                                     |
+
+#### Request Body Parameters (for merge accounts)
+
+| Parameter        | Datatype | Description                                                                               |
+| ---------------- | -------- | ----------------------------------------------------------------------------------------- |
+| target_customer | object   | Details of the survivor account - the account that will continue to remain after merging. |
+| type             | enum     | Pass `CHANGE_IDENTIFIER` for merge requests.                                              |
+| base_type       | enum     | Sub-type of the request. **Value**: `MERGE`                                               |
+
+#### Request Body Parameters (for goodwill requests)
+
+| Parameter  | Datatype | Description                                  |
+| ---------- | -------- | -------------------------------------------- |
+| type       | enum     | Type of request. **Value**: `GOODWILL`       |
+| base_type | enum     | Sub-type of the request. **Value**: `POINTS` |
+
+#### Request Body Parameters (for group goodwill requests)
+
+| Parameter             | Datatype | Description                                  |
+| --------------------- | -------- | -------------------------------------------- |
+| type                  | enum     | Type of request. **Value**: `GOODWILL`       |
+| base_type            | enum     | Sub-type of the request. **Value**: `POINTS` |
+| earning_entity_type | enum     | USERGROUP2                                   |
+| identifier_value     | string   | Group ID                                     |
+
+#### Response Parameters
+
+| Parameter     | Datatype | Description                                                              |
+| ------------- | -------- | ------------------------------------------------------------------------ |
+| reference_id | string   | Unique reference ID of the request.                                      |
+| id            | long     | Unique ID generated for the request.                                     |
+| status        | enum     | Current status of the request. **Values**: `PENDING, APPROVED, REJECTED` |
+| customer      | object   | Details of the customer details associated to the request.               |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "customer-v11",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v1.1",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/request/add": {
+      "post": {
+        "summary": "Add Request",
+        "description": "Lets you submit requests for customer identifier changes. It could be either mobile number, email ID, or external ID.",
+        "operationId": "add-request",
+        "parameters": [
+          {
+            "name": "client_auto_approve",
+            "in": "query",
+            "description": "If the value is true, approves request directly when the request is submitted. This even overrides the back-end configurations set on Member Care. Hence, highly recommended not to use in normal cases",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "is_one_step_change",
+            "in": "query",
+            "description": "Pass true for one step identifier change.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "RAW_BODY": {
+                    "type": "string",
+                    "format": "json"
+                  }
+                }
+              },
+              "examples": {
+                "Identifier change": {
+                  "value": {
+                    "root": {
+                      "request": [
+                        {
+                          "reference_id": "1234",
+                          "type": "CHANGE_IDENTIFIER",
+                          "base_type": "EMAIL",
+                          "customer": {
+                            "email": "Tom.sawyerold@example.com",
+                            "mobile": "44700900000",
+                            "external_id": "ts1234",
+                            "id": "395958"
+                          },
+                          "old_value": "Tom.sawyerold@example.com",
+                          "new_value": "Tom.sawyer@example.com",
+                          "requested_on": "time in 8601"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "Merge Accounts": {
+                  "value": {
+                    "root": {
+                      "request": [
+                        {
+                          "customer": {
+                            "mobile": "",
+                            "external_id": "",
+                            "email": "tom739@capillarytech.com",
+                            "id": ""
+                          },
+                          "old_value": "",
+                          "base_type": "MERGE",
+                          "new_value": "",
+                          "type": "CHANGE_IDENTIFIER",
+                          "misc_info": {
+                            "target_customer": {
+                              "mobile": "",
+                              "external_id": "",
+                              "email": "",
+                              "id": "342979941"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "Goodwill Points": {
+                  "value": {
+                    "root": {
+                      "request": [
+                        {
+                          "customer": {
+                            "id": "2345",
+                            "mobile": "",
+                            "email": "",
+                            "external_id": ""
+                          },
+                          "comments": "API Service request - Awarding 200 points.",
+                          "reason": "Issue Goodwill points",
+                          "type": "GOODWILL",
+                          "base_type": "POINTS",
+                          "points": "200"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "Request Example": {
+                  "value": {
+                    "root": {
+                      "request": [
+                        {
+                          "customer": {
+                            "mobile": "919011111111",
+                            "external_id": "",
+                            "email": ""
+                          },
+                          "reason": "Sample reason",
+                          "comments": "Additional comment if required",
+                          "type": "GOODWILL",
+                          "base_type": "COUPON",
+                          "series_id": "80197"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "Retro Transaction": {
+                  "value": {
+                    "root": {
+                      "request": [
+                        {
+                          "customer": {
+                            "mobile": "919011111111",
+                            "external_id": "",
+                            "id": "",
+                            "email": ""
+                          },
+                          "old_type": "NOT_INTERESTED",
+                          "transaction_id": "7099259",
+                          "new_type": "REGULAR",
+                          "base_type": "RETRO",
+                          "reference_id": "ref345",
+                          "type": "TRANSACTION_UPDATE",
+                          "misc_info": ""
+                        }
+                      ]
+                    }
+                  }
+                },
+                "Goodwill Points group": {
+                  "value": {
+                    "root": {
+                      "request": {
+                        "comments": "Awarding points through Automation",
+                        "reason": "Issue Goodwill points",
+                        "type": "GOODWILL",
+                        "base_type": "POINTS",
+                        "points": "100",
+                        "user_group_2_identification_info": {
+                          "identifier_type": "id",
+                          "identifier_value": 1901,
+                          "source": "INSTORE",
+                          "account_id": ""
+                        },
+                        "programId": 469,
+                        "earning_entity_type": "USERGROUP2"
+                      }
+                    }
+                  }
+                },
+                "Mobile number change": {
+                  "value": {
+                    "root": {
+                      "request": [
+                        {
+                          "customer": {
+                            "mobile": "919011111111",
+                            "external_id": "",
+                            "email": ""
+                          },
+                          "old_value": "919011111111",
+                          "base_type": "MOBILE_REALLOC",
+                          "new_value": "",
+                          "type": "CHANGE_IDENTIFIER",
+                          "misc_info": {
+                            "target_customer": {
+                              "mobile": "9818012000",
+                              "external_id": "",
+                              "email": " ",
+                              "id": ""
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "IDENTIFIER CHANGE": {
+                    "value": "{\n  \"response\": {\n    \"status\": {\n      \"success\": \"true\",\n      \"code\": \"200\",\n      \"message\": \"SUCCESS\"\n    },\n    \"requests\": {\n      \"request\": {\n        \"reference_id\": \"1234\",\n        \"id\": \"23123124\",\n        \"status\": \"PENDING\",\n        \"type\": \"CHANGE_IDENTIFIER\",\n        \"base_type\": \"MOBILE\",\n        \"customer\": {\n          \"firstname\": \"Tom\",\n          \"lastname\": \"Sawyer\",\n          \"email\": \"tom.sawyerold@example.com\",\n          \"mobile\": \"44700900000\",\n          \"external_id\": \"ts1234\",\n          \"id\": \"10423\"\n        },\n        \"old_value\": \"tom.sawyerold@example.com\",\n        \"new_value\": \"Tom.sawyer@example.com\",\n        \"item_status\": {\n          \"success\": \"true\",\n          \"code\": \"9000\",\n          \"message\": \"Change Identifier request added successfully\"\n        }\n      }\n    }\n  }\n}"
+                  },
+                  "MOBILE NUMBER CHANGE": {
+                    "value": "{\n   \"response\":{\n      \"status\":{\n         \"success\":true,\n         \"code\":200,\n         \"message\":\"Success\"\n      },\n      \"requests\":{\n         \"request\":[\n            {\n               \"reference_id\":null,\n               \"id\":\"789849\",\n               \"status\":\"PENDING\",\n               \"requested_on\":\"2020-01-02 12:02:29\",\n               \"type\":\"CHANGE_IDENTIFIER\",\n               \"base_type\":\"MOBILE_REALLOC\",\n               \"customer\":{\n                  \"firstname\":\"Rita\",\n                  \"lastname\":\"John\",\n                  \"email\":\"rita.john@example.com\",\n                  \"mobile\":\"919011111111\",\n                  \"external_id\":\"XYPZ006\",\n                  \"id\":343439221\n               },\n               \"old_value\":\"343439221\",\n               \"new_value\":\"343490735\",\n               \"old_type\":\"\",\n               \"new_type\":\"\",\n               \"misc_info\":null,\n               \"transaction_id\":\"0\",\n               \"reason\":\"\",\n               \"comments\":\"\",\n               \"item_status\":{\n                  \"success\":true,\n                  \"code\":9000,\n                  \"message\":\"Change Identifier request added successfully\"\n               }\n            }\n         ]\n      }\n   }\n}"
+                  },
+                  "MERGE ACCOUNTS": {
+                    "value": "{\n    \"response\": {\n        \"status\": {\n            \"success\": true,\n            \"code\": 200,\n            \"message\": \"Success\"\n        },\n        \"requests\": {\n            \"request\": [\n                {\n                    \"reference_id\": null,\n                    \"id\": \"789186\",\n                    \"status\": \"PENDING\",\n                    \"requested_on\": \"2019-12-31 16:58:02\",\n                    \"type\": \"CHANGE_IDENTIFIER\",\n                    \"base_type\": \"MERGE\",\n                    \"customer\": {\n                        \"firstname\": \"unknown739\",\n                        \"lastname\": null,\n                        \"email\": \"unknown739@capillarytech.com\",\n                        \"mobile\": \"919901032739\",\n                        \"external_id\": null,\n                        \"id\": 322393226\n                    },\n                    \"old_value\": \"322393226\",\n                    \"new_value\": \"342979941\",\n                    \"old_type\": \"\",\n                    \"new_type\": \"\",\n                    \"misc_info\": null,\n                    \"transaction_id\": \"0\",\n                    \"reason\": \"\",\n                    \"comments\": \"\",\n                    \"item_status\": {\n                        \"success\": true,\n                        \"code\": 9000,\n                        \"message\": \"Change Identifier request added successfully\"\n                    }\n                }\n            ]\n        }\n    }\n}"
+                  },
+                  "GOODWILL POINTS/COUPON": {
+                    "value": "{\n    \"response\": {\n        \"status\": {\n            \"success\": true,\n            \"code\": 200,\n            \"message\": \"Success\"\n        },\n        \"requests\": {\n            \"request\": [\n                {\n                    \"reference_id\": null,\n                    \"id\": \"789850\",\n                    \"status\": \"PENDING\",\n                    \"requested_on\": \"2020-01-02 13:13:38\",\n                    \"type\": \"GOODWILL\",\n                    \"base_type\": \"POINTS\",\n                    \"customer\": {\n                        \"firstname\": \"Shi\",\n                        \"lastname\": \"Gan\",\n                        \"email\": \"shigan@example.com\",\n                        \"mobile\": \"919011111111\",\n                        \"external_id\": \"SG006\",\n                        \"id\": 343490735\n                    },\n                    \"old_value\": \"919011111111\",\n                    \"new_value\": \"\",\n                    \"old_type\": \"\",\n                    \"new_type\": \"\",\n                    \"misc_info\": null,\n                    \"transaction_id\": \"0\",\n                    \"reason\": \"\",\n                    \"comments\": \"\",\n                    \"item_status\": {\n                        \"success\": true,\n                        \"code\": 9100,\n                        \"message\": \"Goodwill request added successfully\"\n                    }\n                }\n            ]\n        }\n    }\n}"
+                  },
+                  "RETRO TRANSACTION": {
+                    "value": "{\n   \"response\":{\n      \"status\":{\n         \"success\":true,\n         \"code\":200,\n         \"message\":\"Success\"\n      },\n      \"requests\":{\n         \"request\":[\n            {\n               \"reference_id\":null,\n               \"id\":\"789861\",\n               \"status\":\"PENDING\",\n               \"requested_on\":\"2020-01-02 16:21:54\",\n               \"type\":\"TRANSACTION_UPDATE\",\n               \"base_type\":\"RETRO\",\n               \"customer\":{\n                  \"firstname\":\"Shi\",\n                  \"lastname\":\"Gan\",\n                  \"email\":\"shigan@example.com\",\n                  \"mobile\":\"919011111111\",\n                  \"external_id\":\"SG006\",\n                  \"id\":343490735\n               },\n               \"old_value\":\"\",\n               \"new_value\":\"\",\n               \"old_type\":\"NOT_INTERESTED\",\n               \"new_type\":\"REGULAR\",\n               \"misc_info\":null,\n               \"transaction_id\":\"7099259\",\n               \"reason\":\"\",\n               \"comments\":\"\",\n               \"item_status\":{\n                  \"success\":true,\n                  \"code\":9000,\n                  \"message\":\"Retro request added successfully\"\n               }\n            }\n         ]\n      }\n   }\n}"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "title": "IDENTIFIER CHANGE",
+                      "type": "object",
+                      "properties": {
+                        "response": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "object",
+                              "properties": {
+                                "success": {
+                                  "type": "string",
+                                  "example": "true"
+                                },
+                                "code": {
+                                  "type": "string",
+                                  "example": "200"
+                                },
+                                "message": {
+                                  "type": "string",
+                                  "example": "SUCCESS"
+                                }
+                              }
+                            },
+                            "requests": {
+                              "type": "object",
+                              "properties": {
+                                "request": {
+                                  "type": "object",
+                                  "properties": {
+                                    "reference_id": {
+                                      "type": "string",
+                                      "example": "1234"
+                                    },
+                                    "id": {
+                                      "type": "string",
+                                      "example": "23123124"
+                                    },
+                                    "status": {
+                                      "type": "string",
+                                      "example": "PENDING"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "example": "CHANGE_IDENTIFIER"
+                                    },
+                                    "base_type": {
+                                      "type": "string",
+                                      "example": "MOBILE"
+                                    },
+                                    "customer": {
+                                      "type": "object",
+                                      "properties": {
+                                        "firstname": {
+                                          "type": "string",
+                                          "example": "Tom"
+                                        },
+                                        "lastname": {
+                                          "type": "string",
+                                          "example": "Sawyer"
+                                        },
+                                        "email": {
+                                          "type": "string",
+                                          "example": "tom.sawyerold@example.com"
+                                        },
+                                        "mobile": {
+                                          "type": "string",
+                                          "example": "44700900000"
+                                        },
+                                        "external_id": {
+                                          "type": "string",
+                                          "example": "ts1234"
+                                        },
+                                        "id": {
+                                          "type": "string",
+                                          "example": "10423"
+                                        }
+                                      }
+                                    },
+                                    "old_value": {
+                                      "type": "string",
+                                      "example": "tom.sawyerold@example.com"
+                                    },
+                                    "new_value": {
+                                      "type": "string",
+                                      "example": "Tom.sawyer@example.com"
+                                    },
+                                    "item_status": {
+                                      "type": "object",
+                                      "properties": {
+                                        "success": {
+                                          "type": "string",
+                                          "example": "true"
+                                        },
+                                        "code": {
+                                          "type": "string",
+                                          "example": "9000"
+                                        },
+                                        "message": {
+                                          "type": "string",
+                                          "example": "Change Identifier request added successfully"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "title": "MOBILE NUMBER CHANGE",
+                      "type": "object",
+                      "properties": {
+                        "response": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "object",
+                              "properties": {
+                                "success": {
+                                  "type": "boolean",
+                                  "example": true,
+                                  "default": true
+                                },
+                                "code": {
+                                  "type": "integer",
+                                  "example": 200,
+                                  "default": 0
+                                },
+                                "message": {
+                                  "type": "string",
+                                  "example": "Success"
+                                }
+                              }
+                            },
+                            "requests": {
+                              "type": "object",
+                              "properties": {
+                                "request": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "reference_id": {},
+                                      "id": {
+                                        "type": "string",
+                                        "example": "789849"
+                                      },
+                                      "status": {
+                                        "type": "string",
+                                        "example": "PENDING"
+                                      },
+                                      "requested_on": {
+                                        "type": "string",
+                                        "example": "2020-01-02 12:02:29"
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "example": "CHANGE_IDENTIFIER"
+                                      },
+                                      "base_type": {
+                                        "type": "string",
+                                        "example": "MOBILE_REALLOC"
+                                      },
+                                      "customer": {
+                                        "type": "object",
+                                        "properties": {
+                                          "firstname": {
+                                            "type": "string",
+                                            "example": "Rita"
+                                          },
+                                          "lastname": {
+                                            "type": "string",
+                                            "example": "John"
+                                          },
+                                          "email": {
+                                            "type": "string",
+                                            "example": "rita.john@example.com"
+                                          },
+                                          "mobile": {
+                                            "type": "string",
+                                            "example": "919011111111"
+                                          },
+                                          "external_id": {
+                                            "type": "string",
+                                            "example": "XYPZ006"
+                                          },
+                                          "id": {
+                                            "type": "integer",
+                                            "example": 343439221,
+                                            "default": 0
+                                          }
+                                        }
+                                      },
+                                      "old_value": {
+                                        "type": "string",
+                                        "example": "343439221"
+                                      },
+                                      "new_value": {
+                                        "type": "string",
+                                        "example": "343490735"
+                                      },
+                                      "old_type": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "new_type": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "misc_info": {},
+                                      "transaction_id": {
+                                        "type": "string",
+                                        "example": "0"
+                                      },
+                                      "reason": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "comments": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "item_status": {
+                                        "type": "object",
+                                        "properties": {
+                                          "success": {
+                                            "type": "boolean",
+                                            "example": true,
+                                            "default": true
+                                          },
+                                          "code": {
+                                            "type": "integer",
+                                            "example": 9000,
+                                            "default": 0
+                                          },
+                                          "message": {
+                                            "type": "string",
+                                            "example": "Change Identifier request added successfully"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "title": "MERGE ACCOUNTS",
+                      "type": "object",
+                      "properties": {
+                        "response": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "object",
+                              "properties": {
+                                "success": {
+                                  "type": "boolean",
+                                  "example": true,
+                                  "default": true
+                                },
+                                "code": {
+                                  "type": "integer",
+                                  "example": 200,
+                                  "default": 0
+                                },
+                                "message": {
+                                  "type": "string",
+                                  "example": "Success"
+                                }
+                              }
+                            },
+                            "requests": {
+                              "type": "object",
+                              "properties": {
+                                "request": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "reference_id": {},
+                                      "id": {
+                                        "type": "string",
+                                        "example": "789186"
+                                      },
+                                      "status": {
+                                        "type": "string",
+                                        "example": "PENDING"
+                                      },
+                                      "requested_on": {
+                                        "type": "string",
+                                        "example": "2019-12-31 16:58:02"
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "example": "CHANGE_IDENTIFIER"
+                                      },
+                                      "base_type": {
+                                        "type": "string",
+                                        "example": "MERGE"
+                                      },
+                                      "customer": {
+                                        "type": "object",
+                                        "properties": {
+                                          "firstname": {
+                                            "type": "string",
+                                            "example": "unknown739"
+                                          },
+                                          "lastname": {},
+                                          "email": {
+                                            "type": "string",
+                                            "example": "unknown739@capillarytech.com"
+                                          },
+                                          "mobile": {
+                                            "type": "string",
+                                            "example": "919901032739"
+                                          },
+                                          "external_id": {},
+                                          "id": {
+                                            "type": "integer",
+                                            "example": 322393226,
+                                            "default": 0
+                                          }
+                                        }
+                                      },
+                                      "old_value": {
+                                        "type": "string",
+                                        "example": "322393226"
+                                      },
+                                      "new_value": {
+                                        "type": "string",
+                                        "example": "342979941"
+                                      },
+                                      "old_type": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "new_type": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "misc_info": {},
+                                      "transaction_id": {
+                                        "type": "string",
+                                        "example": "0"
+                                      },
+                                      "reason": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "comments": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "item_status": {
+                                        "type": "object",
+                                        "properties": {
+                                          "success": {
+                                            "type": "boolean",
+                                            "example": true,
+                                            "default": true
+                                          },
+                                          "code": {
+                                            "type": "integer",
+                                            "example": 9000,
+                                            "default": 0
+                                          },
+                                          "message": {
+                                            "type": "string",
+                                            "example": "Change Identifier request added successfully"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "title": "GOODWILL POINTS/COUPON",
+                      "type": "object",
+                      "properties": {
+                        "response": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "object",
+                              "properties": {
+                                "success": {
+                                  "type": "boolean",
+                                  "example": true,
+                                  "default": true
+                                },
+                                "code": {
+                                  "type": "integer",
+                                  "example": 200,
+                                  "default": 0
+                                },
+                                "message": {
+                                  "type": "string",
+                                  "example": "Success"
+                                }
+                              }
+                            },
+                            "requests": {
+                              "type": "object",
+                              "properties": {
+                                "request": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "reference_id": {},
+                                      "id": {
+                                        "type": "string",
+                                        "example": "789850"
+                                      },
+                                      "status": {
+                                        "type": "string",
+                                        "example": "PENDING"
+                                      },
+                                      "requested_on": {
+                                        "type": "string",
+                                        "example": "2020-01-02 13:13:38"
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "example": "GOODWILL"
+                                      },
+                                      "base_type": {
+                                        "type": "string",
+                                        "example": "POINTS"
+                                      },
+                                      "customer": {
+                                        "type": "object",
+                                        "properties": {
+                                          "firstname": {
+                                            "type": "string",
+                                            "example": "Shi"
+                                          },
+                                          "lastname": {
+                                            "type": "string",
+                                            "example": "Gan"
+                                          },
+                                          "email": {
+                                            "type": "string",
+                                            "example": "shigan@example.com"
+                                          },
+                                          "mobile": {
+                                            "type": "string",
+                                            "example": "919011111111"
+                                          },
+                                          "external_id": {
+                                            "type": "string",
+                                            "example": "SG006"
+                                          },
+                                          "id": {
+                                            "type": "integer",
+                                            "example": 343490735,
+                                            "default": 0
+                                          }
+                                        }
+                                      },
+                                      "old_value": {
+                                        "type": "string",
+                                        "example": "919011111111"
+                                      },
+                                      "new_value": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "old_type": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "new_type": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "misc_info": {},
+                                      "transaction_id": {
+                                        "type": "string",
+                                        "example": "0"
+                                      },
+                                      "reason": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "comments": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "item_status": {
+                                        "type": "object",
+                                        "properties": {
+                                          "success": {
+                                            "type": "boolean",
+                                            "example": true,
+                                            "default": true
+                                          },
+                                          "code": {
+                                            "type": "integer",
+                                            "example": 9100,
+                                            "default": 0
+                                          },
+                                          "message": {
+                                            "type": "string",
+                                            "example": "Goodwill request added successfully"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "title": "RETRO TRANSACTION",
+                      "type": "object",
+                      "properties": {
+                        "response": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "object",
+                              "properties": {
+                                "success": {
+                                  "type": "boolean",
+                                  "example": true,
+                                  "default": true
+                                },
+                                "code": {
+                                  "type": "integer",
+                                  "example": 200,
+                                  "default": 0
+                                },
+                                "message": {
+                                  "type": "string",
+                                  "example": "Success"
+                                }
+                              }
+                            },
+                            "requests": {
+                              "type": "object",
+                              "properties": {
+                                "request": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "reference_id": {},
+                                      "id": {
+                                        "type": "string",
+                                        "example": "789861"
+                                      },
+                                      "status": {
+                                        "type": "string",
+                                        "example": "PENDING"
+                                      },
+                                      "requested_on": {
+                                        "type": "string",
+                                        "example": "2020-01-02 16:21:54"
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "example": "TRANSACTION_UPDATE"
+                                      },
+                                      "base_type": {
+                                        "type": "string",
+                                        "example": "RETRO"
+                                      },
+                                      "customer": {
+                                        "type": "object",
+                                        "properties": {
+                                          "firstname": {
+                                            "type": "string",
+                                            "example": "Shi"
+                                          },
+                                          "lastname": {
+                                            "type": "string",
+                                            "example": "Gan"
+                                          },
+                                          "email": {
+                                            "type": "string",
+                                            "example": "shigan@example.com"
+                                          },
+                                          "mobile": {
+                                            "type": "string",
+                                            "example": "919011111111"
+                                          },
+                                          "external_id": {
+                                            "type": "string",
+                                            "example": "SG006"
+                                          },
+                                          "id": {
+                                            "type": "integer",
+                                            "example": 343490735,
+                                            "default": 0
+                                          }
+                                        }
+                                      },
+                                      "old_value": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "new_value": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "old_type": {
+                                        "type": "string",
+                                        "example": "NOT_INTERESTED"
+                                      },
+                                      "new_type": {
+                                        "type": "string",
+                                        "example": "REGULAR"
+                                      },
+                                      "misc_info": {},
+                                      "transaction_id": {
+                                        "type": "string",
+                                        "example": "7099259"
+                                      },
+                                      "reason": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "comments": {
+                                        "type": "string",
+                                        "example": ""
+                                      },
+                                      "item_status": {
+                                        "type": "object",
+                                        "properties": {
+                                          "success": {
+                                            "type": "boolean",
+                                            "example": true,
+                                            "default": true
+                                          },
+                                          "code": {
+                                            "type": "integer",
+                                            "example": 9000,
+                                            "default": 0
+                                          },
+                                          "message": {
+                                            "type": "string",
+                                            "example": "Retro request added successfully"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'http://eu.api.capillarytech.com/v1.1/request/add' \\\n--data-raw '{\n    \"root\": {\n        \"request\": [\n            {\n                \"customer\": {\n                     \"id\": 565039506\n                },\n                \n                \"type\": \"CHANGE_IDENTIFIER\",\n                \"base_type\": \"EMAIL\",\n                \"old_value\": \"madhurima.basak@capillarytech.com\",\n                \"new_value\": \"madhurima@capillarytech.com\"\n            }\n        ]\n    }\n}'",
+              "language": "shell",
+              "name": "Sample request_Identifer change"
+            },
+            {
+              "code": "curl --location 'http://eu.api.capillarytech.com/v1.1/request/add?client_auto_approve=true' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic c2F0mNzRm' \\\n--header 'Cookie: _cfuvid=ZdVmikLYfyiiLiJC0.vNIrA_eU7wdAlTqWi5ges.e2c-1771834886256-0.0.1.1-604800000' \\\n--data-raw '{\n    \"root\": {\n        \"request\": [\n            {\n                \"customer\": {                 \n                     \"id\": 565039506\n                },\n                \n                \"type\": \"CHANGE_IDENTIFIER\",\n                \"base_type\": \"EMAIL\",\n                \"old_value\": \"madhurima.basak@capillarytech.com\",\n                \"new_value\": \"madhurima.@capillarytech.com\"\n            }\n        ]\n    }\n}'",
+              "language": "shell",
+              "name": "Sample request_Identifer change_client_auto_approve"
+            },
+            {
+              "code": "",
+              "language": "shell",
+              "name": ""
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

@@ -1,0 +1,323 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Retro Transaction
+
+Retro transaction means you can convert a not-interested transaction to a loyalty transaction (by tagging a not-interested transaction to the respective customer once registered).
+
+To avail Retro Transaction, you need to enable **CONF\_RETRO\_TRANSACTION\_ENABLE** on InTouch > **Settings** > **Systems & Deployment** > **InTouch PoS Configuration** > **Billing page.**
+
+On the Billing page, you will also see a configuration to set the maximum duration allowed convert a not-interested transaction regular.
+
+* CONF\_CLIENT\_RETRO\_DELAY\_SINCE\_REGISTRATION\_HOURS
+* CONF\_CLIENT\_RETRO\_MAX\_ALLOWED\_AGE\_DAYS
+
+Additional Header Required for Retro Transaction
+
+‘X-CAP-CLIENT-SIGNATURE’
+
+To recognize which source has made the retro call, you need to pass the name of the source. It is recommended to use a single name for a source so that it would be easy to track retro transactions of each source.
+
+Example ’“X-CAP-CLIENT-SIGNATURE”:“INTOUCH\_BLR”’
+
+# Request URL
+
+`https://{host}/v1.1/transaction/update?format={xml/json}`
+
+# Request Body Parameters
+
+| Parameter                      | Datatype | Description                                                            |
+| ------------------------------ | -------- | ---------------------------------------------------------------------- |
+| mobile/external\_id/email/id\* | string   | Pass any one of the customer identifiers.                              |
+| new\_type\*                    | enum     | Specify "REGULAR" to convert to a regular transaction.                 |
+| notes                          | string   | Provide any additional information about the conversion for reference. |
+| id\*                           | int      | Unique ID of the transaction that you want to convert.                 |
+| old\_type\*                    | enum     | Earlier type of transaction. Usually, it will be "NOT\_INTERESTED".    |
+
+Note that parameters marked with an asterisk (\*) are mandatory.
+
+```Text sample curl
+curl --location 'https://eu.api.capillarytech.com/v1.1/transaction/update' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'accept: application/json' \
+--header 'X-CAP-CLIENT-SIGNATURE: INTOUCH_BLR' \
+--header 'Authorization: Basic bmVlcmFqLmRvYzpiDA5Y2IwMzZhNGNjZGMzMzQzMWVmOWFjOQ==' \
+--header 'Cookie: _cfuvid=sDY0XTxoNWKvGGj2I7gSCFlk1ElG0Gs6vvl9YVoiAfY-1736158614229-0.0.1.1-604800000' \
+--data-raw '{
+  "root": {
+    "transaction": [{
+      "customer": {
+        "mobile": "9944667722",
+        
+        "email": "johnhill@gmail.com"
+      },
+      "new_type": "REGULAR",
+      "notes": "Retro Transaction",
+      "id": "322926035",
+      "old_type": "NOT_INTERESTED"
+    }]
+  }
+}'
+```
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "transaction-v1",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}.api.capillarytech.com/v1.1/transaction",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "security": [
+    {}
+  ],
+  "paths": {
+    "/update": {
+      "post": {
+        "summary": "Retro Transaction",
+        "description": "",
+        "operationId": "retro-transaction",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"response\": {\n        \"status\": {\n            \"success\": true,\n            \"code\": 200,\n            \"message\": \"Success\"\n        },\n        \"transactions\": {\n            \"transaction\": [\n                {\n                    \"customer\": {\n                        \"user_id\": \"564703252\",\n                        \"mobile\": \"919999988886\",\n                        \"firstname\": \"Tjuser\",\n                        \"lastname\": \"Eightysix\",\n                        \"email\": \"testusertjone@gmail.com\",\n                        \"external_id\": \"0000011110\",\n                        \"lifetime_points\": \"23009\",\n                        \"loyalty_points\": \"9\",\n                        \"current_slab\": \"Ruby\",\n                        \"tier_expiry_date\": \"2125-02-10 23:59:59\",\n                        \"lifetime_purchases\": \"164440\",\n                        \"type\": \"LOYALTY\",\n                        \"source\": \"instore\"\n                    },\n                    \"billing_time\": \"2025-04-03 09:00:15\",\n                    \"number\": \"test00notinterested002\",\n                    \"type\": \"REGULAR\",\n                    \"delivery_status\": \"DELIVERED\",\n                    \"old_id\": 323305546,\n                    \"old_type\": \"NOT_INTERESTED\",\n                    \"id\": 884721874,\n                    \"side_effects\": {\n                        \"effect\": [\n                            {\n                                \"type\": \"points\",\n                                \"awarded_points\": \"1\"\n                            }\n                        ]\n                    },\n                    \"item_status\": {\n                        \"success\": \"true\",\n                        \"code\": 1630,\n                        \"message\": \"Transaction retrospectively marked REGULAR, Transaction added successfully\"\n                    }\n                }\n            ]\n        }\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "object",
+                          "properties": {
+                            "success": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "code": {
+                              "type": "integer",
+                              "example": 200,
+                              "default": 0
+                            },
+                            "message": {
+                              "type": "string",
+                              "example": "Success"
+                            }
+                          }
+                        },
+                        "transactions": {
+                          "type": "object",
+                          "properties": {
+                            "transaction": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "customer": {
+                                    "type": "object",
+                                    "properties": {
+                                      "user_id": {
+                                        "type": "string",
+                                        "example": "564703252"
+                                      },
+                                      "mobile": {
+                                        "type": "string",
+                                        "example": "919999988886"
+                                      },
+                                      "firstname": {
+                                        "type": "string",
+                                        "example": "Tjuser"
+                                      },
+                                      "lastname": {
+                                        "type": "string",
+                                        "example": "Eightysix"
+                                      },
+                                      "email": {
+                                        "type": "string",
+                                        "example": "testusertjone@gmail.com"
+                                      },
+                                      "external_id": {
+                                        "type": "string",
+                                        "example": "0000011110"
+                                      },
+                                      "lifetime_points": {
+                                        "type": "string",
+                                        "example": "23009"
+                                      },
+                                      "loyalty_points": {
+                                        "type": "string",
+                                        "example": "9"
+                                      },
+                                      "current_slab": {
+                                        "type": "string",
+                                        "example": "Ruby"
+                                      },
+                                      "tier_expiry_date": {
+                                        "type": "string",
+                                        "example": "2125-02-10 23:59:59"
+                                      },
+                                      "lifetime_purchases": {
+                                        "type": "string",
+                                        "example": "164440"
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "example": "LOYALTY"
+                                      },
+                                      "source": {
+                                        "type": "string",
+                                        "example": "instore"
+                                      }
+                                    }
+                                  },
+                                  "billing_time": {
+                                    "type": "string",
+                                    "example": "2025-04-03 09:00:15"
+                                  },
+                                  "number": {
+                                    "type": "string",
+                                    "example": "test00notinterested002"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "example": "REGULAR"
+                                  },
+                                  "delivery_status": {
+                                    "type": "string",
+                                    "example": "DELIVERED"
+                                  },
+                                  "old_id": {
+                                    "type": "integer",
+                                    "example": 323305546,
+                                    "default": 0
+                                  },
+                                  "old_type": {
+                                    "type": "string",
+                                    "example": "NOT_INTERESTED"
+                                  },
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 884721874,
+                                    "default": 0
+                                  },
+                                  "side_effects": {
+                                    "type": "object",
+                                    "properties": {
+                                      "effect": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "type": {
+                                              "type": "string",
+                                              "example": "points"
+                                            },
+                                            "awarded_points": {
+                                              "type": "string",
+                                              "example": "1"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "item_status": {
+                                    "type": "object",
+                                    "properties": {
+                                      "success": {
+                                        "type": "string",
+                                        "example": "true"
+                                      },
+                                      "code": {
+                                        "type": "integer",
+                                        "example": 1630,
+                                        "default": 0
+                                      },
+                                      "message": {
+                                        "type": "string",
+                                        "example": "Transaction retrospectively marked REGULAR, Transaction added successfully"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://eu.api.capillarytech.com/v1.1/transaction/update' \\\n--header 'Accept: application/json' \\\n--header 'Content-Type: application/json' \\\n--header 'accept: application/json' \\\n--header 'X-CAP-CLIENT-SIGNATURE: INTOUCH_BLR' \\\n--header 'Authorization: Basic bmVlcmFqLmRvYzpiDA5Y2IwMzZhNGNjZGMzMzQzMWVmOWFjOQ==' \\\n--header 'Cookie: _cfuvid=sDY0XTxoNWKvGGj2I7gSCFlk1ElG0Gs6vvl9YVoiAfY-1736158614229-0.0.1.1-604800000' \\\n--data-raw '{\n  \"root\": {\n    \"transaction\": [{\n      \"customer\": {\n        \"mobile\": \"9999988886\",\n        \"email\": \"testusertjone@gmail.com\"\n      },\n      \"new_type\": \"REGULAR\",\n      \"notes\": \"Retro Transaction\",\n      \"id\": \"323305546\",\n      \"old_type\": \"NOT_INTERESTED\"\n    }]\n  }\n}",
+              "name": "Sample POST "
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "explorer-enabled": false,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

@@ -1,0 +1,162 @@
+---
+title: Get Audit Logs by Event Name
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Get Audit Logs by Event Name
+
+Retrieves events' audit log details.
+
+This API retrieves audit logs for a specific behavioral event. The API provides detailed records of actions and events associated with the selected event name.
+
+Audit logs for custom field changes, such as enabling or disabling specific features, are only generated when updates are performed using the V2 API. Updates made using the V1.1 API do not create audit log entries for custom fields, even if audit logging is configured.
+
+### Prerequisites
+
+Make sure you have the right authentication and appropriate access control configured.
+
+* **Access group resource:** Write access to customer group resource. For more information on access control, see, **[access group documentation](https://docs.capillarytech.com/docs/access-group)**.
+* **Authentication:** Basic authentication details. For more information on authentication, see [**Authentication**](https://docs.capillarytech.com/docs/api-client)**.**
+* **API version:** Audit logs for custom field changes are only generated when updates are made using the V2 API. Updates made using the V1.1 API do not generate audit log entries for custom fields.
+
+### Resource information
+
+| HTTP method           | GET   |
+| :-------------------- | :---- |
+| Authentication        | Basic |
+| Pagination supported? | NO    |
+| Rate limit            | YES   |
+| Batch support         | NO    |
+
+## API Curl
+
+```curl Sample request
+curl --location 'https://eu.api.capillarytech.com/v2/events/audit_logs?format=json&eventName=TestingEvent_FE' \
+--header 'Authorization: Basic IwM2FlNw==' \
+--header 'Cookie: _cfuvid=LvoffYWnKNroiGI4mcPHub.st6yK1dPDHOW3wI1lEls-1751478744816-0.0.1.1-604800000'
+````
+
+### Response parameters
+
+| Field           | Type    | Description                                                                                                |
+| :-------------- | :------ | :--------------------------------------------------------------------------------------------------------- |
+| ..data          | Array   | List containing details of each data entry.                                                                |
+| ...id           | string  | Unique identifier for the event name                                                                       |
+| ...orgId        | integer | Unique identifier for the organization to which the event belongs.                                         |
+| ...valueHistory | Array   | Array that records the historical values of an attribute before and after changes, showing how it evolved. |
+| ....value       | string  | Represents the current value of an attribute after a change.                                               |
+| ....changedOn   | string  | Date and time when the change happened.                                                                    |
+| ...updatedType  | string  | Indicates the type of update, such as creation, modification or deletion.                                  |
+| ...requestId    | string  | Unique identifier for the request.                                                                         |
+| ...eventName    | string  | Name of the event.                                                                                         |
+| ..warnings      | Array   | Array containing warnings, if any.                                                                         |
+| ..errors        | Array   | Array containing errors, if any.                                                                           |
+
+### Error codes
+
+| **Code** | **Description**                                                                                         |
+| -------- | ------------------------------------------------------------------------------------------------------- |
+| 400      | Bad request. The request is invalid or malformed (e.g., incorrect parameters, missing required fields). |
+| 401      | Unauthorized. Authentication failed because credentials are missing, invalid, or expired.               |
+| 500      | Internal server error. The server encountered an unexpected error while processing the request.         |
+
+<br />
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/events/audit_logs": {
+      "get": {
+        "summary": "Get Audit Logs by event name",
+        "description": "Retrieves events' audit log details.",
+        "operationId": "get-audit-logs",
+        "parameters": [
+          {
+            "name": "eventName",
+            "in": "query",
+            "description": "Name of the event to fetch the log of that particular event.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'http://eu.api.capillarytech.com/v2/events/audit_logs?format=json&eventName=TestingEvent_FE' \\\n--header 'Authorization: Basic '",
+              "language": "shell",
+              "name": ""
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "New Example 1": {
+                    "summary": "New Example 1",
+                    "value": ""
+                  },
+                  "New Example 2": {
+                    "summary": "New Example 2",
+                    "value": ""
+                  },
+                  "Example Response": {
+                    "summary": "Example Response",
+                    "value": "{\n{\n    \"data\": [\n        {\n            \"id\": \"TestingEvent_FE-100737\",\n            \"orgId\": 100737,\n            \"valueHistory\": [\n                {\n                    \"value\": \"\\\"value\\\" : ClickEventsMeta{eventId='2fedcc95da465d06504b8fe9e36917b4', eventName='TestingEvent_FE', eventType=USEREVENT, actions=[EMFConsumer, EIConsumer], fields=[ClickEventsMetaFields{name='Customer', type='customer', attributes={isRequired=ClickEventsMetaFieldAttributes{value='true', valueType='BOOLEAN', values=null}, identifierType=ClickEventsMetaFieldAttributes{value='mobile', valueType='ENUM', values=null}, source=ClickEventsMetaFieldAttributes{value='INSTORE', valueType='ENUM', values=null}, accountId=ClickEventsMetaFieldAttributes{value='null', valueType='ENUM', values=null}, addCustomerIfNotExists=ClickEventsMetaFieldAttributes{value='true', valueType='BOOLEAN', values=null}}}], orgId=100737, status=UNPUBLISHED, testStatus=NOT_VERIFIED, isStandardEvent=null, conglomerateContext=null, label='TestingEvent_FE', description='', date=1746004723403} ,\\\"changedOn\\\" : Wed Apr 30 09:18:43 GMT 2025\",\n                    \"changedOn\": \"2025-04-30T09:18:43Z\"\n                },\n                {\n                    \"value\": \"\\\"value\\\" : ClickEventsMeta{eventId='2fedcc95da465d06504b8fe9e36917b4', eventName='TestingEvent_FE', eventType=USEREVENT, actions=[EMFConsumer, EIConsumer], fields=[ClickEventsMetaFields{name='Customer', type='customer', attributes={accountId=ClickEventsMetaFieldAttributes{value='null', valueType='ENUM', values=null}, isRequired=ClickEventsMetaFieldAttributes{value='true', valueType='BOOLEAN', values=null}, addCustomerIfNotExists=ClickEventsMetaFieldAttributes{value='true', valueType='BOOLEAN', values=null}, source=ClickEventsMetaFieldAttributes{value='INSTORE', valueType='ENUM', values=null}, identifierType=ClickEventsMetaFieldAttributes{value='mobile', valueType='ENUM', values=null}}}], orgId=100737, status=PUBLISHED, testStatus=VERIFIED, isStandardEvent=false, conglomerateContext=ConglomerateContext{orgType=STANDARD_ORG}, label='TestingEvent_FE', description='null', date=1746007838282} ,\\\"changedOn\\\" : Wed Apr 30 10:10:38 GMT 2025\",\n                    \"changedOn\": \"2025-04-30T10:10:38Z\"\n                }\n            ],\n            \"updatedType\": \"createOrgEvent\",\n            \"requestId\": \"2fedcc95da465d06504b8fe9e36917b4\",\n            \"eventName\": \"TestingEvent_FE\"\n        }\n    ],\n    \"warnings\": [],\n    \"errors\": []\n}\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+````

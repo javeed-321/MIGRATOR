@@ -1,0 +1,131 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Authentication Token
+
+This API generates an authentication token for the [Store Locator API](https://docs.capillarytech.com/reference/getstorelocatorv1brandnearbystores#/), include the returned token in the `cap_authorization` header of the request to securely access store location data.
+
+<br />
+
+### Request Body parameters
+
+| Parameter       | Type   | Description                                         |
+| --------------- | ------ | --------------------------------------------------- |
+| identifierType  | string | Type of identifier, e.g. MOBILE, EMAIL, or USERNAME |
+| identifierValue | string | Identifier value, e.g. a mobile number              |
+| deviceId        | string | Unique device ID                                    |
+| brand           | string | Brand name                                          |
+
+### Response Body parameters
+
+| Field     | Type    | Description                      |
+| --------- | ------- | -------------------------------- |
+| token     | string  | The authentication token         |
+| expiresIn | integer | Time in seconds until it expires |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Capillary Auth API",
+    "version": "1.0.0",
+    "description": "API to generate authentication tokens for Capillary services"
+  },
+  "servers": [
+    {
+      "url": "https://eu.api.capillarytech.com"
+    }
+  ],
+  "paths": {
+    "/auth/v1/token/generate": {
+      "post": {
+        "summary": "Generate authentication token",
+        "operationId": "generateAuthToken",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "identifierType",
+                  "identifierValue",
+                  "deviceId",
+                  "brand"
+                ],
+                "properties": {
+                  "identifierType": {
+                    "type": "string",
+                    "enum": [
+                      "MOBILE",
+                      "EMAIL",
+                      "USERNAME"
+                    ],
+                    "description": "Type of identifier"
+                  },
+                  "identifierValue": {
+                    "type": "string",
+                    "description": "Identifier value (e.g., mobile number)"
+                  },
+                  "deviceId": {
+                    "type": "string",
+                    "description": "Unique device ID"
+                  },
+                  "brand": {
+                    "type": "string",
+                    "description": "Brand name"
+                  }
+                }
+              },
+              "example": {
+                "identifierType": "MOBILE",
+                "identifierValue": "919400488244",
+                "deviceId": "YOUR_DEVICE_ID",
+                "brand": "DOCDEMO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "Authentication token"
+                    },
+                    "expiresIn": {
+                      "type": "integer",
+                      "description": "Token expiry in seconds"
+                    }
+                  },
+                  "required": [
+                    "token"
+                  ]
+                },
+                "example": {
+                  "token": "eyJhbGciOi...",
+                  "expiresIn": 3600
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  }
+}
+```

@@ -1,0 +1,148 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Get org configs
+
+Retrieves the organization configuration values based on config name.
+
+# Request URL
+
+https\://\{host}/v2/organization/configkeyvalue?name=\{configKeyName}
+
+# Response parameters
+
+| Parameter | Description                                                       |
+| --------- | ----------------------------------------------------------------- |
+| id        | Identifier for the object/record.                                 |
+| entityId  | Identifier for the entity involved.                               |
+| keyName   | Name of the key for which the value is being provided.            |
+| value     | The value corresponding to the keyName.                           |
+| warnings  | An array that contains any warnings associated with the response. |
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "organization-3",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}.api.capillarytech.com/v2/organization",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "oauth2",
+        "flows": {}
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/configkeyvalue?name={configKeyName}": {
+      "get": {
+        "summary": "Get org configs",
+        "description": "Retrieves the organization configuration values based on config name.",
+        "operationId": "get-org-config-key-values",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "The key name for which the value is being requested",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"entityId\": 100458,\n    \"keyName\": \"CONF_MAX_CARDS_PER_ORG\",\n    \"value\": \"6\",\n    \"scope\": \"ORG\",\n    \"warnings\": []\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "entityId": {
+                      "type": "integer",
+                      "example": 100458,
+                      "default": 0
+                    },
+                    "keyName": {
+                      "type": "string",
+                      "example": "CONF_MAX_CARDS_PER_ORG"
+                    },
+                    "value": {
+                      "type": "string",
+                      "example": "6"
+                    },
+                    "scope": {
+                      "type": "string",
+                      "example": "ORG"
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "https://eu.api.capillarytech.com/v2/organization/configs/CONF_MAX_CARDS_PER_ORG\n"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": false
+  },
+  "x-readme-fauxas": true
+}
+```

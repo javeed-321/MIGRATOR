@@ -1,0 +1,416 @@
+---
+title: Update redeem points
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Update redeem points
+
+This API allows you to add or update metadata for a point redemption. The following fields can be edited:
+
+* bill_id
+* bill_number
+* purpose
+* custom fields
+
+<Callout kind="tip" title="Note">
+
+For detailed information about our APIs and for hands-on testing, refer documentation in [API overview](https://docs.capillarytech.com/reference/apioverview) and  step-by-step guide on making your first API call in [Make your first API call](https://docs.capillarytech.com/reference/make-your-first-api-call) .
+
+</Callout>
+
+## Example request
+
+<CodeGroup tabs="Sample request,json,Sample response,json">
+
+```bash
+curl --location --request PUT 'https://eu.api.capillarytech.com/v2/points/updateRedemption' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Basic bWFkaHzI3MjU2YQ==' \
+--header 'Cookie: CC=hxVc6LZCMF1eeNlIK-5ArYCe6cvhui9bPBrNvPuITC4sjNGnu38i6U7XPncmwdOS; CT=YOUR_JWT_TOKEN; OID=50366; _cfuvid=v4REFESfdMALppPg_TcpQuUBTBwlGF7_qbRvsCR1zTM-1761219794658-0.0.1.1-604800000' \
+--data '{
+    "redemptionId": "NZVAt9", 
+    
+    "billNumber": "billnumber333",
+    "billId": 12345678901, 
+    "purpose": "testing123",
+    "entity": {
+        "type": "CUSTOMER",
+        "identifierType": "mobile",
+        "identifierValue": "919777785302"
+    }
+}'
+````
+
+```json
+{
+    "redemptionId": "Fnpztw",
+    "billNumber": "txn-79",
+    "purpose": "Update redemption details",
+    "entity": {
+        "type": "CUSTOMER",
+        "identifierType": "mobile",
+        "identifierValue": "919731013853"
+    },
+    "customFields": {
+        "card_number": "123456"
+    }
+}
+````
+
+```json
+{
+    "id": 26445488,
+    "programId": 973,
+    "pointsRedeemed": 1.0,
+    "billId": 12345678901,
+    "billNumber": "billnumber333",
+    "validationCode": "NS3U05",
+    "notes": "Redeemed to transfer points to the friend",
+    "redemptionTime": 1749721256000,
+    "pointsRedemptionTime": 1749701456000,
+    "tillId": 75155295,
+    "tillName": "",
+    "pointDeductionList": [],
+    "redemptionId": "NZVAt9",
+    "customerId": 564670755,
+    "redemptionPurpose": "testing123",
+    "redemptionDate": "2025-06-12T09:40:56Z",
+    "warnings": []
+}
+````
+
+```json
+{
+    "id": 26503632,
+    "programId": 973,
+    "pointsRedeemed": 101.0,
+    "billId": -1,
+    "billNumber": "txn-79",
+    "validationCode": "NS3U05",
+    "notes": "Redeemed to transfer points to the friend",
+    "redemptionTime": 1750951708000,
+    "pointsRedemptionTime": 1750931908000,
+    "tillId": 75152721,
+    "tillName": "",
+    "pointDeductionList": [],
+    "redemptionId": "Fnpztw",
+    "customFields": [
+        {
+            "name": "card_number",
+            "value": "123456"
+        }
+    ],
+    "customerId": 564332013,
+    "redemptionPurpose": "testUpdate",
+    "redemptionDate": "2025-06-26T15:28:28Z",
+    "warnings": []
+}
+````
+
+</CodeGroup>
+## Response body parameters
+
+| Key | Data Type | Description |
+| --- | --- | --- |
+| id | Long | Unique ID of the customer. |
+| programId | Integer | Unique ID of the loyalty program. |
+| pointsRedeemed | String | Number of points redeemed during the redemption. |
+| billId | Long | Unique ID generated after a transaction. The maximum number of supported characters is 19. It must be a positive whole number, without decimals or special characters. For example: Valid billId: 1234567890123456789 Invalid billId: "12345.67", "ABC123", "-12345". |
+| billNumber | String | Unique ID associated with the transaction. This is provided when adding a transaction. |
+| validationCode | String | Unique code to validate the redemption. |
+| notes | String | Notes related to the redemption update, if any. |
+| redemptionTime | Date | Timestamp when the redemption event was initiated or performed |
+| pointsRedemptionTime | Date | Timestamp when the points were deducted from the warehouse or backend system. |
+| tillId | Integer | Till ID from where the redemption occurred. |
+| tillName | String | Name of the till where the redemption occurred. |
+| pointDeductionList | Object | Object containing details of the point deduction. |
+| redemptionId | String | Unique ID of the redemption event. |
+| customFields | Object | Object containing details of custom fields associated with the points redemption. |
+| customFields.name | String | Name of the custom field. |
+| customFields.value | String | Value of the custom field. |
+| customerId | Integer | Unique customer identifier whose points were deducted. |
+| redemptionPurpose | String | Purpose for updating the points redemption details. |
+| redemptionDate | Date | Date when the redemption occurred in ISO 8601 format. |
+| warnings | Object | Object containing warnings that occured, if any. |
+
+## API-specific error codes
+
+| Error Code | Description                                                      | Reason / When It Occurs                                                                                                                                      |
+| ---------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **748**    | No metadata update requested.                                    | The request did not include any updatable fields (e.g., no new bill number, bill ID, or purpose provided).                                                   |
+| **749**    | Exactly one redemption identifier needed to identify redemption. | You must pass **only one** valid identifier (`redemptionId`, `billNumber`, or another allowed ID). Passing none or multiple identifiers triggers this error. |
+| **750**    | Redemption update failed: \{0\}.                                   | The update action failed internally, possibly due to invalid status transitions or data integrity issues. `{0}` provides specific details.                   |
+| **1219**   | Entity details not set/invalid.                                  | The `entity` object is missing or its fields (`type`, `identifierType`, `identifierValue`) are incomplete or invalid.                                        |
+| **1212**   | Entity type passed is not valid.                                 | The `entity.type` value (e.g., `CUSTOMER`, `groupUser`) is incorrect or not supported for your configuration.                                                |
+| **8015**   | Invalid or malformed identifier provided in request body.        | The `identifierValue` or `redemptionId` is missing, incorrectly formatted, or does not exist in the system.                                                  |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/points/updateRedemption": {
+      "put": {
+        "summary": "Update redeem points",
+        "description": "",
+        "operationId": "update-redeem-points",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "redemptionId",
+                  "externalReferenceNumber"
+                ],
+                "properties": {
+                  "redemptionId": {
+                    "type": "string",
+                    "description": "A unique identifier for the redemption process."
+                  },
+                  "externalReferenceNumber": {
+                    "type": "string",
+                    "description": "Unique reference number associated with the bill."
+                  },
+                  "billNumber": {
+                    "type": "string",
+                    "description": "A string identifier for the bill."
+                  },
+                  "billId": {
+                    "type": "integer",
+                    "description": "A numerical identifier for the bill. The maximum number of supported characters is 19.",
+                    "format": "int32"
+                  },
+                  "purpose": {
+                    "type": "string",
+                    "description": "The purpose or reason for the redemption update."
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "The type of entity involved in the transaction.",
+                    "enum": [
+                      "CUSTOMER",
+                      "USER GROUP"
+                    ]
+                  },
+                  "identifierValue": {
+                    "type": "string",
+                    "description": "The value of the identifier for the entity."
+                  },
+                  "customFields": {
+                    "type": "object",
+                    "description": "Object containing details of custom fields for the point redemption.",
+                    "properties": {}
+                  },
+                  "key": {
+                    "type": "string",
+                    "description": "Key-value pairs of the custom field and its respective value."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"id\": 994485,\n    \"programId\": 2649,\n    \"pointsRedeemed\": 1.0,\n    \"billId\": 2152315011,\n    \"billNumber\": \"txn-75\",\n    \"validationCode\": \"\",\n    \"notes\": \"Sample notes\",\n    \"redemptionTime\": 1749414724000,\n    \"pointsRedemptionTime\": 1749414725000,\n    \"tillId\": 50671937,\n    \"tillName\": \"\",\n    \"pointDeductionList\": [],\n    \"redemptionId\": \"X3k8GI\",\n    \"customFields\": [\n        {\n            \"name\": \"gender\",\n            \"value\": \"female\"\n        },\n        {\n            \"name\": \"age\",\n            \"value\": \"25\"\n        }\n    ],\n    \"customerId\": 387952506,\n    \"redemptionPurpose\": \"Redeemed for purchase\",\n    \"redemptionDate\": \"2025-06-09T02:02:04+05:30\",\n    \"warnings\": []\n}"
+                  },
+                  "Sample response": {
+                    "summary": "Sample response",
+                    "value": {
+                      "id": 26445488,
+                      "programId": 973,
+                      "pointsRedeemed": 1,
+                      "billId": 12345678901,
+                      "billNumber": "billnumber333",
+                      "validationCode": "NS3U05",
+                      "notes": "Redeemed to transfer points to the friend",
+                      "redemptionTime": 1749721256000,
+                      "pointsRedemptionTime": 1749701456000,
+                      "tillId": 75155295,
+                      "tillName": "",
+                      "pointDeductionList": [],
+                      "redemptionId": "NZVAt9",
+                      "customerId": 564670755,
+                      "redemptionPurpose": "testing123",
+                      "redemptionDate": "2025-06-12T09:40:56Z",
+                      "warnings": []
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 994485,
+                      "default": 0
+                    },
+                    "programId": {
+                      "type": "integer",
+                      "example": 2649,
+                      "default": 0
+                    },
+                    "pointsRedeemed": {
+                      "type": "integer",
+                      "example": 1,
+                      "default": 0
+                    },
+                    "billId": {
+                      "type": "integer",
+                      "example": 2152315011,
+                      "default": 0
+                    },
+                    "billNumber": {
+                      "type": "string",
+                      "example": "txn-75"
+                    },
+                    "validationCode": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "notes": {
+                      "type": "string",
+                      "example": "Sample notes"
+                    },
+                    "redemptionTime": {
+                      "type": "integer",
+                      "example": 1749414724000,
+                      "default": 0
+                    },
+                    "pointsRedemptionTime": {
+                      "type": "integer",
+                      "example": 1749414725000,
+                      "default": 0
+                    },
+                    "tillId": {
+                      "type": "integer",
+                      "example": 50671937,
+                      "default": 0
+                    },
+                    "tillName": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "pointDeductionList": {
+                      "type": "array"
+                    },
+                    "redemptionId": {
+                      "type": "string",
+                      "example": "X3k8GI"
+                    },
+                    "customFields": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "gender"
+                          },
+                          "value": {
+                            "type": "string",
+                            "example": "female"
+                          }
+                        }
+                      }
+                    },
+                    "customerId": {
+                      "type": "integer",
+                      "example": 387952506,
+                      "default": 0
+                    },
+                    "redemptionPurpose": {
+                      "type": "string",
+                      "example": "Redeemed for purchase"
+                    },
+                    "redemptionDate": {
+                      "type": "string",
+                      "example": "2025-06-09T02:02:04+05:30"
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "shell",
+              "code": "curl --location --request PUT 'https://eu.api.capillarytech.com/v2/points/updateRedemption' \\\n--header 'Content-Type: application/json' \\\n--header 'Accept: application/json' \\\n--header 'Authorization: Basic bWFkaI3MjU2YQ==' \\\n--header 'Cookie: CC=hxVc6LZCMF1eeNlIK-5ArYCe6cvhui9bPBrNvPuITC4sjNGnu38i6U7XPncmwdOS; CT=YOUR_JWT_TOKEN; OID=50366; _cfuvid=v4REFESfdMALppPg_TcpQuUBTBwlGF7_qbRvsCR1zTM-1761219794658-0.0.1.1-604800000' \\\n--data '{\n    \"redemptionId\": \"NZVAt9\", \n    \n    \"billNumber\": \"billnumber333\",\n    \"billId\": 12345678901, \n    \"purpose\": \"testing123\",\n    \"entity\": {\n        \"type\": \"CUSTOMER\",\n        \"identifierType\": \"mobile\",\n        \"identifierValue\": \"919777785302\"\n    }\n}'",
+              "name": "Sample request"
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

@@ -1,0 +1,592 @@
+---
+title: Get Event Logs by Webhook ID
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Get Event Logs by Webhook ID
+
+Endpoint for GET /v3/events/consumer-groups/d7022e0e-35ad-4c81-a18a-a6cb32ee6292/logs
+
+This API enables you to retrieve detailed delivery logs for event notifications sent to a specific webhook. You can filter the results using the event type, the primary identifier associated with the event, and the API request ID. The logs include delivery status, timestamps, event types, and request IDs for monitoring and troubleshooting notification delivery
+
+## Example request
+
+```Text Searching using customer group ID
+curl --location 'https://eu.intouch.capillarytech.com/v3/events/consumer-groups/ebbcc6f7-8469-4222-b7a2-e740197b56e5/logs' \
+--header 'Authorization: Basic 2ODkxZjg0ZTdi'
+````
+```Text Sort by webhook duration
+curl --location 'https://eu.intouch.capillarytech.com/v3/events/consumer-groups/ebbcc6f7-8469-4222-b7a2-e740197b56e5/logs?sortBy=webhookDuration%3Adesc' \
+--header 'Authorization: Basic bmVlcmg0ZTdi'
+````
+```Text Sort by event type
+curl --location 'https://eu.intouch.capillarytech.com/v3/events/consumer-groups/d7022e0e-35ad-4c81-a18a-a6cb32ee6292/logs?sortBy=eventType%3Adesc' \
+--header 'Authorization: Basic bmM0YzM0YTE2ODkxZjg0ZTdi'
+````
+```Text Filter by event type
+curl --location 'https://eu.intouch.capillarytech.com/v3/events/consumer-groups/d7022e0e-35ad-4c81-a18a-a6cb32ee6292/logs?eventType=transactionAdded' \
+--header 'Authorization: Basic bmVlcYzM0YTE2ODkxZjg0ZTdi'
+````
+```Text Filter by customer ID
+curl --location 'https://eu.intouch.capillarytech.com/v3/events/consumer-groups/d7022e0e-35ad-4c81-a18a-a6cb32ee6292/logs?eventSearchKey=564767826' \
+--header 'Authorization: Basic WE4YTcwNmM0YzM0YTE2ODkxZjg0ZTdi'
+```
+
+## Prerequisites
+
+* [ ] Authentication - Basic or OAuth authentication details
+* [ ] Access group resource - Read permission on webhook resource group
+* [ ] Consumer Group ID - The `consumerGroupId` from your webhook configuration
+
+## Resource information
+
+|                       |     |
+| :-------------------- | :-- |
+| Pagination supported? | Yes |
+| Batch support         | NA  |
+
+## Path parameters
+
+| Field           | Type   | Required | Description                                                                                                                              |
+| --------------- | ------ | :------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| consumerGroupId | String | Yes      | Unique identifier for the webhook. This ID is returned in the `consumerGroupId` field when you retrieve a webhook configuration details. |
+
+## Query parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| page | Integer | No | Page number for pagination (starts from 1). |
+| pageSize | Integer | No | Number of log entries to return per page. Maximum: 100. Default value is 10. |
+| sortBy | String | No | Field and sort order for results. **Format:** format _fieldName:asc_ or _fieldName:desc_. For example, if you want to filter by event delivery date in descending order, use the filter `eventDeliveryDate:desc` against this parameter. By default, the events are sorted by the event-generated date in descending order. |
+| startDate | Long | No | Filter logs from this timestamp (Unix epoch in milliseconds). Example: 1763639539708 |
+| endDate | Long | No | Filter logs until this timestamp (Unix epoch in milliseconds). |
+| deliveryStatus | String | No | Filter by delivery status. **Supported values:** ``IN_PROGRESS` `SUCCESS`, `PARTIAL_SUCCESS`, and `FAIL`. |
+| eventType | String | No | Filter by specific event type. **Example values:** `customerAdded`, `transactionAdded`, `pointsIssued`. The event type should be defined exactly as it is and is case-sensitive. |
+| eventSearchKey | String | No | Filter by the primary identifier of a particular event. For example, for a customer-related event(customerAdd, update), it will be the customer ID. |
+| requestId | String | No | Filter by the specific API request ID to track a particular event delivery. |
+
+## Example response
+
+```
+{
+    "data": {
+        "data": [
+            {
+                "id": "691f023eef0b48e4c87773ee",
+                "eventId": "8ea4fbd9-3cc5-4c12-9642-7a0d07aefb75",
+                "orgId": "100737",
+                "consumerGroupId": "ebbcc6f7-8469-4222-b7a2-e740197b56e5",
+                "deliveryStatus": "FAILED",
+                "eventSearchKey": "pork000000001070",
+                "eventType": "cardUpdated",
+                "originalPayload": "{\"eventId\":\"8ea4fbd9-3cc5-4c12-9642-7a0d07aefb75\",\"eventType\":\"100737_cardUpdated\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763639870078,\"attributes\":{\"createdAt\":1763639870071,\"data\":{\"cardNumber\":\"pork000000001070\",\"previousStatusLabel\":\"ACTIVE\",\"currentStatusLabel\":\"SUSPENDED\",\"currentExtendedFields\":[{\"name\":\"custom_card_name\",\"value\":\"SOM\"},{\"name\":\"vehicle_number\",\"value\":\"KA01B2021\"},{\"name\":\"card_requested_by\",\"value\":\"rutuja_capillary\"}],\"previousExtendedFields\":[],\"currentCustomFields\":[{\"name\":\"vehicle_type\",\"value\":\"Car\"}],\"previousCustomFields\":[]},\"eventName\":\"cardUpdated\",\"eventSearchKey\":\"data.cardNumber\",\"refId\":\"100737_921882\",\"apiRequestId\":\"57d8bf516cb621d9c5b1a9faf063a836\",\"orgId\":100737}}",
+                "enrichedPayload": "\"{\\\"createdAt\\\":1763639870071,\\\"data\\\":{\\\"cardNumber\\\":\\\"pork000000001070\\\",\\\"previousStatusLabel\\\":\\\"ACTIVE\\\",\\\"currentStatusLabel\\\":\\\"SUSPENDED\\\",\\\"currentExtendedFields\\\":[{\\\"name\\\":\\\"custom_card_name\\\",\\\"value\\\":\\\"SOM\\\"},{\\\"name\\\":\\\"vehicle_number\\\",\\\"value\\\":\\\"KA01B2021\\\"},{\\\"name\\\":\\\"card_requested_by\\\",\\\"value\\\":\\\"rutuja_capillary\\\"}],\\\"previousExtendedFields\\\":[],\\\"currentCustomFields\\\":[{\\\"name\\\":\\\"vehicle_type\\\",\\\"value\\\":\\\"Car\\\"}],\\\"previousCustomFields\\\":[]},\\\"eventName\\\":\\\"cardUpdated\\\",\\\"eventSearchKey\\\":\\\"data.cardNumber\\\",\\\"refId\\\":\\\"100737_921882\\\",\\\"apiRequestId\\\":\\\"57d8bf516cb621d9c5b1a9faf063a836\\\",\\\"orgId\\\":100737,\\\"eventId\\\":\\\"8ea4fbd9-3cc5-4c12-9642-7a0d07aefb75\\\"}\"",
+                "eventGeneratedDate": 1763639870072,
+                "eventDeliveryDate": 1763640179553,
+                "retryCount": 10,
+                "webhookResponseCode": "429",
+                "webhookDuration": 149,
+                "lastRetryTime": 1763640179553,
+                "nextRetryTime": 1763640239048,
+                "message": "webhook response:  | 429 - Too Many Requests. Refer: https://beeceptor.com/pricing/",
+                "statusPriority": 3,
+                "requestId": "57d8bf516cb621d9c5b1a9faf063a836"
+            },
+            {
+                "id": "691f023eef0b48e4c87773c0",
+                "eventId": "160052bf-d1ae-413a-ad61-1412c3a40317",
+                "orgId": "100737",
+                "consumerGroupId": "ebbcc6f7-8469-4222-b7a2-e740197b56e5",
+                "deliveryStatus": "FAILED",
+                "eventSearchKey": "pork000000001170",
+                "eventType": "cardUpdated",
+                "originalPayload": "{\"eventId\":\"160052bf-d1ae-413a-ad61-1412c3a40317\",\"eventType\":\"100737_cardUpdated\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763639869980,\"attributes\":{\"createdAt\":1763639869973,\"data\":{\"cardNumber\":\"pork000000001170\",\"previousStatusLabel\":\"ACTIVE\",\"currentStatusLabel\":\"SUSPENDED\",\"currentExtendedFields\":[{\"name\":\"custom_card_name\",\"value\":\"TOM\"},{\"name\":\"vehicle_number\",\"value\":\"KA01B2020\"}],\"previousExtendedFields\":[],\"currentCustomFields\":[{\"name\":\"vehicle_type\",\"value\":\"Bike\"}],\"previousCustomFields\":[]},\"eventName\":\"cardUpdated\",\"eventSearchKey\":\"data.cardNumber\",\"refId\":\"100737_921881\",\"apiRequestId\":\"57d8bf516cb621d9c5b1a9faf063a836\",\"orgId\":100737}}",
+                "enrichedPayload": "\"{\\\"createdAt\\\":1763639869973,\\\"data\\\":{\\\"cardNumber\\\":\\\"pork000000001170\\\",\\\"previousStatusLabel\\\":\\\"ACTIVE\\\",\\\"currentStatusLabel\\\":\\\"SUSPENDED\\\",\\\"currentExtendedFields\\\":[{\\\"name\\\":\\\"custom_card_name\\\",\\\"value\\\":\\\"TOM\\\"},{\\\"name\\\":\\\"vehicle_number\\\",\\\"value\\\":\\\"KA01B2020\\\"}],\\\"previousExtendedFields\\\":[],\\\"currentCustomFields\\\":[{\\\"name\\\":\\\"vehicle_type\\\",\\\"value\\\":\\\"Bike\\\"}],\\\"previousCustomFields\\\":[]},\\\"eventName\\\":\\\"cardUpdated\\\",\\\"eventSearchKey\\\":\\\"data.cardNumber\\\",\\\"refId\\\":\\\"100737_921881\\\",\\\"apiRequestId\\\":\\\"57d8bf516cb621d9c5b1a9faf063a836\\\",\\\"orgId\\\":100737,\\\"eventId\\\":\\\"160052bf-d1ae-413a-ad61-1412c3a40317\\\"}\"",
+                "eventGeneratedDate": 1763639869974,
+                "eventDeliveryDate": 1763640177043,
+                "retryCount": 10,
+                "webhookResponseCode": "429",
+                "webhookDuration": 151,
+                "lastRetryTime": 1763640177043,
+                "nextRetryTime": 1763640237043,
+                "message": "webhook response:  | 429 - Too Many Requests. Refer: https://beeceptor.com/pricing/",
+                "statusPriority": 3,
+                "requestId": "57d8bf516cb621d9c5b1a9faf063a836"
+            },
+            {
+                "id": "691f01a7ef0b48e4c876c8ff",
+                "eventId": "9f168d9e-b498-4715-9ada-428710ec9c52",
+                "orgId": "100737",
+                "consumerGroupId": "ebbcc6f7-8469-4222-b7a2-e740197b56e5",
+                "deliveryStatus": "FAILED",
+                "eventSearchKey": "564767826",
+                "eventType": "customerUpdated",
+                "originalPayload": "{\"eventId\":\"9f168d9e-b498-4715-9ada-428710ec9c52\",\"eventType\":\"100737_customerUpdated\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763639719648,\"attributes\":{\"createdAt\":1763639719643,\"data\":{\"loyaltyType\":\"loyalty\",\"source\":\"INSTORE\",\"accountId\":\"\",\"firstName\":\"Rutuja\",\"lastName\":\"Hatwar\",\"enteredAt\":1763639719426,\"enteredBy\":{\"id\":75197372,\"till\":{\"code\":\"madhu_rima\",\"name\":\"madhurima\"},\"store\":{\"code\":\"doc123\",\"name\":\"DocStore\",\"externalId\":\"Doc123\",\"externalId1\":\"\",\"externalId2\":\"\"}},\"updatedFields\":[{\"fieldName\":\"cardnumber\",\"previousValue\":\"\",\"currentValue\":\"pork000000001070\",\"source\":\"INSTORE\",\"accountId\":\"\"}],\"triggeringActivity\":{\"name\":\"Identifier Change Request\"},\"customerIdentifiers\":{\"customerId\":564767826,\"instore\":{\"mobile\":\"919988776656\",\"email\":\"tomcruise@gmail.com\",\"externalId\":\"007\",\"cardnumber\":\"Test09000000000003end\",\"cardNumbers\":[\"Test09000000000003end\",\"Test09000000000002end\",\"123\",\"-123\",\"Test09000000000017end\",\"Test09000000000016end\",\"pork000000001170\",\"pork000000001070\"],\"cards\":{\"cardnumber\":\"pork000000001070\",\"cardexternalid\":\"CardExternal5\",\"cardnumber1\":\"pork000000001170\",\"cardexternalid1\":\"CardExternal4\",\"cardnumber2\":\"Test09000000000016end\",\"cardnumber3\":\"Test09000000000017end\",\"cardnumber4\":\"-123\"}}},\"customFields\":[],\"extendedFields\":[]},\"eventName\":\"customerUpdated\",\"eventSearchKey\":\"data.customerIdentifiers.customerId\",\"refId\":\"100737_564767826\",\"apiRequestId\":\"8b379b425f669a38371dd14ad46febda\",\"orgId\":100737}}",
+                "enrichedPayload": "\"{\\\"createdAt\\\":1763639719643,\\\"data\\\":{\\\"loyaltyType\\\":\\\"loyalty\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\",\\\"firstName\\\":\\\"Rutuja\\\",\\\"lastName\\\":\\\"Hatwar\\\",\\\"enteredAt\\\":1763639719426,\\\"enteredBy\\\":{\\\"id\\\":75197372,\\\"till\\\":{\\\"code\\\":\\\"madhu_rima\\\",\\\"name\\\":\\\"madhurima\\\"},\\\"store\\\":{\\\"code\\\":\\\"doc123\\\",\\\"name\\\":\\\"DocStore\\\",\\\"externalId\\\":\\\"Doc123\\\",\\\"externalId1\\\":\\\"\\\",\\\"externalId2\\\":\\\"\\\"}},\\\"updatedFields\\\":[{\\\"fieldName\\\":\\\"cardnumber\\\",\\\"previousValue\\\":\\\"\\\",\\\"currentValue\\\":\\\"pork000000001070\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\"}],\\\"triggeringActivity\\\":{\\\"name\\\":\\\"Identifier Change Request\\\"},\\\"customerIdentifiers\\\":{\\\"customerId\\\":564767826,\\\"instore\\\":{\\\"mobile\\\":\\\"919988776656\\\",\\\"email\\\":\\\"tomcruise@gmail.com\\\",\\\"externalId\\\":\\\"007\\\",\\\"cardnumber\\\":\\\"Test09000000000003end\\\",\\\"cardNumbers\\\":[\\\"Test09000000000003end\\\",\\\"Test09000000000002end\\\",\\\"123\\\",\\\"-123\\\",\\\"Test09000000000017end\\\",\\\"Test09000000000016end\\\",\\\"pork000000001170\\\",\\\"pork000000001070\\\"],\\\"cards\\\":{\\\"cardnumber\\\":\\\"pork000000001070\\\",\\\"cardexternalid\\\":\\\"CardExternal5\\\",\\\"cardnumber1\\\":\\\"pork000000001170\\\",\\\"cardexternalid1\\\":\\\"CardExternal4\\\",\\\"cardnumber2\\\":\\\"Test09000000000016end\\\",\\\"cardnumber3\\\":\\\"Test09000000000017end\\\",\\\"cardnumber4\\\":\\\"-123\\\"}}},\\\"customFields\\\":[],\\\"extendedFields\\\":[]},\\\"eventName\\\":\\\"customerUpdated\\\",\\\"eventSearchKey\\\":\\\"data.customerIdentifiers.customerId\\\",\\\"refId\\\":\\\"100737_564767826\\\",\\\"apiRequestId\\\":\\\"8b379b425f669a38371dd14ad46febda\\\",\\\"orgId\\\":100737,\\\"eventId\\\":\\\"9f168d9e-b498-4715-9ada-428710ec9c52\\\"}\"",
+                "eventGeneratedDate": 1763639719643,
+                "eventDeliveryDate": 1763640026456,
+                "retryCount": 10,
+                "webhookResponseCode": "429",
+                "webhookDuration": 181,
+                "lastRetryTime": 1763640026457,
+                "nextRetryTime": 1763640086457,
+                "message": "webhook response:  | 429 - Too Many Requests. Refer: https://beeceptor.com/pricing/",
+                "statusPriority": 3,
+                "requestId": "8b379b425f669a38371dd14ad46febda"
+            },
+            {
+                "id": "691f00f3ef0b48e4c875fb59",
+                "eventId": "ba3d292f-d3fe-4581-9d90-ce28fbf5bb3e",
+                "orgId": "100737",
+                "consumerGroupId": "ebbcc6f7-8469-4222-b7a2-e740197b56e5",
+                "deliveryStatus": "FAILED",
+                "eventSearchKey": "564767826",
+                "eventType": "customerUpdated",
+                "originalPayload": "{\"eventId\":\"ba3d292f-d3fe-4581-9d90-ce28fbf5bb3e\",\"eventType\":\"100737_customerUpdated\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763639539713,\"attributes\":{\"createdAt\":1763639539708,\"data\":{\"loyaltyType\":\"loyalty\",\"source\":\"INSTORE\",\"accountId\":\"\",\"firstName\":\"Rutuja\",\"lastName\":\"Hatwar\",\"enteredAt\":1763639539519,\"enteredBy\":{\"id\":75197372,\"till\":{\"code\":\"madhu_rima\",\"name\":\"madhurima\"},\"store\":{\"code\":\"doc123\",\"name\":\"DocStore\",\"externalId\":\"Doc123\",\"externalId1\":\"\",\"externalId2\":\"\"}},\"updatedFields\":[{\"fieldName\":\"cardnumber\",\"previousValue\":\"\",\"currentValue\":\"pork000000001170\",\"source\":\"INSTORE\",\"accountId\":\"\"}],\"triggeringActivity\":{\"name\":\"Identifier Change Request\"},\"customerIdentifiers\":{\"customerId\":564767826,\"instore\":{\"mobile\":\"919988776656\",\"email\":\"tomcruise@gmail.com\",\"externalId\":\"007\",\"cardnumber\":\"Test09000000000003end\",\"cardNumbers\":[\"Test09000000000003end\",\"Test09000000000002end\",\"123\",\"-123\",\"Test09000000000017end\",\"Test09000000000016end\",\"pork000000001170\"],\"cards\":{\"cardnumber\":\"pork000000001170\",\"cardexternalid\":\"CardExternal4\",\"cardnumber1\":\"Test09000000000016end\",\"cardnumber2\":\"Test09000000000017end\",\"cardnumber3\":\"-123\",\"cardnumber4\":\"123\"}}},\"customFields\":[],\"extendedFields\":[]},\"eventName\":\"customerUpdated\",\"eventSearchKey\":\"data.customerIdentifiers.customerId\",\"refId\":\"100737_564767826\",\"apiRequestId\":\"074a15c5eb2b3823543286e4816032b7\",\"orgId\":100737}}",
+                "enrichedPayload": "\"{\\\"createdAt\\\":1763639539708,\\\"data\\\":{\\\"loyaltyType\\\":\\\"loyalty\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\",\\\"firstName\\\":\\\"Rutuja\\\",\\\"lastName\\\":\\\"Hatwar\\\",\\\"enteredAt\\\":1763639539519,\\\"enteredBy\\\":{\\\"id\\\":75197372,\\\"till\\\":{\\\"code\\\":\\\"madhu_rima\\\",\\\"name\\\":\\\"madhurima\\\"},\\\"store\\\":{\\\"code\\\":\\\"doc123\\\",\\\"name\\\":\\\"DocStore\\\",\\\"externalId\\\":\\\"Doc123\\\",\\\"externalId1\\\":\\\"\\\",\\\"externalId2\\\":\\\"\\\"}},\\\"updatedFields\\\":[{\\\"fieldName\\\":\\\"cardnumber\\\",\\\"previousValue\\\":\\\"\\\",\\\"currentValue\\\":\\\"pork000000001170\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\"}],\\\"triggeringActivity\\\":{\\\"name\\\":\\\"Identifier Change Request\\\"},\\\"customerIdentifiers\\\":{\\\"customerId\\\":564767826,\\\"instore\\\":{\\\"mobile\\\":\\\"919988776656\\\",\\\"email\\\":\\\"tomcruise@gmail.com\\\",\\\"externalId\\\":\\\"007\\\",\\\"cardnumber\\\":\\\"Test09000000000003end\\\",\\\"cardNumbers\\\":[\\\"Test09000000000003end\\\",\\\"Test09000000000002end\\\",\\\"123\\\",\\\"-123\\\",\\\"Test09000000000017end\\\",\\\"Test09000000000016end\\\",\\\"pork000000001170\\\"],\\\"cards\\\":{\\\"cardnumber\\\":\\\"pork000000001170\\\",\\\"cardexternalid\\\":\\\"CardExternal4\\\",\\\"cardnumber1\\\":\\\"Test09000000000016end\\\",\\\"cardnumber2\\\":\\\"Test09000000000017end\\\",\\\"cardnumber3\\\":\\\"-123\\\",\\\"cardnumber4\\\":\\\"123\\\"}}},\\\"customFields\\\":[],\\\"extendedFields\\\":[]},\\\"eventName\\\":\\\"customerUpdated\\\",\\\"eventSearchKey\\\":\\\"data.customerIdentifiers.customerId\\\",\\\"refId\\\":\\\"100737_564767826\\\",\\\"apiRequestId\\\":\\\"074a15c5eb2b3823543286e4816032b7\\\",\\\"orgId\\\":100737,\\\"eventId\\\":\\\"ba3d292f-d3fe-4581-9d90-ce28fbf5bb3e\\\"}\"",
+                "eventGeneratedDate": 1763639539708,
+                "eventDeliveryDate": 1763639844791,
+                "retryCount": 10,
+                "webhookResponseCode": "429",
+                "webhookDuration": 150,
+                "lastRetryTime": 1763639844792,
+                "nextRetryTime": 1763639904792,
+                "message": "webhook response:  | 429 - Too Many Requests. Refer: https://beeceptor.com/pricing/",
+                "statusPriority": 3,
+                "requestId": "074a15c5eb2b3823543286e4816032b7"
+            },
+            {
+                "id": "691eea13ef0b48e4c858e633",
+                "eventId": "801776d0-b02e-4a0c-a942-408dec63daad",
+                "orgId": "100737",
+                "consumerGroupId": "ebbcc6f7-8469-4222-b7a2-e740197b56e5",
+                "deliveryStatus": "FAILED",
+                "eventSearchKey": "566881933",
+                "eventType": "customerUpdated",
+                "originalPayload": "{\"eventId\":\"801776d0-b02e-4a0c-a942-408dec63daad\",\"eventType\":\"100737_customerUpdated\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763633683819,\"attributes\":{\"createdAt\":1763633683814,\"data\":{\"loyaltyType\":\"loyalty\",\"source\":\"INSTORE\",\"accountId\":\"\",\"firstName\":\"Dead\",\"lastName\":\"fool\",\"enteredAt\":1763633683696,\"enteredBy\":{\"id\":75197941,\"till\":{\"code\":\"george.docdemo\",\"name\":\"george.docdemo\"},\"store\":{\"code\":\"doc123\",\"name\":\"DocStore\",\"externalId\":\"Doc123\",\"externalId1\":\"\",\"externalId2\":\"\"}},\"updatedFields\":[{\"fieldName\":\"cardnumber\",\"previousValue\":\"mtest00000000467003\",\"currentValue\":\"\",\"source\":\"INSTORE\",\"accountId\":\"\"}],\"triggeringActivity\":{\"name\":\"Identifier Change Request\"},\"customerIdentifiers\":{\"customerId\":566881933,\"instore\":{\"mobile\":\"1234512345\",\"email\":\"dead.fool@capillarytech.com\",\"externalId\":\"12341234\",\"cardnumber\":\"mtest00000000067003\",\"cardNumbers\":[\"mtest00000000067003\",\"mtest00000000107003\",\"mtest00000000087003\",\"mtest00000000077003\",\"DS034812BA\"],\"cards\":{\"cardnumber\":\"DS034812BA\",\"cardexternalid\":\"CardExternal2\",\"cardnumber1\":\"mtest00000000107003\",\"cardnumber2\":\"mtest00000000087003\",\"cardnumber3\":\"mtest00000000077003\",\"cardnumber4\":\"mtest00000000067003\"}}},\"customFields\":[],\"extendedFields\":[]},\"eventName\":\"customerUpdated\",\"eventSearchKey\":\"data.customerIdentifiers.customerId\",\"refId\":\"100737_566881933\",\"apiRequestId\":\"f1dcab5f6b3119f6413d9bff3df4e0ab\",\"orgId\":100737}}",
+                "enrichedPayload": "\"{\\\"createdAt\\\":1763633683814,\\\"data\\\":{\\\"loyaltyType\\\":\\\"loyalty\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\",\\\"firstName\\\":\\\"Dead\\\",\\\"lastName\\\":\\\"fool\\\",\\\"enteredAt\\\":1763633683696,\\\"enteredBy\\\":{\\\"id\\\":75197941,\\\"till\\\":{\\\"code\\\":\\\"george.docdemo\\\",\\\"name\\\":\\\"george.docdemo\\\"},\\\"store\\\":{\\\"code\\\":\\\"doc123\\\",\\\"name\\\":\\\"DocStore\\\",\\\"externalId\\\":\\\"Doc123\\\",\\\"externalId1\\\":\\\"\\\",\\\"externalId2\\\":\\\"\\\"}},\\\"updatedFields\\\":[{\\\"fieldName\\\":\\\"cardnumber\\\",\\\"previousValue\\\":\\\"mtest00000000467003\\\",\\\"currentValue\\\":\\\"\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\"}],\\\"triggeringActivity\\\":{\\\"name\\\":\\\"Identifier Change Request\\\"},\\\"customerIdentifiers\\\":{\\\"customerId\\\":566881933,\\\"instore\\\":{\\\"mobile\\\":\\\"1234512345\\\",\\\"email\\\":\\\"dead.fool@capillarytech.com\\\",\\\"externalId\\\":\\\"12341234\\\",\\\"cardnumber\\\":\\\"mtest00000000067003\\\",\\\"cardNumbers\\\":[\\\"mtest00000000067003\\\",\\\"mtest00000000107003\\\",\\\"mtest00000000087003\\\",\\\"mtest00000000077003\\\",\\\"DS034812BA\\\"],\\\"cards\\\":{\\\"cardnumber\\\":\\\"DS034812BA\\\",\\\"cardexternalid\\\":\\\"CardExternal2\\\",\\\"cardnumber1\\\":\\\"mtest00000000107003\\\",\\\"cardnumber2\\\":\\\"mtest00000000087003\\\",\\\"cardnumber3\\\":\\\"mtest00000000077003\\\",\\\"cardnumber4\\\":\\\"mtest00000000067003\\\"}}},\\\"customFields\\\":[],\\\"extendedFields\\\":[]},\\\"eventName\\\":\\\"customerUpdated\\\",\\\"eventSearchKey\\\":\\\"data.customerIdentifiers.customerId\\\",\\\"refId\\\":\\\"100737_566881933\\\",\\\"apiRequestId\\\":\\\"f1dcab5f6b3119f6413d9bff3df4e0ab\\\",\\\"orgId\\\":100737,\\\"eventId\\\":\\\"801776d0-b02e-4a0c-a942-408dec63daad\\\"}\"",
+                "eventGeneratedDate": 1763633683814,
+                "eventDeliveryDate": 1763633990558,
+                "retryCount": 10,
+                "webhookResponseCode": "429",
+                "webhookDuration": 148,
+                "lastRetryTime": 1763633990558,
+                "nextRetryTime": 1763634050055,
+                "message": "webhook response:  | 429 - Too Many Requests. Refer: https://beeceptor.com/pricing/",
+                "statusPriority": 3,
+                "requestId": "f1dcab5f6b3119f6413d9bff3df4e0ab"
+            },
+            {
+                "id": "691ee867ef0b48e4c8566bfa",
+                "eventId": "4c18e357-6ef5-48cc-8d15-13ab55a7d6a3",
+                "orgId": "100737",
+                "consumerGroupId": "ebbcc6f7-8469-4222-b7a2-e740197b56e5",
+                "deliveryStatus": "FAILED",
+                "eventSearchKey": "566881933",
+                "eventType": "customerUpdated",
+                "originalPayload": "{\"eventId\":\"4c18e357-6ef5-48cc-8d15-13ab55a7d6a3\",\"eventType\":\"100737_customerUpdated\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763633255458,\"attributes\":{\"createdAt\":1763633255452,\"data\":{\"loyaltyType\":\"loyalty\",\"source\":\"INSTORE\",\"accountId\":\"\",\"firstName\":\"Dead\",\"lastName\":\"fool\",\"enteredAt\":1763633255291,\"enteredBy\":{\"id\":75197372,\"till\":{\"code\":\"madhu_rima\",\"name\":\"madhurima\"},\"store\":{\"code\":\"doc123\",\"name\":\"DocStore\",\"externalId\":\"Doc123\",\"externalId1\":\"\",\"externalId2\":\"\"}},\"updatedFields\":[{\"fieldName\":\"cardnumber\",\"previousValue\":\"\",\"currentValue\":\"DS034812BA\",\"source\":\"INSTORE\",\"accountId\":\"\"}],\"triggeringActivity\":{\"name\":\"Identifier Change Request\"},\"customerIdentifiers\":{\"customerId\":566881933,\"instore\":{\"mobile\":\"1234512345\",\"email\":\"dead.fool@capillarytech.com\",\"externalId\":\"12341234\",\"cardnumber\":\"mtest00000000067003\",\"cardNumbers\":[\"mtest00000000067003\",\"mtest00000000107003\",\"mtest00000000087003\",\"mtest00000000077003\",\"mtest00000000467003\",\"DS034812BA\"],\"cards\":{\"cardnumber\":\"DS034812BA\",\"cardexternalid\":\"CardExternal2\",\"cardnumber1\":\"mtest00000000467003\",\"cardexternalid1\":\"cardtest5\",\"cardnumber2\":\"mtest00000000107003\",\"cardnumber3\":\"mtest00000000087003\",\"cardnumber4\":\"mtest00000000077003\"}}},\"customFields\":[],\"extendedFields\":[]},\"eventName\":\"customerUpdated\",\"eventSearchKey\":\"data.customerIdentifiers.customerId\",\"refId\":\"100737_566881933\",\"apiRequestId\":\"11f63886651643cb789fa280dcb1cd79\",\"orgId\":100737}}",
+                "enrichedPayload": "\"{\\\"createdAt\\\":1763633255452,\\\"data\\\":{\\\"loyaltyType\\\":\\\"loyalty\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\",\\\"firstName\\\":\\\"Dead\\\",\\\"lastName\\\":\\\"fool\\\",\\\"enteredAt\\\":1763633255291,\\\"enteredBy\\\":{\\\"id\\\":75197372,\\\"till\\\":{\\\"code\\\":\\\"madhu_rima\\\",\\\"name\\\":\\\"madhurima\\\"},\\\"store\\\":{\\\"code\\\":\\\"doc123\\\",\\\"name\\\":\\\"DocStore\\\",\\\"externalId\\\":\\\"Doc123\\\",\\\"externalId1\\\":\\\"\\\",\\\"externalId2\\\":\\\"\\\"}},\\\"updatedFields\\\":[{\\\"fieldName\\\":\\\"cardnumber\\\",\\\"previousValue\\\":\\\"\\\",\\\"currentValue\\\":\\\"DS034812BA\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\"}],\\\"triggeringActivity\\\":{\\\"name\\\":\\\"Identifier Change Request\\\"},\\\"customerIdentifiers\\\":{\\\"customerId\\\":566881933,\\\"instore\\\":{\\\"mobile\\\":\\\"1234512345\\\",\\\"email\\\":\\\"dead.fool@capillarytech.com\\\",\\\"externalId\\\":\\\"12341234\\\",\\\"cardnumber\\\":\\\"mtest00000000067003\\\",\\\"cardNumbers\\\":[\\\"mtest00000000067003\\\",\\\"mtest00000000107003\\\",\\\"mtest00000000087003\\\",\\\"mtest00000000077003\\\",\\\"mtest00000000467003\\\",\\\"DS034812BA\\\"],\\\"cards\\\":{\\\"cardnumber\\\":\\\"DS034812BA\\\",\\\"cardexternalid\\\":\\\"CardExternal2\\\",\\\"cardnumber1\\\":\\\"mtest00000000467003\\\",\\\"cardexternalid1\\\":\\\"cardtest5\\\",\\\"cardnumber2\\\":\\\"mtest00000000107003\\\",\\\"cardnumber3\\\":\\\"mtest00000000087003\\\",\\\"cardnumber4\\\":\\\"mtest00000000077003\\\"}}},\\\"customFields\\\":[],\\\"extendedFields\\\":[]},\\\"eventName\\\":\\\"customerUpdated\\\",\\\"eventSearchKey\\\":\\\"data.customerIdentifiers.customerId\\\",\\\"refId\\\":\\\"100737_566881933\\\",\\\"apiRequestId\\\":\\\"11f63886651643cb789fa280dcb1cd79\\\",\\\"orgId\\\":100737,\\\"eventId\\\":\\\"4c18e357-6ef5-48cc-8d15-13ab55a7d6a3\\\"}\"",
+                "eventGeneratedDate": 1763633255453,
+                "eventDeliveryDate": 1763633565099,
+                "retryCount": 10,
+                "webhookResponseCode": "429",
+                "webhookDuration": 152,
+                "lastRetryTime": 1763633565099,
+                "nextRetryTime": 1763633624598,
+                "message": "webhook response:  | 429 - Too Many Requests. Refer: https://beeceptor.com/pricing/",
+                "statusPriority": 3,
+                "requestId": "11f63886651643cb789fa280dcb1cd79"
+            },
+            {
+                "id": "691ee3b8ef0b48e4c84ede64",
+                "eventId": "cdd9485a-7ad3-4571-85c3-9a706e594ce3",
+                "orgId": "100737",
+                "consumerGroupId": "ebbcc6f7-8469-4222-b7a2-e740197b56e5",
+                "deliveryStatus": "FAILED",
+                "eventSearchKey": "Test09000000000105end",
+                "eventType": "cardUpdated",
+                "originalPayload": "{\"eventId\":\"cdd9485a-7ad3-4571-85c3-9a706e594ce3\",\"eventType\":\"100737_cardUpdated\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763632056847,\"attributes\":{\"createdAt\":1763632056842,\"data\":{\"cardNumber\":\"Test09000000000105end\",\"previousStatusLabel\":\"ISSUED\",\"currentStatusLabel\":\"ACTIVE\",\"currentExtendedFields\":[{\"name\":\"custom_card_name\",\"value\":\"TOM\"},{\"name\":\"vehicle_number\",\"value\":\"KA01B2020\"}],\"previousExtendedFields\":[{\"name\":\"custom_card_name\",\"value\":\"TOM\"},{\"name\":\"vehicle_number\",\"value\":\"KA01B2020\"},{\"name\":\"card_requested_by\",\"value\":\"rutuja_capillary\"}],\"currentCustomFields\":[{\"name\":\"vehicle_type\",\"value\":\"Bike\"}],\"previousCustomFields\":[{\"name\":\"city\",\"value\":\"Bangalore\"},{\"name\":\"vehicle_type\",\"value\":\"Bike\"}]},\"eventName\":\"cardUpdated\",\"eventSearchKey\":\"data.cardNumber\",\"refId\":\"100737_920897\",\"apiRequestId\":\"b5a81c3c9ec2fdda869c26c4b72244bf\",\"orgId\":100737}}",
+                "enrichedPayload": "\"{\\\"createdAt\\\":1763632056842,\\\"data\\\":{\\\"cardNumber\\\":\\\"Test09000000000105end\\\",\\\"previousStatusLabel\\\":\\\"ISSUED\\\",\\\"currentStatusLabel\\\":\\\"ACTIVE\\\",\\\"currentExtendedFields\\\":[{\\\"name\\\":\\\"custom_card_name\\\",\\\"value\\\":\\\"TOM\\\"},{\\\"name\\\":\\\"vehicle_number\\\",\\\"value\\\":\\\"KA01B2020\\\"}],\\\"previousExtendedFields\\\":[{\\\"name\\\":\\\"custom_card_name\\\",\\\"value\\\":\\\"TOM\\\"},{\\\"name\\\":\\\"vehicle_number\\\",\\\"value\\\":\\\"KA01B2020\\\"},{\\\"name\\\":\\\"card_requested_by\\\",\\\"value\\\":\\\"rutuja_capillary\\\"}],\\\"currentCustomFields\\\":[{\\\"name\\\":\\\"vehicle_type\\\",\\\"value\\\":\\\"Bike\\\"}],\\\"previousCustomFields\\\":[{\\\"name\\\":\\\"city\\\",\\\"value\\\":\\\"Bangalore\\\"},{\\\"name\\\":\\\"vehicle_type\\\",\\\"value\\\":\\\"Bike\\\"}]},\\\"eventName\\\":\\\"cardUpdated\\\",\\\"eventSearchKey\\\":\\\"data.cardNumber\\\",\\\"refId\\\":\\\"100737_920897\\\",\\\"apiRequestId\\\":\\\"b5a81c3c9ec2fdda869c26c4b72244bf\\\",\\\"orgId\\\":100737,\\\"eventId\\\":\\\"cdd9485a-7ad3-4571-85c3-9a706e594ce3\\\"}\"",
+                "eventGeneratedDate": 1763632056842,
+                "eventDeliveryDate": 1763632369431,
+                "retryCount": 10,
+                "webhookResponseCode": "429",
+                "webhookDuration": 160,
+                "lastRetryTime": 1763632369431,
+                "nextRetryTime": 1763632429431,
+                "message": "webhook response:  | 429 - Too Many Requests. Refer: https://beeceptor.com/pricing/",
+                "statusPriority": 3,
+                "requestId": "b5a81c3c9ec2fdda869c26c4b72244bf"
+            },
+            {
+                "id": "691ee3afef0b48e4c84ecf7d",
+                "eventId": "5b67d411-5cea-4e82-9b6d-8dadbf04b057",
+                "orgId": "100737",
+                "consumerGroupId": "ebbcc6f7-8469-4222-b7a2-e740197b56e5",
+                "deliveryStatus": "FAILED",
+                "eventSearchKey": "Test09000000000105end",
+                "eventType": "cardUpdated",
+                "originalPayload": "{\"eventId\":\"5b67d411-5cea-4e82-9b6d-8dadbf04b057\",\"eventType\":\"100737_cardUpdated\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763632047229,\"attributes\":{\"createdAt\":1763632047221,\"data\":{\"cardNumber\":\"Test09000000000105end\",\"previousStatusLabel\":\"ACTIVE\",\"currentStatusLabel\":\"ISSUED\",\"currentExtendedFields\":[{\"name\":\"custom_card_name\",\"value\":\"TOM\"},{\"name\":\"vehicle_number\",\"value\":\"KA01B2020\"}],\"previousExtendedFields\":[{\"name\":\"card_requested_by\",\"value\":\"rutuja_capillary\"}],\"currentCustomFields\":[{\"name\":\"vehicle_type\",\"value\":\"Bike\"}],\"previousCustomFields\":[{\"name\":\"city\",\"value\":\"Bangalore\"}]},\"eventName\":\"cardUpdated\",\"eventSearchKey\":\"data.cardNumber\",\"refId\":\"100737_920897\",\"apiRequestId\":\"4ab78af420ed11ba1cf8279d3b64bc35\",\"orgId\":100737}}",
+                "enrichedPayload": "\"{\\\"createdAt\\\":1763632047221,\\\"data\\\":{\\\"cardNumber\\\":\\\"Test09000000000105end\\\",\\\"previousStatusLabel\\\":\\\"ACTIVE\\\",\\\"currentStatusLabel\\\":\\\"ISSUED\\\",\\\"currentExtendedFields\\\":[{\\\"name\\\":\\\"custom_card_name\\\",\\\"value\\\":\\\"TOM\\\"},{\\\"name\\\":\\\"vehicle_number\\\",\\\"value\\\":\\\"KA01B2020\\\"}],\\\"previousExtendedFields\\\":[{\\\"name\\\":\\\"card_requested_by\\\",\\\"value\\\":\\\"rutuja_capillary\\\"}],\\\"currentCustomFields\\\":[{\\\"name\\\":\\\"vehicle_type\\\",\\\"value\\\":\\\"Bike\\\"}],\\\"previousCustomFields\\\":[{\\\"name\\\":\\\"city\\\",\\\"value\\\":\\\"Bangalore\\\"}]},\\\"eventName\\\":\\\"cardUpdated\\\",\\\"eventSearchKey\\\":\\\"data.cardNumber\\\",\\\"refId\\\":\\\"100737_920897\\\",\\\"apiRequestId\\\":\\\"4ab78af420ed11ba1cf8279d3b64bc35\\\",\\\"orgId\\\":100737,\\\"eventId\\\":\\\"5b67d411-5cea-4e82-9b6d-8dadbf04b057\\\"}\"",
+                "eventGeneratedDate": 1763632047224,
+                "eventDeliveryDate": 1763632355924,
+                "retryCount": 10,
+                "webhookResponseCode": "429",
+                "webhookDuration": 161,
+                "lastRetryTime": 1763632355925,
+                "nextRetryTime": 1763632415925,
+                "message": "webhook response:  | 429 - Too Many Requests. Refer: https://beeceptor.com/pricing/",
+                "statusPriority": 3,
+                "requestId": "4ab78af420ed11ba1cf8279d3b64bc35"
+            },
+            {
+                "id": "691edf12ef0b48e4c846f5bf",
+                "eventId": "aa68562e-ebfe-46d6-a300-45d3e3089d43",
+                "orgId": "100737",
+                "consumerGroupId": "ebbcc6f7-8469-4222-b7a2-e740197b56e5",
+                "deliveryStatus": "FAILED",
+                "eventSearchKey": "564854782",
+                "eventType": "customerUpdated",
+                "originalPayload": "{\"eventId\":\"aa68562e-ebfe-46d6-a300-45d3e3089d43\",\"eventType\":\"100737_customerUpdated\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763630866617,\"attributes\":{\"createdAt\":1763630866611,\"data\":{\"loyaltyType\":\"loyalty\",\"source\":\"INSTORE\",\"accountId\":\"\",\"firstName\":\"Thor\",\"lastName\":\"Odinson\",\"enteredAt\":1763630866567,\"enteredBy\":{\"id\":75197372,\"till\":{\"code\":\"madhu_rima\",\"name\":\"madhurima\"},\"store\":{\"code\":\"doc123\",\"name\":\"DocStore\",\"externalId\":\"Doc123\",\"externalId1\":\"\",\"externalId2\":\"\"}},\"updatedFields\":[],\"triggeringActivity\":{\"name\":\"Identifier Change Request\"},\"customerIdentifiers\":{\"customerId\":564854782,\"instore\":{\"mobile\":\"919777785311\",\"email\":\"thorodinson@gmail.com\",\"externalId\":\"0110\",\"cardNumbers\":[]}},\"customFields\":[],\"extendedFields\":[{\"key\":\"area\",\"value\":\"House no 2051,opposite  Sesa Goa  Colony,\"},{\"key\":\"zip\",\"value\":\"403505\"},{\"key\":\"gender\",\"value\":\"Male\"},{\"key\":\"city\",\"value\":\"Sattari\"},{\"key\":\"state\",\"value\":\"GOA\"}]},\"eventName\":\"customerUpdated\",\"eventSearchKey\":\"data.customerIdentifiers.customerId\",\"refId\":\"100737_564854782\",\"apiRequestId\":\"e9fc078380fde9e82238a2c5f1cd5cfe\",\"orgId\":100737}}",
+                "enrichedPayload": "\"{\\\"createdAt\\\":1763630866611,\\\"data\\\":{\\\"loyaltyType\\\":\\\"loyalty\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\",\\\"firstName\\\":\\\"Thor\\\",\\\"lastName\\\":\\\"Odinson\\\",\\\"enteredAt\\\":1763630866567,\\\"enteredBy\\\":{\\\"id\\\":75197372,\\\"till\\\":{\\\"code\\\":\\\"madhu_rima\\\",\\\"name\\\":\\\"madhurima\\\"},\\\"store\\\":{\\\"code\\\":\\\"doc123\\\",\\\"name\\\":\\\"DocStore\\\",\\\"externalId\\\":\\\"Doc123\\\",\\\"externalId1\\\":\\\"\\\",\\\"externalId2\\\":\\\"\\\"}},\\\"updatedFields\\\":[],\\\"triggeringActivity\\\":{\\\"name\\\":\\\"Identifier Change Request\\\"},\\\"customerIdentifiers\\\":{\\\"customerId\\\":564854782,\\\"instore\\\":{\\\"mobile\\\":\\\"919777785311\\\",\\\"email\\\":\\\"thorodinson@gmail.com\\\",\\\"externalId\\\":\\\"0110\\\",\\\"cardNumbers\\\":[]}},\\\"customFields\\\":[],\\\"extendedFields\\\":[{\\\"key\\\":\\\"area\\\",\\\"value\\\":\\\"House no 2051,opposite  Sesa Goa  Colony,\\\"},{\\\"key\\\":\\\"zip\\\",\\\"value\\\":\\\"403505\\\"},{\\\"key\\\":\\\"gender\\\",\\\"value\\\":\\\"Male\\\"},{\\\"key\\\":\\\"city\\\",\\\"value\\\":\\\"Sattari\\\"},{\\\"key\\\":\\\"state\\\",\\\"value\\\":\\\"GOA\\\"}]},\\\"eventName\\\":\\\"customerUpdated\\\",\\\"eventSearchKey\\\":\\\"data.customerIdentifiers.customerId\\\",\\\"refId\\\":\\\"100737_564854782\\\",\\\"apiRequestId\\\":\\\"e9fc078380fde9e82238a2c5f1cd5cfe\\\",\\\"orgId\\\":100737,\\\"eventId\\\":\\\"aa68562e-ebfe-46d6-a300-45d3e3089d43\\\"}\"",
+                "eventGeneratedDate": 1763630866611,
+                "eventDeliveryDate": 1763631175081,
+                "retryCount": 10,
+                "webhookResponseCode": "429",
+                "webhookDuration": 151,
+                "lastRetryTime": 1763631175082,
+                "nextRetryTime": 1763631235082,
+                "message": "webhook response:  | 429 - Too Many Requests. Refer: https://beeceptor.com/pricing/",
+                "statusPriority": 3,
+                "requestId": "e9fc078380fde9e82238a2c5f1cd5cfe"
+            },
+            {
+                "id": "691ebb7eef0b48e4c81ac0db",
+                "eventId": "b1c3e0d3-9bc9-4f70-a0ca-a4e3f7a292b9",
+                "orgId": "100737",
+                "consumerGroupId": "ebbcc6f7-8469-4222-b7a2-e740197b56e5",
+                "deliveryStatus": "FAILED",
+                "eventSearchKey": "565039506",
+                "eventType": "issueRewardFailure",
+                "originalPayload": "{\"eventId\":\"b1c3e0d3-9bc9-4f70-a0ca-a4e3f7a292b9\",\"eventType\":\"100737_issueRewardFailure\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763621758090,\"attributes\":{\"createdAt\":1763621758084,\"data\":{\"customerIdentifiers\":{\"customerId\":565039506,\"instore\":{\"mobile\":\"918944837871\",\"email\":\"madhurima.basak@capillarytech.com\",\"cardNumbers\":[]}},\"requestId\":\"7572dee6775e31e96645e719b48f93a2\",\"totalPoints\":100,\"erroredSteps\":[{\"name\":\"POINTS_VALIDATION\",\"errorMessage\":\"fail to issue reward as  points are not redeemable\",\"errorCode\":8004,\"rewards\":[{\"id\":488443,\"qty\":0,\"points\":100,\"type\":\"VOUCHER\",\"transactionId\":\"575240\",\"rewardReference\":\"844312\"}]},{\"name\":\"POINTS_VALIDATION\",\"errorMessage\":\"group redemption action executed for non group redemption payload\",\"errorCode\":3316,\"rewards\":[]}]},\"eventName\":\"issueRewardFailure\",\"refId\":\"100737_7572dee6775e31e96645e719b48f93a2\",\"apiRequestId\":\"7572dee6775e31e96645e719b48f93a2\",\"orgId\":100737,\"traceAttributes\":{\"X-CAP-API-AUTH-ORG-ID\":\"100737\",\"requestId\":\"7572dee6775e31e96645e719b48f93a2\"}}}",
+                "enrichedPayload": "\"{\\\"createdAt\\\":1763621758084,\\\"data\\\":{\\\"customerIdentifiers\\\":{\\\"customerId\\\":565039506,\\\"instore\\\":{\\\"mobile\\\":\\\"918944837871\\\",\\\"email\\\":\\\"madhurima.basak@capillarytech.com\\\",\\\"cardNumbers\\\":[]}},\\\"requestId\\\":\\\"7572dee6775e31e96645e719b48f93a2\\\",\\\"totalPoints\\\":100,\\\"erroredSteps\\\":[{\\\"name\\\":\\\"POINTS_VALIDATION\\\",\\\"errorMessage\\\":\\\"fail to issue reward as  points are not redeemable\\\",\\\"errorCode\\\":8004,\\\"rewards\\\":[{\\\"id\\\":488443,\\\"qty\\\":0,\\\"points\\\":100,\\\"type\\\":\\\"VOUCHER\\\",\\\"transactionId\\\":\\\"575240\\\",\\\"rewardReference\\\":\\\"844312\\\"}]},{\\\"name\\\":\\\"POINTS_VALIDATION\\\",\\\"errorMessage\\\":\\\"group redemption action executed for non group redemption payload\\\",\\\"errorCode\\\":3316,\\\"rewards\\\":[]}]},\\\"eventName\\\":\\\"issueRewardFailure\\\",\\\"refId\\\":\\\"100737_7572dee6775e31e96645e719b48f93a2\\\",\\\"apiRequestId\\\":\\\"7572dee6775e31e96645e719b48f93a2\\\",\\\"orgId\\\":100737,\\\"traceAttributes\\\":{\\\"X-CAP-API-AUTH-ORG-ID\\\":\\\"100737\\\",\\\"requestId\\\":\\\"7572dee6775e31e96645e719b48f93a2\\\"},\\\"eventId\\\":\\\"b1c3e0d3-9bc9-4f70-a0ca-a4e3f7a292b9\\\"}\"",
+                "eventGeneratedDate": 1763621758084,
+                "eventDeliveryDate": 1763622065083,
+                "retryCount": 10,
+                "webhookResponseCode": "429",
+                "webhookDuration": 151,
+                "lastRetryTime": 1763622065084,
+                "nextRetryTime": 1763622124582,
+                "message": "webhook response:  | 429 - Too Many Requests. Refer: https://beeceptor.com/pricing/",
+                "statusPriority": 3,
+                "requestId": "7572dee6775e31e96645e719b48f93a2"
+            }
+        ],
+        "page": 1,
+        "pageSize": 10,
+        "totalElements": 292,
+        "totalPages": 30.0
+    },
+    "errors": null,
+    "warnings": null
+}
+````
+
+## Response parameters
+
+| Field                 | Type                     | Description                                                                                                                                                                      |
+| --------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| data                  | Array of objects         | List of delivery log entries for the requested consumer group.                                                                                                                   |
+| • id                  | String                   | Identifier for the entry, usually derived from organization and event metadata.                                                                                                  |
+| • eventId             | String                   | Unique identifier for the event.                                                                                                                                                 |
+| • orgId               | Number                   | ID of the organization associated with the event.                                                                                                                                |
+| • consumerGroupId     | String                   | ID associated with the webhook of the event.                                                                                                                                     |
+| • deliveryStatus      | String                   | Delivery result evaluated by the event router (for example, `SUCCESS` or `FAIL`).                                                                                                |
+| • eventSearchKey      | String                   | Unique primary identifier of the user/action associated with the event. Example, For customer add, it can be customer ID, for transaction, it can be transaction ID/bill number. |
+| • eventType           | String                   | Logical type of the event, such as the transactionAdd or customerAdd.                                                                                                            |
+| • originalPayload     | Object                   | Raw event payload before any enrichment.                                                                                                                                         |
+| • enrichedPayload     | Object                   | Event payload after enrichment is available only if enrichment is enabled for the event.                                                                                         |
+| • eventGeneratedDate  | String                   | Timestamp indicating when the source system generated the event. Format: Unix epoch in milliseconds                                                                              |
+| • eventDeliveryDate   | String                   | Timestamp indicating when the event router made the most recent delivery attempt. Fromat: Unix time in milliseconds                                                              |
+| • retryCount          | Integer                  | Number of retry attempts made by the router for this event.                                                                                                                      |
+| • webhookResponseCode | Integer                  | HTTP response status returned by the webhook target.                                                                                                                             |
+| • webhookDuration     | Number (milliseconds)    | Time taken for the last webhook call.                                                                                                                                            |
+| • lastRetryTime       | Number (epoch in ms)     | Timestamp when the source system generated the event. .                                                                                                                          |
+| • nextRetryTime       | Number (epoch in ms)     | Timestamp of the most recent delivery attempt, in epoch milliseconds (UTC).                                                                                                      |
+| • message             | String                   | Diagnostic message provided by the router about the delivery status.                                                                                                             |
+| • statusPriority      | Integer                  | Numeric value representing the priority of the delivery status (as defined in `delivery_status_priority`).                                                                       |
+| • requestId           | String                   | Request ID linked to the event.                                                                                                                                                  |
+| errors                | Array of objects         | Returned only when an API error occurs. Each item includes a `code` (number) and `message` (string).                                                                             |
+| page                  | Integer                  | Current page number when pagination is used.                                                                                                                                     |
+| pageSize              | Integer                  | Number of entries per page (default is 10).                                                                                                                                      |
+| totalElements         | Integer                  | Total number of delivery log entries matching the filter criteria.                                                                                                               |
+| totalPages            | Integer                  | Total number of pages available for the current query.                                                                                                                           |
+| warnings              | Array of objects or null | Reserved for non-blocking warnings. When present, each entry includes a `message`. Currently not populated for consumer group endpoints.                                         |
+
+## Error codes
+
+| Code   | Description                                                                                                                                                   |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 999999 | Validation failed; check inputs like `page` and `pageSize`.                                                                                                   |
+| 300004 | Request data couldn’t be parsed; correct the format and retry.                                                                                                |
+| 300005 | Access denied; you don’t have permission for this consumer group. Make sure that the consumer group ID belongs to the org associated with the authentication. |
+| 498    | Session token expired; sign in again and retry.                                                                                                               |
+| 500    | Internal or connectivity issue while contacting the Event Router.                                                                                             |
+
+<br />
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Sample API",
+    "version": "1.0.0",
+    "description": "API specification generated from cURL for GET /v3/events/consumer-groups/d7022e0e-35ad-4c81-a18a-a6cb32ee6292/logs"
+  },
+  "servers": [
+    {
+      "url": "https://{host}"
+    }
+  ],
+  "paths": {
+    "/v3/events/consumer-groups/{consumer group ID}/logs": {
+      "get": {
+        "summary": "Operation for GET /v3/events/consumer-groups/d7022e0e-35ad-4c81-a18a-a6cb32ee6292/logs",
+        "description": "Endpoint for GET /v3/events/consumer-groups/d7022e0e-35ad-4c81-a18a-a6cb32ee6292/logs",
+        "operationId": "getV3eventsconsumergroupsd7022e0e35ad4c81a18aa6cb32ee6292logs",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "consumer group ID",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation (default from cURL)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "691f01a7ef0b48e4c876c907"
+                              },
+                              "eventId": {
+                                "type": "string",
+                                "example": "9f168d9e-b498-4715-9ada-428710ec9c52"
+                              },
+                              "orgId": {
+                                "type": "string",
+                                "example": "100737"
+                              },
+                              "consumerGroupId": {
+                                "type": "string",
+                                "example": "d7022e0e-35ad-4c81-a18a-a6cb32ee6292"
+                              },
+                              "deliveryStatus": {
+                                "type": "string",
+                                "example": "FAILED"
+                              },
+                              "eventSearchKey": {
+                                "type": "string",
+                                "example": "564767826"
+                              },
+                              "eventType": {
+                                "type": "string",
+                                "example": "customerUpdated"
+                              },
+                              "originalPayload": {
+                                "type": "string",
+                                "example": "{\"eventId\":\"9f168d9e-b498-4715-9ada-428710ec9c52\",\"eventType\":\"100737_customerUpdated\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763639719648,\"attributes\":{\"createdAt\":1763639719643,\"data\":{\"loyaltyType\":\"loyalty\",\"source\":\"INSTORE\",\"accountId\":\"\",\"firstName\":\"Rutuja\",\"lastName\":\"Hatwar\",\"enteredAt\":1763639719426,\"enteredBy\":{\"id\":75197372,\"till\":{\"code\":\"madhu_rima\",\"name\":\"madhurima\"},\"store\":{\"code\":\"doc123\",\"name\":\"DocStore\",\"externalId\":\"Doc123\",\"externalId1\":\"\",\"externalId2\":\"\"}},\"updatedFields\":[{\"fieldName\":\"cardnumber\",\"previousValue\":\"\",\"currentValue\":\"pork000000001070\",\"source\":\"INSTORE\",\"accountId\":\"\"}],\"triggeringActivity\":{\"name\":\"Identifier Change Request\"},\"customerIdentifiers\":{\"customerId\":564767826,\"instore\":{\"mobile\":\"919988776656\",\"email\":\"tomcruise@gmail.com\",\"externalId\":\"007\",\"cardnumber\":\"Test09000000000003end\",\"cardNumbers\":[\"Test09000000000003end\",\"Test09000000000002end\",\"123\",\"-123\",\"Test09000000000017end\",\"Test09000000000016end\",\"pork000000001170\",\"pork000000001070\"],\"cards\":{\"cardnumber\":\"pork000000001070\",\"cardexternalid\":\"CardExternal5\",\"cardnumber1\":\"pork000000001170\",\"cardexternalid1\":\"CardExternal4\",\"cardnumber2\":\"Test09000000000016end\",\"cardnumber3\":\"Test09000000000017end\",\"cardnumber4\":\"-123\"}}},\"customFields\":[],\"extendedFields\":[]},\"eventName\":\"customerUpdated\",\"eventSearchKey\":\"data.customerIdentifiers.customerId\",\"refId\":\"100737_564767826\",\"apiRequestId\":\"8b379b425f669a38371dd14ad46febda\",\"orgId\":100737}}"
+                              },
+                              "enrichedPayload": {
+                                "type": "string",
+                                "example": "\"{\\\"createdAt\\\":1763639719643,\\\"data\\\":{\\\"loyaltyType\\\":\\\"loyalty\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\",\\\"firstName\\\":\\\"Rutuja\\\",\\\"lastName\\\":\\\"Hatwar\\\",\\\"enteredAt\\\":1763639719426,\\\"enteredBy\\\":{\\\"id\\\":75197372,\\\"till\\\":{\\\"code\\\":\\\"madhu_rima\\\",\\\"name\\\":\\\"madhurima\\\"},\\\"store\\\":{\\\"code\\\":\\\"doc123\\\",\\\"name\\\":\\\"DocStore\\\",\\\"externalId\\\":\\\"Doc123\\\",\\\"externalId1\\\":\\\"\\\",\\\"externalId2\\\":\\\"\\\"}},\\\"updatedFields\\\":[{\\\"fieldName\\\":\\\"cardnumber\\\",\\\"previousValue\\\":\\\"\\\",\\\"currentValue\\\":\\\"pork000000001070\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\"}],\\\"triggeringActivity\\\":{\\\"name\\\":\\\"Identifier Change Request\\\"},\\\"customerIdentifiers\\\":{\\\"customerId\\\":564767826,\\\"instore\\\":{\\\"mobile\\\":\\\"919988776656\\\",\\\"email\\\":\\\"tomcruise@gmail.com\\\",\\\"externalId\\\":\\\"007\\\",\\\"cardnumber\\\":\\\"Test09000000000003end\\\",\\\"cardNumbers\\\":[\\\"Test09000000000003end\\\",\\\"Test09000000000002end\\\",\\\"123\\\",\\\"-123\\\",\\\"Test09000000000017end\\\",\\\"Test09000000000016end\\\",\\\"pork000000001170\\\",\\\"pork000000001070\\\"],\\\"cards\\\":{\\\"cardnumber\\\":\\\"pork000000001070\\\",\\\"cardexternalid\\\":\\\"CardExternal5\\\",\\\"cardnumber1\\\":\\\"pork000000001170\\\",\\\"cardexternalid1\\\":\\\"CardExternal4\\\",\\\"cardnumber2\\\":\\\"Test09000000000016end\\\",\\\"cardnumber3\\\":\\\"Test09000000000017end\\\",\\\"cardnumber4\\\":\\\"-123\\\"}}},\\\"customFields\\\":[],\\\"extendedFields\\\":[]},\\\"eventName\\\":\\\"customerUpdated\\\",\\\"eventSearchKey\\\":\\\"data.customerIdentifiers.customerId\\\",\\\"refId\\\":\\\"100737_564767826\\\",\\\"apiRequestId\\\":\\\"8b379b425f669a38371dd14ad46febda\\\",\\\"orgId\\\":100737,\\\"eventId\\\":\\\"9f168d9e-b498-4715-9ada-428710ec9c52\\\"}\""
+                              },
+                              "eventGeneratedDate": {
+                                "type": "integer",
+                                "example": 1763639719643
+                              },
+                              "eventDeliveryDate": {
+                                "type": "integer",
+                                "example": 1763640024291
+                              },
+                              "retryCount": {
+                                "type": "integer",
+                                "example": 10
+                              },
+                              "webhookResponseCode": {
+                                "type": "string",
+                                "example": "429"
+                              },
+                              "webhookDuration": {
+                                "type": "integer",
+                                "example": 125
+                              },
+                              "lastRetryTime": {
+                                "type": "integer",
+                                "example": 1763640024292
+                              },
+                              "nextRetryTime": {
+                                "type": "integer",
+                                "example": 1763640084292
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "webhook response: Too many requests | <!DOCTYPE html>\n<html>\n<head>\n    <title>Error: Request limit exceeded. Sign up to unlock more requests. - Webhook.site</title>\n    <link href=\"https://cdn.webhook.site/css/app.css\" rel=\"stylesheet\">\n</head>\n<body>\n<div class=\"container\" style=\"padding: 50"
+                              },
+                              "statusPriority": {
+                                "type": "integer",
+                                "example": 3
+                              },
+                              "requestId": {
+                                "type": "string",
+                                "example": "8b379b425f669a38371dd14ad46febda"
+                              }
+                            }
+                          }
+                        },
+                        "page": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "example": 10
+                        },
+                        "totalElements": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "totalPages": {
+                          "type": "integer",
+                          "example": 1
+                        }
+                      }
+                    },
+                    "errors": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": null
+                    },
+                    "warnings": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": null
+                    }
+                  }
+                },
+                "examples": {
+                  "OK": {
+                    "summary": "OK",
+                    "value": {
+                      "data": {
+                        "data": [
+                          {
+                            "id": "691f01a7ef0b48e4c876c907",
+                            "eventId": "9f168d9e-b498-4715-9ada-428710ec9c52",
+                            "orgId": "100737",
+                            "consumerGroupId": "d7022e0e-35ad-4c81-a18a-a6cb32ee6292",
+                            "deliveryStatus": "FAILED",
+                            "eventSearchKey": "564767826",
+                            "eventType": "customerUpdated",
+                            "originalPayload": "{\"eventId\":\"9f168d9e-b498-4715-9ada-428710ec9c52\",\"eventType\":\"100737_customerUpdated\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763639719648,\"attributes\":{\"createdAt\":1763639719643,\"data\":{\"loyaltyType\":\"loyalty\",\"source\":\"INSTORE\",\"accountId\":\"\",\"firstName\":\"Rutuja\",\"lastName\":\"Hatwar\",\"enteredAt\":1763639719426,\"enteredBy\":{\"id\":75197372,\"till\":{\"code\":\"madhu_rima\",\"name\":\"madhurima\"},\"store\":{\"code\":\"doc123\",\"name\":\"DocStore\",\"externalId\":\"Doc123\",\"externalId1\":\"\",\"externalId2\":\"\"}},\"updatedFields\":[{\"fieldName\":\"cardnumber\",\"previousValue\":\"\",\"currentValue\":\"pork000000001070\",\"source\":\"INSTORE\",\"accountId\":\"\"}],\"triggeringActivity\":{\"name\":\"Identifier Change Request\"},\"customerIdentifiers\":{\"customerId\":564767826,\"instore\":{\"mobile\":\"919988776656\",\"email\":\"tomcruise@gmail.com\",\"externalId\":\"007\",\"cardnumber\":\"Test09000000000003end\",\"cardNumbers\":[\"Test09000000000003end\",\"Test09000000000002end\",\"123\",\"-123\",\"Test09000000000017end\",\"Test09000000000016end\",\"pork000000001170\",\"pork000000001070\"],\"cards\":{\"cardnumber\":\"pork000000001070\",\"cardexternalid\":\"CardExternal5\",\"cardnumber1\":\"pork000000001170\",\"cardexternalid1\":\"CardExternal4\",\"cardnumber2\":\"Test09000000000016end\",\"cardnumber3\":\"Test09000000000017end\",\"cardnumber4\":\"-123\"}}},\"customFields\":[],\"extendedFields\":[]},\"eventName\":\"customerUpdated\",\"eventSearchKey\":\"data.customerIdentifiers.customerId\",\"refId\":\"100737_564767826\",\"apiRequestId\":\"8b379b425f669a38371dd14ad46febda\",\"orgId\":100737}}",
+                            "enrichedPayload": "\"{\\\"createdAt\\\":1763639719643,\\\"data\\\":{\\\"loyaltyType\\\":\\\"loyalty\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\",\\\"firstName\\\":\\\"Rutuja\\\",\\\"lastName\\\":\\\"Hatwar\\\",\\\"enteredAt\\\":1763639719426,\\\"enteredBy\\\":{\\\"id\\\":75197372,\\\"till\\\":{\\\"code\\\":\\\"madhu_rima\\\",\\\"name\\\":\\\"madhurima\\\"},\\\"store\\\":{\\\"code\\\":\\\"doc123\\\",\\\"name\\\":\\\"DocStore\\\",\\\"externalId\\\":\\\"Doc123\\\",\\\"externalId1\\\":\\\"\\\",\\\"externalId2\\\":\\\"\\\"}},\\\"updatedFields\\\":[{\\\"fieldName\\\":\\\"cardnumber\\\",\\\"previousValue\\\":\\\"\\\",\\\"currentValue\\\":\\\"pork000000001070\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\"}],\\\"triggeringActivity\\\":{\\\"name\\\":\\\"Identifier Change Request\\\"},\\\"customerIdentifiers\\\":{\\\"customerId\\\":564767826,\\\"instore\\\":{\\\"mobile\\\":\\\"919988776656\\\",\\\"email\\\":\\\"tomcruise@gmail.com\\\",\\\"externalId\\\":\\\"007\\\",\\\"cardnumber\\\":\\\"Test09000000000003end\\\",\\\"cardNumbers\\\":[\\\"Test09000000000003end\\\",\\\"Test09000000000002end\\\",\\\"123\\\",\\\"-123\\\",\\\"Test09000000000017end\\\",\\\"Test09000000000016end\\\",\\\"pork000000001170\\\",\\\"pork000000001070\\\"],\\\"cards\\\":{\\\"cardnumber\\\":\\\"pork000000001070\\\",\\\"cardexternalid\\\":\\\"CardExternal5\\\",\\\"cardnumber1\\\":\\\"pork000000001170\\\",\\\"cardexternalid1\\\":\\\"CardExternal4\\\",\\\"cardnumber2\\\":\\\"Test09000000000016end\\\",\\\"cardnumber3\\\":\\\"Test09000000000017end\\\",\\\"cardnumber4\\\":\\\"-123\\\"}}},\\\"customFields\\\":[],\\\"extendedFields\\\":[]},\\\"eventName\\\":\\\"customerUpdated\\\",\\\"eventSearchKey\\\":\\\"data.customerIdentifiers.customerId\\\",\\\"refId\\\":\\\"100737_564767826\\\",\\\"apiRequestId\\\":\\\"8b379b425f669a38371dd14ad46febda\\\",\\\"orgId\\\":100737,\\\"eventId\\\":\\\"9f168d9e-b498-4715-9ada-428710ec9c52\\\"}\"",
+                            "eventGeneratedDate": 1763639719643,
+                            "eventDeliveryDate": 1763640024291,
+                            "retryCount": 10,
+                            "webhookResponseCode": "429",
+                            "webhookDuration": 125,
+                            "lastRetryTime": 1763640024292,
+                            "nextRetryTime": 1763640084292,
+                            "message": "webhook response: Too many requests | <!DOCTYPE html>\n<html>\n<head>\n    <title>Error: Request limit exceeded. Sign up to unlock more requests. - Webhook.site</title>\n    <link href=\"https://cdn.webhook.site/css/app.css\" rel=\"stylesheet\">\n</head>\n<body>\n<div class=\"container\" style=\"padding: 50",
+                            "statusPriority": 3,
+                            "requestId": "8b379b425f669a38371dd14ad46febda"
+                          },
+                          {
+                            "id": "691f00f3ef0b48e4c875fb62",
+                            "eventId": "ba3d292f-d3fe-4581-9d90-ce28fbf5bb3e",
+                            "orgId": "100737",
+                            "consumerGroupId": "d7022e0e-35ad-4c81-a18a-a6cb32ee6292",
+                            "deliveryStatus": "FAILED",
+                            "eventSearchKey": "564767826",
+                            "eventType": "customerUpdated",
+                            "originalPayload": "{\"eventId\":\"ba3d292f-d3fe-4581-9d90-ce28fbf5bb3e\",\"eventType\":\"100737_customerUpdated\",\"consumerGroupId\":\"\",\"actionType\":\"START\",\"timeStamp\":1763639539713,\"attributes\":{\"createdAt\":1763639539708,\"data\":{\"loyaltyType\":\"loyalty\",\"source\":\"INSTORE\",\"accountId\":\"\",\"firstName\":\"Rutuja\",\"lastName\":\"Hatwar\",\"enteredAt\":1763639539519,\"enteredBy\":{\"id\":75197372,\"till\":{\"code\":\"madhu_rima\",\"name\":\"madhurima\"},\"store\":{\"code\":\"doc123\",\"name\":\"DocStore\",\"externalId\":\"Doc123\",\"externalId1\":\"\",\"externalId2\":\"\"}},\"updatedFields\":[{\"fieldName\":\"cardnumber\",\"previousValue\":\"\",\"currentValue\":\"pork000000001170\",\"source\":\"INSTORE\",\"accountId\":\"\"}],\"triggeringActivity\":{\"name\":\"Identifier Change Request\"},\"customerIdentifiers\":{\"customerId\":564767826,\"instore\":{\"mobile\":\"919988776656\",\"email\":\"tomcruise@gmail.com\",\"externalId\":\"007\",\"cardnumber\":\"Test09000000000003end\",\"cardNumbers\":[\"Test09000000000003end\",\"Test09000000000002end\",\"123\",\"-123\",\"Test09000000000017end\",\"Test09000000000016end\",\"pork000000001170\"],\"cards\":{\"cardnumber\":\"pork000000001170\",\"cardexternalid\":\"CardExternal4\",\"cardnumber1\":\"Test09000000000016end\",\"cardnumber2\":\"Test09000000000017end\",\"cardnumber3\":\"-123\",\"cardnumber4\":\"123\"}}},\"customFields\":[],\"extendedFields\":[]},\"eventName\":\"customerUpdated\",\"eventSearchKey\":\"data.customerIdentifiers.customerId\",\"refId\":\"100737_564767826\",\"apiRequestId\":\"074a15c5eb2b3823543286e4816032b7\",\"orgId\":100737}}",
+                            "enrichedPayload": "\"{\\\"createdAt\\\":1763639539708,\\\"data\\\":{\\\"loyaltyType\\\":\\\"loyalty\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\",\\\"firstName\\\":\\\"Rutuja\\\",\\\"lastName\\\":\\\"Hatwar\\\",\\\"enteredAt\\\":1763639539519,\\\"enteredBy\\\":{\\\"id\\\":75197372,\\\"till\\\":{\\\"code\\\":\\\"madhu_rima\\\",\\\"name\\\":\\\"madhurima\\\"},\\\"store\\\":{\\\"code\\\":\\\"doc123\\\",\\\"name\\\":\\\"DocStore\\\",\\\"externalId\\\":\\\"Doc123\\\",\\\"externalId1\\\":\\\"\\\",\\\"externalId2\\\":\\\"\\\"}},\\\"updatedFields\\\":[{\\\"fieldName\\\":\\\"cardnumber\\\",\\\"previousValue\\\":\\\"\\\",\\\"currentValue\\\":\\\"pork000000001170\\\",\\\"source\\\":\\\"INSTORE\\\",\\\"accountId\\\":\\\"\\\"}],\\\"triggeringActivity\\\":{\\\"name\\\":\\\"Identifier Change Request\\\"},\\\"customerIdentifiers\\\":{\\\"customerId\\\":564767826,\\\"instore\\\":{\\\"mobile\\\":\\\"919988776656\\\",\\\"email\\\":\\\"tomcruise@gmail.com\\\",\\\"externalId\\\":\\\"007\\\",\\\"cardnumber\\\":\\\"Test09000000000003end\\\",\\\"cardNumbers\\\":[\\\"Test09000000000003end\\\",\\\"Test09000000000002end\\\",\\\"123\\\",\\\"-123\\\",\\\"Test09000000000017end\\\",\\\"Test09000000000016end\\\",\\\"pork000000001170\\\"],\\\"cards\\\":{\\\"cardnumber\\\":\\\"pork000000001170\\\",\\\"cardexternalid\\\":\\\"CardExternal4\\\",\\\"cardnumber1\\\":\\\"Test09000000000016end\\\",\\\"cardnumber2\\\":\\\"Test09000000000017end\\\",\\\"cardnumber3\\\":\\\"-123\\\",\\\"cardnumber4\\\":\\\"123\\\"}}},\\\"customFields\\\":[],\\\"extendedFields\\\":[]},\\\"eventName\\\":\\\"customerUpdated\\\",\\\"eventSearchKey\\\":\\\"data.customerIdentifiers.customerId\\\",\\\"refId\\\":\\\"100737_564767826\\\",\\\"apiRequestId\\\":\\\"074a15c5eb2b3823543286e4816032b7\\\",\\\"orgId\\\":100737,\\\"eventId\\\":\\\"ba3d292f-d3fe-4581-9d90-ce28fbf5bb3e\\\"}\"",
+                            "eventGeneratedDate": 1763639539708,
+                            "eventDeliveryDate": 1763639844281,
+                            "retryCount": 10,
+                            "webhookResponseCode": "429",
+                            "webhookDuration": 129,
+                            "lastRetryTime": 1763639844282,
+                            "nextRetryTime": 1763639904282,
+                            "message": "webhook response: Too many requests | <!DOCTYPE html>\n<html>\n<head>\n    <title>Error: Request limit exceeded. Sign up to unlock more requests. - Webhook.site</title>\n    <link href=\"https://cdn.webhook.site/css/app.css\" rel=\"stylesheet\">\n</head>\n<body>\n<div class=\"container\" style=\"padding: 50",
+                            "statusPriority": 3,
+                            "requestId": "074a15c5eb2b3823543286e4816032b7"
+                          }
+                        ],
+                        "page": 1,
+                        "pageSize": 10,
+                        "totalElements": 2,
+                        "totalPages": 1
+                      },
+                      "errors": null,
+                      "warnings": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'https://eu.intouch.capillarytech.com/v3/events/consumer-groups/ebbcc6f7-8469-4222-b7a2-e740197b56e5/logs' \\\n--header 'Authorization: Basic 2ODkxZjg0ZTdi'",
+              "language": "shell",
+              "name": "curl"
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {}
+}
+````

@@ -1,0 +1,225 @@
+---
+title: Get Till ID Details
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Get Till ID Details
+
+Retrieve detailed information for a specific till within your organization.
+
+## Example request
+
+```curl Sample request
+curl --location 'https://eu.api.capillarytech.com/v2/organization/till/75152648' \
+--header 'Authorization: Basic ******' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: _cfuvid=Ybmm9uq6qMggGDFlkjsFl0H.gzgWgfZTeuIeXnesKww-1757931612468-0.0.1.1-604800000'
+````
+
+## Prerequisites
+
+* Authentication: Basic or OAuth credentials
+* Default access group
+
+## Resource information
+
+|                        |                                                                                                                     |
+| :--------------------- | :------------------------------------------------------------------------------------------------------------------ |
+| Pagination             | No                                                                                                                  |
+| Batch support          | No                                                                                                                  |
+| Rate limit information | Demo and testing clusters: 1000 requests per minute per API key. Other organizations: Rate limit is brand-specific. |
+
+## Path parameter
+
+| Name   | Type    | Description                                         |
+| ------ | ------- | --------------------------------------------------- |
+| tilIId | integer | Unique identifier of the till to fetch details for. |
+
+## Example response
+
+```json Sample response
+{
+    "id": 75152648,
+    "code": "campaign_points_till",
+    "description": "",
+    "name": "CAMPAIGN_POINTS_TILL",
+    "type": "TILL",
+    "referenceId": -1,
+    "adminType": "GENERAL",
+    "isActive": true,
+    "isOuEnabled": false,
+    "timeZoneId": 0,
+    "currencyId": 0,
+    "languageId": 0,
+    "customField": [],
+    "default": false,
+    "warnings": []
+}
+````
+
+## Response parameters
+
+| Parameter   | Data Type | Description                                                                       |
+| ----------- | --------- | --------------------------------------------------------------------------------- |
+| id          | integer   | Unique identifier for the till.                                                   |
+| code        | string    | Code for the till.                                                                |
+| description | string    | Description of the till.                                                          |
+| name        | string    | Name of the till.                                                                 |
+| type        | string    | Type of the till.                                                                 |
+| referenceId | integer   | External or upstream reference (if any); `-1` indicates none.                     |
+| adminType   | string    | Administration type of the till (Admin/General).                                  |
+| isActive    | boolean   | Indicates if the till is active.                                                  |
+| isOuEnabled | boolean   | Indicates if the Organizational Unit (OU) is enabled for the till.                |
+| timeZoneId  | integer   | Time zone ID for the till.                                                        |
+| currencyId  | integer   | Currency ID for the till.                                                         |
+| languageId  | integer   | Language ID for the till.                                                         |
+| customField | Array     | Custom field and its details associated with the till.                            |
+| default     | boolean   | `true` if this till is marked as the default for its org unit; `false` otherwise. |
+| warnings    | Array     | List of warnings related to the till.                                             |
+
+## Error codes
+
+| HTTP code | Description    |
+| :-------- | :------------- |
+| 404       | Wrong endpoint |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Sample API",
+    "version": "1.0.0",
+    "description": "API specification generated from cURL for POST /v2/bulk/getCustomers"
+  },
+  "servers": [
+    {
+      "url": "https://{host}"
+    }
+  ],
+  "paths": {
+    "/v2/organization/till/{tillID}": {
+      "get": {
+        "description": "",
+        "operationId": "get_v2organizationtillendpoint{tillID}",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "referenceId": {
+                      "type": "integer"
+                    },
+                    "adminType": {
+                      "type": "string"
+                    },
+                    "isActive": {
+                      "type": "boolean"
+                    },
+                    "isOuEnabled": {
+                      "type": "boolean"
+                    },
+                    "timeZoneId": {
+                      "type": "integer"
+                    },
+                    "currencyId": {
+                      "type": "integer"
+                    },
+                    "languageId": {
+                      "type": "integer"
+                    },
+                    "customField": {
+                      "type": "array",
+                      "items": {
+                        "properties": {},
+                        "type": "object"
+                      }
+                    },
+                    "default": {
+                      "type": "boolean"
+                    },
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "properties": {},
+                        "type": "object"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Sample response": {
+                    "summary": "Sample response",
+                    "value": {
+                      "id": 75152648,
+                      "code": "campaign_points_till",
+                      "description": "",
+                      "name": "CAMPAIGN_POINTS_TILL",
+                      "type": "TILL",
+                      "referenceId": -1,
+                      "adminType": "GENERAL",
+                      "isActive": true,
+                      "isOuEnabled": false,
+                      "timeZoneId": 0,
+                      "currencyId": 0,
+                      "languageId": 0,
+                      "customField": [],
+                      "default": false,
+                      "warnings": []
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tillID",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/organization/till/75152648' \\\n--header 'Authorization: Basic ******' \\\n--header 'Content-Type: application/json' \\\n--header 'Cookie: _cfuvid=Ybmm9uq6qMggGDFlkjsFl0H.gzgWgfZTeuIeXnesKww-1757931612468-0.0.1.1-604800000'",
+              "language": "shell",
+              "name": ""
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {}
+}
+```

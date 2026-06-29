@@ -1,0 +1,412 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Update fulfillment status and transaction custom fields for issued rewards
+
+This API is used to update fulfilment status and transaction custom fields for issued rewards
+
+> 👍 Note
+>
+> * For detailed information about our APIs and for hands-on testing, refer documentation in [API overview](https://docs.capillarytech.com/reference/apioverview) and step-by-step guide on making your first API call in [Make your first API call](https://docs.capillarytech.com/reference/make-your-first-api-call).
+
+# Prerequisites
+
+* [ ] Authentication: Basic or OAuth authentication
+* [ ] Default access group
+
+# Resource information
+
+|                        |                                                                             |
+| :--------------------- | :-------------------------------------------------------------------------- |
+| URI                    | /api\_gateway/rewards/core/v1/management/transactions?skip\_validation=true |
+| HTTP Method            | PUT                                                                         |
+| Pagination             | No                                                                          |
+| Batch support          | No                                                                          |
+| Rate limit information | None                                                                        |
+
+# API endpoint example
+
+`https://eu.api.capillarytech.com/api_gateway/rewards/core/v1/management/transactions?skip_validation=true`
+
+# Request path parameters
+
+| Parameter Name   | Data Type | Description                                                                                                                                                                    |
+| :--------------- | :-------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| skip\_validation | String    | A validation code is used to redeem points for the transaction. You can set skip\_validation to true in the configuration to bypass the validation code for points redemption. |
+
+# Request body parameters
+
+<Table align={["left","left","left"]}>
+  <thead>
+    <tr>
+      <th>
+        Parameter
+      </th>
+
+      <th>
+        Data Type
+      </th>
+
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        **`transactions`**
+      </td>
+
+      <td>
+        array
+      </td>
+
+      <td>
+        Details about the transaction.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        **`transactionId*`**
+      </td>
+
+      <td>
+        integer
+      </td>
+
+      <td>
+        A unique ID for the transaction associated with the reward.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `customerId`
+      </td>
+
+      <td>
+        integer
+      </td>
+
+      <td>
+        A unique ID for the customer associated with the transaction.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `rewardId`
+      </td>
+
+      <td>
+        integer
+      </td>
+
+      <td>
+        A unique ID for the reward associated with the transaction.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `transactionCustomFields`
+      </td>
+
+      <td>
+        object
+      </td>
+
+      <td>
+        Custom transaction fields enhance the ability to track and manage reward points beyond standard fields, meeting specific needs and requirements. Supported data types are String, Integer, Date, and Boolean. The default limit for transaction custom fields is **20**. Consider the following scenarios: **Scenario 1**: A brand partners with a third-party vendor to deliver their product, requiring additional tracking like vendor ID, handling instructions, and delivery date. To manage this, create custom fields for `vendor_ID`, `handling_instructions`, and `delivery_date`, and include them with their respective values in the `transactionCustomField` object.
+        **Scenario 2**: A brand wants to store extra information about a transaction's status, such as internal status codes and notes not captured by standard fields. [Create custom fields](https://docs.capillarytech.com/reference/post-create-custom-field) for `internal_status_code` and `notes`, and add them with their corresponding values to the `transactionCustomField` object.
+        Refer to [Reward Tracking with status and Custom Fields](https://docs.capillarytech.com/docs/reward-tracking-with-status-and-custom-fields-in-reward-fulfillment) for more information.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `fulfillmentDetails`
+      </td>
+
+      <td>
+        object
+      </td>
+
+      <td>
+        The `fulfillmentDetails` object tracks the status of each transaction's fulfillment process and provides information about the current state of reward fulfillment. Consider the following scenarios: **Scenario 1**: A customer places an order for a reward. To track the order through its various stages, [create statuses](https://docs.capillarytech.com/reference/create-fulfillment-status) such as "Order received," "Processing," "Shipped," and "Delivered." Include these statuses as values in the `fulfillmentDetails` object to provide real-time tracking information to the customer.
+        **Scenario 2**: A customer reports an issue with a reward they received or requests a return. Update the `fulfillmentDetails` object with statuses like "Returned," "Refund processed," or "Issue resolved." This approach helps manage and track returns or complaints more effectively.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        `status`
+      </td>
+
+      <td>
+        string
+      </td>
+
+      <td>
+        The current status of the fulfillment process. Statuses can be created from [Create fulfillment status](https://docs.capillarytech.com/reference/create-fulfillment-status).
+      </td>
+    </tr>
+  </tbody>
+</Table>
+
+```json
+{
+    "transactions": [
+        {
+            "transactionId": 3482445,
+            "customerId": 85076836,
+            "rewardId": 177657,
+            "transactionCustomFields": {
+                "Partner_Order_Id" : "6565454987656",
+                "Date" : "10/09/2024",
+                "Time" : "evening",
+                "Seat_Section" : "Orchestra",
+                "Seat_Row" : "Q",
+                "Seat_Number" : "205",
+                "Paypal_Order_Id" : "45678",
+                "Paypal_amout" : "30$"
+            },
+            "fulfillmentDetails": {
+                "status": "Confirmed"
+            }
+        }
+    ]
+}
+```
+
+# Response parameters
+
+| Parameter          | Description                                                 |
+| ------------------ | ----------------------------------------------------------- |
+| transactions       | Details about the transaction.                              |
+| id                 | Unique id of the transaction to fetch.                      |
+| customerId         | Unique id for the customer associated with the transaction. |
+| rewardId           | Unique id for the reward associated with the transaction.   |
+| fulfillmentDetails | Details about the fulfillment status.                       |
+| id                 | Unique id of the fulfillment details                        |
+| status             | Current status of the fulfillment process.                  |
+
+```json
+{
+    "transactions": [
+        {
+            "transactionId": 3482445,
+            "rewardId": 177657,
+            "customerId": 85076836,
+            "fulfillmentDetails": {
+                "id": 9,
+                "status": "Confirmed"
+            },
+            "transactionCustomFields": {
+                "Partner_Order_Id": "6565454987656",
+                "Date": "10/09/2024",
+                "Time": "evening",
+                "Seat_Section": "Orchestra",
+                "Seat_Row": "Q",
+                "Seat_Number": "205",
+                "Paypal_Order_Id": "45678",
+                "Paypal_amout": "30$"
+            }
+        }
+    ]
+}
+```
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v1",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/api_gateway/rewards/core/v1/management/transactions?skip_validation=true": {
+      "put": {
+        "summary": "Update fulfillment status and transaction custom fields for issued rewards",
+        "description": "",
+        "operationId": "update-fulfilment-status-and-txn-custom-fields",
+        "parameters": [
+          {
+            "name": "skip_validation",
+            "in": "query",
+            "description": "A validation code is used to redeem points for the transaction. skip_validation is set to true as brands configured in Marvel bypass validation code.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"transactions\": [\n        {\n            \"transactionId\": 3482445,\n            \"rewardId\": 177657,\n            \"customerId\": 85076836,\n            \"fulfillmentDetails\": {\n                \"id\": 9,\n                \"status\": \"Confirmed\"\n            },\n            \"transactionCustomFields\": {\n                \"Partner_Order_Id\": \"6565454987656\",\n                \"Date\": \"10/09/2024\",\n                \"Time\": \"evening\",\n                \"Seat_Section\": \"Orchestra\",\n                \"Seat_Row\": \"Q\",\n                \"Seat_Number\": \"205\",\n                \"Paypal_Order_Id\": \"45678\",\n                \"Paypal_amout\": \"30$\"\n            }\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "transactions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "transactionId": {
+                            "type": "integer",
+                            "example": 3482445,
+                            "default": 0
+                          },
+                          "rewardId": {
+                            "type": "integer",
+                            "example": 177657,
+                            "default": 0
+                          },
+                          "customerId": {
+                            "type": "integer",
+                            "example": 85076836,
+                            "default": 0
+                          },
+                          "fulfillmentDetails": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 9,
+                                "default": 0
+                              },
+                              "status": {
+                                "type": "string",
+                                "example": "Confirmed"
+                              }
+                            }
+                          },
+                          "transactionCustomFields": {
+                            "type": "object",
+                            "properties": {
+                              "Partner_Order_Id": {
+                                "type": "string",
+                                "example": "6565454987656"
+                              },
+                              "Date": {
+                                "type": "string",
+                                "example": "10/09/2024"
+                              },
+                              "Time": {
+                                "type": "string",
+                                "example": "evening"
+                              },
+                              "Seat_Section": {
+                                "type": "string",
+                                "example": "Orchestra"
+                              },
+                              "Seat_Row": {
+                                "type": "string",
+                                "example": "Q"
+                              },
+                              "Seat_Number": {
+                                "type": "string",
+                                "example": "205"
+                              },
+                              "Paypal_Order_Id": {
+                                "type": "string",
+                                "example": "45678"
+                              },
+                              "Paypal_amout": {
+                                "type": "string",
+                                "example": "30$"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location --request PUT 'https://uscrm.cc.capillarytech.com/api_gateway/rewards/core/v1/management/transactions?skip_validation=true&skip_validation=true' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic DljMQ==' \\\n--data '{\n    \"transactions\": [\n        {\n            \"transactionId\": 3482445,\n            \"customerId\": 85076836,\n            \"rewardId\": 177657,\n            \"transactionCustomFields\": {\n                \"Partner_Order_Id\" : \"6565454987656\",\n                \"Date\" : \"10/09/2024\",\n                \"Time\" : \"evening\",\n                \"Seat_Section\" : \"Orchestra\",\n                \"Seat_Row\" : \"Q\",\n                \"Seat_Number\" : \"205\",\n                \"Paypal_Order_Id\" : \"45678\",\n                \"Paypal_amout\" : \"30$\"\n            },\n            \"fulfillmentDetails\": {\n                \"status\": \"Confirmed\"\n            }\n        }\n    ]\n}\n'"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

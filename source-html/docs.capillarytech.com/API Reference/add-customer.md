@@ -1,0 +1,927 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Add Customer
+
+Endpoint for POST /v1.1/customer/add
+
+This API registers customers in the organization with the primary identifiers being either the mobile number, email ID, or external ID. To add a customer, you must provide at least one of these parameters.
+
+## Example request
+
+```json Sample request with mobile and email
+curl --location 'https://eu.api.capillarytech.com/v1.1/customer/add?format=json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: ••••••' \
+--data-raw '{
+    "root": {
+        "customer": [
+            {
+                "mobile": 9177xx811213,
+                "email": "testing1Nee113@gmail.com",
+                "external_id": "12on123",
+                "firstname": "Raj",
+                "lastname": "loyal",
+                "updated_on": "2025-05-29 09:10:00",
+                "registered_till": "rutuja_capillary",
+                "associated_with": "rutuja_capillary",
+                "type": "NON_LOYALTY",
+                "source": "INSTORE",
+                "accountId": "123456",
+                "fraud_status": 
+{
+                    "status": "Fraud_Suspected"
+                },
+                "commChannels": [
+                {
+                    "type": "mobile",
+                    "value": "9177xx811213",
+                    "primary": "true",
+                    "verified": "true",
+                    "meta": {
+                        "residence": "true"
+                    }
+                }
+                ],
+                "custom_fields": {
+                    "field": [
+                        {
+                            "name": "City_name",
+                            "value": "Bangalore"
+                        },
+                        {
+                            "name": "address",
+                            "value": "BTM"
+                        }
+                    ]
+                },
+                "extended_fields": {
+                    "field": [
+                        {
+                                "name": "age",
+                                "value": "25"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}
+
+
+```
+```json Sample request with external id
+curl --location 'https://eu.api.capillarytech.com/v1.1/customer/add?format=json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic =' \
+--header 'Cookie: _cfuvid=uvtbHlSAbCYurdYMb0psZmvW1nY0gy1KWoNRJIAVQWk-1757036882526-0.0.1.1-604800000' \
+--data '{
+    "root": {
+        "customer": [
+            {
+                "external_id": "123445901",
+                "registered_on": "2024-07-29 11:11:11",
+                "registered_till": "till_name",
+                "associated_with": "till_name"
+            }
+        ]
+    }
+}'
+```
+
+## Prerequisites
+
+* **Access group resource:** Write access to customer group resource. For more information on access control, see the [access group documentation](https://docs.capillarytech.com/docs/access-group).
+* **Authentication:** Basic or OAuth authentication details. For more information on authentication, see the [Authentication documentation](https://docs.capillarytech.com/docs/api-client).
+* Define all the necessary configurations. The mandatory attributes for customer registration depend on the configurations set on ***InTouch Settings > Registration Configuration***.
+* Define custom and extended fields according to your requirements, if you need to use them during registration.
+
+## Header information
+
+You can define certain attributes in the API header section, and also specify the [Audit-](https://docs.capillarytech.com/reference/get-entity-audit-logs#adding-user-context-details)related user context details.
+
+| Header Name                       | Description      |
+| :-------------------------------- | :--------------- |
+| Authentication/Authorization Type | Basic Auth       |
+| Request / Content Type            | application/json |
+| Response Type                     | application/json |
+
+## Adding user context details
+
+User Context refers to the entity information of the user who is performing actions such as adding or updating the data. This context includes attributes that help identify and provide details about the user and help track the user who made the changes.
+
+Further to view the user context details in the audit log, you need to enable the query parameter `includeUserContext=true` in the <Anchor label="audit log API." target="_blank" href="https://docs.capillarytech.com/update/reference/get-entity-audit-logs#/">audit log API.</Anchor>.
+
+<Table align={["left","left"]}>
+  <thead>
+    <tr>
+      <th>
+        Header value
+      </th>
+
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        USER-CONTEXT-ENTITY-TYPE
+      </td>
+
+      <td>
+        Refers to the classification of the user. This field does not have predefined validations, and you can define any values according to your specific requirements. For example, you could classify a user as an "Intouch Admin User". This field is not displayed in Member Care.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        USER-CONTEXT-ENTITY-ID
+      </td>
+
+      <td>
+        Refers to a unique identifier associated with the user entity type. For instance, it could be an Intouch admin user ID such as 3124587. This field does not have predefined validations, and you can define any values according to your specific requirements. This field is not displayed in Member Care.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        USER-CONTEXT-ENTITY-SOURCE
+      </td>
+
+      <td>
+        Refers to the source through which changes are made. The standard values for this field are:
+
+        * API
+        * IMPORT
+        * CONNECT_PLUS
+        * MEMBER_CARE
+        * REQUEST_WORKFLOW
+
+          Note: You can raise a JIRA request to the sustenance team and add more values, as per your requirement.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        USER-CONTEXT-ENTITY-SOURCE-ID
+      </td>
+
+      <td>
+        Refers to ID if associated with the user source. This field does not have any validations.
+      </td>
+    </tr>
+  </tbody>
+</Table>
+
+## Body parameters
+
+| Field               | Type     | Required    | Description                                                                                                                                                                                                                                                                                                                |
+| :------------------ | :------- | :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| .root               | Object   | Yes         | Root is a container for all the data.                                                                                                                                                                                                                                                                                      |
+| ..customer          | Array    | Yes         | An array of customer objects. At least one customer identifier is required.                                                                                                                                                                                                                                                |
+| ...mobile           | string   | Conditional | Customer’s mobile number. Add a mobile number with the country code. Only numeric characters are supported (0-9). Maximum length is 20 characters. For other validation details, refer to the [mobile number validation documentation](<For more details on configuring registration rules, see Setup customer configs.>). |
+| ...email            | string   | Conditional | Customer’s valid email address. Supported characters: a-z A-Z 0-9 - \_ + . and @. Maximum length is 100 characters.                                                                                                                                                                                                        |
+| ...external\_id     | string   | Conditional | Customer’s external identifier. If your organization has configured external ID length validation, the value must fall within the configured minimum and maximum length. Special characters are not recommended. Maximum length is 250 characters. See [External ID validation](#external-id-validation) for details.      |
+| ...firstname        | string   | Optional    | Customer’s first name. Alphanumeric, spaces, hyphens, apostrophes are supported. The maximum length is 50 characters.                                                                                                                                                                                                      |
+| ...lastname         | string   | Optional    | Customer’s last name.  Alphanumeric, spaces, hyphens, apostrophes are supported. The maximum length is 50 characters.                                                                                                                                                                                                      |
+| ...updated\_on      | datetime | Optional    | Date and time when the customer was last updated. Format: `YYYY-MM-DD HH:MM:SS` For example: 2025-02-26 09:10:00                                                                                                                                                                                                           |
+| ...registered\_till | string   | Optional    | Till name registered  with the customer. Maximum length is 50 characters.                                                                                                                                                                                                                                                  |
+| ...associated\_with | string   | Optional    | Till name associated with the customer. Maximum length is 50 characters.                                                                                                                                                                                                                                                   |
+| ...type             | enum     | Optional    | Customer type.  Values allowed are loyalty, non\_loyalty.                                                                                                                                                                                                                                                                  |
+| ...source           | string   | Optional    | Source from where the customer's data is collected or registered from. For example: an in-store system. Values allowed are `InStore`, `Facebook`, `WebEngage`, `WeChat`, `E-commerce`, `Website`, `Line`, `Mobile App`, and more.                                                                                          |
+| ...accountId        | string   | Optional    | Unique identifier associated with the specific source or channel through which the customer's profile was created or registered.                                                                                                                                                                                           |
+| ...fraud\_status    | Array    | Optional    | Customer’s fraud status. Values allowed are `NORMAL`, `OUTLIER`, `FRAUD`, `INTERNAL`, `INVALID`.                                                                                                                                                                                                                           |
+| ....status          | enum     | Optional    | Customer's fraud status.                                                                                                                                                                                                                                                                                                   |
+| ...commChannels     | Array    | Yes         | Medium through which a customer can receive messages or notifications from the brand. Values allowed are `SMS`, `email`, `mobile push notifications`, `WeChat`, `LINE`, `WhatsApp`, and others.                                                                                                                            |
+| .....type           | string   | Optional    | Modes of communication with the customer.  Values allowed are  `mobile`, `email`, `card number`.                                                                                                                                                                                                                           |
+| .....value          | string   | Optional    | Value of the type of communication.                                                                                                                                                                                                                                                                                        |
+| .....primary        | boolean  | Optional    | Indicates if the communication type is the primary contact.                                                                                                                                                                                                                                                                |
+| .....verified       | string   | Optional    | Indicates if this communication type is verified.                                                                                                                                                                                                                                                                          |
+| .....meta           | Array    | Optional    | Contains meta information of the customer.                                                                                                                                                                                                                                                                                 |
+| ......residence     | boolean  | Optional    | Meta information.                                                                                                                                                                                                                                                                                                          |
+| ...custom\_fields   | Object   | Optional    | [Custom fields](https://docs.capillarytech.com/docs/data-fields#custom-fields) are used to store information specific to a brand's needs, such as customer preferences or product attributes. To use these fields during registration, you must define them beforehand.                                                    |
+| ....field           | Array    | Optional    | Array of custom fields.                                                                                                                                                                                                                                                                                                    |
+| ......name          | string   | Optional    | Name of the custom field.                                                                                                                                                                                                                                                                                                  |
+| ......value         | string   | Optional    | Value for the custom field.                                                                                                                                                                                                                                                                                                |
+| ...extended\_fields | Object   | Optional    | [Extended fields](https://docs.capillarytech.com/docs/data-entities#extended-fields) are predefined, standardized fields that capture additional information for various entities, such as customers or transactions. To use them during registration, they must be pre-defined.                                           |
+| ....field           | Array    | Optional    | Array of extended fields.                                                                                                                                                                                                                                                                                                  |
+| ......name          | string   | Optional    | Name of the extended field.                                                                                                                                                                                                                                                                                                |
+| ......value         | string   | Optional    | Value of the extended field.                                                                                                                                                                                                                                                                                               |
+
+## Example response
+
+```json Sample response: with mobile and email
+{
+    "response": {
+        "status": {
+            "success": "true",
+            "code": 200,
+            "message": "Success",
+            "total": "1",
+            "success_count": "1"
+        },
+        "customers": {
+            "customer": [
+                {
+                    "user_id": 557408687,
+                    "firstname": "testuwser",
+                    "lastname": "promo54",
+                    "mobile": "919876532218",
+                    "email": "demopromo412@gmail.com",
+                    "external_id": "000003880203",
+                    "lifetime_points": 0,
+                    "loyalty_points": 0,
+                    "current_slab": "Base",
+                    "tier_expiry_date": "2124-08-01 23:59:59",
+                    "points_summaries": {
+                        "points_summary": [
+                            {
+                                "programId": "469",
+                                "redeemed": "0",
+                                "expired": "0",
+                                "returned": "0",
+                                "adjusted": "0",
+                                "lifetimePoints": "0",
+                                "loyaltyPoints": "0",
+                                "cumulativePurchases": "0",
+                                "currentSlab": "Base",
+                                "nextSlab": "Bronze",
+                                "nextSlabSerialNumber": "2",
+                                "nextSlabDescription": "Tier 2",
+                                "slabSNo": "1",
+                                "slabExpiryDate": "2124-08-01 23:59:59",
+                                "totalPoints": ""
+                            }
+                        ]
+                    },
+                    "lifetime_purchases": 0,
+                    "registered_on": "2024-08-01 07:28:32",
+                    "updated_on": "2023-07-11 10:12:00",
+                    "type": "LOYALTY",
+                    "source": "instore",
+                    "fraud_status": "NONE",
+                    "reason": "",
+                    "custom_fields": {
+                        "field": [
+                            {
+                                "name": "address",
+                                "value": "Bangalore1234"
+                            },
+                            {
+                                "name": "pincode",
+                                "value": "54321"
+                            }
+                        ]
+                    },
+                    "extended_fields": {
+                        "field": []
+                    },
+                    "subscriptions": {
+                        "subscription": []
+                    },
+                    "side_effects": {
+                        "effect": [
+                            {
+                                "awarded_points": 100,
+                                "total_points": 100,
+                                "customer_id": "424133043",
+                                "type": "points"
+                            },
+                            {
+                                "awarded_points": 100,                               
+                                "customer_id": "424133021",
+                                "is_referrer": "true",
+                                "type": "points"
+                            }
+                        ]
+                    },
+                    "item_status": {
+                        "success": "true",
+                        "code": "1000",
+                        "message": "Customer registration successful, Provided Custom Field is invalid",
+                        "warnings": {
+                            "warning": [
+                                "1017"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
+```
+```json Sample response: with external id
+{
+    "response": {
+        "status": {
+            "success": "true",
+            "code": 200,
+            "message": "Success",
+            "total": "1",
+            "success_count": "1"
+        },
+        "customers": {
+            "customer": [
+                {
+                    "user_id": 84230513,
+                    "firstname": "",
+                    "lastname": "",
+                    "mobile": null,
+                    "email": null,
+                    "external_id": "123445901",
+                    "lifetime_points": 100,
+                    "loyalty_points": 100,
+                    "current_slab": "Base",
+                    "tier_expiry_date": "2124-08-01 23:59:59",
+                    "points_summaries": {
+                        "points_summary": [
+                            {
+                                "programId": "1204",
+                                "redeemed": "0",
+                                "expired": "0",
+                                "returned": "0",
+                                "adjusted": "0",
+                                "lifetimePoints": "100",
+                                "loyaltyPoints": "100",
+                                "cumulativePurchases": "0",
+                                "currentSlab": "Base",
+                                "nextSlab": "Milestone 1",
+                                "nextSlabSerialNumber": "2",
+                                "nextSlabDescription": "Milestone 1",
+                                "slabSNo": "1",
+                                "slabExpiryDate": "2124-08-01 23:59:59",
+                                "totalPoints": ""
+                            }
+                        ]
+                    },
+                    "lifetime_purchases": 0,
+                    "registered_on": "2024-08-01 02:31:17",
+                    "updated_on": "2024-08-01 02:31:17",
+                    "type": "LOYALTY",
+                    "source": "instore",
+                    "custom_fields": {
+                        "field": []
+                    },
+                    "extended_fields": {
+                        "field": []
+                    },
+                    "subscriptions": {
+                        "subscription": []
+                    },
+                    "side_effects": {
+                        "effect": [
+                            {
+                                "awarded_points": 100,
+                                "total_points": 100,
+                                "type": "points"
+                            }
+                        ]
+                    },
+                    "item_status": {
+                        "success": "true",
+                        "code": "1000",
+                        "message": "Customer registration successful",
+                        "warnings": {
+                            "warning": []
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
+```
+```json With alternate currencies as side effect
+{
+    "response": {
+        "status": {
+            "success": "true",
+            "code": 200,
+            "message": "Success",
+            "total": "1",
+            "success_count": "1"
+        },
+        "customers": {
+            "customer": [
+                {
+                    "user_id": 553639618,
+                    "firstname": "testuser",
+                    "lastname": "promo4",
+                    "mobile": "919876543218",
+                    "email": "demopromo4@gmail.com",
+                    "external_id": null,
+                    "lifetime_points": 0,
+                    "loyalty_points": 0,
+                    "current_slab": "NONE",
+                    "tier_expiry_date": "2123-09-12 23:59:59",
+                    "points_summaries": {
+                        "points_summary": [
+                            {
+                                "programId": "2088",
+                                "redeemed": "0",
+                                "expired": "0",
+                                "returned": "0",
+                                "adjusted": "0",
+                                "lifetimePoints": "0",
+                                "loyaltyPoints": "0",
+                                "cumulativePurchases": "0",
+                                "currentSlab": "NONE",
+                                "nextSlab": "",
+                                "nextSlabSerialNumber": "-1",
+                                "nextSlabDescription": "",
+                                "slabSNo": "1",
+                                "slabExpiryDate": "2123-09-12 23:59:59",
+                                "totalPoints": ""
+                            }
+                        ]
+                    },
+                    "lifetime_purchases": 0,
+                    "registered_on": "2023-09-12 16:05:01",
+                    "updated_on": "2023-07-11 10:12:00",
+                    "type": "LOYALTY",
+                    "source": "instore",
+                    "fraud_status": "NONE",
+                    "reason": "",
+                    "custom_fields": {
+                        "field": []
+                    },
+                    "extended_fields": {
+                        "field": []
+                    },
+                    "subscriptions": {
+                        "subscription": []
+                    },
+                    "side_effects": {
+                        "effect": [
+                            {
+                                "alternate_currency_identifier": "rgpws7",
+                                "alternate_currency_name": "ac1",
+                                "awarded_value": "110",
+                                "type": "alternate_currency"
+                            }
+                        ]
+                    },
+                    "item_status": {
+                        "success": "true",
+                        "code": "1000",
+                        "message": "Customer registration successful, Provided Custom Field is invalid",
+                        "warnings": {
+                            "warning": [
+                                "1017"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
+```
+```json 500 Error
+{
+    "response": {
+        "status": {
+            "success": "false",
+            "code": 500,
+            "message": "All requests have failed due to errors",
+            "total": "1",
+            "success_count": "0"
+        },
+        "customers": {
+            "customer": [
+                {
+                }
+          ]
+         }
+       }
+ }
+```
+
+## Response parameters
+
+| Field                   | Type     | Description                                                                                                                                                                                                                                                                      |
+| :---------------------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| .response               | Object   | Indicates the response of the operation.                                                                                                                                                                                                                                         |
+| ..status                | Object   | Indicates the status of the operation.                                                                                                                                                                                                                                           |
+| ..success               | string   | Indicates the success of the operation.                                                                                                                                                                                                                                          |
+| ...code                 | integer  | Code representing the status of the operation.                                                                                                                                                                                                                                   |
+| ...message              | string   | Message describing the status of the operation.                                                                                                                                                                                                                                  |
+| ...total                | string   | Total count in the response.                                                                                                                                                                                                                                                     |
+| ...success\_count       | string   | Count of successful operations.                                                                                                                                                                                                                                                  |
+| ..customers             | Object   | Customer entity is the focal point around which all the data revolves.                                                                                                                                                                                                           |
+| ...customer             | Array    | Array of customer objects.                                                                                                                                                                                                                                                       |
+| ....user\_id            | integer  | Unique identifier for the customer.                                                                                                                                                                                                                                              |
+| ....firstname           | string   | Customer’s first name.                                                                                                                                                                                                                                                           |
+| ....lastname            | string   | Customer’s last name.                                                                                                                                                                                                                                                            |
+| ....mobile              | string   | Customer’s mobile number.                                                                                                                                                                                                                                                        |
+| ....email               | string   | Customer’s valid email address.                                                                                                                                                                                                                                                  |
+| ....external\_id        | string   | Customer’s external identifier.                                                                                                                                                                                                                                                  |
+| ....lifetime\_points    | integer  | Customer’s total lifetime points accumulated.                                                                                                                                                                                                                                    |
+| ....loyalty\_points     | integer  | Customer’s current loyalty points.                                                                                                                                                                                                                                               |
+| ....current\_slab       | string   | Customer’s current slab in the loyalty program.                                                                                                                                                                                                                                  |
+| ....tier\_expiry\_date  | datetime | Customer's current tier expiry date.                                                                                                                                                                                                                                             |
+| ....points\_summaries   | Object   | An overview of the customer's points.                                                                                                                                                                                                                                            |
+| .....points\_summary    | Array    | A summary of customers points.                                                                                                                                                                                                                                                   |
+| ....lifetime\_purchases | integer  | Customer’s total lifetime purchases made.                                                                                                                                                                                                                                        |
+| ....registered\_on      | string   | Date and time when the customer registered.                                                                                                                                                                                                                                      |
+| ....updated\_on         | string   | Date and time when the customer's information was last updated.                                                                                                                                                                                                                  |
+| ....type                | string   | Type of customer.                                                                                                                                                                                                                                                                |
+| ....source              | string   | Source through which the customer was acquired.                                                                                                                                                                                                                                  |
+| ....fraud\_status       | string   | Fraud status of the customer.                                                                                                                                                                                                                                                    |
+| ....reason              | string   | Reason field (not populated in this response).                                                                                                                                                                                                                                   |
+| ....custom\_fields      | Object   | [Custom fields](https://docs.capillarytech.com/docs/data-fields#custom-fields) are used to store information specific to a brand's needs, such as customer preferences or product attributes.                                                                                    |
+| .....field              | Array    | Array of custom fields.                                                                                                                                                                                                                                                          |
+| ......name              | string   | Name of the custom field.                                                                                                                                                                                                                                                        |
+| ......value             | string   | Value for the custom field.                                                                                                                                                                                                                                                      |
+| ....extended\_fields    | Object   | [Extended fields](https://docs.capillarytech.com/docs/data-entities#extended-fields) are predefined, standardized fields that capture additional information for various entities, such as customers or transactions. To use them during registration, they must be pre-defined. |
+| .....field              | Array    | Array of extended fields.                                                                                                                                                                                                                                                        |
+| ......name              | string   | Name of the extended field.                                                                                                                                                                                                                                                      |
+| ......value             | string   | Value of the extended field.                                                                                                                                                                                                                                                     |
+| ....subscription        | Object   | Customer Subscription determines whether a customer has opted or not opted, receiving promotional or transactional communications from specific sources.                                                                                                                         |
+| ....side\_effects       | Object   | Object containing side effects (additional information) for the customer creation, if any. If the header `SKIP-DOWNSTREAM` is set true, the side effects will not appear.                                                                                                        |
+| .....effect             | Array    | Array containing details of side effects.                                                                                                                                                                                                                                        |
+| ....item\_status        | Object   | Object containing details of item status.                                                                                                                                                                                                                                        |
+| .....success            | string   | Indicates the success of the customer item operation.                                                                                                                                                                                                                            |
+| .....code               | string   | Code representing the status of the customer item operation.                                                                                                                                                                                                                     |
+| .....message            | string   | Message describing the status of the customer item operation.                                                                                                                                                                                                                    |
+| .....warnings           | Object   | Warning codes associated with the operation.                                                                                                                                                                                                                                     |
+| ......warning           | Array    | Array containing the warnings.                                                                                                                                                                                                                                                   |
+
+## Error codes
+
+| Code | Description                                                                                                                                                                                                |
+| :--- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 500  | All requests have failed due to errors. Invalid or unsupported inputs passed.                                                                                                                              |
+| 1003 | External ID validation failed. The external ID does not meet the configured length requirements. Ensure the external ID length is between the minimum and maximum length configured for your organization. |
+| 1006 | Mobile number validation failed. The mobile number does not match the expected format or required configuration is missing for the country.                                                                |
+| 1007 | Error in customer registration: No Valid Mobile Number or External ID or Email provided required for registration. No valid mobile number, external ID, or email provided.                                 |
+| 1043 | External ID is required. This error occurs when your organization has configured external ID as a mandatory identifier but no external ID was provided.                                                    |
+| 8014 | Mobile number validation failed due to missing or invalid country configuration. This occurs if the organization's base country is not set or if required country fields are missing.                      |
+
+## External ID validation
+
+The API validates the `external_id` field based on your organization's configuration settings. Understanding these validation rules helps prevent registration errors.
+
+**Validation rules**
+
+The external ID is validated against the following organization-level configurations:
+
+| Configuration                        | Description                                                                |
+| :----------------------------------- | :------------------------------------------------------------------------- |
+| `CONF_CLIENT_EXTERNAL_ID_MIN_LENGTH` | Minimum required length for the external ID. Default is 0 (no minimum).    |
+| `CONF_CLIENT_EXTERNAL_ID_MAX_LENGTH` | Maximum allowed length for the external ID. Default is 0 (no validation).  |
+| `CONF_USERS_IS_EXTERNAL_ID_REQUIRED` | When enabled, external ID becomes a mandatory identifier for registration. |
+
+**How validation works**
+
+* If `CONF_CLIENT_EXTERNAL_ID_MAX_LENGTH` is set to 0, length validation is skipped.
+* If both min and max length are configured, the external ID must have a character count between these values (inclusive).
+* Empty or null external IDs pass validation unless `CONF_USERS_IS_EXTERNAL_ID_REQUIRED` is enabled.
+* The maximum absolute length for an external ID is 250 characters.
+
+**Example**
+
+If your organization has configured:
+
+* `CONF_CLIENT_EXTERNAL_ID_MIN_LENGTH` = 8
+* `CONF_CLIENT_EXTERNAL_ID_MAX_LENGTH` = 12
+
+Then:
+
+* `"ABC123"` (6 characters) → **Invalid** (error code 1003)
+* `"ABC12345"` (8 characters) → **Valid**
+* `"ABC123456789"` (12 characters) → **Valid**
+* `"ABC1234567890"` (13 characters) → **Invalid** (error code 1003)
+
+> 📘 Configuration
+>
+> To configure external ID validation settings for your organization, contact Capillary support.
+
+## **Additional notes**
+
+**API behavior**
+
+* If `CONFIG_SKIP_SECONDARY_ID_ON_PRIMARY_MISMATCH` is enabled, if the primary identifier is different but any of the secondary identifiers exist, a new customer is registered with the primary identifier ignoring the secondary identifier. The config is available on the Registration Page of InTouch **Profile** > **Organization Settings** > **Miscellaneous**.
+* Also, this config overrides `CONF_PRIMARY_IDENTIFIER_STRICT_CHECK`.
+
+- Auto-generation of external ID must be explicitly enabled if required by your registration process.
+
+# OpenAPI definition
+
+```json
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Sample API",
+    "version": "1.0.0",
+    "description": "API specification generated from cURL for POST /v1.1/customer/add"
+  },
+  "servers": [
+    {
+      "url": "https://{host}"
+    }
+  ],
+  "paths": {
+    "/v1.1/customer/add": {
+      "post": {
+        "summary": "Operation for POST /v1.1/customer/add",
+        "description": "Endpoint for POST /v1.1/customer/add",
+        "operationId": "postV11customeradd",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "json"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "••••••"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation (default from cURL)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "object",
+                          "properties": {
+                            "success": {
+                              "type": "string",
+                              "example": "true"
+                            },
+                            "code": {
+                              "type": "integer",
+                              "example": 200
+                            },
+                            "message": {
+                              "type": "string",
+                              "example": "Success"
+                            },
+                            "total": {
+                              "type": "string",
+                              "example": "1"
+                            },
+                            "success_count": {
+                              "type": "string",
+                              "example": "1"
+                            }
+                          }
+                        },
+                        "customers": {
+                          "type": "object",
+                          "properties": {
+                            "customer": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "user_id": {
+                                    "type": "integer",
+                                    "example": 566364775
+                                  },
+                                  "firstname": {
+                                    "type": "string",
+                                    "example": "Raj"
+                                  },
+                                  "lastname": {
+                                    "type": "string",
+                                    "example": "loyal"
+                                  },
+                                  "mobile": {
+                                    "type": "string",
+                                    "example": "9177558xx213"
+                                  },
+                                  "email": {
+                                    "type": "string",
+                                    "example": "testing1nee113@gmail.com"
+                                  },
+                                  "external_id": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "example": null
+                                  },
+                                  "lifetime_points": {
+                                    "type": "integer",
+                                    "example": 0
+                                  },
+                                  "loyalty_points": {
+                                    "type": "integer",
+                                    "example": 0
+                                  },
+                                  "current_slab": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "example": null
+                                  },
+                                  "tier_expiry_date": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "example": null
+                                  },
+                                  "points_summaries": {
+                                    "type": "object",
+                                    "properties": {
+                                      "points_summary": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        },
+                                        "example": []
+                                      }
+                                    }
+                                  },
+                                  "lifetime_purchases": {
+                                    "type": "integer",
+                                    "example": 0
+                                  },
+                                  "registered_on": {
+                                    "type": "string",
+                                    "example": "2025-08-12 06:46:47"
+                                  },
+                                  "updated_on": {
+                                    "type": "string",
+                                    "example": "2025-05-29 09:10:00"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "example": "NON_LOYALTY"
+                                  },
+                                  "source": {
+                                    "type": "string",
+                                    "example": "instore"
+                                  },
+                                  "fraud_status": {
+                                    "type": "string",
+                                    "example": "NONE"
+                                  },
+                                  "reason": {
+                                    "type": "string",
+                                    "example": ""
+                                  },
+                                  "custom_fields": {
+                                    "type": "object",
+                                    "properties": {
+                                      "field": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "name": {
+                                              "type": "string",
+                                              "example": "address"
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "example": "BTM"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "extended_fields": {
+                                    "type": "object",
+                                    "properties": {
+                                      "field": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "name": {
+                                              "type": "string",
+                                              "example": "age"
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "example": "25"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "subscriptions": {
+                                    "type": "object",
+                                    "properties": {
+                                      "subscription": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        },
+                                        "example": []
+                                      }
+                                    }
+                                  },
+                                  "side_effects": {
+                                    "type": "object",
+                                    "properties": {
+                                      "effect": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        },
+                                        "example": []
+                                      }
+                                    }
+                                  },
+                                  "item_status": {
+                                    "type": "object",
+                                    "properties": {
+                                      "success": {
+                                        "type": "string",
+                                        "example": "true"
+                                      },
+                                      "code": {
+                                        "type": "string",
+                                        "example": "1000"
+                                      },
+                                      "message": {
+                                        "type": "string",
+                                        "example": "Customer successfully updated, Email update is not allowed"
+                                      },
+                                      "warnings": {
+                                        "type": "object",
+                                        "properties": {
+                                          "warning": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "string",
+                                              "example": "91006"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-readme": {
+          "code-samples": [
+            {
+              "code": "curl --location 'https://eu.api.capillarytech.com/v1.1/customer/add?format=json' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: ••••••' \\\n--data-raw '{\n    \"root\": {\n        \"customer\": [\n            {\n                \"mobile\": 9177xx811213,\n                \"email\": \"testing1Nee113@gmail.com\",\n                \"external_id\": \"12on123\",\n                \"firstname\": \"Raj\",\n                \"lastname\": \"loyal\",\n                \"updated_on\": \"2025-05-29 09:10:00\",\n                \"registered_till\": \"rutuja_capillary\",\n                \"associated_with\": \"rutuja_capillary\",\n                \"type\": \"NON_LOYALTY\",\n                \"source\": \"INSTORE\",\n                \"accountId\": \"123456\",\n                \"fraud_status\": \n{\n                    \"status\": \"Fraud_Suspected\"\n                },\n                \"commChannels\": [\n                {\n                    \"type\": \"mobile\",\n                    \"value\": \"9177xx811213\",\n                    \"primary\": \"true\",\n                    \"verified\": \"true\",\n                    \"meta\": {\n                        \"residence\": \"true\"\n                    }\n                }\n                ],\n                \"custom_fields\": {\n                    \"field\": [\n                        {\n                            \"name\": \"City_name\",\n                            \"value\": \"Bangalore\"\n                        },\n                        {\n                            \"name\": \"address\",\n                            \"value\": \"BTM\"\n                        }\n                    ]\n                },\n                \"extended_fields\": {\n                    \"field\": [\n                        {\n                                \"name\": \"age\",\n                                \"value\": \"25\"\n                        }\n                    ]\n                }\n            }\n        ]\n    }\n}\n\n",
+              "language": "shell",
+              "name": "Sample request with mobile and email"
+            },
+            {
+              "code": "curl --location 'https://eu.api.capillarytech.com/v1.1/customer/add?format=json' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Basic =' \\\n--header 'Cookie: _cfuvid=uvtbHlSAbCYurdYMb0psZmvW1nY0gy1KWoNRJIAVQWk-1757036882526-0.0.1.1-604800000' \\\n--data '{\n    \"root\": {\n        \"customer\": [\n            {\n                \"external_id\": \"123445901\",\n                \"registered_on\": \"2024-07-29 11:11:11\",\n                \"registered_till\": \"till_name\",\n                \"associated_with\": \"till_name\"\n            }\n        ]\n    }\n}'",
+              "language": "shell",
+              "name": "Sample request with external id"
+            }
+          ],
+          "samples-languages": [
+            "shell"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {}
+}
+```

@@ -1,0 +1,233 @@
+---
+title: Get Identifier Change Requests
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Get Identifier Change Requests
+
+Retrieves the details of identifiers (mobile number/email ID/external ID)change requests. You can also fetch change requests of a specific identifier type using the query parameters.
+
+## Response Parameters
+
+| Parameter | Data Type | Description                                            |
+| :-------- | :-------- | :----------------------------------------------------- |
+| entity    | long      | Internally generated entity ID after successful lookup |
+| warnings  | object    | Warnings generated, if any.                            |
+
+### API specific error code
+
+| Error Code | Description                                  | Reason                                                     |
+| :--------- | :------------------------------------------- | :--------------------------------------------------------- |
+| 8013       | Lookup,Invalid identifier passed             | Identifier passed is invalid or unsupported                |
+| 8015       | Customer not found for the given identifiers | mobile/emailId/externalId passed is invalid or unsupported |
+| 8003       | Invalid source                               | Source is invalid or unsupported                           |
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/customers/{customerId}/changeRequest": {
+      "get": {
+        "summary": "Get Identifier Change Requests",
+        "description": "Retrieves the details of identifiers (mobile number/email ID/external ID)change requests. You can also fetch change requests of a specific identifier type using the query parameters.",
+        "operationId": "get-identifier-change-requests",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "Unique ID of the customer to fetch identifier change requests.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Fetches change requests > the offset number. Offset is the position of the lead in the db record. The value is assigned based on the sequence of creation. . For example, offset=10 retrieves all the leads from record number 11.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Source from which the change request details need to be fetched.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "INSTORE",
+                "FACEBOOK",
+                "WEB_ENGAGE",
+                "WECHAT",
+                "MARTJACK",
+                "TMALL",
+                "TAOBAO",
+                "JD",
+                "ECOMMERCE",
+                "WEBSITE",
+                "LINE",
+                "MOBILE_APP"
+              ]
+            }
+          },
+          {
+            "name": "changeType",
+            "in": "query",
+            "description": "Fetch details of a specific identifier change.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "EMAIL",
+                "MOBILE",
+                "EXTERNAL_ID",
+                "MERGE",
+                "MOBILE_REALLOC",
+                "COUPON",
+                "POINTS",
+                "TIER",
+                "RETRO"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit the number of results to retrieve.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Lets you sort the list by created date, or last updated date",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createdon",
+                "lastUpdatedOn"
+              ]
+            }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "description": "Sort the results in ascending, ASC or descending, DESC order of sortBy",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Fetch change requests added on or after a specific date.",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Fetch change requests added on or before a specific date",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "startId",
+            "in": "query",
+            "description": "Fetch change requests greater than or equal to a specific request ID range.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "endId",
+            "in": "query",
+            "description": "Fetch change requests less than or equal to a specific request ID range.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"pagination\": {\n        \"limit\": 10,\n        \"offset\": 0,\n        \"total\": 1\n    },\n    \"data\": [\n        {\n            \"id\": 560739,\n            \"status\": \"APPROVED\",\n            \"addedBy\": {\n                \"id\": 75030996,\n                \"code\": \"1552291147_\",\n                \"description\": \"\",\n                \"name\": \"Henry\",\n                \"type\": \"ADMIN_USER\",\n                \"adminType\": \"GENERAL\",\n                \"isActive\": true,\n                \"isOuEnabled\": false,\n                \"timeZoneId\": 0,\n                \"currencyId\": 0,\n                \"languageId\": 0\n            },\n            \"updatedBy\": {\n                \"id\": 75030996,\n                \"code\": \"1552291147\",\n                \"description\": \"\",\n                \"name\": \"Henry\",\n                \"type\": \"ADMIN_USER\",\n                \"adminType\": \"GENERAL\",\n                \"isActive\": true,\n                \"isOuEnabled\": false,\n                \"timeZoneId\": 0,\n                \"currencyId\": 0,\n                \"languageId\": 0\n            },\n            \"addedOn\": \"2020-02-12T09:58:41Z\",\n            \"updatedOn\": \"2020-02-12T09:58:41Z\",\n            \"userId\": 130238908,\n            \"changeType\": \"EMAIL\",\n            \"changeIdentifiers\": {\n                \"add\": [\n                    {\n                        \"type\": \"EMAIL\",\n                        \"value\": \"tom.sawyer@capillarytech.com\"\n                    }\n                ],\n                \"remove\": [\n                    {\n                        \"type\": \"EMAIL\",\n                        \"value\": \"tom.sawyer@capillarytech.com\n                        .com\"\n                    }\n                ]\n            },\n            \"comments\": \"auto approved by 75030996\",\n            \"secUserId\": 0,\n            \"oneStep\": false\n        }\n    ],\n    \"warnings\": [],\n    \"errors\": []\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/customers/lookup?source=WEB_ENGAGE&accountId=123456&identifierName=mobile&identifierValue=917744876415' \\\n--header 'Authorization: Basic cnV0dWphX2NhcGlsbGFyeTpkMTNlMmEyYmY4OWRkNDAxN2U0Y2EwOTk1MGI0NzZjNg==' \\\n--header 'Cookie: _cfuvid=spsJP8HKMkngG3TvUO0MCuKfffh2vyCAaOIMgMzI9nQ-1745314446248-0.0.1.1-604800000; _cfuvid=HAYODSDLTriM04VWk1_fn4VNqGyKyYtNNOvzM9Z3eCE-1745320775013-0.0.1.1-604800000'"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```

@@ -1,0 +1,1357 @@
+---
+title: Get Transaction Details With ID
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.capillarytech.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+## Get Transaction Details With ID
+
+Retrieves the details of a specific transaction. Monetary fields in line items may be rounded based on configuration.
+
+## Example request
+
+```curl Sample request
+curl --location 'https://{Host}/v2/transactions/2152557245' \
+--header 'Authorization: Basic b25lLnRpbGwwMToyMDJjYjk2MmFViOTY0YjA3MTUyZDIzNGI3MA=='
+````
+
+## Query Parameters
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| id (path)* | long | Unique transaction id to fetch details. |
+| type (query)* | Enum | Type of transaction to fetch. Value: `REGULAR`, `RETURN`, `NOT_INTERESTED`, `NOT_INTERESTED_RETURN`. Default value is `REGULAR`. |
+| tenders (query) | boolean | Pass `true` to retrieve payment mode details. Default value is `false`. |
+| credit_notes (query) | boolean | Pass `true` to retrieve credit notes details (added through v1.1 transaction/add). Default value is `false`. |
+| mlp | boolean | Pass `true` to include loyalty points information in the response |
+| points_breakup | boolean | Pass `true` to include detailed loyalty points breakdown |
+
+<Callout kind="info" title="NOTE">
+
+**To receive loyalty points information in the response:**
+
+* [ ] You must use the transaction `id` (not number)
+* [ ] You must include both **Query parameters**: `?mlp=true&points_breakup=truE`
+
+The API behaves differently depending on identifier used:
+
+* [ ] When using **transaction ID**: Can return loyalty points if requested
+* [ ] When using **transaction number**: Will never return loyalty points (field will always be empty)
+
+</Callout>
+
+<Callout kind="alert">
+
+  If you attempt to retrieve data of any deleted customer after a successful PII deletion, you will receive the following response:
+
+`"message": "Customer is deleted after PII delete request"`
+
+</Callout>
+
+## Example response
+
+```json Sample response
+{
+    "useDefaultFleetGroup": false,
+    "loyaltiesPointDetails": [
+        {
+            "issuedPoints": 4000.0,
+            "returnedPoints": 0.0,
+            "redeemedPoints": 0.0,
+            "expiredPoints": 4000.0,
+            "availablePoints": 0.0,
+            "expiryDate": "2026-03-16T23:59:59Z",
+            "programId": 973,
+            "delayedPoints": 0.0,
+            "delayedPointsReturned": 0.0,
+            "redeemableFrom": "2026-02-18T11:35:57Z",
+            "pointsBreakup": {
+                "currentPoints": {
+                    "regularPointsBreakup": [
+                        {
+                            "programId": 973,
+                            "issued": 4000.0,
+                            "returned": 0.0,
+                            "redeemed": 0.0,
+                            "expired": 4000.0,
+                            "expiryDate": "2026-03-16T23:59:59Z",
+                            "expiryType": "fixed",
+                            "awardedDate": "2026-02-18T11:35:57Z",
+                            "allocationType": "LINEITEM",
+                            "skuCode": "model_id_001"
+                        }
+                    ],
+                    "promotionalPointsBreakup": []
+                },
+                "promisedPoints": {
+                    "regularPointsBreakup": [],
+                    "promotionalPointsBreakup": []
+                }
+            }
+        },
+        {
+            "issuedPoints": 1.0,
+            "returnedPoints": 0.0,
+            "redeemedPoints": 0.0,
+            "expiredPoints": 1.0,
+            "availablePoints": 0.0,
+            "expiryDate": "2026-03-16T23:59:59Z",
+            "programId": 983,
+            "delayedPoints": 0.0,
+            "delayedPointsReturned": 0.0,
+            "redeemableFrom": "2026-02-18T11:35:57Z",
+            "pointsBreakup": {
+                "currentPoints": {
+                    "regularPointsBreakup": [
+                        {
+                            "programId": 983,
+                            "issued": 1.0,
+                            "returned": 0.0,
+                            "redeemed": 0.0,
+                            "expired": 1.0,
+                            "expiryDate": "2026-03-16T23:59:59Z",
+                            "expiryType": "rolling",
+                            "awardedDate": "2026-02-18T11:35:57Z",
+                            "allocationType": "BILL"
+                        }
+                    ],
+                    "promotionalPointsBreakup": []
+                },
+                "promisedPoints": {
+                    "regularPointsBreakup": [],
+                    "promotionalPointsBreakup": []
+                }
+            }
+        }
+    ],
+    "billPointsBreakup": [],
+    "attribution": {
+        "createDate": "2026-02-18T06:05:00Z",
+        "createdBy": {
+            "id": 75155297,
+            "code": "tj_capillary",
+            "description": "",
+            "name": "tj_capillary",
+            "type": "TILL",
+            "referenceId": -1,
+            "adminType": "GENERAL",
+            "isActive": true,
+            "isOuEnabled": false,
+            "timeZoneId": 191,
+            "currencyId": 95,
+            "languageId": 148,
+            "default": false
+        },
+        "modifiedBy": {
+            "referenceId": -1,
+            "default": false
+        },
+        "modifiedDate": "2026-02-18T06:05:57Z"
+    },
+    "billDetails": {
+        "amount": 2000.0,
+        "billingStore": {
+            "id": 75152715,
+            "code": "doc123",
+            "description": "",
+            "name": "DocStore",
+            "type": "STORE",
+            "referenceId": -1,
+            "adminType": "GENERAL",
+            "isActive": true,
+            "isOuEnabled": false,
+            "timeZoneId": 191,
+            "currencyId": 95,
+            "languageId": 148,
+            "default": false
+        },
+        "billNumber": "demogorundtxn00loyal0029",
+        "billingTime": "2026-02-18T06:05:00Z",
+        "discount": 0.0,
+        "grossAmount": 2000.0,
+        "note": "DGtxn L 0029",
+        "returnDetails": {
+            "canceled": false
+        },
+        "niReturnDetails": {},
+        "invalidBill": false,
+        "billingTimeInputOffset": "+05:30"
+    },
+    "customFields": {},
+    "source": "instore",
+    "addWithLocalCurrency": false,
+    "async": false,
+    "useV2": false,
+    "simulation": false,
+    "customerId": 564662499,
+    "id": 897887933,
+    "lineItems": [
+        {
+            "id": 4053962482,
+            "customerId": 0,
+            "details": {
+                "amount": 2000.0,
+                "description": "Sports Shoes",
+                "discount": 0.0,
+                "itemCode": "model_id_001",
+                "qty": 1.0,
+                "rate": 2000.0,
+                "serial": 0,
+                "value": 0.0,
+                "returnable": true,
+                "returnableDays": -1,
+                "attributes": {},
+                "extendedFields": {
+                    "size": "medium"
+                },
+                "newExtendedFields": {},
+                "attributesSet": []
+            },
+            "outlierStatus": "NORMAL",
+            "returnDetails": {},
+            "valid": true,
+            "returnLineItemsDtos": [],
+            "niReturnLineItemsDtos": [],
+            "addonDetails": [],
+            "splitItemsDetails": [],
+            "niReturn": false
+        }
+    ],
+    "outlierStatus": "NORMAL",
+    "type": "REGULAR",
+    "lifeTimePurchases": 0,
+    "ignorePoints": false,
+    "extendedFields": {
+        "event_input_date_offset": "+05:30",
+        "external_coupon_code": "WEB"
+    },
+    "autoUpdateTime": "2026-02-18T06:05:57Z",
+    "niReturnDetails": {},
+    "basketSize": 1.0,
+    "returnDetails": {
+        "canceled": false
+    },
+    "retroTxn": false,
+    "warnings": []
+}
+````
+
+### Rounding of monetary fields
+
+Monetary fields in transaction line items (such as amount, rate, value, and discount) are rounded based on the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration. If this configuration is set to a value greater than or equal to 0, these fields are rounded down to the specified number of decimal places. For example, if set to 2, a value of 38.989 becomes 38.98. If set to 3, 38.987 becomes 38.987. This rounding uses the floor method, which may cause values to be slightly lower than expected.
+
+To ensure correct storage and retrieval of decimal values, set AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES to one more than the value of CONF_DECIMAL_PLACES_FOR_BASE_CURRENCY. For example, if CONF_DECIMAL_PLACES_FOR_BASE_CURRENCY is 2, set AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES to 3.
+
+## Response parameter
+
+### Top-level parameters
+
+| Parameter               | Data type | Description                                                                                                                                                                                                                                                                                                                                     |
+| ----------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                    | Long      | Unique identifier of the transaction.                                                                                                                                                                                                                                                                                                           |
+| `customerId`            | Long      | Unique identifier of the customer linked to the transaction.                                                                                                                                                                                                                                                                                    |
+| `type`                  | String    | Type of transaction. Possible values: `REGULAR`, `NOT_INTERESTED`, `RETURN`, `NOT_INTERESTED_RETURN`, `MIXED`, `NI_MIXED`, `ALL`.                                                                                                                                                                                                               |
+| `source`                | String    | Channel through which the transaction was recorded. Example: `instore`.                                                                                                                                                                                                                                                                         |
+| `outlierStatus`         | String    | Whether the transaction is included in loyalty processing. Possible values: `NORMAL` (transaction is processed and points are awarded), `OUTLIER` (transaction is excluded from points calculation).                                                                                                                                            |
+| `lifeTimePurchases`     | Long      | Total purchase value the customer has accumulated across all transactions, including this one.                                                                                                                                                                                                                                                  |
+| `basketSize`            | Decimal   | Total quantity of all items in the transaction. Calculated as the sum of `qty` across all line items.                                                                                                                                                                                                                                           |
+| `ignorePoints`          | Boolean   | Whether points accrual was skipped for this transaction. Possible values: `true` (points not awarded), `false` (points awarded normally).                                                                                                                                                                                                       |
+| `retroTxn`              | Boolean   | Whether this is a retro transaction. A retro transaction links a past purchase to a customer after the fact. Possible values: `true`, `false`.                                                                                                                                                                                                  |
+| `addWithLocalCurrency`  | Boolean   | Whether the transaction was recorded in the store's local currency. Possible values: `true` (local currency used), `false` (org base currency used).                                                                                                                                                                                            |
+| `async`                 | Boolean   | Whether the transaction was processed in the background. Possible values: `true` (asynchronous), `false` (synchronous).                                                                                                                                                                                                                         |
+| `useV2`                 | Boolean   | Whether v2 processing logic was applied to this transaction.                                                                                                                                                                                                                                                                                    |
+| `simulation`            | Boolean   | Whether this was a simulated transaction. A simulated transaction is not saved to the database. Possible values: `true`, `false`.                                                                                                                                                                                                               |
+| `useDefaultFleetGroup`  | Boolean   | Whether the default user group was applied to this transaction.                                                                                                                                                                                                                                                                                 |
+| `autoUpdateTime`        | String    | Timestamp of the last automatic system update to this transaction, in ISO 8601 format.                                                                                                                                                                                                                                                          |
+| `billPointsBreakup`     | Array     | Bill-level points breakup. Returns an empty array if no bill-level points are configured separately from program-level points. **Note:** This field always returns an empty array for Get Transaction by ID and Get Transaction by Number APIs. To get points breakup details, use the `v2/userGroup2/transactions` (GET) API response instead. |
+| `customFields`          | Object    | Custom fields recorded at the transaction level as key-value pairs. Returns an empty object if no custom fields were provided.                                                                                                                                                                                                                  |
+| `extendedFields`        | Object    | Extended fields recorded at the transaction level. See [extendedFields object](#extendedfields-object).                                                                                                                                                                                                                                         |
+| `niReturnDetails`       | Object    | Details about a not-interested return at the transaction level. Returns an empty object if not applicable.                                                                                                                                                                                                                                      |
+| `returnDetails`         | Object    | Cancellation status for the transaction. See [returnDetails object](#returndetails-object).                                                                                                                                                                                                                                                     |
+| `loyaltiesPointDetails` | Array     | Loyalty points summary, with one entry per loyalty program that awarded points for this transaction. See [loyaltiesPointDetails array](#loyaltiespointdetails-array).                                                                                                                                                                           |
+| `warnings`              | Array     | Warnings generated during transaction processing. Returns an empty array if there are none.                                                                                                                                                                                                                                                     |
+
+#### `extendedFields` object
+
+Extended fields capture additional transaction attributes configured at the org level.
+
+| Parameter                 | Data type | Description                                                                                                         |
+| ------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------- |
+| `event_input_date_offset` | String    | UTC offset of the timezone in which the transaction date was submitted. Example: `+05:30` for Indian Standard Time. |
+| `external_coupon_code`    | String    | External coupon code applied to the transaction. Example: `WEB`.                                                    |
+
+#### `returnDetails` object
+
+| Parameter  | Data type | Description                                                                                       |
+| ---------- | --------- | ------------------------------------------------------------------------------------------------- |
+| `canceled` | Boolean   | Whether this transaction has been canceled. Possible values: `true` (canceled), `false` (active). |
+
+***
+
+### `loyaltiesPointDetails` array
+
+Each entry in this array represents the loyalty points summary for one program that awarded points for this transaction.
+
+| Parameter               | Data type | Description                                                                                                               |
+| ----------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `programId`             | Long      | Unique identifier of the loyalty program.                                                                                 |
+| `issuedPoints`          | Decimal   | Total points issued to the customer for this transaction under this program.                                              |
+| `returnedPoints`        | Decimal   | Points reversed due to a product return or transaction reversal.                                                          |
+| `redeemedPoints`        | Decimal   | Points the customer redeemed as part of this transaction.                                                                 |
+| `expiredPoints`         | Decimal   | Points from this transaction that have already expired.                                                                   |
+| `availablePoints`       | Decimal   | Points currently available for the customer to redeem.                                                                    |
+| `delayedPoints`         | Decimal   | Points pending conversion to the customer's active balance, due to a delayed accrual configuration.                       |
+| `delayedPointsReturned` | Decimal   | Pending points reversed before they were converted to active points.                                                      |
+| `expiryDate`            | String    | Date and time when the points from this transaction expire, in ISO 8601 format.                                           |
+| `redeemableFrom`        | String    | Date and time from which the issued points are eligible for redemption, in ISO 8601 format.                               |
+| `pointsBreakup`         | Object    | Granular breakdown of points split into active and pending categories. See [pointsBreakup object](#pointsbreakup-object). |
+
+#### `pointsBreakup` object
+
+##### `currentPoints` object
+
+Points already credited to the customer's active loyalty balance.
+
+| Parameter                  | Data type | Description                                                                                                                                                                         |
+| -------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `regularPointsBreakup`     | Array     | Breakdown of regular (non-promotional) points in the active balance. Returns an empty array if none were credited. See [regularPointsBreakup object](#regularPointsBreakup-object). |
+| `promotionalPointsBreakup` | Array     | Breakdown of promotional points in the active balance. Returns an empty array if none were credited.                                                                                |
+
+##### `promisedPoints` object
+
+Points in a pending state, not yet credited to the customer's active balance due to delayed accrual settings.
+
+| Parameter                  | Data type | Description                                                                                  |
+| -------------------------- | --------- | -------------------------------------------------------------------------------------------- |
+| `regularPointsBreakup`     | Array     | Breakdown of regular points currently pending. Returns an empty array if there are none.     |
+| `promotionalPointsBreakup` | Array     | Breakdown of promotional points currently pending. Returns an empty array if there are none. |
+
+#### `regularPointsBreakup` object
+
+Each entry represents one batch of regular points awarded under a specific program.
+
+| Parameter        | Data type | Description                                                                                                                                                                                                                                                                                                                                                                                    |
+| ---------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `programId`      | Long      | Unique identifier of the loyalty program that awarded these points.                                                                                                                                                                                                                                                                                                                            |
+| `issued`         | Decimal   | Number of points issued in this batch.                                                                                                                                                                                                                                                                                                                                                         |
+| `returned`       | Decimal   | Number of points reversed in this batch.                                                                                                                                                                                                                                                                                                                                                       |
+| `redeemed`       | Decimal   | Number of points redeemed from this batch.                                                                                                                                                                                                                                                                                                                                                     |
+| `expired`        | Decimal   | Number of points from this batch that have expired.                                                                                                                                                                                                                                                                                                                                            |
+| `expiryDate`     | String    | Date and time when this batch of points expires, in ISO 8601 format.                                                                                                                                                                                                                                                                                                                           |
+| `expiryType`     | String    | Expiry strategy applied to this batch. Possible values: `fixed` (points expire on a fixed calendar date, unaffected by customer activity), `rolling` (the expiry date extends when the customer makes a qualifying transaction).                                                                                                                                                               |
+| `awardedDate`    | String    | Date and time when these points were credited to the customer's active balance, in ISO 8601 format.                                                                                                                                                                                                                                                                                            |
+| `allocationType` | String    | Level at which these points were allocated. Possible values: `BILL` (awarded on the total bill amount), `LINEITEM` (awarded on a specific product line item), `BILL_PROMOTION` (awarded on the bill via a promotion), `LINEITEM_PROMOTION` (awarded on a line item via a promotion), `CUSTOMER_PROMOTION` (awarded to the customer via a promotion, not tied to a specific bill or line item). |
+| `skuCode`        | String    | Item code of the product against which these points were awarded. Present only when `allocationType` is `LINEITEM`. Matches the `itemCode` of the corresponding line item.                                                                                                                                                                                                                     |
+
+***
+
+### `billDetails` object
+
+| Parameter | Data type | Description |
+| --- | --- | --- |
+| `billNumber` | String | Unique bill or invoice number for this transaction. |
+| `billingTime` | String | Indicates the bill creation date and time in ISO 8601 format, returned in the server time zone. **EU server example** 2025-12-16T14:30:45Z → 16 December 2025, 14:30:45 (UTC) **India server example** 2025-12-16T14:30:45+05:30 → 16 December 2025, 14:30:45 (IST) **Note:** The response time zone always matches the server time zone, regardless of the time zone offset in the request. |
+| `billingTimeInputOffset` | String | UTC offset of the timezone in which the billing time was originally submitted. Example: `+05:30` for Indian Standard Time. This value is extracted from the billing time input and included in the response for reference. |
+| `amount` | Decimal | Net bill amount after discounts. |
+| `grossAmount` | Decimal | Gross bill amount before discounts. |
+| `discount` | Decimal | Total discount applied to the bill. |
+| `note` | String | Free-text note associated with the transaction. |
+| `invalidBill` | Boolean | Whether the bill is flagged as invalid. An invalid bill is excluded from loyalty processing. Possible values: `true` (invalid), `false` (valid). |
+| `returnDetails` | Object | Cancellation status at the bill level. See [returnDetails object](#returndetails-object). |
+| `niReturnDetails` | Object | Not-interested return details at the bill level. Returns an empty object if not applicable. |
+| `billingStore` | Object | Details of the store where the transaction was billed. See [billingStore object](#billingstore-object). |
+
+#### `billingStore` object
+
+| Parameter     | Data type | Description                                                                                       |
+| ------------- | --------- | ------------------------------------------------------------------------------------------------- |
+| `id`          | Long      | Unique identifier of the store.                                                                   |
+| `code`        | String    | Unique code assigned to the store.                                                                |
+| `name`        | String    | Display name of the store.                                                                        |
+| `description` | String    | Description of the store.                                                                         |
+| `type`        | String    | Type of org entity. Example: `STORE`.                                                             |
+| `referenceId` | Long      | External reference identifier for the store. Returns `-1` if no external reference is configured. |
+| `adminType`   | String    | Administrative classification of the store. Possible values: `ADMIN`, `GENERAL`.                  |
+| `isActive`    | Boolean   | Whether the store is currently active.                                                            |
+| `isOuEnabled` | Boolean   | Whether organizational unit (OU) configuration is enabled for this store.                         |
+| `timeZoneId`  | Long      | Internal identifier of the timezone configured for this store.                                    |
+| `currencyId`  | Long      | Internal identifier of the currency configured for this store.                                    |
+| `languageId`  | Long      | Internal identifier of the language configured for this store.                                    |
+| `default`     | Boolean   | Whether this is the default store.                                                                |
+
+***
+
+### `attribution` object
+
+Contains information about who created and last modified the transaction record.
+
+| Parameter      | Data type | Description                                                                                                                                                                                |
+| -------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `createDate`   | String    | Date and time when the transaction was created, in ISO 8601 format.  Note: The response time zone always matches the server time zone, regardless of the time zone offset in the request.  |
+| `modifiedDate` | String    | Date and time when the transaction was modified, in ISO 8601 format.  Note: The response time zone always matches the server time zone, regardless of the time zone offset in the request. |
+| `createdBy`    | Object    | Details of the till or entity that recorded the transaction. See [createdBy object](#createdby-object).                                                                                    |
+| `modifiedBy`   | Object    | Details of the entity that last modified the transaction. See [modifiedBy object](#modifiedby-object).                                                                                     |
+
+#### `createdBy` object
+
+| Parameter     | Data type | Description                                                                         |
+| ------------- | --------- | ----------------------------------------------------------------------------------- |
+| `id`          | Long      | Unique identifier of the entity that created the transaction.                       |
+| `code`        | String    | Code of the entity.                                                                 |
+| `name`        | String    | Name of the entity.                                                                 |
+| `description` | String    | Description of the entity.                                                          |
+| `type`        | String    | Type of entity. Example: `TILL`.                                                    |
+| `referenceId` | Long      | External reference identifier. Returns `-1` if no external reference is configured. |
+| `adminType`   | String    | Administrative classification. Possible values: `ADMIN`, `GENERAL`.                 |
+| `isActive`    | Boolean   | Whether the entity is currently active.                                             |
+| `isOuEnabled` | Boolean   | Whether OU configuration is enabled for this entity.                                |
+| `timeZoneId`  | Long      | Internal identifier of the timezone configured for this entity.                     |
+| `currencyId`  | Long      | Internal identifier of the currency configured for this entity.                     |
+| `languageId`  | Long      | Internal identifier of the language configured for this entity.                     |
+| `default`     | Boolean   | Whether this is the default entity.                                                 |
+
+#### `modifiedBy` object
+
+| Parameter     | Data type | Description                                                                                                                          |
+| ------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `referenceId` | Long      | External reference identifier of the entity that last modified the transaction. Returns `-1` if no external reference is configured. |
+| `default`     | Boolean   | Whether this is the default entity.                                                                                                  |
+
+***
+
+### `lineItems` array
+
+Each entry represents one product line item in the transaction.
+
+| Parameter               | Data type | Description                                                                                                                                             |
+| ----------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                    | Long      | Unique identifier of the line item.                                                                                                                     |
+| `customerId`            | Long      | Identifier of the customer linked to this line item. Returns `0` if the line item is not linked to a specific customer.                                 |
+| `outlierStatus`         | String    | Whether this line item is included in loyalty processing. Possible values: `NORMAL` (processed normally), `OUTLIER` (excluded from points calculation). |
+| `valid`                 | Boolean   | Whether this line item is valid for loyalty processing. Possible values: `true` (valid), `false` (invalid).                                             |
+| `niReturn`              | Boolean   | Whether this is a not-interested return line item. Possible values: `true`, `false`.                                                                    |
+| `returnDetails`         | Object    | Return details for this line item. Returns an empty object if no return is associated.                                                                  |
+| `returnLineItemsDtos`   | Array     | Return line items linked to this line item. Returns an empty array if no returns are associated.                                                        |
+| `niReturnLineItemsDtos` | Array     | Not-interested return line items linked to this line item. Returns an empty array if not applicable.                                                    |
+| `addonDetails`          | Array     | Add-on items linked to this line item. Returns an empty array if no add-ons are present.                                                                |
+| `splitItemsDetails`     | Array     | Split item details for this line item. Returns an empty array if the item is not split.                                                                 |
+| `details`               | Object    | Product and pricing information for this line item. See [details object](#details-object).                                                              |
+
+#### `details` object
+
+| Parameter           | Data type | Description                                                                                                                                         |
+| ------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `itemCode`          | String    | Unique code identifying the product (SKU).                                                                                                          |
+| `description`       | String    | Short description of the product.                                                                                                                   |
+| `qty`               | Decimal   | Quantity of the product purchased.                                                                                                                  |
+| `rate`              | Decimal   | Unit price of the product. This value may be rounded down based on the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration.                    |
+| `amount`            | Decimal   | Net line item amount after discount. This value may be rounded down based on the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration.          |
+| `value`             | Decimal   | Gross value of the line item before discount. This value may be rounded down based on the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration. |
+| `discount`          | Decimal   | Discount applied to this line item. This value may be rounded down based on the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration.           |
+| `serial`            | Long      | Position of this line item within the transaction.                                                                                                  |
+| `returnable`        | Boolean   | Whether this product is eligible for return after purchase.                                                                                         |
+| `returnableDays`    | Integer   | Number of days within which this product can be returned. Returns `-1` if no return window is configured.                                           |
+| `attributes`        | Object    | Product attributes for this line item as key-value pairs. Returns an empty object if no attributes are present.                                     |
+| `extendedFields`    | Object    | Extended fields at the line item level as key-value pairs. Example: `"size": "medium"`.                                                             |
+| `newExtendedFields` | Object    | Additional extended fields at the line item level. Returns an empty object if not applicable.                                                       |
+| `attributesSet`     | Array     | Set of attribute entries derived from the `attributes` object. Returns an empty array if no attributes are present.                                 |
+
+> [!NOTE]
+> Monetary fields in line items (amount, rate, value, discount) are rounded down to the number of decimal places specified by the AMOUNT_ROUNDING_OFF_TO_DECIMAL_PLACES configuration. This may cause values to be slightly lower than expected. Set this configuration to one more than the base currency decimal places to ensure accurate results.
+
+<br />
+
+## OpenAPI definition
+
+```json
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "v2",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/v2",
+      "variables": {
+        "host": {
+          "default": "host"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/transactions/{id}": {
+      "get": {
+        "summary": "Get Transaction Details",
+        "description": "Retrieves the details of a specific transaction.",
+        "operationId": "get-transaction-details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique transaction id to fetch details.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Type of transaction to fetch.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "REGULAR",
+                "RETURN",
+                "NOT_INTERESTED",
+                "NOT_INTERESTED_RETURN"
+              ],
+              "default": "REGULAR"
+            }
+          },
+          {
+            "name": "tenders",
+            "in": "query",
+            "description": "Pass true to retrieve payment mode details. Default value is false.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "credit_notes",
+            "in": "query",
+            "description": "Pass true to retrieve credit notes details (added through v1.1 transaction/add).",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": {
+                      "useDefaultFleetGroup": false,
+                      "loyaltiesPointDetails": [],
+                      "billPointsBreakup": [],
+                      "attribution": {
+                        "createDate": "2025-09-18 22:07:01",
+                        "createdBy": {
+                          "id": 15140140,
+                          "code": "two.till01",
+                          "description": "",
+                          "name": "two.till01",
+                          "type": "TILL",
+                          "referenceId": -1,
+                          "adminType": "GENERAL",
+                          "isActive": true,
+                          "isOuEnabled": false,
+                          "timeZoneId": 191,
+                          "currencyId": 0,
+                          "languageId": 0,
+                          "default": false
+                        },
+                        "modifiedBy": {
+                          "referenceId": -1,
+                          "default": false
+                        },
+                        "modifiedDate": "2025-09-18 22:07:02"
+                      },
+                      "billDetails": {
+                        "amount": 7000,
+                        "billingStore": {
+                          "id": 15140128,
+                          "code": "autotest2_two",
+                          "description": "autotest2_two",
+                          "name": "autotest2_two",
+                          "type": "STORE",
+                          "referenceId": -1,
+                          "adminType": "GENERAL",
+                          "isActive": true,
+                          "isOuEnabled": false,
+                          "timeZoneId": 191,
+                          "currencyId": 220,
+                          "languageId": -1,
+                          "default": false
+                        },
+                        "billNumber": "number-918225437657-271",
+                        "billingTime": "2025-09-18 22:07:01",
+                        "currency": {
+                          "id": 220,
+                          "name": "Euro",
+                          "symbol": "€",
+                          "refId": 0,
+                          "ratio": 70
+                        },
+                        "discount": 70,
+                        "grossAmount": 70000,
+                        "note": "2 line items",
+                        "returnDetails": {
+                          "canceled": false
+                        },
+                        "niReturnDetails": {},
+                        "invalidBill": false
+                      },
+                      "customFields": {},
+                      "source": "instore",
+                      "addWithLocalCurrency": false,
+                      "async": false,
+                      "useV2": false,
+                      "simulation": false,
+                      "customerId": 388402836,
+                      "id": 2152557245,
+                      "lineItems": [
+                        {
+                          "id": 2163110267,
+                          "customerId": 0,
+                          "details": {
+                            "amount": 280,
+                            "description": "soap",
+                            "discount": 70,
+                            "itemCode": "www-1",
+                            "qty": 5,
+                            "rate": 70,
+                            "serial": 1,
+                            "value": 350,
+                            "returnable": false,
+                            "returnableDays": 0,
+                            "attributes": {},
+                            "extendedFields": {},
+                            "newExtendedFields": {},
+                            "attributesSet": []
+                          },
+                          "outlierStatus": "NORMAL",
+                          "returnDetails": {},
+                          "valid": true,
+                          "returnLineItemsDtos": [],
+                          "niReturnLineItemsDtos": [],
+                          "addonDetails": [],
+                          "splitItemsDetails": [],
+                          "currencyLogDto": {
+                            "addedBy": 15140140,
+                            "addedOn": "2025-09-18",
+                            "addedOnISO": "2025-09-18T22:07:01+05:30",
+                            "autoUpdateTimestamp": "2025-09-18",
+                            "autoUpdateTimestampISO": "2025-09-18T22:07:02+05:30",
+                            "baseCurrencyId": 23,
+                            "baseCurrency": {
+                              "id": 23,
+                              "name": "Indian Rupee ",
+                              "symbol": "₹",
+                              "isoCode": "INR",
+                              "refId": 0,
+                              "ratio": 0
+                            },
+                            "id": 85728,
+                            "orgId": 1102,
+                            "ratio": 70,
+                            "refId": 2163110267,
+                            "refType": "REGULAR",
+                            "transactionCurrencyId": 220,
+                            "transactionCurrency": {
+                              "id": 220,
+                              "name": "Euro",
+                              "symbol": "€",
+                              "isoCode": "EUR",
+                              "refId": 0,
+                              "ratio": 0
+                            },
+                            "localValue": 350,
+                            "localDiscount": 70,
+                            "localRate": 70,
+                            "localAmount": 280
+                          },
+                          "niReturn": false
+                        }
+                      ],
+                      "outlierStatus": "NORMAL",
+                      "type": "REGULAR",
+                      "lifeTimePurchases": 0,
+                      "ignorePoints": false,
+                      "currencyLogDto": {
+                        "addedBy": 15140140,
+                        "addedOn": "2025-09-18",
+                        "addedOnISO": "2025-09-18T22:07:01+05:30",
+                        "autoUpdateTimestamp": "2025-09-18",
+                        "autoUpdateTimestampISO": "2025-09-18T22:07:02+05:30",
+                        "baseCurrencyId": 23,
+                        "baseCurrency": {
+                          "id": 23,
+                          "name": "Indian Rupee ",
+                          "symbol": "₹",
+                          "isoCode": "INR",
+                          "refId": 0,
+                          "ratio": 0
+                        },
+                        "id": 80879,
+                        "orgId": 1102,
+                        "ratio": 70,
+                        "refId": 2152557245,
+                        "refType": "REGULAR",
+                        "transactionCurrencyId": 220,
+                        "transactionCurrency": {
+                          "id": 220,
+                          "name": "Euro",
+                          "symbol": "€",
+                          "isoCode": "EUR",
+                          "refId": 0,
+                          "ratio": 0
+                        },
+                        "value": 7000,
+                        "localValue": 100,
+                        "localDiscount": 1,
+                        "localGrossAmount": 1000
+                      },
+                      "extendedFields": {},
+                      "autoUpdateTime": "2025-09-18T22:07:02+05:30",
+                      "retroTxn": false,
+                      "niReturnDetails": {},
+                      "returnDetails": {
+                        "canceled": false
+                      },
+                      "basketSize": 5,
+                      "warnings": []
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "useDefaultFleetGroup": {
+                      "type": "boolean",
+                      "example": false,
+                      "default": true
+                    },
+                    "loyaltiesPointDetails": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "issuedPoints": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          },
+                          "returnedPoints": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "redeemedPoints": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "expiredPoints": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "availablePoints": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          },
+                          "expiryDate": {
+                            "type": "string",
+                            "example": "2025-05-06T23:59:59Z"
+                          },
+                          "programId": {
+                            "type": "integer",
+                            "example": 983,
+                            "default": 0
+                          },
+                          "delayedPoints": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "delayedPointsReturned": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "redeemableFrom": {
+                            "type": "string",
+                            "example": "2025-04-10T14:10:02Z"
+                          },
+                          "pointsBreakup": {
+                            "type": "object",
+                            "properties": {
+                              "currentPoints": {
+                                "type": "object",
+                                "properties": {
+                                  "regularPointsBreakup": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "programId": {
+                                          "type": "integer",
+                                          "example": 983,
+                                          "default": 0
+                                        },
+                                        "issued": {
+                                          "type": "number",
+                                          "example": 0.333,
+                                          "default": 0
+                                        },
+                                        "returned": {
+                                          "type": "integer",
+                                          "example": 0,
+                                          "default": 0
+                                        },
+                                        "redeemed": {
+                                          "type": "integer",
+                                          "example": 0,
+                                          "default": 0
+                                        },
+                                        "expired": {
+                                          "type": "integer",
+                                          "example": 0,
+                                          "default": 0
+                                        },
+                                        "expiryDate": {
+                                          "type": "string",
+                                          "example": "2025-05-06T23:59:59Z"
+                                        },
+                                        "expiryType": {
+                                          "type": "string",
+                                          "example": "fixed"
+                                        },
+                                        "awardedDate": {
+                                          "type": "string",
+                                          "example": "2025-04-10T14:10:02Z"
+                                        },
+                                        "allocationType": {
+                                          "type": "string",
+                                          "example": "LINEITEM"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "promotionalPointsBreakup": {
+                                    "type": "array"
+                                  }
+                                }
+                              },
+                              "promisedPoints": {
+                                "type": "object",
+                                "properties": {
+                                  "regularPointsBreakup": {
+                                    "type": "array"
+                                  },
+                                  "promotionalPointsBreakup": {
+                                    "type": "array"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "billPointsBreakup": {
+                      "type": "array"
+                    },
+                    "attribution": {
+                      "type": "object",
+                      "properties": {
+                        "createDate": {
+                          "type": "string",
+                          "example": "2025-04-10T07:00:00Z"
+                        },
+                        "createdBy": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 75155297,
+                              "default": 0
+                            },
+                            "code": {
+                              "type": "string",
+                              "example": "tj_capillary"
+                            },
+                            "description": {
+                              "type": "string",
+                              "example": ""
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "tj_capillary"
+                            },
+                            "type": {
+                              "type": "string",
+                              "example": "TILL"
+                            },
+                            "referenceId": {
+                              "type": "integer",
+                              "example": -1,
+                              "default": 0
+                            },
+                            "adminType": {
+                              "type": "string",
+                              "example": "GENERAL"
+                            },
+                            "isActive": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "isOuEnabled": {
+                              "type": "boolean",
+                              "example": false,
+                              "default": true
+                            },
+                            "timeZoneId": {
+                              "type": "integer",
+                              "example": 191,
+                              "default": 0
+                            },
+                            "currencyId": {
+                              "type": "integer",
+                              "example": 95,
+                              "default": 0
+                            },
+                            "languageId": {
+                              "type": "integer",
+                              "example": 148,
+                              "default": 0
+                            },
+                            "default": {
+                              "type": "boolean",
+                              "example": false,
+                              "default": true
+                            }
+                          }
+                        },
+                        "modifiedBy": {
+                          "type": "object",
+                          "properties": {
+                            "referenceId": {
+                              "type": "integer",
+                              "example": -1,
+                              "default": 0
+                            },
+                            "default": {
+                              "type": "boolean",
+                              "example": false,
+                              "default": true
+                            }
+                          }
+                        },
+                        "modifiedDate": {
+                          "type": "string",
+                          "example": "2025-04-10T08:40:02Z"
+                        }
+                      }
+                    },
+                    "billDetails": {
+                      "type": "object",
+                      "properties": {
+                        "amount": {
+                          "type": "integer",
+                          "example": 6000,
+                          "default": 0
+                        },
+                        "billingStore": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 75152715,
+                              "default": 0
+                            },
+                            "code": {
+                              "type": "string",
+                              "example": "doc123"
+                            },
+                            "description": {
+                              "type": "string",
+                              "example": ""
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "DocStore"
+                            },
+                            "type": {
+                              "type": "string",
+                              "example": "STORE"
+                            },
+                            "referenceId": {
+                              "type": "integer",
+                              "example": -1,
+                              "default": 0
+                            },
+                            "adminType": {
+                              "type": "string",
+                              "example": "GENERAL"
+                            },
+                            "isActive": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "isOuEnabled": {
+                              "type": "boolean",
+                              "example": false,
+                              "default": true
+                            },
+                            "timeZoneId": {
+                              "type": "integer",
+                              "example": 191,
+                              "default": 0
+                            },
+                            "currencyId": {
+                              "type": "integer",
+                              "example": 95,
+                              "default": 0
+                            },
+                            "languageId": {
+                              "type": "integer",
+                              "example": 148,
+                              "default": 0
+                            },
+                            "default": {
+                              "type": "boolean",
+                              "example": false,
+                              "default": true
+                            }
+                          }
+                        },
+                        "billNumber": {
+                          "type": "string",
+                          "example": "test00transact080"
+                        },
+                        "billingTime": {
+                          "type": "string",
+                          "example": "2025-04-10T07:00:00Z"
+                        },
+                        "discount": {
+                          "type": "integer",
+                          "example": 2000,
+                          "default": 0
+                        },
+                        "grossAmount": {
+                          "type": "integer",
+                          "example": 8000,
+                          "default": 0
+                        },
+                        "note": {
+                          "type": "string",
+                          "example": "This is transaction number 80"
+                        },
+                        "returnDetails": {
+                          "type": "object",
+                          "properties": {
+                            "canceled": {
+                              "type": "boolean",
+                              "example": false,
+                              "default": true
+                            }
+                          }
+                        },
+                        "niReturnDetails": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "invalidBill": {
+                          "type": "boolean",
+                          "example": false,
+                          "default": true
+                        }
+                      }
+                    },
+                    "customFields": {
+                      "type": "object",
+                      "properties": {
+                        "booking_date": {
+                          "type": "string",
+                          "example": "2025-04-10"
+                        },
+                        "origin": {
+                          "type": "string",
+                          "example": "instore"
+                        },
+                        "paymentmode": {
+                          "type": "string",
+                          "example": "card"
+                        }
+                      }
+                    },
+                    "source": {
+                      "type": "string",
+                      "example": "instore"
+                    },
+                    "addWithLocalCurrency": {
+                      "type": "boolean",
+                      "example": false,
+                      "default": true
+                    },
+                    "async": {
+                      "type": "boolean",
+                      "example": false,
+                      "default": true
+                    },
+                    "useV2": {
+                      "type": "boolean",
+                      "example": false,
+                      "default": true
+                    },
+                    "simulation": {
+                      "type": "boolean",
+                      "example": false,
+                      "default": true
+                    },
+                    "customerId": {
+                      "type": "integer",
+                      "example": 564703252,
+                      "default": 0
+                    },
+                    "id": {
+                      "type": "integer",
+                      "example": 884754745,
+                      "default": 0
+                    },
+                    "lineItems": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 4006733182,
+                            "default": 0
+                          },
+                          "customerId": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "details": {
+                            "type": "object",
+                            "properties": {
+                              "amount": {
+                                "type": "integer",
+                                "example": 2000,
+                                "default": 0
+                              },
+                              "description": {
+                                "type": "string",
+                                "example": "Steel Bottle"
+                              },
+                              "discount": {
+                                "type": "integer",
+                                "example": 1000,
+                                "default": 0
+                              },
+                              "itemCode": {
+                                "type": "string",
+                                "example": "model_id_001"
+                              },
+                              "qty": {
+                                "type": "integer",
+                                "example": 4,
+                                "default": 0
+                              },
+                              "rate": {
+                                "type": "integer",
+                                "example": 750,
+                                "default": 0
+                              },
+                              "serial": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              },
+                              "value": {
+                                "type": "integer",
+                                "example": 3000,
+                                "default": 0
+                              },
+                              "returnable": {
+                                "type": "boolean",
+                                "example": true,
+                                "default": true
+                              },
+                              "returnableDays": {
+                                "type": "integer",
+                                "example": -1,
+                                "default": 0
+                              },
+                              "attributes": {
+                                "type": "object",
+                                "properties": {}
+                              },
+                              "extendedFields": {
+                                "type": "object",
+                                "properties": {}
+                              },
+                              "newExtendedFields": {
+                                "type": "object",
+                                "properties": {}
+                              },
+                              "attributesSet": {
+                                "type": "array"
+                              }
+                            }
+                          },
+                          "outlierStatus": {
+                            "type": "string",
+                            "example": "NORMAL"
+                          },
+                          "returnDetails": {
+                            "type": "object",
+                            "properties": {}
+                          },
+                          "valid": {
+                            "type": "boolean",
+                            "example": true,
+                            "default": true
+                          },
+                          "returnLineItemsDtos": {
+                            "type": "array"
+                          },
+                          "niReturnLineItemsDtos": {
+                            "type": "array"
+                          },
+                          "addonDetails": {
+                            "type": "array"
+                          },
+                          "splitItemsDetails": {
+                            "type": "array"
+                          },
+                          "niReturn": {
+                            "type": "boolean",
+                            "example": false,
+                            "default": true
+                          }
+                        }
+                      }
+                    },
+                    "outlierStatus": {
+                      "type": "string",
+                      "example": "NORMAL"
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "REGULAR"
+                    },
+                    "lifeTimePurchases": {
+                      "type": "integer",
+                      "example": 0,
+                      "default": 0
+                    },
+                    "ignorePoints": {
+                      "type": "boolean",
+                      "example": false,
+                      "default": true
+                    },
+                    "extendedFields": {
+                      "type": "object",
+                      "properties": {
+                        "card_used": {
+                          "type": "string",
+                          "example": "1111222233334444"
+                        }
+                      }
+                    },
+                    "autoUpdateTime": {
+                      "type": "string",
+                      "example": "2025-04-10T08:40:02Z"
+                    },
+                    "niReturnDetails": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "basketSize": {
+                      "type": "integer",
+                      "example": 7,
+                      "default": 0
+                    },
+                    "retroTxn": {
+                      "type": "boolean",
+                      "example": false,
+                      "default": true
+                    },
+                    "returnDetails": {
+                      "type": "object",
+                      "properties": {
+                        "canceled": {
+                          "type": "boolean",
+                          "example": false,
+                          "default": true
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-readme": {
+          "code-samples": [
+            {
+              "language": "curl",
+              "code": "curl --location 'https://eu.api.capillarytech.com/v2/transactions/323899667?type=NOT_INTERESTED' \\\n--header 'Authorization: Basic bWFkaHcmNzI3MjU2YQ==' \\\n--header 'Cookie: _cfuvid=YyYQB5XUwCZmLtgRlu60lc4n5_3PDiTtwCCXj6_8V3g-1762771226384-0.0.1.1-604800000' \\\n--data ''"
+            }
+          ],
+          "samples-languages": [
+            "curl"
+          ]
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  },
+  "x-readme-fauxas": true
+}
+```
